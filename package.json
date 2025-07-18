@@ -14,7 +14,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@cubig/design-system": "^0.1.0",
+    "@cubig/design-system": "^0.3.2",
     "next": "15.4.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
