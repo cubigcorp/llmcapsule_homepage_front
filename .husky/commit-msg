@@ -1,0 +1,2 @@
+# 커밋 메시지 길이 검증 (선택사항)
+# npx --no -- commitlint --edit $1 
