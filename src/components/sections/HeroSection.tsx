@@ -1,13 +1,12 @@
-"use client";
+'use client';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   SolidButton,
   OutlineButton,
   typography,
-  color,
   textColor,
-} from "@cubig/design-system";
+} from '@cubig/design-system';
 
 export default function HeroSection() {
   return (
@@ -30,16 +29,16 @@ export default function HeroSection() {
               </Description>
             </TextContent>
             <ButtonGroup>
-              <SolidButton variant="primary" size="large">
+              <SolidButton variant='primary' size='large'>
                 구매하기
               </SolidButton>
-              <OutlineButton variant="secondary" size="large">
+              <OutlineButton variant='secondary' size='large'>
                 데모 체험하기
               </OutlineButton>
             </ButtonGroup>
           </LeftContent>
           <ImageArea>
-            <img src="/images/Hero.svg" alt="LLM Capsule 인터페이스" />
+            <img src='/images/Hero.svg' alt='LLM Capsule 인터페이스' />
           </ImageArea>
         </ContentArea>
       </HeroWrapper>
@@ -79,25 +78,25 @@ const TextContent = styled.div`
 `;
 
 const SubTitle = styled.p`
-  ${typography("ko", "heading1", "medium")}
-  color: ${textColor.light["fg-neutral-alternative"]};
+  ${typography('ko', 'heading1', 'medium')}
+  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const MainTitle = styled.h1`
-  ${typography("ko", "display1", "semibold")}
+  ${typography('ko', 'display1', 'semibold')}
 `;
 
 const TitleLine1 = styled.div`
-  color: ${textColor.light["fg-neutral-alternative"]};
+  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const TitleLine2 = styled.div`
-  color: ${textColor.light["fg-neutral-strong"]};
+  color: ${textColor.light['fg-neutral-strong']};
 `;
 
 const Description = styled.p`
-  ${typography("ko", "heading1", "regular")}
-  color: ${textColor.light["fg-neutral-alternative"]};
+  ${typography('ko', 'heading1', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const ButtonGroup = styled.div`

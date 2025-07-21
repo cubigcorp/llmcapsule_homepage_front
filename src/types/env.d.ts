@@ -4,7 +4,7 @@ declare namespace NodeJS {
     NEXT_PUBLIC_APP_NAME: string;
     NEXT_PUBLIC_APP_URL: string;
     NEXT_PUBLIC_APP_DESCRIPTION: string;
-    NEXT_PUBLIC_ENV: "development" | "production";
+    NEXT_PUBLIC_ENV: 'development' | 'production';
 
     // API 설정
     NEXT_PUBLIC_API_URL: string;
@@ -34,6 +34,6 @@ declare namespace NodeJS {
     CLOUDINARY_API_KEY?: string;
     CLOUDINARY_API_SECRET?: string;
 
-    NODE_ENV: "development" | "production" | "test";
+    NODE_ENV: 'development' | 'production' | 'test';
   }
 }

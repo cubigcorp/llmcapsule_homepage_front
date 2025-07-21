@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import styled from "styled-components";
-import { spacing, TextButton, SolidButton } from "@cubig/design-system";
+import Link from 'next/link';
+import Image from 'next/image';
+import styled from 'styled-components';
+import { spacing, TextButton, SolidButton } from '@cubig/design-system';
 
 export default function Header() {
   return (
@@ -12,33 +12,33 @@ export default function Header() {
         <GNB>
           <Leading>
             <LogoWrapper>
-              <Link href="/">
+              <Link href='/'>
                 <Image
-                  src="/icons/Logo.svg"
-                  alt="Logo"
+                  src='/icons/Logo.svg'
+                  alt='Logo'
                   width={32}
                   height={32}
                 />
               </Link>
             </LogoWrapper>
             <Menu>
-              <TextButton variant="primary" size="medium">
+              <TextButton variant='primary' size='medium'>
                 제품소개
               </TextButton>
-              <TextButton variant="primary" size="medium">
+              <TextButton variant='primary' size='medium'>
                 구매
               </TextButton>
-              <TextButton variant="primary" size="medium">
+              <TextButton variant='primary' size='medium'>
                 회사소개
               </TextButton>
             </Menu>
           </Leading>
 
           <ButtonGroup>
-            <TextButton variant="primary" size="medium">
+            <TextButton variant='primary' size='medium'>
               로그인
             </TextButton>
-            <SolidButton variant="primary" size="medium">
+            <SolidButton variant='primary' size='medium'>
               문의하기
             </SolidButton>
           </ButtonGroup>
@@ -72,7 +72,7 @@ const HeaderWrapper = styled.div`
 
 const GNB = styled.div`
   display: flex;
-  padding: ${spacing.gap["gap-1"]} ${spacing.gap["gap-1"]};
+  padding: ${spacing.gap['gap-1']} ${spacing.gap['gap-1']};
   justify-content: space-between;
   align-items: center;
   align-self: stretch;

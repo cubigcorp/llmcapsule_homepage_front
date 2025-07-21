@@ -4,21 +4,21 @@
 
 export const ENV = {
   // 애플리케이션 설정
-  APP_NAME: process.env.NEXT_PUBLIC_APP_NAME || "LLM Capsule Homepage",
-  APP_URL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  APP_NAME: process.env.NEXT_PUBLIC_APP_NAME || 'LLM Capsule Homepage',
+  APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
   APP_DESCRIPTION:
-    process.env.NEXT_PUBLIC_APP_DESCRIPTION || "LLM Capsule 홈페이지",
-  ENV: process.env.NEXT_PUBLIC_ENV || "development",
+    process.env.NEXT_PUBLIC_APP_DESCRIPTION || 'LLM Capsule 홈페이지',
+  ENV: process.env.NEXT_PUBLIC_ENV || 'development',
 
   // API 설정
-  API_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api",
-  API_SECRET_KEY: process.env.API_SECRET_KEY || "local-development-secret-key",
+  API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
+  API_SECRET_KEY: process.env.API_SECRET_KEY || 'local-development-secret-key',
 
   // 환경 확인
-  NODE_ENV: process.env.NODE_ENV || "development",
-  IS_DEVELOPMENT: process.env.NODE_ENV === "development",
-  IS_PRODUCTION: process.env.NODE_ENV === "production",
-  IS_TEST: process.env.NODE_ENV === "test",
+  NODE_ENV: process.env.NODE_ENV || 'development',
+  IS_DEVELOPMENT: process.env.NODE_ENV === 'development',
+  IS_PRODUCTION: process.env.NODE_ENV === 'production',
+  IS_TEST: process.env.NODE_ENV === 'test',
 
   // 외부 서비스 설정
   GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
@@ -60,9 +60,9 @@ export const ENV = {
  */
 export function validateEnv(): void {
   const requiredEnvVars = [
-    "NEXT_PUBLIC_APP_NAME",
-    "NEXT_PUBLIC_APP_URL",
-    "NEXT_PUBLIC_API_URL",
+    'NEXT_PUBLIC_APP_NAME',
+    'NEXT_PUBLIC_APP_URL',
+    'NEXT_PUBLIC_API_URL',
   ];
 
   const missingVars = requiredEnvVars.filter(
@@ -71,7 +71,7 @@ export function validateEnv(): void {
 
   if (missingVars.length > 0) {
     throw new Error(
-      `Missing required environment variables: ${missingVars.join(", ")}`
+      `Missing required environment variables: ${missingVars.join(', ')}`
     );
   }
 }
