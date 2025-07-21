@@ -18,7 +18,7 @@ const eslintConfig = [
       prettier,
     },
     rules: {
-      'prettier/prettier': 'error',
+      'prettier/prettier': ['error', { endOfLine: 'auto' }],
       quotes: ['error', 'single'],
       'jsx-quotes': ['error', 'prefer-single'],
     },

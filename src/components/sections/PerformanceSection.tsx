@@ -64,7 +64,7 @@ export default function PerformanceSection() {
                 <LogoImage
                   src='/icons/public-procurement-service.svg'
                   alt='벤처나라 등록제품'
-                  style={{ width: '120px', height: '60px' }}
+                  style={{ width: '135px', height: '52px' }}
                 />
               </CardValue>
               <CardDescription>
@@ -78,7 +78,7 @@ export default function PerformanceSection() {
                 <LogoImage
                   src='/icons/ministry-interior-safety.svg'
                   alt='행정안전부 인증'
-                  style={{ width: '140px', height: '70px' }}
+                  style={{ width: '183px', height: '52px' }}
                 />
               </CardValue>
               <CardDescription>
@@ -93,6 +93,7 @@ export default function PerformanceSection() {
                 <LogoImage
                   src='/icons/ministry-science-ict.svg'
                   alt='벤처나라 등록제품'
+                  style={{ width: '268px', height: '52px' }}
                 />
               </CardValue>
               <CardDescription>
