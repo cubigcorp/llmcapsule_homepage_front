@@ -4,6 +4,7 @@ import SolutionSection from '@/components/sections/SolutionSection';
 import ProcessSection from '@/components/sections/ProcessSection';
 import PricingSection from '@/components/sections/PricingSection';
 import PartnersSection from '@/components/sections/PartnersSection';
+import FAQSection from '@/components/sections/FAQSection';
 export default function Home() {
   return (
     <main>
@@ -13,6 +14,7 @@ export default function Home() {
       <ProcessSection />
       <PartnersSection />
       <PricingSection />
+      <FAQSection />
     </main>
   );
 }
