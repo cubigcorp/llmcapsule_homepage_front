@@ -156,7 +156,7 @@ export default function DemoSection() {
               <ActionButtons>
                 <SlidingButtonWrapper>
                   <SlidingButton
-                    active={activeAction === 'anonymize'}
+                    $active={activeAction === 'anonymize'}
                     onClick={() => {
                       setActiveAction('anonymize');
                       setShowAnswer(false);
@@ -171,7 +171,7 @@ export default function DemoSection() {
                     정보 가리기
                   </SlidingButton>
                   <SlidingButton
-                    active={activeAction === 'sync'}
+                    $active={activeAction === 'sync'}
                     onClick={() => {
                       setActiveAction('sync');
                       setShowAnswer(false);
@@ -467,16 +467,18 @@ const SlidingButtonWrapper = styled.div`
   padding: 4px;
 `;
 
-const SlidingButton = styled.button<{ active: boolean }>`
+const SlidingButton = styled.button<{ $active: boolean }>`
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  border: ${({ active }) =>
-    active ? `1px solid ${borderColor.light['color-border-primary']}` : 'none'};
-  background-color: ${({ active }) => (active ? '#fff' : 'transparent')};
-  color: ${({ active }) =>
-    active
+  border: ${({ $active }) =>
+    $active
+      ? `1px solid ${borderColor.light['color-border-primary']}`
+      : 'none'};
+  background-color: ${({ $active }) => ($active ? '#fff' : 'transparent')};
+  color: ${({ $active }) =>
+    $active
       ? textColor.light['fg-neutral-strong']
       : textColor.light['fg-neutral-alternative']};
   border-radius: ${radius['rounded-1']};
