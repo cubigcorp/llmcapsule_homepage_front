@@ -6,6 +6,8 @@ import PricingSection from '@/components/sections/PricingSection';
 import PartnersSection from '@/components/sections/PartnersSection';
 import FAQSection from '@/components/sections/FAQSection';
 import ContactSection from '@/components/sections/ContactSection';
+import DemoSection from '@/components/sections/DemoSection';
+import Footer from '@/components/layout/Footer';
 export default function Home() {
   return (
     <main>
@@ -13,10 +15,12 @@ export default function Home() {
       <PerformanceSection />
       <SolutionSection />
       <ProcessSection />
+      <DemoSection />
       <PartnersSection />
       <PricingSection />
       <FAQSection />
       <ContactSection />
+      <Footer />
     </main>
   );
 }
