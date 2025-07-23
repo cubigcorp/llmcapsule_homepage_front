@@ -207,7 +207,7 @@ export default function DemoSection() {
                 GPT-4o mini
               </StyledBadge>
             </AnswerHeader>
-            <AnswerBox hasAnswer={showAnswer}>
+            <AnswerBox $hasAnswer={showAnswer}>
               {displayedText}
               {isTyping && <TypingCursor>|</TypingCursor>}
             </AnswerBox>
@@ -530,13 +530,13 @@ const AnswerSection = styled.div`
   flex-direction: column;
 `;
 
-const AnswerBox = styled.div<{ hasAnswer: boolean }>`
+const AnswerBox = styled.div<{ $hasAnswer: boolean }>`
   flex: 1;
   min-height: 200px;
   padding: 20px;
   border: 1px solid
-    ${({ hasAnswer }) =>
-      hasAnswer
+    ${({ $hasAnswer }) =>
+      $hasAnswer
         ? borderColor.light['color-border-focused']
         : borderColor.light['color-border-primary']};
   border-radius: ${radius['rounded-3']};
