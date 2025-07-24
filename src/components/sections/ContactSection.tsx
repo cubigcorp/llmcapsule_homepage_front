@@ -7,6 +7,7 @@ import {
   radius,
   color,
   borderColor,
+  SolidButton,
 } from '@cubig/design-system';
 
 export default function ContactSection() {
@@ -71,15 +72,17 @@ export default function ContactSection() {
             <FormInput placeholder='회사/소속기관명을 입력해 주세요.' />
           </FormField>
 
-          <FormField>
-            <FormLabel>부서명</FormLabel>
-            <FormInput placeholder='부서명을 입력해 주세요.' />
-          </FormField>
+          <RowFormField>
+            <FormField>
+              <FormLabel>부서명</FormLabel>
+              <FormInput placeholder='부서명을 입력해 주세요.' />
+            </FormField>
 
-          <FormField>
-            <FormLabel>직함</FormLabel>
-            <FormInput placeholder='직함을 입력해 주세요.' />
-          </FormField>
+            <FormField>
+              <FormLabel>직함</FormLabel>
+              <FormInput placeholder='직함을 입력해 주세요.' />
+            </FormField>
+          </RowFormField>
 
           <FormField>
             <FormLabel>해결하고 싶은 비즈니스 고민</FormLabel>
@@ -101,7 +104,9 @@ export default function ContactSection() {
             </ConsentItem>
           </ConsentSection>
 
-          <SubmitButton>도입 문의하기</SubmitButton>
+          <SolidButton variant='primary' size='large' state='default'>
+            도입 문의하기
+          </SolidButton>
         </ContactForm>
       </ContactRight>
     </ContactContainer>
@@ -235,6 +240,15 @@ const FormField = styled.div`
   gap: 8px;
 `;
 
+const RowFormField = styled.div`
+  display: flex;
+  gap: 16px;
+
+  > ${FormField} {
+    flex: 1;
+  }
+`;
+
 const FormLabel = styled.label`
   ${typography('ko', 'body3', 'medium')}
   color: ${textColor.light['fg-neutral-strong']};
@@ -304,19 +318,4 @@ const ConsentLabel = styled.label`
   ${typography('ko', 'body3', 'regular')}
   color: ${textColor.light['fg-neutral-strong']};
   cursor: pointer;
-`;
-
-const SubmitButton = styled.button`
-  background-color: #374151;
-  color: #fff;
-  border: none;
-  border-radius: ${radius['rounded-1']};
-  padding: 16px 32px;
-  ${typography('ko', 'body2', 'medium')}
-  cursor: pointer;
-  margin-top: 16px;
-
-  &:hover {
-    background-color: #4b5563;
-  }
 `;
