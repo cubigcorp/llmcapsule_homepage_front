@@ -30,7 +30,9 @@ export default function DocumentModal({
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
-          <CloseButton onClick={onClose}>✕</CloseButton>
+          <CloseButton onClick={onClose}>
+            <CloseIcon src='/icons/Icon_close.svg' alt='close' />
+          </CloseButton>
         </ModalHeader>
 
         <ModalBody>
@@ -89,16 +91,22 @@ const ModalTitle = styled.h2`
 const CloseButton = styled.button`
   background: none;
   border: none;
-  font-size: 20px;
-  color: ${textColor.light['fg-neutral-alternative']};
   cursor: pointer;
   padding: 4px;
   border-radius: ${radius['rounded-1']};
   transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background-color: ${color.gray['100']};
   }
+`;
+
+const CloseIcon = styled.img`
+  width: 20px;
+  height: 20px;
 `;
 
 const ModalBody = styled.div`

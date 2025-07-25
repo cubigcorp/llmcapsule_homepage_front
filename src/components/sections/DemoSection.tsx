@@ -176,7 +176,12 @@ export default function DemoSection() {
                                 : 'TXT'}
                       </FileType>
                     </FileInfo>
-                    <RemoveButton>✕</RemoveButton>
+                    <RemoveButton>
+                      <RemoveIcon
+                        src='/icons/Icon_arrow_forward.svg'
+                        alt='remove'
+                      />
+                    </RemoveButton>
                   </FileRightArea>
                 </FileDisplay>
               </FileDisplayWrapper>
@@ -394,7 +399,7 @@ const CategoryButtons = styled.div`
 
 const DemoCard = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 984px;
   height: 360px;
   background-color: #fff;
   border-radius: 20px;
@@ -502,17 +507,21 @@ const RemoveButton = styled.div`
   background: none;
   border: none;
   color: ${textColor.light['fg-neutral-alternative']};
-
-  font-size: 16px;
   padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const RemoveIcon = styled.img`
+  width: 16px;
+  height: 16px;
 `;
 
 const QuestionArea = styled.div`
   flex: 1;
-
   padding: 20px;
-  background-color: ${color.gray['25']};
-
   ${typography('ko', 'body3', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
   line-height: 1.6;

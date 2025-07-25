@@ -184,8 +184,8 @@ const SocialIcon = styled.div`
 `;
 
 const SocialIconImage = styled.img`
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
 `;
 
 const FooterDivider = styled.div`
