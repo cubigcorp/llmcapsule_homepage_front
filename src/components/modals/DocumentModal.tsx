@@ -10,53 +10,32 @@ import {
   SolidButton,
 } from '@cubig/design-system';
 
-interface PrivacyConsentModalProps {
+interface DocumentModalProps {
   isOpen: boolean;
   onClose: () => void;
+  title: string;
+  content: string;
 }
 
-export default function PrivacyConsentModal({
+export default function DocumentModal({
   isOpen,
   onClose,
-}: PrivacyConsentModalProps) {
+  title,
+  content,
+}: DocumentModalProps) {
   if (!isOpen) return null;
 
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
-          <ModalTitle>개인정보 수집 및 이용 동의</ModalTitle>
+          <ModalTitle>{title}</ModalTitle>
           <CloseButton onClick={onClose}>✕</CloseButton>
         </ModalHeader>
 
         <ModalBody>
           <ModalBodyInnerWrapper>
-            <ConsentText>
-              개인정보 수집 및 활용 목적, 수집 항목, 보유 및 이용 기간, 동의
-              거부권 및 거부 시 불이익에 관하여 안내 드립니다.
-              <br />
-              <br />
-              1. 수집 항목: 이름, 휴대전화번호, 업무용 메일, 회사/소속기관명
-              <br />
-              2. 수집 목적: 문의 응답 제공 및 문의 내역 관리, 기술 정보 전달
-              등의 목적으로만 이용합니다.
-              <br />
-              3. 보유 및 이용기간: 문의 신청 후 동의 철회 시까지 보유
-              <br />
-              <span className='indent'>
-                ※ 이용자는 제공된 개인정보의 이용을 거부하고자 할 때
-                contact@cubig.ai를 통해 열람, 정정, 삭제를 요구할 수 있습니다.
-              </span>
-              <br />
-              4.개인정보 파기: 이용자가 동의를 철회한 경우, 지체없이 해당
-              개인정보를 파기합니다.
-              <br />
-              <span className='indent'>
-                ※ 전자적 파일 형태로 기록·저장된 개인정보는 기록을 재생할 수
-                없도록 파기하며, 종이 문서에 기록·저장된 개인정보는 분쇄기로
-                분쇄하거나 소각하여 파기합니다.
-              </span>
-            </ConsentText>
+            <DocumentContent>{content}</DocumentContent>
           </ModalBodyInnerWrapper>
         </ModalBody>
 
@@ -76,12 +55,12 @@ const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #17171929;
-  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  background-color: #17171929;
+  backdrop-filter: blur(2px);
 `;
 
 const ModalContent = styled.div`
@@ -125,8 +104,6 @@ const CloseButton = styled.button`
 const ModalBody = styled.div`
   padding: 12px 25px 12px 25px;
   flex: 1;
-  display: flex;
-  flex-direction: column;
 `;
 
 const ModalBodyInnerWrapper = styled.div`
@@ -137,19 +114,16 @@ const ModalBodyInnerWrapper = styled.div`
   flex-direction: column;
 `;
 
-const ConsentText = styled.p`
+const DocumentContent = styled.p`
   ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-strong']};
-  margin: 0;
+  margin: 0 0 24px 0;
   line-height: 1.6;
-
-  .indent {
-    margin-left: 20px;
-  }
 `;
 
 const ModalFooter = styled.div`
   padding: 12px 24px 24px 24px;
+
   display: flex;
   justify-content: flex-end;
 `;

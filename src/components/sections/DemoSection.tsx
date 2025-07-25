@@ -18,6 +18,7 @@ import HeartIcon from '@/assets/icons/Icon_heart.svg';
 import CompareIcon from '@/assets/icons/Icon_compare.svg';
 import FilterIcon from '@/assets/icons/Icon_tune.svg';
 import FilterModal from '@/components/modals/FilterModal';
+import DocumentModal from '@/components/modals/DocumentModal';
 
 const categories = [
   {
@@ -25,40 +26,41 @@ const categories = [
     name: '공공기관',
     icon: CourtIcon,
     question:
-      '김철수(010-1234-5678) 시민의 주민등록번호 123456-1234567로 민원 처리 요청서를 작성해줘',
+      '이 문서에 있는 개인정보(이름, 주민등록번호, 연락처 등)를 민원 접수용 요약 양식으로 변환해 주세요.',
     answer1:
-      '[이름 A]([휴대전화번호 A]) 시민의 [개인식별번호 A]로 민원 처리 요청서를 작성해줘',
-    answer2: '민원 처리 요청서',
+      '네, 문서에 있는 개인정보를 민원 접수용 양식으로 변환해 드리겠습니다.\n민원인 성명: [이름 A]\n주민등록번호: [주민등록번호 A]\n연락처: [전화번호 A]\n이메일: [이메일 주소 A]\n민원 내용 요약: 건물 인허가 관련 민원 접수 요청',
+    answer2:
+      '네, 문서에 있는 개인정보를 민원 접수용 양식으로 변환해 드리겠습니다.\n민원인 성명: 홍길동\n주민등록번호: 132546-1136890\n연락처: 010-1111-0000\n이메일: gildong.hong@cubig.ai\n민원 내용 요약: 건물 인허가 관련 민원 접수 요청',
   },
   {
     id: 'finance',
     name: '금융',
     icon: MoneyIcon,
-    question:
-      '이영희님(카드번호: 1234-5678-9012-3456)의 대출심사 보고서를 작성해줘',
+    question: '대출 승인 관련 주요 내용만 추려서 보고용으로 작성해 주세요.',
     answer1:
-      '고객 [이름 C]님(카드번호: [카드번호 C])의 대출심사 보고서를 작성해줘',
-    answer2: '대출심사 보고서',
+      '신청인: [이름 B]\n연락처: [전화번호 B]\n카드번호: [신용카드번호 B]\n주민등록번호: [주민등록번호 B]\n대출상품명: 신용대출\n대출신청금액: 2,000만원\n심사결과: 승인\n부가내용: 최근 3개월간 카드 사용내역 및 소득자료 제출 완료',
+    answer2:
+      '신청인: 홍길순\n연락처: 010-0102-0304\n카드번호: 1111-2222-3333-4444\n주민등록번호: 000123-1456789\n대출상품명: 신용대출\n대출신청금액: 2,000만원\n심사결과: 승인\n부가내용: 최근 3개월간 카드 사용내역 및 소득자료 제출 완료',
   },
   {
     id: 'medical',
     name: '의료',
     icon: HeartIcon,
-    question:
-      '박민수(생년월일: 1985.03.15, 연락처: 010-9876-5432)의 진료기록을 정리해줘',
+    question: '오늘 내원했던 박민수 환자 최근 진료 이력과 진단명만 정리해줘요',
     answer1:
-      '[이름 D]([생년월일: [생년월일 D], 연락처: [연락처 D])의 진료기록을 정리해줘',
-    answer2: '진료기록',
+      '환자명: [이름 C]\n연락처: [전화번호 C]\n생년월일: [연월일 C]\n진료일자: [연월일 D]\n진단명: 뇌진탕\n진료과: 신경외과\n주요 증상: 두통, 어지럼증\n진료내용: 내원, CT 촬영 후 뇌진탕 진단. 입원 및 3일치 약 처방.',
+    answer2:
+      '환자명: 김길동\n연락처: 010-1234-5678\n생년월일: 1988-07-12\n진료일자: 2024-01-01\n진단명: 뇌진탕\n진료과: 신경외과\n주요 증상: 두통, 어지럼증\n진료내용: 내원, CT 촬영 후 뇌진탕 진단. 입원 및 3일치 약 처방.',
   },
   {
     id: 'education',
     name: '교육',
     icon: CompareIcon,
-    question:
-      '최수정(학번: 20240315, 부모연락처: 010-1111-2222)의 학습계획서를 작성해줘',
+    question: '상담 기록 중 주요 요청사항 중심으로 간단히 요약해 주세요.',
     answer1:
-      '[이름 E](학번: [학번 E], 부모연락처: [연락처 E])의 학습계획서를 작성해줘',
-    answer2: '학습계획서',
+      '학생명: [이름D]\n주요 요청사항: 학부모와 연락 필요, 최근 성적 변동 상담 희망',
+    answer2:
+      '학생명: 이영희\n주요 요청사항: 학부모와 연락 필요, 최근 성적 변동 상담 희망',
   },
 ];
 
@@ -70,6 +72,7 @@ export default function DemoSection() {
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
 
   // 타이핑 효과
   useEffect(() => {
@@ -106,9 +109,6 @@ export default function DemoSection() {
         </DemoHeader>
 
         <CategoryButtonsWrapper>
-          {!hasInteracted && (
-            <DemoSubtitle>메뉴를 선택해, 직접 사용해보세요!</DemoSubtitle>
-          )}
           <CategoryButtons>
             {categories.map((category) => (
               <SolidButton
@@ -136,18 +136,50 @@ export default function DemoSection() {
           <QuestionSection>
             <QuestionHeader>질문</QuestionHeader>
             <QuestionBox>
-              <FileDisplay>
-                <FileLeftArea>
-                  <FileIcon src='/icons/Icon_file.svg' alt='file' />
-                </FileLeftArea>
-                <FileRightArea>
-                  <FileInfo>
-                    <FileName>공공기관_고객민감정보.txt</FileName>
-                    <FileType>TXT</FileType>
-                  </FileInfo>
-                  <RemoveButton>✕</RemoveButton>
-                </FileRightArea>
-              </FileDisplay>
+              <FileDisplayWrapper>
+                {!hasInteracted && (
+                  <DemoSubtitle>
+                    클릭하면 원본 문서를 볼 수 있어요.
+                  </DemoSubtitle>
+                )}
+                <FileDisplay
+                  onClick={() => {
+                    setIsDocumentModalOpen(true);
+                    setHasInteracted(true);
+                  }}
+                >
+                  <FileLeftArea>
+                    <FileIcon src='/icons/Icon_file.svg' alt='file' />
+                  </FileLeftArea>
+                  <FileRightArea>
+                    <FileInfo>
+                      <FileName>
+                        {activeCategory === 'public'
+                          ? '민원 처리 요청서(민감정보포함).txt'
+                          : activeCategory === 'finance'
+                            ? '대출심사 보고서(고객정보유).pdf'
+                            : activeCategory === 'medical'
+                              ? '진료기록(환자정보포함).docx'
+                              : activeCategory === 'education'
+                                ? '학생상담내용(학생정보있음).hwp'
+                                : '민원 처리 요청서(민감정보포함).txt'}
+                      </FileName>
+                      <FileType>
+                        {activeCategory === 'public'
+                          ? 'TXT'
+                          : activeCategory === 'finance'
+                            ? 'PDF'
+                            : activeCategory === 'medical'
+                              ? 'DOCX'
+                              : activeCategory === 'education'
+                                ? 'HWP'
+                                : 'TXT'}
+                      </FileType>
+                    </FileInfo>
+                    <RemoveButton>✕</RemoveButton>
+                  </FileRightArea>
+                </FileDisplay>
+              </FileDisplayWrapper>
 
               <QuestionArea>
                 {categories.find((cat) => cat.id === activeCategory)?.question}
@@ -235,6 +267,33 @@ export default function DemoSection() {
         isOpen={isFilterModalOpen}
         onClose={() => setIsFilterModalOpen(false)}
       />
+      <DocumentModal
+        isOpen={isDocumentModalOpen}
+        onClose={() => setIsDocumentModalOpen(false)}
+        title={
+          activeCategory === 'public'
+            ? '민원 처리 요청서(민감정보포함).txt'
+            : activeCategory === 'finance'
+              ? '대출심사 보고서(고객정보유).pdf'
+              : activeCategory === 'medical'
+                ? '진료기록(환자정보포함).docx'
+                : activeCategory === 'education'
+                  ? '학생상담내용(학생정보있음).hwp'
+                  : '민원 처리 요청서(민감정보포함).txt'
+        }
+        content={
+          activeCategory === 'public'
+            ? '김철수, 연락처 010-1234-5678, 주민번호 123456-1234567, 메일 chulsoo.kim@cubig.ai\n오늘 오전에 와서 건물 인허가 때문에 민원 접수함. 주소랑 추가 정보는 안 물어봄.\n상담 중에 담당자가 전화로도 안내드림. 본인 확인할 때 주민번호 뒷자리까지 직접 확인함.\n문의내용은 인허가 진행 절차랑 필요서류 문의임.'
+            : activeCategory === 'finance'
+              ? '이영희 고객님, 휴대폰번호 (010-5678-2345), 카드번호: 1234-5678-9012-3456, 주민등록번호: 881201-1234567, 대출신청금액: 2,000만원, 대출상품명: 신용대출, 심사결과: 승인, 부가내용: 최근 3개월간 카드 사용내역 및 소득 자료 제출 완료)'
+              : activeCategory === 'medical'
+                ? '오늘 오전 박민수(85년3월15일생, 010-0123-4567)씨 내원. 두통이랑 어지럼증 심하게 호소, 주소는 상도동인데 구체적번지 모름.\n아침부터 증상 있었다고 함. 진료실에서 신경외과 이지은 선생님이 CT 찍자고 해서 바로 촬영. 결과 뇌진탕 나옴.\n입원 결정, 약(진통제+혈관확장제) 3일 처방함. 보호자랑도 얘기함. 추가 소견 필요하면 연락달라고 안내함. 주민번호 뒷자리는 직접 안 물어봄.'
+                : activeCategory === 'education'
+                  ? '오늘 3학년 2반 김지수(010-7654-3210, 주민번호 060312-2345678, jisoo.kim@school.ac.kr) 학생 상담 진행함.\n최근 결석이 잦아서 학부모와 연락 필요하다고 메모 남김. 상담 중에 개인정보 확인 위해 주민번호랑 연락처 재확인.\n학생 주소는 따로 기록 안 함. 진로 희망은 의대 쪽이라고 했고, 최근 성적 변동 상담 요청함.'
+                  : categories.find((cat) => cat.id === activeCategory)
+                      ?.question || ''
+        }
+      />
     </DemoContainer>
   );
 }
@@ -285,6 +344,10 @@ const DemoTitle = styled.h3`
   text-align: center;
 `;
 
+const FileDisplayWrapper = styled.div`
+  position: relative;
+`;
+
 const DemoSubtitle = styled.div`
   ${typography('ko', 'body2', 'medium')}
   color: #fff;
@@ -298,8 +361,7 @@ const DemoSubtitle = styled.div`
   margin: 0;
   text-align: center;
   position: absolute;
-  left: 10px;
-  top: -33px;
+  top: -40px;
   z-index: 1;
 
   &::after {
@@ -390,6 +452,12 @@ const FileDisplay = styled.div`
   gap: 12px;
   border-radius: ${radius['rounded-2']};
   border: 1px solid ${borderColor.light['color-border-primary']};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: ${color.gray['50']};
+  }
 `;
 
 const FileLeftArea = styled.div`
