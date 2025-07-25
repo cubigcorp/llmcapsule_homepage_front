@@ -63,13 +63,31 @@ export default function Footer() {
               <SocialIconImage src='/icons/logo_blog.svg' alt='Blog' />
             </SocialIcon> */}
             <SocialIcon>
-              <SocialIconImage src='/icons/logo_insta.svg' alt='Instagram' />
+              <a
+                href='https://www.instagram.com/cubig.ai_official/'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <SocialIconImage src='/icons/logo_insta.svg' alt='Instagram' />
+              </a>
             </SocialIcon>
             <SocialIcon>
-              <SocialIconImage src='/icons/logo_youtube.svg' alt='YouTube' />
+              <a
+                href='https://www.youtube.com/@azoo_ai'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <SocialIconImage src='/icons/logo_youtube.svg' alt='YouTube' />
+              </a>
             </SocialIcon>
             <SocialIcon>
-              <SocialIconImage src='/icons/logo_linken.svg' alt='LinkedIn' />
+              <a
+                href='https://www.linkedin.com/company/cubig-corp/posts/?feedView=all'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <SocialIconImage src='/icons/logo_linken.svg' alt='LinkedIn' />
+              </a>
             </SocialIcon>
           </SocialIcons>
         </CopyrightSection>
@@ -154,6 +172,11 @@ const SocialIcons = styled.div`
 const SocialIcon = styled.div`
   cursor: pointer;
   transition: opacity 0.2s ease;
+
+  a {
+    display: block;
+    text-decoration: none;
+  }
 
   &:hover {
     opacity: 0.8;
