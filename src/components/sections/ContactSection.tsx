@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import styled from 'styled-components';
 import {
   typography,
@@ -8,9 +9,30 @@ import {
   color,
   borderColor,
   SolidButton,
+  TextField,
 } from '@cubig/design-system';
 
 export default function ContactSection() {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    company: '',
+    department: '',
+    position: '',
+    businessConcern: '',
+    requiredConsent: false,
+    marketingConsent: false,
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleCheckboxChange = (field: string, checked: boolean) => {
+    setFormData((prev) => ({ ...prev, [field]: checked }));
+  };
+
   return (
     <ContactContainer>
       <ContactLeft>
@@ -57,49 +79,111 @@ export default function ContactSection() {
 
       <ContactRight>
         <ContactForm>
-          <FormField>
-            <FormLabel>이름 *</FormLabel>
-            <FormInput placeholder='이름을 입력해 주세요.' />
-          </FormField>
+          <TextField
+            label='이름'
+            labelType='required'
+            size='large'
+            value={formData.name}
+            onChange={(e) => handleInputChange('name', e.target.value)}
+            placeholder='이름을 입력해 주세요.'
+          />
 
-          <FormField>
-            <FormLabel>휴대전화번호 *</FormLabel>
-            <FormInput placeholder='- 없이 숫자만 입력해 주세요.' />
-          </FormField>
+          <TextField
+            label='휴대전화번호'
+            labelType='required'
+            size='large'
+            value={formData.phone}
+            onChange={(e) => handleInputChange('phone', e.target.value)}
+            placeholder='- 없이 숫자만 입력해 주세요.'
+          />
 
-          <FormField>
-            <FormLabel>업무용 메일 *</FormLabel>
-            <FormInput placeholder='회사/소속기관명을 입력해 주세요.' />
-          </FormField>
+          <TextField
+            label='업무용 메일'
+            labelType='required'
+            size='large'
+            value={formData.email}
+            onChange={(e) => handleInputChange('email', e.target.value)}
+            placeholder='업무용 메일을 입력해 주세요.'
+          />
+
+          <TextField
+            label='회사/소속기관명'
+            labelType='required'
+            size='large'
+            value={formData.company}
+            onChange={(e) => handleInputChange('company', e.target.value)}
+            placeholder='회사/소속기관명을 입력해 주세요.'
+          />
 
           <RowFormField>
-            <FormField>
-              <FormLabel>부서명</FormLabel>
-              <FormInput placeholder='부서명을 입력해 주세요.' />
-            </FormField>
+            <TextField
+              label='부서명'
+              size='large'
+              value={formData.department}
+              onChange={(e) => handleInputChange('department', e.target.value)}
+              placeholder='부서명을 입력해 주세요.'
+            />
 
-            <FormField>
-              <FormLabel>직함</FormLabel>
-              <FormInput placeholder='직함을 입력해 주세요.' />
-            </FormField>
+            <TextField
+              label='직함'
+              size='large'
+              value={formData.position}
+              onChange={(e) => handleInputChange('position', e.target.value)}
+              placeholder='직함을 입력해 주세요.'
+            />
           </RowFormField>
 
           <FormField>
             <FormLabel>해결하고 싶은 비즈니스 고민</FormLabel>
-            <FormTextarea placeholder='문의 내용을 입력해주세요.' />
+            <FormTextarea
+              placeholder='문의 내용을 입력해주세요.'
+              value={formData.businessConcern}
+              onChange={(e) =>
+                handleInputChange('businessConcern', e.target.value)
+              }
+            />
           </FormField>
 
           <ConsentSection>
             <ConsentItem>
-              <ConsentCheckbox type='checkbox' id='required' />
+              <ConsentCheckbox
+                type='checkbox'
+                id='required'
+                checked={formData.requiredConsent}
+                onChange={(e) =>
+                  handleCheckboxChange('requiredConsent', e.target.checked)
+                }
+              />
               <ConsentLabel htmlFor='required'>
-                (필수) 개인정보 수집 및 이용 동의
+                <span style={{ textDecoration: 'none', color: 'inherit' }}>
+                  (필수){' '}
+                </span>
+                <span style={{ textDecoration: 'underline' }}>
+                  개인정보 수집 및 이용 동의
+                </span>
               </ConsentLabel>
             </ConsentItem>
             <ConsentItem>
-              <ConsentCheckbox type='checkbox' id='optional' />
+              <ConsentCheckbox
+                type='checkbox'
+                id='optional'
+                checked={formData.marketingConsent}
+                onChange={(e) =>
+                  handleCheckboxChange('marketingConsent', e.target.checked)
+                }
+              />
               <ConsentLabel htmlFor='optional'>
-                (선택) 마케팅 정보 수신 동의
+                <span
+                  style={{
+                    textDecoration: 'none',
+                    color: textColor.light['fg-neutral-alternative'],
+                  }}
+                >
+                  (선택){' '}
+                </span>
+                <span style={{ textDecoration: 'underline' }}>
+                  마케팅 정보 수신 동의
+                </span>
               </ConsentLabel>
             </ConsentItem>
           </ConsentSection>
@@ -120,14 +204,14 @@ const ContactContainer = styled.section`
 `;
 
 const ContactLeft = styled.div`
-  flex: 1;
+  width: 640px;
   background-color: ${color.gray['950']};
   display: flex;
   align-items: center;
 `;
 
 const ContactRight = styled.div`
-  flex: 1;
+  width: 800px;
   background-color: #fff;
   display: flex;
   align-items: center;
@@ -225,13 +309,12 @@ const InfoDivider = styled.hr`
 
 const ContactForm = styled.div`
   width: 100%;
-  max-width: 480px;
   background-color: #fff;
-  padding: 60px 40px;
+  padding: 120px 80px;
   border-radius: ${radius['rounded-2']};
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 `;
 
 const FormField = styled.div`
@@ -244,36 +327,14 @@ const RowFormField = styled.div`
   display: flex;
   gap: 16px;
 
-  > ${FormField} {
+  > * {
     flex: 1;
   }
 `;
 
 const FormLabel = styled.label`
-  ${typography('ko', 'body3', 'medium')}
+  ${typography('ko', 'body2', 'medium')}
   color: ${textColor.light['fg-neutral-strong']};
-
-  &:has(+ input[required])::after {
-    content: ' *';
-    color: #ef4444;
-  }
-`;
-
-const FormInput = styled.input`
-  padding: 12px 16px;
-  border: 1px solid ${borderColor.light['color-border-primary']};
-  border-radius: ${radius['rounded-1']};
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-strong']};
-
-  &::placeholder {
-    color: ${textColor.light['fg-neutral-alternative']};
-  }
-
-  &:focus {
-    outline: none;
-    border-color: ${color.gray['400']};
-  }
 `;
 
 const FormTextarea = styled.textarea`
@@ -286,7 +347,7 @@ const FormTextarea = styled.textarea`
   resize: vertical;
 
   &::placeholder {
-    color: ${textColor.light['fg-neutral-alternative']};
+    color: ${textColor.light['fg-neutral-assistive']} !important;
   }
 
   &:focus {
@@ -311,7 +372,11 @@ const ConsentItem = styled.div`
 const ConsentCheckbox = styled.input`
   width: 16px;
   height: 16px;
-  accent-color: ${color.gray['400']};
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid ${borderColor.light['color-border-primary']};
+  border-radius: ${radius['rounded-1']};
+  background-color: white;
 `;
 
 const ConsentLabel = styled.label`
