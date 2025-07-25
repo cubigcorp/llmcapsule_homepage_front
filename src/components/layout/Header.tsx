@@ -21,7 +21,7 @@ export default function Header() {
                 />
               </Link>
             </LogoWrapper>
-            <Menu>
+            {/* <Menu>
               <TextButton variant='primary' size='medium'>
                 제품소개
               </TextButton>
@@ -31,7 +31,7 @@ export default function Header() {
               <TextButton variant='primary' size='medium'>
                 회사소개
               </TextButton>
-            </Menu>
+            </Menu> */}
           </Leading>
 
           <ButtonGroup>
