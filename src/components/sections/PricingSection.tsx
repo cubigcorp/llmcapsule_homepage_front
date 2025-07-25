@@ -205,6 +205,7 @@ const CardBody = styled.div`
   > button {
     margin-top: auto;
   }
+  background-color: ${color.gray['50']};
 `;
 
 const CardSectionTitle = styled.h4`
