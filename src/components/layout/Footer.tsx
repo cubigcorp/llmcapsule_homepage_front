@@ -59,9 +59,9 @@ export default function Footer() {
         <CopyrightSection>
           <Copyright>© 2025 CUBIG Co.Ltd All rights Reserved.</Copyright>
           <SocialIcons>
-            <SocialIcon>
+            {/* <SocialIcon>
               <SocialIconImage src='/icons/logo_blog.svg' alt='Blog' />
-            </SocialIcon>
+            </SocialIcon> */}
             <SocialIcon>
               <SocialIconImage src='/icons/logo_insta.svg' alt='Instagram' />
             </SocialIcon>
