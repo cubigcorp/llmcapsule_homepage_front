@@ -11,6 +11,8 @@ import {
   SolidButton,
   TextField,
 } from '@cubig/design-system';
+import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
+import PrivacyConsentModal from '@/components/modals/PrivacyConsentModal';
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -25,12 +27,23 @@ export default function ContactSection() {
     marketingConsent: false,
   });
 
+  const [isMarketingModalOpen, setIsMarketingModalOpen] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleCheckboxChange = (field: string, checked: boolean) => {
     setFormData((prev) => ({ ...prev, [field]: checked }));
+  };
+
+  const handleMarketingConsentClick = () => {
+    setIsMarketingModalOpen(true);
+  };
+
+  const handlePrivacyConsentClick = () => {
+    setIsPrivacyModalOpen(true);
   };
 
   return (
@@ -158,7 +171,10 @@ export default function ContactSection() {
                 <span style={{ textDecoration: 'none', color: 'inherit' }}>
                   (필수){' '}
                 </span>
-                <span style={{ textDecoration: 'underline' }}>
+                <span
+                  style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                  onClick={handlePrivacyConsentClick}
+                >
                   개인정보 수집 및 이용 동의
                 </span>
               </ConsentLabel>
@@ -181,7 +197,10 @@ export default function ContactSection() {
                 >
                   (선택){' '}
                 </span>
-                <span style={{ textDecoration: 'underline' }}>
+                <span
+                  style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                  onClick={handleMarketingConsentClick}
+                >
                   마케팅 정보 수신 동의
                 </span>
               </ConsentLabel>
@@ -193,6 +212,15 @@ export default function ContactSection() {
           </SolidButton>
         </ContactForm>
       </ContactRight>
+
+      <MarketingConsentModal
+        isOpen={isMarketingModalOpen}
+        onClose={() => setIsMarketingModalOpen(false)}
+      />
+      <PrivacyConsentModal
+        isOpen={isPrivacyModalOpen}
+        onClose={() => setIsPrivacyModalOpen(false)}
+      />
     </ContactContainer>
   );
 }
@@ -377,6 +405,23 @@ const ConsentCheckbox = styled.input`
   border: 1px solid ${borderColor.light['color-border-primary']};
   border-radius: ${radius['rounded-1']};
   background-color: white;
+  cursor: pointer;
+  position: relative;
+
+  &:checked {
+    background-color: ${borderColor.light['color-border-primary']};
+  }
+
+  &:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+  }
 `;
 
 const ConsentLabel = styled.label`
