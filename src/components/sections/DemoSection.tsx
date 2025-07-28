@@ -19,6 +19,7 @@ import CompareIcon from '@/assets/icons/Icon_compare.svg';
 import FilterIcon from '@/assets/icons/Icon_tune.svg';
 import FilterModal from '@/components/modals/FilterModal';
 import DocumentModal from '@/components/modals/DocumentModal';
+import { getAssetPath } from '@/utils/path';
 
 const categories = [
   {
@@ -149,7 +150,10 @@ export default function DemoSection() {
                   }}
                 >
                   <FileLeftArea>
-                    <FileIcon src='/icons/Icon_file.svg' alt='file' />
+                    <FileIcon
+                      src={getAssetPath('/icons/Icon_file.svg')}
+                      alt='file'
+                    />
                   </FileLeftArea>
                   <FileRightArea>
                     <FileInfo>
@@ -178,7 +182,7 @@ export default function DemoSection() {
                     </FileInfo>
                     <RemoveButton>
                       <RemoveIcon
-                        src='/icons/Icon_arrow_forward.svg'
+                        src={getAssetPath('/icons/Icon_arrow_forward.svg')}
                         alt='remove'
                       />
                     </RemoveButton>
@@ -202,7 +206,7 @@ export default function DemoSection() {
                     }}
                   >
                     <ActionIcon
-                      src='/icons/Icon_Anonymization.svg'
+                      src={getAssetPath('/icons/Icon_Anonymization.svg')}
                       alt='anonymize'
                     />
                     정보 가리기
@@ -216,7 +220,10 @@ export default function DemoSection() {
                       setIsTyping(false);
                     }}
                   >
-                    <ActionIcon src='/icons/Icon_sync-lock.svg' alt='sync' />
+                    <ActionIcon
+                      src={getAssetPath('/icons/Icon_sync-lock.svg')}
+                      alt='sync'
+                    />
                     정보 바꾸기
                   </SlidingButton>
                 </SlidingButtonWrapper>
@@ -234,7 +241,10 @@ export default function DemoSection() {
           </QuestionSection>
 
           <TransferButton>
-            <TransferIcon src='/icons/arrows_outward.svg' alt='transfer' />
+            <TransferIcon
+              src={getAssetPath('/icons/arrows_outward.svg')}
+              alt='transfer'
+            />
           </TransferButton>
 
           <AnswerSection>

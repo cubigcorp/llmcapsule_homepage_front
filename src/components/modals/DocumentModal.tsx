@@ -9,6 +9,7 @@ import {
   borderColor,
   SolidButton,
 } from '@cubig/design-system';
+import { getAssetPath } from '@/utils/path';
 
 interface DocumentModalProps {
   isOpen: boolean;
@@ -31,7 +32,10 @@ export default function DocumentModal({
         <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
           <CloseButton onClick={onClose}>
-            <CloseIcon src='/icons/Icon_close.svg' alt='close' />
+            <CloseIcon
+              src={getAssetPath('/icons/Icon_close.svg')}
+              alt='close'
+            />
           </CloseButton>
         </ModalHeader>
 
