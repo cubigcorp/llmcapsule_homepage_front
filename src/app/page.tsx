@@ -10,7 +10,7 @@ import DemoSection from '@/components/sections/DemoSection';
 import Footer from '@/components/layout/Footer';
 export default function Home() {
   return (
-    <main>
+    <main style={{ width: 'fit-content', margin: '0 auto' }}>
       <HeroSection />
       <PerformanceSection />
       <SolutionSection />
