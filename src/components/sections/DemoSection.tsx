@@ -409,7 +409,7 @@ const CategoryButtons = styled.div`
 
 const DemoCard = styled.div`
   width: 100%;
-  max-width: 1010px;
+  max-width: 1018px;
   height: 360px;
   background-color: #fff;
   border-radius: 20px;
@@ -419,7 +419,7 @@ const DemoCard = styled.div`
   margin-bottom: 40px;
   box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.06);
   position: relative;
-  gap: 8px;
+  gap: 16px;
 `;
 
 const QuestionSection = styled.div`
