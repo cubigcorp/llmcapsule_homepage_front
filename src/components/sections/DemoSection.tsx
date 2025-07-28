@@ -465,7 +465,6 @@ const AnswerHeaderTitle = styled.h4`
 const FileDisplay = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
   border-radius: ${radius['rounded-2']};
   border: 1px solid ${borderColor.light['color-border-primary']};
   cursor: pointer;
