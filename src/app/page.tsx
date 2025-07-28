@@ -8,6 +8,7 @@ import FAQSection from '@/components/sections/FAQSection';
 import ContactSection from '@/components/sections/ContactSection';
 import DemoSection from '@/components/sections/DemoSection';
 import Footer from '@/components/layout/Footer';
+import ScrollToTop from '@/components/common/ScrollToTop';
 export default function Home() {
   return (
     <main style={{ width: 'fit-content', margin: '0 auto' }}>
@@ -21,6 +22,7 @@ export default function Home() {
       <FAQSection />
       <ContactSection />
       <Footer />
+      <ScrollToTop />
     </main>
   );
 }
