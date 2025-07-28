@@ -136,7 +136,7 @@ const FooterBottomSection = styled.div`
 const FooterColumn = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
 `;
 
 const FooterColumnItem = styled.span`
