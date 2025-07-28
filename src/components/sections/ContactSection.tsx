@@ -11,6 +11,7 @@ import {
   SolidButton,
   TextField,
 } from '@cubig/design-system';
+import { getAssetPath } from '@/utils/path';
 import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
 import PrivacyConsentModal from '@/components/modals/PrivacyConsentModal';
 
@@ -62,7 +63,7 @@ export default function ContactSection() {
           <ContactInfo>
             <InfoBlock>
               <InfoIcon>
-                <img src='/icons/company.svg' alt='company' />
+                <img src={getAssetPath('/icons/company.svg')} alt='company' />
               </InfoIcon>
               <InfoContent>
                 <InfoTitle>기업의 문의 내용에 따른 맞춤형 안내</InfoTitle>
@@ -75,7 +76,10 @@ export default function ContactSection() {
             </InfoBlock>
             <InfoBlock>
               <InfoIcon>
-                <img src='/icons/structure.svg' alt='structure' />
+                <img
+                  src={getAssetPath('/icons/structure.svg')}
+                  alt='structure'
+                />
               </InfoIcon>
               <InfoContent>
                 <InfoTitle>LLM Capsule 제품에 대한 상세한 소개</InfoTitle>
