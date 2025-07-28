@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { spacing, TextButton, SolidButton } from '@cubig/design-system';
+import { getAssetPath } from '@/utils/path';
 
 export default function Header() {
   return (
@@ -14,7 +15,7 @@ export default function Header() {
             <LogoWrapper>
               <Link href='/'>
                 <Image
-                  src='/icons/Logo.svg'
+                  src={getAssetPath('/icons/Logo.svg')}
                   alt='Logo'
                   width={32}
                   height={32}
