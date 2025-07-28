@@ -7,6 +7,7 @@ import {
   radius,
   borderColor,
 } from '@cubig/design-system';
+import { getAssetPath } from '@/utils/path';
 
 export default function PerformanceSection() {
   return (
@@ -62,7 +63,7 @@ export default function PerformanceSection() {
               <CardTitle>벤처나라 등록제품</CardTitle>
               <CardValue>
                 <LogoImage
-                  src='/icons/public-procurement-service.svg'
+                  src={getAssetPath('/icons/public-procurement-service.svg')}
                   alt='벤처나라 등록제품'
                   style={{ width: '135px', height: '52px' }}
                 />
@@ -76,7 +77,7 @@ export default function PerformanceSection() {
               <CardTitle>인증 획득</CardTitle>
               <CardValue>
                 <LogoImage
-                  src='/icons/ministry-interior-safety.svg'
+                  src={getAssetPath('/icons/ministry-interior-safety.svg')}
                   alt='행정안전부 인증'
                   style={{ width: '183px', height: '52px' }}
                 />
@@ -91,7 +92,7 @@ export default function PerformanceSection() {
               <CardTitle>24년도 정보보호제품 혁신 대상</CardTitle>
               <CardValue>
                 <LogoImage
-                  src='/icons/ministry-science-ict.svg'
+                  src={getAssetPath('/icons/ministry-science-ict.svg')}
                   alt='벤처나라 등록제품'
                   style={{ width: '268px', height: '52px' }}
                 />
