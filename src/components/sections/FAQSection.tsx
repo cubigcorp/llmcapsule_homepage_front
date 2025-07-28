@@ -9,6 +9,7 @@ import {
   borderColor,
   color,
 } from '@cubig/design-system';
+import { getAssetPath } from '@/utils/path';
 
 const faqData = [
   {
@@ -76,7 +77,9 @@ export default function FAQSection() {
               <FAQIcon onClick={() => handleToggle(index)}>
                 <img
                   src={
-                    openIndex === index ? '/icons/minus.svg' : '/icons/plus.svg'
+                    openIndex === index
+                      ? getAssetPath('/icons/minus.svg')
+                      : getAssetPath('/icons/plus.svg')
                   }
                   alt={openIndex === index ? 'minus' : 'plus'}
                 />
