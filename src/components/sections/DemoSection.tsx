@@ -409,7 +409,7 @@ const CategoryButtons = styled.div`
 
 const DemoCard = styled.div`
   width: 100%;
-  max-width: 984px;
+  max-width: 1010px;
   height: 360px;
   background-color: #fff;
   border-radius: 20px;
@@ -430,6 +430,7 @@ const QuestionSection = styled.div`
 
 const QuestionBox = styled.div`
   display: flex;
+  width: 485px;
   flex-direction: column;
   flex: 1;
   min-height: 200px;
@@ -620,6 +621,7 @@ const AnswerSection = styled.div`
 const AnswerBox = styled.div<{ $hasAnswer: boolean }>`
   flex: 1;
   min-height: 200px;
+  width: 485px;
   padding: 20px;
   border: 1px solid
     ${({ $hasAnswer }) =>
@@ -629,6 +631,7 @@ const AnswerBox = styled.div<{ $hasAnswer: boolean }>`
   border-radius: ${radius['rounded-3']};
   ${typography('ko', 'body3', 'medium')}
   color: ${textColor.light['fg-neutral-primary']};
+  white-space: pre-line;
 `;
 
 const DemoDescription = styled.div`
