@@ -409,7 +409,7 @@ const CategoryButtons = styled.div`
 
 const DemoCard = styled.div`
   width: 100%;
-  max-width: 984px;
+  max-width: 1018px;
   height: 360px;
   background-color: #fff;
   border-radius: 20px;
@@ -419,7 +419,7 @@ const DemoCard = styled.div`
   margin-bottom: 40px;
   box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.06);
   position: relative;
-  gap: 8px;
+  gap: 16px;
 `;
 
 const QuestionSection = styled.div`
@@ -430,6 +430,7 @@ const QuestionSection = styled.div`
 
 const QuestionBox = styled.div`
   display: flex;
+  width: 485px;
   flex-direction: column;
   flex: 1;
   min-height: 200px;
@@ -464,7 +465,6 @@ const AnswerHeaderTitle = styled.h4`
 const FileDisplay = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
   border-radius: ${radius['rounded-2']};
   border: 1px solid ${borderColor.light['color-border-primary']};
   cursor: pointer;
@@ -620,6 +620,7 @@ const AnswerSection = styled.div`
 const AnswerBox = styled.div<{ $hasAnswer: boolean }>`
   flex: 1;
   min-height: 200px;
+  width: 485px;
   padding: 20px;
   border: 1px solid
     ${({ $hasAnswer }) =>
@@ -629,6 +630,7 @@ const AnswerBox = styled.div<{ $hasAnswer: boolean }>`
   border-radius: ${radius['rounded-3']};
   ${typography('ko', 'body3', 'medium')}
   color: ${textColor.light['fg-neutral-primary']};
+  white-space: pre-line;
 `;
 
 const DemoDescription = styled.div`

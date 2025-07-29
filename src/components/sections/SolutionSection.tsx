@@ -29,6 +29,24 @@ export default function SolutionSection() {
           <SolutionCard>
             <CardContent>
               <CardNumber>01</CardNumber>
+              <CardTitle>ON-PREMISE 독립 운영</CardTitle>
+              <CardDescription>
+                외부 클라우드 없이 사내망 내에서 완전한 독립 설치가 가능하며,
+                더욱 더 안전한 이용이 가능합니다. 기업의 보안 정책에 완벽하게
+                부합하는 솔루션입니다.
+              </CardDescription>
+            </CardContent>
+            <CardVisual>
+              <img
+                src={getAssetPath('/images/Content_04.svg')}
+                alt='ON-PREMISE 독립 운영'
+              />
+            </CardVisual>
+          </SolutionCard>
+
+          <SolutionCard>
+            <CardContent>
+              <CardNumber>02</CardNumber>
               <CardTitle>실시간 프롬프트 필터링</CardTitle>
               <CardDescription>
                 프롬프트 입력 시 이름, 연락처, 계좌번호 등 민감정보를 즉시
@@ -46,12 +64,12 @@ export default function SolutionSection() {
 
           <SolutionCard>
             <CardContent>
-              <CardNumber>02</CardNumber>
+              <CardNumber>03</CardNumber>
               <CardTitle>문서 내 민감정보 탐지</CardTitle>
               <CardDescription>
-                프롬프트 입력 시 이름, 연락처, 계좌번호 등 민감정보를 즉시
-                감지하고 자동 가명화하여 유출을 방지합니다. 사용자가 인식하지
-                못하는 사이에 모든 개인정보가 안전하게 보호됩니다.
+                업로드/첨부되는 각종 문서에서도 민감정보를 실시간으로 탐지하여
+                자동 가명화 또는 마스킹 처리합니다. AI가 대량의 문서 속 숨겨진
+                개인정보까지 놓치지 않고 안전하게 관리합니다.
               </CardDescription>
             </CardContent>
             <CardVisual>
@@ -64,12 +82,12 @@ export default function SolutionSection() {
 
           <SolutionCard>
             <CardContent>
-              <CardNumber>03</CardNumber>
+              <CardNumber>04</CardNumber>
               <CardTitle>문맥 기반 정보 탐지</CardTitle>
               <CardDescription>
-                프롬프트 입력 시 이름, 연락처, 계좌번호 등 민감정보를 즉시
-                감지하고 자동 가명화하여 유출을 방지합니다. 사용자가 인식하지
-                못하는 사이에 모든 개인정보가 안전하게 보호됩니다.
+                단어 단위가 아닌, 문맥적 의미까지 AI가 이해하여 지능적으로
+                탐지합니다. 개인정보뿐만 아니라, 회사별/산업별 중요정보까지
+                보호할 수 있습니다.
               </CardDescription>
             </CardContent>
             <CardVisual>
@@ -82,18 +100,18 @@ export default function SolutionSection() {
 
           <SolutionCard>
             <CardContent>
-              <CardNumber>04</CardNumber>
-              <CardTitle>ON-PREMISE 독립 운영</CardTitle>
+              <CardNumber>05</CardNumber>
+              <CardTitle>어드민 사용자 관리</CardTitle>
               <CardDescription>
-                외부 클라우드 없이 사내망 내에서 완전한 독립 설치가 가능하며,
-                더욱 더 안전한 이용이 가능합니다. 기업의 보안 정책에 완벽하게
-                부합하는 솔루션입니다.
+                입력부터 모든 보호 과정이 기록·감사되어 보안관리와 사후 대응까지
+                완벽하게 지원합니다. 통합 어드민으로 사용자·이용이력·정책관리 등
+                기업의 거버넌스까지 책임집니다.
               </CardDescription>
             </CardContent>
             <CardVisual>
               <img
-                src={getAssetPath('/images/Content_04.svg')}
-                alt='ON-PREMISE 독립 운영'
+                src={getAssetPath('/images/Content_05.svg')}
+                alt='어드민 사용자 관리'
               />
             </CardVisual>
           </SolutionCard>

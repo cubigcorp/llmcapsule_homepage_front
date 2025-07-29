@@ -31,9 +31,9 @@ export default function Footer() {
 
           <FooterRight>
             <FooterColumn>
-              <FooterColumnItem>제품소개</FooterColumnItem>
+              {/* <FooterColumnItem>제품소개</FooterColumnItem>
               <FooterColumnItem>솔루션</FooterColumnItem>
-              <FooterColumnItem>데모체험</FooterColumnItem>
+              <FooterColumnItem>데모체험</FooterColumnItem> */}
             </FooterColumn>
           </FooterRight>
         </FooterTopSection>
@@ -136,7 +136,7 @@ const FooterBottomSection = styled.div`
 const FooterColumn = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
 `;
 
 const FooterColumnItem = styled.span`

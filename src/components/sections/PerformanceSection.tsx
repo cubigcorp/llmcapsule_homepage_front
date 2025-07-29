@@ -18,35 +18,34 @@ export default function PerformanceSection() {
           <CardsRow>
             <PerformanceCard>
               <CardTitle>1종 오류 정확도</CardTitle>
-              <CardValue>98.1%</CardValue>
+              <CardValue>98.10%</CardValue>
               <CardDescription>
-                잘못된 허용을 최소화해 안전한 데이터 활용을
-                <br /> 보장합니다.
+                정상 데이터를 불필요하게 차단하지 않아 효율적인
+                <br /> 데이터 활용이 가능합니다.
               </CardDescription>
             </PerformanceCard>
             <PerformanceCard>
               <CardTitle>2종 오류 정확도</CardTitle>
               <CardValue>99.14%</CardValue>
               <CardDescription>
-                과도한 차단 없이 필요한 정보가 유지되도록 정밀하게
-                <br />
-                설계되었습니다.
+                민감정보를 놓치지 않고 탐지·차단하여
+                <br /> 기업 데이터 유출 위험을 최소화합니다.
               </CardDescription>
             </PerformanceCard>
             <PerformanceCard>
-              <CardTitle>정형화 개인정보 보호</CardTitle>
+              <CardTitle>정형화된 개인정보 보호</CardTitle>
               <CardValue>100%</CardValue>
               <CardDescription>
-                모든 정형 데이터에서 개인정보 노출 가능성을 <br />
+                정형 데이터에서 개인정보 노출 가능성을 <br />
                 완벽히 차단합니다.
               </CardDescription>
             </PerformanceCard>
             <PerformanceCard>
-              <CardTitle>LLM 유사도 유지</CardTitle>
+              <CardTitle>Public LLM 유사도</CardTitle>
               <CardValue>98%</CardValue>
               <CardDescription>
-                고도화된 변환 기술로 원문 의미와 맥락을 <br />
-                최대한 유지합니다.
+                민감정보 보호 후에도 답변의 의미와 문맥이
+                <br /> 거의 유지됩니다.
               </CardDescription>
             </PerformanceCard>
           </CardsRow>
@@ -55,37 +54,37 @@ export default function PerformanceSection() {
               <CardTitle>Privacy-Utility</CardTitle>
               <CardValue>Trade-off 개선</CardValue>
               <CardDescription>
-                고도화된 변환 기술로 원문 의미와 맥락을 <br />
-                최대한 유지합니다.
+                고도화된 변환 기술로 보안과 데이터 활용성의
+                <br /> 최적 균형을 실현합니다.
               </CardDescription>
             </PerformanceCard>
             <PerformanceCard>
-              <CardTitle>벤처나라 등록제품</CardTitle>
+              <CardTitle>벤처나라 등록 제품</CardTitle>
               <CardValue>
                 <LogoImage
                   src={getAssetPath('/icons/public-procurement-service.svg')}
-                  alt='벤처나라 등록제품'
+                  alt='조달청'
                   style={{ width: '135px', height: '52px' }}
                 />
               </CardValue>
               <CardDescription>
-                공공 데이터 보안 기준을 충족해 안정성을 <br />
-                공식 인정받았습니다.
+                조달청 공식 등록으로 공공기관 도입 신뢰성을
+                <br />
+                확보했습니다.
               </CardDescription>
             </PerformanceCard>
             <PerformanceCard>
-              <CardTitle>인증 획득</CardTitle>
+              <CardTitle>개인정보 비식별 가이드라인 준수</CardTitle>
               <CardValue>
                 <LogoImage
                   src={getAssetPath('/icons/ministry-interior-safety.svg')}
-                  alt='행정안전부 인증'
+                  alt='행정안전부'
                   style={{ width: '183px', height: '52px' }}
                 />
               </CardValue>
               <CardDescription>
-                공공 데이터 보안 기준을 충족해 안정성을
-                <br />
-                공식 인정받았습니다.
+                공식 가이드라인을 준수하여 데이터 안정성과
+                <br /> 법적 신뢰성을 실현합니다.
               </CardDescription>
             </PerformanceCard>
             <PerformanceCard>
@@ -93,13 +92,13 @@ export default function PerformanceSection() {
               <CardValue>
                 <LogoImage
                   src={getAssetPath('/icons/ministry-science-ict.svg')}
-                  alt='벤처나라 등록제품'
+                  alt='과학기술정보통신부'
                   style={{ width: '268px', height: '52px' }}
                 />
               </CardValue>
               <CardDescription>
-                고도화된 변환 기술로 원문 의미와 맥락을 <br />
-                최대한 유지합니다.
+                국가로부터 혁신성과 기술력을 공식 인정받은
+                <br /> 제품입니다.
               </CardDescription>
             </PerformanceCard>
           </CardsRow>
@@ -169,9 +168,17 @@ const CardValue = styled.div`
 const CardDescription = styled.p`
   ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
-  margin-bottom: 20px;
-  border-bottom: 1px solid ${borderColor.light['color-border-primary']};
-  padding-bottom: 20px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    width: 314px;
+    height: 1px;
+    background-color: ${borderColor.light['color-border-primary']};
+  }
 `;
 
 const LogoImage = styled.img`

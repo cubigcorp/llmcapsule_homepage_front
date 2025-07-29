@@ -36,9 +36,11 @@ export default function Header() {
           </Leading>
 
           <ButtonGroup>
-            <TextButton variant='primary' size='medium'>
-              로그인
-            </TextButton>
+            <Link href='/login'>
+              <TextButton variant='primary' size='medium'>
+                로그인
+              </TextButton>
+            </Link>
             <SolidButton variant='primary' size='medium'>
               문의하기
             </SolidButton>
