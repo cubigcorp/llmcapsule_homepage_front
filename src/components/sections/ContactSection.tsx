@@ -10,6 +10,7 @@ import {
   borderColor,
   SolidButton,
   TextField,
+  Checkbox,
 } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
@@ -163,51 +164,47 @@ export default function ContactSection() {
 
           <ConsentSection>
             <ConsentItem>
-              <ConsentCheckbox
-                type='checkbox'
+              <Checkbox
                 id='required'
-                checked={formData.requiredConsent}
-                onChange={(e) =>
-                  handleCheckboxChange('requiredConsent', e.target.checked)
+                variant='primary'
+                state={formData.requiredConsent ? 'checked' : 'unchecked'}
+                onChange={(checked) =>
+                  handleCheckboxChange('requiredConsent', checked)
                 }
               />
-              <ConsentLabel htmlFor='required'>
-                <span style={{ textDecoration: 'none', color: 'inherit' }}>
-                  (필수){' '}
-                </span>
-                <span
-                  style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                  onClick={handlePrivacyConsentClick}
-                >
-                  개인정보 수집 및 이용 동의
-                </span>
-              </ConsentLabel>
+              <span style={{ textDecoration: 'none', color: 'inherit' }}>
+                (필수)
+              </span>
+              <span
+                style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={handlePrivacyConsentClick}
+              >
+                개인정보 수집 및 이용 동의
+              </span>
             </ConsentItem>
             <ConsentItem>
-              <ConsentCheckbox
-                type='checkbox'
+              <Checkbox
                 id='optional'
-                checked={formData.marketingConsent}
-                onChange={(e) =>
-                  handleCheckboxChange('marketingConsent', e.target.checked)
+                variant='primary'
+                state={formData.marketingConsent ? 'checked' : 'unchecked'}
+                onChange={(checked) =>
+                  handleCheckboxChange('marketingConsent', checked)
                 }
               />
-              <ConsentLabel htmlFor='optional'>
-                <span
-                  style={{
-                    textDecoration: 'none',
-                    color: textColor.light['fg-neutral-alternative'],
-                  }}
-                >
-                  (선택){' '}
-                </span>
-                <span
-                  style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                  onClick={handleMarketingConsentClick}
-                >
-                  마케팅 정보 수신 동의
-                </span>
-              </ConsentLabel>
+              <span
+                style={{
+                  textDecoration: 'none',
+                  color: textColor.light['fg-neutral-alternative'],
+                }}
+              >
+                (선택){' '}
+              </span>
+              <span
+                style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={handleMarketingConsentClick}
+              >
+                마케팅 정보 수신 동의
+              </span>
             </ConsentItem>
           </ConsentSection>
 
@@ -399,37 +396,4 @@ const ConsentItem = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-`;
-
-const ConsentCheckbox = styled.input`
-  width: 16px;
-  height: 16px;
-  appearance: none;
-  -webkit-appearance: none;
-  border: 1px solid ${borderColor.light['color-border-primary']};
-  border-radius: ${radius['rounded-1']};
-  background-color: white;
-  cursor: pointer;
-  position: relative;
-
-  &:checked {
-    background-color: ${borderColor.light['color-border-primary']};
-  }
-
-  &:checked::after {
-    content: '✓';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-  }
-`;
-
-const ConsentLabel = styled.label`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-strong']};
-  cursor: pointer;
 `;
