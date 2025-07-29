@@ -568,7 +568,7 @@ const SlidingButton = styled.button<{ $active: boolean }>`
     $active
       ? textColor.light['fg-neutral-strong']
       : textColor.light['fg-neutral-alternative']};
-  border-radius: ${radius['rounded-1']};
+  border-radius: ${radius['rounded-2']};
   cursor: pointer;
   z-index: 1;
 `;
