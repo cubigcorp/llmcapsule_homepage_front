@@ -110,7 +110,7 @@ export default function SolutionSection() {
             </CardContent>
             <CardVisual>
               <img
-                src={getAssetPath('/images/Content_01.svg')}
+                src={getAssetPath('/images/Content_05.svg')}
                 alt='어드민 사용자 관리'
               />
             </CardVisual>
