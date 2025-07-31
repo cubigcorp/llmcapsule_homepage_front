@@ -1,32 +1,34 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import Link from 'next/link';
+import Image from 'next/image';
 import {
-  typography,
-  textColor,
-  radius,
-  color,
-  borderColor,
   SolidButton,
   TextButton,
   TextField,
-  Checkbox,
   IconButton,
+  Checkbox,
+} from '@cubig/design-system';
+import {
+  typography,
+  textColor,
+  color,
+  radius,
+  borderColor,
 } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
-import Image from 'next/image';
+import CarouselSection from '@/components/common/CarouselSection';
 import GoogleIcon from '@/assets/icons/Google.svg';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    keepLoggedIn: false,
+    keepLogin: false,
   });
 
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [emailError, setEmailError] = useState('');
 
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
@@ -79,7 +81,7 @@ export default function LoginPage() {
   };
 
   const handleCheckboxChange = (checked: boolean) => {
-    setFormData((prev) => ({ ...prev, keepLoggedIn: checked }));
+    setFormData((prev) => ({ ...prev, keepLogin: checked }));
   };
 
   const handleGoogleLogin = () => {
@@ -97,14 +99,6 @@ export default function LoginPage() {
 
     // 로그인 로직
     console.log('Login clicked', formData);
-  };
-
-  const handlePreviousSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
-
-  const handleNextSlide = () => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -165,7 +159,7 @@ export default function LoginPage() {
               <CheckboxWrapper>
                 <Checkbox
                   variant='primary'
-                  state={formData.keepLoggedIn ? 'checked' : 'unchecked'}
+                  state={formData.keepLogin ? 'checked' : 'unchecked'}
                   onChange={handleCheckboxChange}
                 />
                 <CheckboxLabel>로그인 상태 유지</CheckboxLabel>
@@ -195,34 +189,7 @@ export default function LoginPage() {
         </LoginLeft>
 
         <LoginRight>
-          <SvgWrapper>
-            <BackgroundImage src={slides[currentSlide].image} alt='Content' />
-            <ContentOverlay
-              style={{
-                backgroundImage: `url(${slides[currentSlide].content})`,
-              }}
-            />
-            <TextContent>
-              <TextTitle>{slides[currentSlide].title}</TextTitle>
-              <TextDescription>
-                {slides[currentSlide].description}
-              </TextDescription>
-            </TextContent>
-            <NavigationButtons>
-              <IconButton
-                type='outline'
-                size='medium'
-                icon={LeftArrowIcon}
-                onClick={handlePreviousSlide}
-              />
-              <IconButton
-                type='outline'
-                size='medium'
-                icon={RightArrowIcon}
-                onClick={handleNextSlide}
-              />
-            </NavigationButtons>
-          </SvgWrapper>
+          <CarouselSection slides={slides} />
         </LoginRight>
       </LoginWrapper>
     </LoginContainer>
@@ -282,6 +249,7 @@ const LoginRight = styled.div`
   @media (max-width: 768px) {
     padding: 16px;
     min-height: 300px;
+    display: none;
   }
 
   @media (max-width: 375px) {
