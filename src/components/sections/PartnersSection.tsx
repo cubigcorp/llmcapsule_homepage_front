@@ -68,13 +68,34 @@ const PartnersContainer = styled.section`
 `;
 
 const PartnersWrapper = styled.div`
-  width: 1440px;
+  width: 100%;
+  max-width: 1440px;
   height: 320px;
   padding: 80px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin: 0 auto;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+    padding: 120px;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 60px 24px;
+  }
+
+  @media (max-width: 768px) {
+    height: auto;
+    padding: 40px 16px;
+    gap: 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 32px 12px;
+    gap: 12px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -91,6 +112,11 @@ const PartnersContent = styled.div`
   display: flex;
   align-items: center;
   gap: 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 24px;
+  }
 `;
 
 const PartnersLeft = styled.div`
@@ -99,6 +125,12 @@ const PartnersLeft = styled.div`
   flex-direction: column;
   gap: 24px;
   align-items: flex-start;
+
+  @media (max-width: 768px) {
+    padding-right: 0;
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 const PartnersDescription = styled.p`
@@ -111,6 +143,11 @@ const PartnersDivider = styled.div`
   width: 1px;
   height: 200px;
   background-color: ${borderColor.light['color-border-primary']};
+
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 1px;
+  }
 `;
 
 const slide = keyframes`

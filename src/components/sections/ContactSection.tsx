@@ -227,9 +227,18 @@ export default function ContactSection() {
 }
 
 const ContactContainer = styled.section`
-  width: 1440px;
+  width: 100vw;
+  max-width: 1440px;
   display: flex;
   margin: 0 auto;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const ContactLeft = styled.div`
@@ -237,6 +246,15 @@ const ContactLeft = styled.div`
   background-color: ${color.gray['950']};
   display: flex;
   align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-height: 400px;
+  }
+
+  @media (max-width: 375px) {
+    min-height: 300px;
+  }
 `;
 
 const ContactRight = styled.div`
@@ -245,6 +263,15 @@ const ContactRight = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-height: 500px;
+  }
+
+  @media (max-width: 375px) {
+    min-height: 400px;
+  }
 `;
 
 const ContactWrapper = styled.div`
@@ -252,6 +279,14 @@ const ContactWrapper = styled.div`
   padding: 120px 80px;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    padding: 60px 24px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 40px 16px;
+  }
 `;
 
 const ContactHeader = styled.div`
@@ -260,6 +295,16 @@ const ContactHeader = styled.div`
   align-items: flex-start;
   gap: 16px;
   margin-bottom: 146px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 80px;
+    align-items: center;
+    text-align: center;
+  }
+
+  @media (max-width: 375px) {
+    margin-bottom: 60px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -344,6 +389,16 @@ const ContactForm = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: 768px) {
+    padding: 60px 24px;
+    gap: 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 40px 16px;
+    gap: 12px;
+  }
 `;
 
 const FormField = styled.div`
@@ -358,6 +413,11 @@ const RowFormField = styled.div`
 
   > * {
     flex: 1;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 12px;
   }
 `;
 

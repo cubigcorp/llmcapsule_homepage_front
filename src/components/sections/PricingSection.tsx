@@ -118,12 +118,32 @@ const PricingContainer = styled.section`
 `;
 
 const PricingWrapper = styled.div`
-  width: 1440px;
+  width: 100%;
+  max-width: 1440px;
   padding: 80px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin: 0 auto;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+    padding: 120px;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 60px 24px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 40px 16px;
+    gap: 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 32px 12px;
+    gap: 12px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -148,17 +168,36 @@ const PricingDescription = styled.p`
   text-align: center;
   max-width: 800px;
   margin: 0 auto 60px auto;
+
+  @media (max-width: 768px) {
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 375px) {
+    margin-bottom: 32px;
+  }
 `;
 
 const PricingCardsContainer = styled.div`
   display: flex;
   gap: 8px;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
 `;
 
 const PricingCard = styled.div`
   width: 421px;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 421px;
+  }
 `;
 
 const CardHeader = styled.div`
@@ -169,6 +208,17 @@ const CardHeader = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+
+  @media (max-width: 768px) {
+    padding: 24px;
+    height: auto;
+    min-height: 200px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 20px;
+    min-height: 180px;
+  }
 `;
 
 const CardTitle = styled.h3`
@@ -207,6 +257,17 @@ const CardBody = styled.div`
     margin-top: auto;
   }
   background-color: ${color.gray['50']};
+
+  @media (max-width: 768px) {
+    padding: 24px;
+    height: auto;
+    min-height: 400px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 20px;
+    min-height: 350px;
+  }
 `;
 
 const CardSectionTitle = styled.h4`

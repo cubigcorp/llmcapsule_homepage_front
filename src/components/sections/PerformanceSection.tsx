@@ -114,12 +114,32 @@ const PerformanceContainer = styled.section`
 `;
 
 const PerformanceWrapper = styled.div`
-  width: 1440px;
+  width: 100%;
+  max-width: 1440px;
   padding: 80px;
   display: flex;
   flex-direction: column;
   gap: 32px;
   margin: 0 auto;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+    padding: 120px;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 60px 24px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 40px 16px;
+    gap: 24px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 32px 12px;
+    gap: 20px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -137,12 +157,29 @@ const CardsContainer = styled.div`
   align-items: flex-start;
   gap: 80px;
   flex: 1 0 0;
+
+  @media (max-width: 768px) {
+    gap: 40px;
+  }
+
+  @media (max-width: 375px) {
+    gap: 32px;
+  }
 `;
 
 const CardsRow = styled.div`
   display: flex;
   gap: 10px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  @media (max-width: 375px) {
+    gap: 16px;
+  }
 `;
 
 const PerformanceCard = styled.div`
@@ -151,6 +188,10 @@ const PerformanceCard = styled.div`
   flex-direction: column;
   align-items: flex-start;
   flex: 1 0 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const CardTitle = styled.h3`
@@ -163,6 +204,14 @@ const CardValue = styled.div`
   ${typography('ko', 'display1', 'medium')}
   color: ${textColor.light['fg-neutral-strong']};
   margin-bottom: 64px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 375px) {
+    margin-bottom: 32px;
+  }
 `;
 
 const CardDescription = styled.p`
@@ -178,6 +227,12 @@ const CardDescription = styled.p`
     width: 314px;
     height: 1px;
     background-color: ${borderColor.light['color-border-primary']};
+  }
+
+  @media (max-width: 768px) {
+    &::after {
+      width: 100%;
+    }
   }
 `;
 

@@ -323,12 +323,30 @@ const DemoContainer = styled.section`
 `;
 
 const DemoWrapper = styled.div`
-  width: 1440px;
+  width: 100%;
+  max-width: 1440px;
   padding: 120px 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+    padding: 120px 120px;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 80px 24px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 60px 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 40px 12px;
+  }
 `;
 
 const DemoHeader = styled.div`
@@ -337,6 +355,14 @@ const DemoHeader = styled.div`
   align-items: center;
   gap: 16px;
   margin-bottom: 60px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 375px) {
+    margin-bottom: 32px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -405,6 +431,11 @@ const CategoryButtons = styled.div`
   padding: 8px;
   border-radius: 16px;
   box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.06);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 8px;
+  }
 `;
 
 const DemoCard = styled.div`
@@ -412,6 +443,15 @@ const DemoCard = styled.div`
   max-width: 1018px;
   height: 360px;
   background-color: #fff;
+
+  @media (max-width: 768px) {
+    height: auto;
+    min-height: 300px;
+  }
+
+  @media (max-width: 375px) {
+    min-height: 250px;
+  }
   border-radius: 20px;
   padding: 16px;
   display: flex;
