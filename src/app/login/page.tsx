@@ -471,7 +471,7 @@ const LoginButton = styled(SolidButton)`
 
 const SignUpPrompt = styled.div`
   text-align: center;
-  ${typography('ko', 'body2', 'regular')}
+  ${typography('ko', 'body2', 'regular')};
   color: ${textColor.light['fg-neutral-alternative']};
 `;
 

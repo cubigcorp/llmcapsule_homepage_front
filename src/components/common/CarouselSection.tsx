@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { IconButton } from '@cubig/design-system';
 import { color, radius, typography, textColor } from '@cubig/design-system';
 
-interface Slide {
+interface SlideData {
   image: string;
   content: string;
   title: string;
@@ -13,18 +13,41 @@ interface Slide {
 }
 
 interface CarouselSectionProps {
-  slides: Slide[];
+  slides: SlideData[];
 }
 
 export default function CarouselSection({ slides }: CarouselSectionProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const resetTimer = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => {
+      handleNextSlide(false);
+    }, 6000);
+  };
+
+  useEffect(() => {
+    resetTimer();
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [currentSlide]);
 
   const handlePreviousSlide = () => {
     setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    resetTimer();
   };
 
-  const handleNextSlide = () => {
+  const handleNextSlide = (reset = true) => {
     setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    if (reset) {
+      resetTimer();
+    }
   };
 
   const LeftArrowIcon = () => (
@@ -60,14 +83,19 @@ export default function CarouselSection({ slides }: CarouselSectionProps) {
   return (
     <CarouselContainer>
       <SvgWrapper>
-        <BackgroundImage src={slides[currentSlide].image} alt='Content' />
-        <ContentOverlay
-          style={{ backgroundImage: `url(${slides[currentSlide].content})` }}
-        />
-        <TextContent>
-          <TextTitle>{slides[currentSlide].title}</TextTitle>
-          <TextDescription>{slides[currentSlide].description}</TextDescription>
-        </TextContent>
+        {slides.map((slide, index) => (
+          <Slide key={index} active={index === currentSlide}>
+            <BackgroundImage src={slide.image} alt='Content' />
+            <ContentOverlay
+              slideIndex={index}
+              style={{ backgroundImage: `url(${slide.content})` }}
+            />
+            <TextContent>
+              <TextTitle>{slide.title}</TextTitle>
+              <TextDescription>{slide.description}</TextDescription>
+            </TextContent>
+          </Slide>
+        ))}
         <NavigationButtons>
           <IconButton
             type='outline'
@@ -79,13 +107,24 @@ export default function CarouselSection({ slides }: CarouselSectionProps) {
             type='outline'
             size='medium'
             icon={RightArrowIcon}
-            onClick={handleNextSlide}
+            onClick={() => handleNextSlide()}
           />
         </NavigationButtons>
       </SvgWrapper>
     </CarouselContainer>
   );
 }
+
+const Slide = styled.div<{ active: boolean }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: ${(props) => (props.active ? 1 : 0)};
+  transition: opacity 1s ease-in-out;
+  pointer-events: ${(props) => (props.active ? 'auto' : 'none')};
+`;
 
 const CarouselContainer = styled.div`
   flex: 1;
@@ -120,13 +159,39 @@ const BackgroundImage = styled.img`
   border-radius: ${radius['rounded-5']};
 `;
 
-const ContentOverlay = styled.div`
+const ContentOverlay = styled.div<{ slideIndex: number }>`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 472px;
-  height: 252px;
+  width: ${(props) => {
+    switch (props.slideIndex) {
+      case 0:
+        return '400px';
+      case 1:
+        return '380px';
+      case 2:
+        return '400px';
+      case 3:
+        return '360px';
+      default:
+        return '400px';
+    }
+  }};
+  height: ${(props) => {
+    switch (props.slideIndex) {
+      case 0:
+        return '214px';
+      case 1:
+        return '392px';
+      case 2:
+        return '258px';
+      case 3:
+        return '327px';
+      default:
+        return '214px';
+    }
+  }};
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -134,13 +199,65 @@ const ContentOverlay = styled.div`
   z-index: 10;
 
   @media (max-width: 768px) {
-    width: 320px;
-    height: 170px;
+    width: ${(props) => {
+      switch (props.slideIndex) {
+        case 0:
+          return '270px';
+        case 1:
+          return '256px';
+        case 2:
+          return '270px';
+        case 3:
+          return '243px';
+        default:
+          return '270px';
+      }
+    }};
+    height: ${(props) => {
+      switch (props.slideIndex) {
+        case 0:
+          return '144px';
+        case 1:
+          return '264px';
+        case 2:
+          return '174px';
+        case 3:
+          return '220px';
+        default:
+          return '144px';
+      }
+    }};
   }
 
   @media (max-width: 375px) {
-    width: 280px;
-    height: 150px;
+    width: ${(props) => {
+      switch (props.slideIndex) {
+        case 0:
+          return '235px';
+        case 1:
+          return '225px';
+        case 2:
+          return '235px';
+        case 3:
+          return '210px';
+        default:
+          return '235px';
+      }
+    }};
+    height: ${(props) => {
+      switch (props.slideIndex) {
+        case 0:
+          return '126px';
+        case 1:
+          return '232px';
+        case 2:
+          return '152px';
+        case 3:
+          return '192px';
+        default:
+          return '126px';
+      }
+    }};
   }
 `;
 

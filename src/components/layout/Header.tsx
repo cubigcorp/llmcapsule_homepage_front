@@ -17,7 +17,8 @@ export default function Header() {
       pathname === '/login' ||
         pathname === '/login/' ||
         pathname === '/signup' ||
-        pathname === '/signup/'
+        pathname === '/signup/' ||
+        pathname.startsWith('/signup/verify')
     );
   }, [pathname]);
 

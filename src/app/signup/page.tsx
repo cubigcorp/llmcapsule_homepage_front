@@ -546,7 +546,6 @@ const SignupForm = styled.div<{ $isEmailVerification?: boolean }>`
   align-items: ${(props) =>
     props.$isEmailVerification ? 'flex-start' : 'center'};
   text-align: left;
-  justify-content: center;
   height: 100%;
 `;
 
@@ -604,7 +603,6 @@ const AgreementLink = styled.a`
 
 const SignupButton = styled(SolidButton)`
   width: 100%;
-  margin-top: 8px;
   margin-bottom: 20px;
 `;
 
@@ -612,7 +610,6 @@ const Divider = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 20px 0;
   width: 100%;
 
   &::before,
@@ -635,6 +632,7 @@ const StyledGoogleButton = styled(SolidButton)`
   justify-content: center;
   gap: 12px;
   width: 100%;
+  margin-top: 20px;
 `;
 
 const Title = styled.h2`
