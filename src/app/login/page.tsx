@@ -21,6 +21,7 @@ import {
 import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import GoogleIcon from '@/assets/icons/Google.svg';
+import { validateEmail } from '@/utils/validation';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -30,8 +31,7 @@ export default function LoginPage() {
   });
 
   const [emailError, setEmailError] = useState('');
-
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+  const [passwordError, setPasswordError] = useState('');
 
   const slides = [
     {
@@ -64,19 +64,12 @@ export default function LoginPage() {
     },
   ];
 
-  const validateEmail = (email: string) => {
-    if (!email) return '';
-    if (!emailRegex.test(email)) {
-      return '유효한 이메일을 입력해 주세요.';
-    }
-    return '';
-  };
-
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
     if (field === 'email') {
-      setEmailError(validateEmail(value));
+      const result = validateEmail(value, false);
+      setEmailError(result.message);
     }
   };
 
@@ -89,16 +82,32 @@ export default function LoginPage() {
     console.log('Google login clicked');
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // 이메일 유효성 검사
-    const emailValidationError = validateEmail(formData.email);
-    if (emailValidationError) {
-      setEmailError(emailValidationError);
+    const emailResult = validateEmail(formData.email, false);
+    if (!emailResult.isValid) {
+      setEmailError(emailResult.message);
       return;
     }
 
-    // 로그인 로직
-    console.log('Login clicked', formData);
+    // 에러 초기화
+    setEmailError('');
+    setPasswordError('');
+
+    try {
+      // TODO: 실제 로그인 API 호출
+      // const response = await loginAPI(formData.email, formData.password);
+
+      // 임시로 API 응답 시뮬레이션 (실패 케이스)
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1초 대기
+
+      // API 응답이 실패인 경우 (이메일 또는 비밀번호가 틀린 경우)
+      setPasswordError('입력하신 정보를 다시 확인해주세요.');
+
+      // 성공인 경우: window.location.href = '/dashboard';
+    } catch (error) {
+      setPasswordError('입력하신 정보를 다시 확인해주세요.');
+    }
   };
 
   return (
@@ -151,6 +160,8 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
                 placeholder='비밀번호를 입력해주세요.'
+                description={passwordError}
+                status={passwordError ? 'negative' : 'default'}
               />
             </FormField>
 
@@ -171,7 +182,11 @@ export default function LoginPage() {
             <LoginButton
               size='large'
               onClick={handleLogin}
-              disabled={!formData.email.trim() || !formData.password.trim()}
+              disabled={
+                !formData.email.trim() ||
+                !formData.password.trim() ||
+                !validateEmail(formData.email, false).isValid
+              }
             >
               로그인
             </LoginButton>
