@@ -84,10 +84,10 @@ export default function CarouselSection({ slides }: CarouselSectionProps) {
     <CarouselContainer>
       <SvgWrapper>
         {slides.map((slide, index) => (
-          <Slide key={index} active={index === currentSlide}>
+          <Slide key={index} $active={index === currentSlide}>
             <BackgroundImage src={slide.image} alt='Content' />
             <ContentOverlay
-              slideIndex={index}
+              $slideIndex={index}
               style={{ backgroundImage: `url(${slide.content})` }}
             />
             <TextContent>
@@ -115,15 +115,15 @@ export default function CarouselSection({ slides }: CarouselSectionProps) {
   );
 }
 
-const Slide = styled.div<{ active: boolean }>`
+const Slide = styled.div<{ $active: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: ${(props) => (props.active ? 1 : 0)};
+  opacity: ${(props) => (props.$active ? 1 : 0)};
   transition: opacity 1s ease-in-out;
-  pointer-events: ${(props) => (props.active ? 'auto' : 'none')};
+  pointer-events: ${(props) => (props.$active ? 'auto' : 'none')};
 `;
 
 const CarouselContainer = styled.div`
@@ -159,13 +159,13 @@ const BackgroundImage = styled.img`
   border-radius: ${radius['rounded-5']};
 `;
 
-const ContentOverlay = styled.div<{ slideIndex: number }>`
+const ContentOverlay = styled.div<{ $slideIndex: number }>`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: ${(props) => {
-    switch (props.slideIndex) {
+    switch (props.$slideIndex) {
       case 0:
         return '400px';
       case 1:
@@ -179,7 +179,7 @@ const ContentOverlay = styled.div<{ slideIndex: number }>`
     }
   }};
   height: ${(props) => {
-    switch (props.slideIndex) {
+    switch (props.$slideIndex) {
       case 0:
         return '214px';
       case 1:
@@ -200,7 +200,7 @@ const ContentOverlay = styled.div<{ slideIndex: number }>`
 
   @media (max-width: 768px) {
     width: ${(props) => {
-      switch (props.slideIndex) {
+      switch (props.$slideIndex) {
         case 0:
           return '270px';
         case 1:
@@ -214,7 +214,7 @@ const ContentOverlay = styled.div<{ slideIndex: number }>`
       }
     }};
     height: ${(props) => {
-      switch (props.slideIndex) {
+      switch (props.$slideIndex) {
         case 0:
           return '144px';
         case 1:
@@ -231,7 +231,7 @@ const ContentOverlay = styled.div<{ slideIndex: number }>`
 
   @media (max-width: 375px) {
     width: ${(props) => {
-      switch (props.slideIndex) {
+      switch (props.$slideIndex) {
         case 0:
           return '235px';
         case 1:
@@ -245,7 +245,7 @@ const ContentOverlay = styled.div<{ slideIndex: number }>`
       }
     }};
     height: ${(props) => {
-      switch (props.slideIndex) {
+      switch (props.$slideIndex) {
         case 0:
           return '126px';
         case 1:

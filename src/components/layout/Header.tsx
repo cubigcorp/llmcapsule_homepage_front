@@ -18,7 +18,9 @@ export default function Header() {
         pathname === '/login/' ||
         pathname === '/signup' ||
         pathname === '/signup/' ||
-        pathname.startsWith('/signup/verify')
+        pathname.startsWith('/signup/verify') ||
+        pathname === '/reset-password' ||
+        pathname === '/reset-password/'
     );
   }, [pathname]);
 

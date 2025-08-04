@@ -22,6 +22,12 @@ import {
 import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import GoogleIcon from '@/assets/icons/Google.svg';
+import { countries } from '@/utils/countries';
+import {
+  validateLastName,
+  validateFirstName,
+  validateContactNumber,
+} from '@/utils/validation';
 
 export default function SignupVerifyPage() {
   const searchParams = useSearchParams();
@@ -35,7 +41,12 @@ export default function SignupVerifyPage() {
     company: '',
   });
 
+  const [lastNameError, setLastNameError] = useState('');
+  const [lastNameTouched, setLastNameTouched] = useState(false);
+  const [firstNameError, setFirstNameError] = useState('');
+  const [firstNameTouched, setFirstNameTouched] = useState(false);
   const [contactError, setContactError] = useState('');
+  const [contactTouched, setContactTouched] = useState(false);
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [timeLeft, setTimeLeft] = useState(120); // 2분 (120초)
@@ -43,18 +54,26 @@ export default function SignupVerifyPage() {
 
   const contactRegex = /^[0-9]{10,11}$/;
 
-  const validateContactNumber = (contactNumber: string) => {
-    if (!contactNumber) return '연락처를 입력해 주세요.';
-    if (!contactRegex.test(contactNumber))
-      return '올바른 연락처를 입력해 주세요.';
-    return '';
-  };
-
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
+    if (field === 'lastName') {
+      const result = validateLastName(value, lastNameTouched);
+      setLastNameError(result.message);
+    }
+
+    if (field === 'firstName') {
+      const result = validateFirstName(value, firstNameTouched);
+      setFirstNameError(result.message);
+    }
+
     if (field === 'contactNumber') {
-      setContactError(validateContactNumber(value));
+      // 숫자만 허용
+      const numericValue = value.replace(/[^0-9]/g, '');
+      setFormData((prev) => ({ ...prev, contactNumber: numericValue }));
+
+      const result = validateContactNumber(numericValue, contactTouched);
+      setContactError(result.message);
     }
   };
 
@@ -86,9 +105,9 @@ export default function SignupVerifyPage() {
   }, [isTimerRunning, timeLeft]);
 
   const handleRequestVerification = () => {
-    const error = validateContactNumber(formData.contactNumber);
-    if (error) {
-      setContactError(error);
+    const result = validateContactNumber(formData.contactNumber, true);
+    if (!result.isValid) {
+      setContactError(result.message);
       return;
     }
 
@@ -159,20 +178,30 @@ export default function SignupVerifyPage() {
   };
 
   const handleSignup = () => {
-    const contactError = validateContactNumber(formData.contactNumber);
-
-    if (contactError) {
-      setContactError(contactError);
+    // 성 필드 유효성 검사
+    const lastNameResult = validateLastName(formData.lastName, true);
+    if (!lastNameResult.isValid) {
+      setLastNameError(lastNameResult.message);
       return;
     }
 
-    if (!formData.firstName) {
-      alert('이름을 입력해 주세요.');
+    // 이름 필드 유효성 검사
+    const firstNameResult = validateFirstName(formData.firstName, true);
+    if (!firstNameResult.isValid) {
+      setFirstNameError(firstNameResult.message);
       return;
     }
 
-    // TODO: 회원가입 완료 API 호출
-    console.log('Signup completed:', formData);
+    // 연락처 유효성 검사
+    const contactResult = validateContactNumber(formData.contactNumber, true);
+    if (!contactResult.isValid) {
+      setContactError(contactResult.message);
+      return;
+    }
+
+    // TODO: 회원가입 API 호출
+    console.log('Signup with data:', formData);
+    alert('회원가입이 완료되었습니다.');
   };
 
   return (
@@ -197,12 +226,21 @@ export default function SignupVerifyPage() {
                 <div style={{ flex: 1 }}>
                   <TextField
                     label='성'
+                    labelType='required'
                     size='large'
                     value={formData.lastName}
                     onChange={(e) =>
                       handleInputChange('lastName', e.target.value)
                     }
+                    onBlur={() => {
+                      setLastNameTouched(true);
+                      const result = validateLastName(formData.lastName, true);
+                      setLastNameError(result.message);
+                    }}
                     placeholder='예) 홍'
+                    maxLength={50}
+                    description={lastNameError}
+                    status={lastNameError ? 'negative' : 'default'}
                   />
                 </div>
                 <div style={{ flex: 1 }}>
@@ -214,7 +252,18 @@ export default function SignupVerifyPage() {
                     onChange={(e) =>
                       handleInputChange('firstName', e.target.value)
                     }
+                    onBlur={() => {
+                      setFirstNameTouched(true);
+                      const result = validateFirstName(
+                        formData.firstName,
+                        true
+                      );
+                      setFirstNameError(result.message);
+                    }}
                     placeholder='예) 길동'
+                    maxLength={50}
+                    description={firstNameError}
+                    status={firstNameError ? 'negative' : 'default'}
                   />
                 </div>
               </div>
@@ -226,19 +275,17 @@ export default function SignupVerifyPage() {
                 size='large'
                 value={formData.country}
                 onChange={(value) => handleInputChange('country', value)}
-                options={[
-                  { label: '대한민국 (+82)', value: '대한민국 (+82)' },
-                  { label: '미국 (+1)', value: '미국 (+1)' },
-                  { label: '일본 (+81)', value: '일본 (+81)' },
-                  { label: '중국 (+86)', value: '중국 (+86)' },
-                  { label: '영국 (+44)', value: '영국 (+44)' },
-                ]}
+                options={countries}
               />
             </FormField>
 
             <FormField>
               <div
-                style={{ display: 'flex', gap: '12px', alignItems: 'flex-end' }}
+                style={{
+                  display: 'flex',
+                  gap: '12px',
+                  alignItems: 'flex-start',
+                }}
               >
                 <div style={{ flex: 1 }}>
                   <TextField
@@ -249,13 +296,22 @@ export default function SignupVerifyPage() {
                     onChange={(e) =>
                       handleInputChange('contactNumber', e.target.value)
                     }
+                    onBlur={() => {
+                      setContactTouched(true);
+                      const result = validateContactNumber(
+                        formData.contactNumber,
+                        true
+                      );
+                      setContactError(result.message);
+                    }}
                     placeholder='휴대폰 번호를 입력해 주세요.'
                     description={contactError}
-                    status={contactError ? 'negative' : 'normal'}
-                    descriptionStatus={contactError ? 'error' : 'default'}
+                    status={contactError ? 'negative' : 'default'}
+                    inputMode='numeric'
+                    pattern='[0-9]*'
                   />
                 </div>
-                <div style={{ width: '95px' }}>
+                <div style={{ width: '95px', marginTop: '24px' }}>
                   <StyledVerificationButton
                     variant='primary'
                     size='large'
@@ -334,6 +390,7 @@ export default function SignupVerifyPage() {
                 value={formData.company}
                 onChange={(e) => handleInputChange('company', e.target.value)}
                 placeholder='회사명을 입력해 주세요.'
+                maxLength={50}
               />
             </FormField>
 
