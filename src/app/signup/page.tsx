@@ -49,10 +49,6 @@ export default function SignupPage() {
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
   const [emailTouched, setEmailTouched] = useState(false);
 
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
-  const passwordRegex =
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
-
   const slides = [
     {
       image: '/images/background_01.png',
@@ -123,8 +119,6 @@ export default function SignupPage() {
   const handleGoogleSignup = () => {
     // 구글 회원가입 로직
     console.log('Google signup clicked');
-    // 구글 인증 후 verify 페이지로 이동
-    window.location.href = '/signup/verify?method=google';
   };
 
   const handleSignup = () => {
