@@ -27,16 +27,25 @@ import {
   validateLastName,
   validateFirstName,
   validateContactNumber,
+  validateEmail,
 } from '@/utils/validation';
 
 export default function SignupVerifyPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
+  // 토큰에서 이메일 추출 (실제로는 토큰 디코딩 또는 API 호출)
+  const extractEmailFromToken = (token: string | null) => {
+    // TODO: 실제 토큰에서 이메일 추출 로직
+    // 임시로 하드코딩된 이메일 반환
+    return 'user@example.com';
+  };
+
   const [formData, setFormData] = useState({
+    email: extractEmailFromToken(token),
     lastName: '',
     firstName: '',
-    country: '대한민국 (+82)',
+    country: '',
     contactNumber: '',
     company: '',
   });
@@ -45,6 +54,8 @@ export default function SignupVerifyPage() {
   const [lastNameTouched, setLastNameTouched] = useState(false);
   const [firstNameError, setFirstNameError] = useState('');
   const [firstNameTouched, setFirstNameTouched] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [emailTouched, setEmailTouched] = useState(false);
   const [contactError, setContactError] = useState('');
   const [contactTouched, setContactTouched] = useState(false);
   const [isVerificationSent, setIsVerificationSent] = useState(false);
@@ -201,7 +212,11 @@ export default function SignupVerifyPage() {
 
     // TODO: 회원가입 API 호출
     console.log('Signup with data:', formData);
-    alert('회원가입이 완료되었습니다.');
+
+    // 임시로 성공 페이지로 이동 (실제로는 API 응답에 따라 결정)
+    window.location.href = '/signup/success';
+
+    // 실패 시: window.location.href = '/signup/fail';
   };
 
   return (
@@ -220,6 +235,18 @@ export default function SignupVerifyPage() {
         <SignupLeft>
           <SignupForm>
             <SignupTitle>회원가입</SignupTitle>
+
+            <FormField>
+              <TextField
+                label='이메일'
+                labelType='required'
+                size='large'
+                value={formData.email}
+                placeholder='email@example.com'
+                status='positive'
+                disabled
+              />
+            </FormField>
 
             <FormField>
               <div style={{ display: 'flex', gap: '12px' }}>

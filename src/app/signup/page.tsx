@@ -123,6 +123,8 @@ export default function SignupPage() {
   const handleGoogleSignup = () => {
     // 구글 회원가입 로직
     console.log('Google signup clicked');
+    // 구글 인증 후 verify 페이지로 이동
+    window.location.href = '/signup/verify?method=google';
   };
 
   const handleSignup = () => {
