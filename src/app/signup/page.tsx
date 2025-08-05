@@ -1,6 +1,25 @@
 'use client';
 
 import React, { useState } from 'react';
+
+// Google Identity Services 타입 정의
+declare global {
+  interface Window {
+    google: {
+      accounts: {
+        oauth2: {
+          initTokenClient: (config: {
+            client_id: string;
+            scope: string;
+            callback: (response: { access_token: string }) => void;
+          }) => {
+            requestAccessToken: () => void;
+          };
+        };
+      };
+    };
+  }
+}
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -12,6 +31,7 @@ import {
   borderColor,
 } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
+import { env } from '@/utils/env';
 import CarouselSection from '@/components/common/CarouselSection';
 import EmailVerificationSection from '@/components/common/EmailVerificationSection';
 import GoogleIcon from '@/assets/icons/Google.svg';
@@ -62,9 +82,58 @@ export default function SignupPage() {
     }
   };
 
-  const handleGoogleSignup = () => {
-    // 구글 회원가입 로직
-    console.log('Google signup clicked');
+  const handleGoogleSignup = async () => {
+    try {
+      // Google Identity Services 초기화
+      if (typeof window !== 'undefined' && window.google) {
+        const client = window.google.accounts.oauth2.initTokenClient({
+          client_id:
+            '827074253539-i0qbolbrlllgv24rrcd32ktm8h9uo21i.apps.googleusercontent.com',
+          scope: 'openid email profile',
+          callback: async (response: { access_token: string }) => {
+            if (response.access_token) {
+              try {
+                // Google API로 사용자 정보 가져오기
+                const userInfoResponse = await fetch(
+                  `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${response.access_token}`
+                );
+                const userInfo = await userInfoResponse.json();
+
+                // 구글 이메일 인증 API 호출
+                const verifyResponse = await authService.verifyEmailGoogle({
+                  id_token: response.access_token,
+                });
+
+                if (verifyResponse.success) {
+                  // 성공 시 verify 페이지로 이동 (추가 정보 입력)
+                  // 구글에서 받은 사용자 정보를 URL 파라미터로 전달
+                  const params = new URLSearchParams({
+                    email: userInfo.email,
+                    google: 'true',
+                    firstName: userInfo.given_name || '',
+                    lastName: userInfo.family_name || '',
+                    sub: userInfo.id,
+                  });
+                  window.location.href = `/signup/verify?${params.toString()}`;
+                } else {
+                  alert('구글 이메일 인증에 실패했습니다.');
+                }
+              } catch (error) {
+                console.error('Google signup error:', error);
+                alert('구글 회원가입 중 오류가 발생했습니다.');
+              }
+            }
+          },
+        });
+
+        client.requestAccessToken();
+      } else {
+        alert('Google 로그인을 사용할 수 없습니다.');
+      }
+    } catch (error) {
+      console.error('Google signup error:', error);
+      alert('구글 회원가입 중 오류가 발생했습니다.');
+    }
   };
 
   const handleSignup = async () => {

@@ -34,11 +34,15 @@ export default function SignupVerifyPage() {
   const searchParams = useSearchParams();
   const emailFromUrl = searchParams.get('email');
   const tokenFromUrl = searchParams.get('token');
+  const isGoogleSignup = searchParams.get('google') === 'true';
+  const firstNameFromUrl = searchParams.get('firstName');
+  const lastNameFromUrl = searchParams.get('lastName');
+  const subFromUrl = searchParams.get('sub');
 
   const [formData, setFormData] = useState({
     email: emailFromUrl || '',
-    lastName: '',
-    firstName: '',
+    lastName: lastNameFromUrl || '',
+    firstName: firstNameFromUrl || '',
     country: '',
     contactNumber: '',
     company: '',
@@ -303,24 +307,42 @@ export default function SignupVerifyPage() {
     }
 
     try {
-      if (!tokenFromUrl) {
-        alert('유효하지 않은 링크입니다.');
-        return;
+      let response;
+
+      if (isGoogleSignup) {
+        // 구글 회원가입 API 호출
+        const signupData = {
+          sub: subFromUrl || '',
+          email: formData.email,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          phone: formData.contactNumber,
+          phone_country_code: extractCountryCode(selectedCountry.value),
+          organization_name: formData.company,
+          consent_marketing: marketingConsent,
+        };
+
+        response = await authService.signupGoogle(signupData);
+      } else {
+        // 이메일 회원가입 API 호출
+        if (!tokenFromUrl) {
+          alert('유효하지 않은 링크입니다.');
+          return;
+        }
+
+        const signupData = {
+          user_auth_info_token: tokenFromUrl,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          phone: formData.contactNumber,
+          phone_country_code: extractCountryCode(selectedCountry.value),
+          organization_name: formData.company,
+          consent_personal_info: termsAgreement,
+          consent_marketing: marketingConsent,
+        };
+
+        response = await authService.signupEmail(signupData);
       }
-
-      const signupData = {
-        user_auth_info_token: tokenFromUrl,
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        phone: formData.contactNumber,
-        phone_country_code: extractCountryCode(selectedCountry.value),
-        organization_name: formData.company,
-        consent_personal_info: termsAgreement,
-        consent_marketing: marketingConsent,
-      };
-
-      // 실제 회원가입 API 호출
-      const response = await authService.signupEmail(signupData);
 
       if (response.success) {
         // 성공 시 성공 페이지로 이동
@@ -350,7 +372,7 @@ export default function SignupVerifyPage() {
 
   // 회원가입 버튼 활성화 조건
   const isSignupButtonEnabled = () => {
-    return (
+    const baseConditions =
       formData.email.trim() !== '' &&
       formData.lastName.trim() !== '' &&
       formData.firstName.trim() !== '' &&
@@ -360,8 +382,9 @@ export default function SignupVerifyPage() {
       isVerificationSent &&
       verificationCode.trim() !== '' &&
       isVerificationCompleted &&
-      termsAgreement
-    );
+      termsAgreement;
+
+    return baseConditions;
   };
 
   return (
@@ -560,7 +583,7 @@ export default function SignupVerifyPage() {
                   const result = validateCompany(formData.company, true);
                   setCompanyError(result.message);
                 }}
-                placeholder='회사명을 입력해 주세요.'
+                placeholder='회사명을 입력해 주세요. (선택사항)'
                 maxLength={50}
                 description={companyError}
                 status={companyError ? 'negative' : 'default'}

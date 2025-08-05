@@ -10,6 +10,7 @@ export const env = {
   OTP_API_KEY:
     process.env.NEXT_PUBLIC_OTP_API_KEY ||
     'w3ElDchM9YSpvZDLcE9HAi_77E8bpWlH-7K96w9i1_g',
+  GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
 } as const;
 
 /**
