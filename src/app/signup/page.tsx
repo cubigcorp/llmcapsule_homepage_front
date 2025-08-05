@@ -39,38 +39,31 @@ export default function SignupPage() {
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [isEmailVerification, setIsEmailVerification] = useState(false);
-  const [passwordTouched, setPasswordTouched] = useState(false);
-  const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
-  const [emailTouched, setEmailTouched] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
     if (field === 'email') {
-      const result = validateEmail(value, emailTouched);
+      const result = validateEmail(value, false);
       setEmailError(result.message);
     }
 
     if (field === 'password') {
-      const result = validatePassword(value, passwordTouched);
+      const result = validatePassword(value, false);
       setPasswordError(result.message);
-      // 비밀번호 변경 시 확인 비밀번호도 재검증 (터치된 경우에만)
-      if (confirmPasswordTouched && formData.confirmPassword) {
+      // 비밀번호 변경 시 확인 비밀번호도 재검증
+      if (formData.confirmPassword) {
         const confirmResult = validateConfirmPassword(
           formData.confirmPassword,
           value,
-          true
+          false
         );
         setConfirmPasswordError(confirmResult.message);
       }
     }
 
     if (field === 'confirmPassword') {
-      const result = validateConfirmPassword(
-        value,
-        formData.password,
-        confirmPasswordTouched
-      );
+      const result = validateConfirmPassword(value, formData.password, false);
       setConfirmPasswordError(result.message);
     }
   };
@@ -81,31 +74,6 @@ export default function SignupPage() {
   };
 
   const handleSignup = () => {
-    // 이메일 유효성 검사
-    const emailResult = validateEmail(formData.email, true);
-    if (!emailResult.isValid) {
-      setEmailError(emailResult.message);
-      return;
-    }
-
-    // 비밀번호 유효성 검사
-    const passwordResult = validatePassword(formData.password, true);
-    if (!passwordResult.isValid) {
-      setPasswordError(passwordResult.message);
-      return;
-    }
-
-    // 비밀번호 확인 검사
-    const confirmPasswordResult = validateConfirmPassword(
-      formData.confirmPassword,
-      formData.password,
-      true
-    );
-    if (!confirmPasswordResult.isValid) {
-      setConfirmPasswordError(confirmPasswordResult.message);
-      return;
-    }
-
     // TODO: 실제 회원가입 API 호출
     console.log('Signup data:', formData);
     setIsEmailVerification(true);
@@ -142,11 +110,6 @@ export default function SignupPage() {
                     size='large'
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    onBlur={() => {
-                      setEmailTouched(true);
-                      const result = validateEmail(formData.email, true);
-                      setEmailError(result.message);
-                    }}
                     placeholder='user@example.com'
                     description={emailError}
                     status={emailError ? 'negative' : 'default'}
@@ -163,11 +126,6 @@ export default function SignupPage() {
                     onChange={(e) =>
                       handleInputChange('password', e.target.value)
                     }
-                    onBlur={() => {
-                      setPasswordTouched(true);
-                      const result = validatePassword(formData.password, true);
-                      setPasswordError(result.message);
-                    }}
                     placeholder='비밀번호를 입력해주세요.'
                     description={passwordError}
                     status={passwordError ? 'negative' : 'default'}
@@ -184,15 +142,6 @@ export default function SignupPage() {
                     onChange={(e) =>
                       handleInputChange('confirmPassword', e.target.value)
                     }
-                    onBlur={() => {
-                      setConfirmPasswordTouched(true);
-                      const result = validateConfirmPassword(
-                        formData.confirmPassword,
-                        formData.password,
-                        true
-                      );
-                      setConfirmPasswordError(result.message);
-                    }}
                     placeholder='비밀번호를 다시 입력해주세요.'
                     description={confirmPasswordError}
                     status={confirmPasswordError ? 'negative' : 'default'}
