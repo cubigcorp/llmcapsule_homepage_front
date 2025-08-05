@@ -1,16 +1,17 @@
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { spacing, TextButton, SolidButton } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 
 export default function Header() {
   const pathname = usePathname();
   const [isAuthPage, setIsAuthPage] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setIsAuthPage(
@@ -27,9 +28,11 @@ export default function Header() {
         pathname === '/contact' ||
         pathname === '/contact/'
     );
+    setIsLoaded(true);
   }, [pathname]);
 
-  if (isAuthPage) {
+  // 초기 로딩 중이거나 인증 페이지인 경우 헤더를 숨김
+  if (!isLoaded || isAuthPage) {
     return null;
   }
   console.log('Current pathname:', pathname);
