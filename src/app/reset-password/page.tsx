@@ -8,43 +8,14 @@ import { SolidButton, TextButton, TextField } from '@cubig/design-system';
 import { typography, textColor, color, radius } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
+import EmailVerificationSection from '@/components/common/EmailVerificationSection';
 
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [isEmailSent, setIsEmailSent] = useState(false);
 
   const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
-
-  const slides = [
-    {
-      image: '/images/background_01.png',
-      content: '/images/Content_1.svg',
-      title: '실시간 프롬프트 필터링',
-      description:
-        '프롬프트 입력 시 이름, 연락처, 계좌번호 등 민감정보를 즉시 감지하고 자동 가명화하여 유출을 방지합니다. 사용자가 인식하지 못하는 사이에 모든 개인정보가 안전하게 보호됩니다.',
-    },
-    {
-      image: '/images/background_03.png',
-      content: '/images/Content_2.svg',
-      title: '문서 내 민감정보 탐지',
-      description:
-        '업로드/첨부되는 각종 문서에서도 민감정보를 실시간으로 탐지하여 자동 가명화 또는 마스킹 처리합니다. AI가 대량의 문서 속 숨겨진 개인정보까지 놓치지 않고 안전하게 관리합니다.',
-    },
-    {
-      image: '/images/background_02.png',
-      content: '/images/Content_3.svg',
-      title: '문맥 기반 정보 탐지',
-      description:
-        '단어 단위가 아닌, 문맥적 의미까지 AI가 이해하여 지능적으로 탐지합니다. 개인정보뿐만 아니라, 회사별/산업별 중요정보까지 보호할 수 있습니다.',
-    },
-    {
-      image: '/images/background_03.png',
-      content: '/images/Content_4.svg',
-      title: 'ON-PREMISE 독립 운영',
-      description:
-        '외부 클라우드 없이 사내망 내에서 완전한 독립 설치가 가능하며, 더욱 더 안전한 이용이 가능합니다.  기업의 보안 정책에 완벽하게 부합하는 솔루션입니다.',
-    },
-  ];
 
   const validateEmail = (email: string) => {
     if (!email) return '';
@@ -60,16 +31,30 @@ export default function ResetPasswordPage() {
     setEmailError(validateEmail(value));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const error = validateEmail(email);
     if (error) {
       setEmailError(error);
       return;
     }
 
-    // TODO: 비밀번호 재설정 이메일 발송 API 호출
-    console.log('Send reset email to:', email);
-    alert('비밀번호 재설정 이메일이 발송되었습니다.');
+    setEmailError('');
+
+    try {
+      // TODO: 실제 비밀번호 재설정 API 호출
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1초 지연으로 API 호출 시뮬레이션
+
+      // 성공 시 이메일 확인 화면으로 변경
+      setIsEmailSent(true);
+    } catch (error) {
+      // 실패 시 에러 메시지 표시
+      setEmailError('입력하신 정보를 다시 확인해주세요.');
+    }
+  };
+
+  const handleResendEmail = () => {
+    // TODO: 이메일 재발송 API 호출
+    console.log('Resend reset email to:', email);
   };
 
   return (
@@ -87,42 +72,51 @@ export default function ResetPasswordPage() {
         </LogoWrapper>
         <ResetPasswordLeft>
           <ResetPasswordForm>
-            <Title>비밀번호 재설정</Title>
+            {!isEmailSent ? (
+              <>
+                <Title>비밀번호 재설정</Title>
 
-            <FormField>
-              <TextField
-                label='이메일'
-                size='large'
-                value={email}
-                onChange={handleEmailChange}
-                placeholder='Email@example.com'
-                description={emailError}
-                status={emailError ? 'negative' : 'default'}
+                <FormField>
+                  <TextField
+                    label='이메일'
+                    size='large'
+                    value={email}
+                    onChange={handleEmailChange}
+                    placeholder='Email@example.com'
+                    description={emailError}
+                    status={emailError ? 'negative' : 'default'}
+                  />
+                </FormField>
+
+                <SubmitButton
+                  variant='primary'
+                  size='large'
+                  onClick={handleSubmit}
+                  disabled={!email.trim() || !!validateEmail(email)}
+                >
+                  재설정 이메일 보내기
+                </SubmitButton>
+
+                <HelperText>
+                  이메일이 기억나지 않으시나요?{' '}
+                  <Link href='/contact'>
+                    <TextButton variant='primary' size='small'>
+                      문의하기
+                    </TextButton>
+                  </Link>
+                </HelperText>
+              </>
+            ) : (
+              <EmailVerificationSection
+                email={email}
+                onResendEmail={handleResendEmail}
               />
-            </FormField>
-
-            <SubmitButton
-              variant='primary'
-              size='large'
-              onClick={handleSubmit}
-              disabled={!email.trim()}
-            >
-              재설정 이메일 보내기
-            </SubmitButton>
-
-            <HelperText>
-              이메일이 기억나지 않으시나요?{' '}
-              <Link href='/contact'>
-                <TextButton variant='primary' size='small'>
-                  문의하기
-                </TextButton>
-              </Link>
-            </HelperText>
+            )}
           </ResetPasswordForm>
         </ResetPasswordLeft>
 
         <ResetPasswordRight>
-          <CarouselSection slides={slides} />
+          <CarouselSection />
         </ResetPasswordRight>
       </ResetPasswordWrapper>
     </ResetPasswordContainer>

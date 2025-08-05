@@ -86,59 +86,35 @@ export const validateConfirmPassword = (
   };
 };
 
-// 성 필드 유효성 검사
-export const validateLastName = (
-  lastName: string,
-  isTouched: boolean = false
-): ValidationResult => {
-  if (isTouched && !lastName) {
-    return {
-      isValid: false,
-      message: '필수 항목 입니다.',
-    };
-  }
-
-  return {
-    isValid: true,
-    message: '',
-  };
-};
-
-// 이름 필드 유효성 검사
-export const validateFirstName = (
-  firstName: string,
-  isTouched: boolean = false
-): ValidationResult => {
-  if (isTouched && !firstName) {
-    return {
-      isValid: false,
-      message: '필수 항목 입니다.',
-    };
-  }
-
-  return {
-    isValid: true,
-    message: '',
-  };
-};
-
 // 연락처 유효성 검사
 export const validateContactNumber = (
   contactNumber: string,
   isTouched: boolean = false
 ): ValidationResult => {
   const contactRegex = /^[0-9]{10,11}$/;
-  if (isTouched && !contactNumber) {
-    return {
-      isValid: false,
-      message: '필수 항목 입니다.',
-    };
-  }
 
   if (contactNumber && !contactRegex.test(contactNumber)) {
     return {
       isValid: false,
       message: '올바른 연락처를 입력해 주세요.',
+    };
+  }
+
+  return {
+    isValid: true,
+    message: '',
+  };
+};
+
+// 회사/소속기관명 유효성 검사
+export const validateCompany = (
+  company: string,
+  isTouched: boolean = false
+): ValidationResult => {
+  if (company && company.trim().length < 2) {
+    return {
+      isValid: false,
+      message: '회사/팀명을 2자 이상 입력해 주세요.',
     };
   }
 

@@ -22,7 +22,10 @@ export default function Header() {
         pathname.startsWith('/signup/success') ||
         pathname.startsWith('/signup/fail') ||
         pathname === '/reset-password' ||
-        pathname === '/reset-password/'
+        pathname === '/reset-password/' ||
+        pathname.startsWith('/reset-password/verify') ||
+        pathname === '/contact' ||
+        pathname === '/contact/'
     );
   }, [pathname]);
 

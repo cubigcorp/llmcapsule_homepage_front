@@ -22,8 +22,6 @@ import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import EmailVerificationSection from '@/components/common/EmailVerificationSection';
 import GoogleIcon from '@/assets/icons/Google.svg';
-import PrivacyConsentModal from '@/components/modals/PrivacyConsentModal';
-import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
 import {
   validateEmail,
   validatePassword,
@@ -35,50 +33,15 @@ export default function SignupPage() {
     email: '',
     password: '',
     confirmPassword: '',
-    termsAgreement: false,
-    marketingConsent: false,
   });
 
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [isEmailVerification, setIsEmailVerification] = useState(false);
-  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
-  const [isMarketingModalOpen, setIsMarketingModalOpen] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
   const [emailTouched, setEmailTouched] = useState(false);
-
-  const slides = [
-    {
-      image: '/images/background_01.png',
-      content: '/images/Content_1.svg',
-      title: '실시간 프롬프트 필터링',
-      description:
-        '프롬프트 입력 시 이름, 연락처, 계좌번호 등 민감정보를 즉시 감지하고 자동 가명화하여 유출을 방지합니다. 사용자가 인식하지 못하는 사이에 모든 개인정보가 안전하게 보호됩니다.',
-    },
-    {
-      image: '/images/background_03.png',
-      content: '/images/Content_2.svg',
-      title: '문서 내 민감정보 탐지',
-      description:
-        '업로드/첨부되는 각종 문서에서도 민감정보를 실시간으로 탐지하여 자동 가명화 또는 마스킹 처리합니다. AI가 대량의 문서 속 숨겨진 개인정보까지 놓치지 않고 안전하게 관리합니다.',
-    },
-    {
-      image: '/images/background_02.png',
-      content: '/images/Content_3.svg',
-      title: '문맥 기반 정보 탐지',
-      description:
-        '단어 단위가 아닌, 문맥적 의미까지 AI가 이해하여 지능적으로 탐지합니다. 개인정보뿐만 아니라, 회사별/산업별 중요정보까지 보호할 수 있습니다.',
-    },
-    {
-      image: '/images/background_03.png',
-      content: '/images/Content_4.svg',
-      title: 'ON-PREMISE 독립 운영',
-      description:
-        '외부 클라우드 없이 사내망 내에서 완전한 독립 설치가 가능하며, 더욱 더 안전한 이용이 가능합니다.  기업의 보안 정책에 완벽하게 부합하는 솔루션입니다.',
-    },
-  ];
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -112,10 +75,6 @@ export default function SignupPage() {
     }
   };
 
-  const handleCheckboxChange = (field: string, checked: boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: checked }));
-  };
-
   const handleGoogleSignup = () => {
     // 구글 회원가입 로직
     console.log('Google signup clicked');
@@ -147,29 +106,14 @@ export default function SignupPage() {
       return;
     }
 
-    // 필수 약관 동의 검사
-    if (!formData.termsAgreement) {
-      alert('개인정보 수집·이용 및 이용 약관에 동의해 주세요.');
-      return;
-    }
-
-    // 모든 유효성 검사 통과 시 이메일 인증 페이지로 변경
+    // TODO: 실제 회원가입 API 호출
+    console.log('Signup data:', formData);
     setIsEmailVerification(true);
   };
 
   const handleResendEmail = () => {
     // TODO: 이메일 재발송 API 호출
     console.log('Resend email to:', formData.email);
-  };
-
-  const handlePrivacyLinkClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsPrivacyModalOpen(true);
-  };
-
-  const handleMarketingLinkClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsMarketingModalOpen(true);
   };
 
   return (
@@ -203,7 +147,7 @@ export default function SignupPage() {
                       const result = validateEmail(formData.email, true);
                       setEmailError(result.message);
                     }}
-                    placeholder='email@example.com'
+                    placeholder='user@example.com'
                     description={emailError}
                     status={emailError ? 'negative' : 'default'}
                   />
@@ -255,49 +199,13 @@ export default function SignupPage() {
                   />
                 </FormField>
 
-                <AgreementSection>
-                  <AgreementItem>
-                    <Checkbox
-                      variant='primary'
-                      state={formData.termsAgreement ? 'checked' : 'unchecked'}
-                      onChange={(checked) =>
-                        handleCheckboxChange('termsAgreement', checked)
-                      }
-                    />
-                    <AgreementText>
-                      (필수){' '}
-                      <AgreementLink onClick={handlePrivacyLinkClick}>
-                        개인정보 수집·이용 및 이용 약관에 동의합니다.
-                      </AgreementLink>
-                    </AgreementText>
-                  </AgreementItem>
-                  <AgreementItem>
-                    <Checkbox
-                      variant='primary'
-                      state={
-                        formData.marketingConsent ? 'checked' : 'unchecked'
-                      }
-                      onChange={(checked) =>
-                        handleCheckboxChange('marketingConsent', checked)
-                      }
-                    />
-                    <AgreementTextOptional>
-                      (선택){' '}
-                      <AgreementLink onClick={handleMarketingLinkClick}>
-                        마케팅 정보 수신 동의
-                      </AgreementLink>
-                    </AgreementTextOptional>
-                  </AgreementItem>
-                </AgreementSection>
-
                 <SignupButton
                   size='large'
                   onClick={handleSignup}
                   disabled={
                     !formData.email.trim() ||
                     !formData.password.trim() ||
-                    !formData.confirmPassword.trim() ||
-                    !formData.termsAgreement
+                    !formData.confirmPassword.trim()
                   }
                 >
                   계속하기
@@ -328,18 +236,9 @@ export default function SignupPage() {
         </SignupLeft>
 
         <SignupRight>
-          <CarouselSection slides={slides} />
+          <CarouselSection />
         </SignupRight>
       </SignupWrapper>
-
-      <PrivacyConsentModal
-        isOpen={isPrivacyModalOpen}
-        onClose={() => setIsPrivacyModalOpen(false)}
-      />
-      <MarketingConsentModal
-        isOpen={isMarketingModalOpen}
-        onClose={() => setIsMarketingModalOpen(false)}
-      />
     </SignupContainer>
   );
 }

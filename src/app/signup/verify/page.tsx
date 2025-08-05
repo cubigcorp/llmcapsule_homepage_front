@@ -23,12 +23,9 @@ import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import GoogleIcon from '@/assets/icons/Google.svg';
 import { countries } from '@/utils/countries';
-import {
-  validateLastName,
-  validateFirstName,
-  validateContactNumber,
-  validateEmail,
-} from '@/utils/validation';
+import { validateContactNumber, validateCompany } from '@/utils/validation';
+import PrivacyConsentModal from '@/components/modals/PrivacyConsentModal';
+import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
 
 export default function SignupVerifyPage() {
   const searchParams = useSearchParams();
@@ -50,42 +47,54 @@ export default function SignupVerifyPage() {
     company: '',
   });
 
-  const [lastNameError, setLastNameError] = useState('');
-  const [lastNameTouched, setLastNameTouched] = useState(false);
-  const [firstNameError, setFirstNameError] = useState('');
-  const [firstNameTouched, setFirstNameTouched] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [emailTouched, setEmailTouched] = useState(false);
   const [contactError, setContactError] = useState('');
   const [contactTouched, setContactTouched] = useState(false);
+  const [companyError, setCompanyError] = useState('');
+  const [companyTouched, setCompanyTouched] = useState(false);
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [timeLeft, setTimeLeft] = useState(120); // 2분 (120초)
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [isVerificationCompleted, setIsVerificationCompleted] = useState(false);
+  const [termsAgreement, setTermsAgreement] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [isMarketingModalOpen, setIsMarketingModalOpen] = useState(false);
 
   const contactRegex = /^[0-9]{10,11}$/;
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
-    if (field === 'lastName') {
-      const result = validateLastName(value, lastNameTouched);
-      setLastNameError(result.message);
-    }
-
-    if (field === 'firstName') {
-      const result = validateFirstName(value, firstNameTouched);
-      setFirstNameError(result.message);
-    }
-
     if (field === 'contactNumber') {
-      // 숫자만 허용
       const numericValue = value.replace(/[^0-9]/g, '');
       setFormData((prev) => ({ ...prev, contactNumber: numericValue }));
-
-      const result = validateContactNumber(numericValue, contactTouched);
+      const result = validateContactNumber(numericValue, false);
       setContactError(result.message);
     }
+
+    if (field === 'company') {
+      const result = validateCompany(value, false);
+      setCompanyError(result.message);
+    }
+  };
+
+  const handleCheckboxChange = (field: string, checked: boolean) => {
+    if (field === 'termsAgreement') {
+      setTermsAgreement(checked);
+    } else if (field === 'marketingConsent') {
+      setMarketingConsent(checked);
+    }
+  };
+
+  const handlePrivacyLinkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsPrivacyModalOpen(true);
+  };
+
+  const handleMarketingLinkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsMarketingModalOpen(true);
   };
 
   const startTimer = () => {
@@ -136,6 +145,9 @@ export default function SignupVerifyPage() {
 
     // TODO: 인증번호 확인 API 호출
     console.log('Verify code:', verificationCode);
+
+    // 임시로 인증 완료 처리 (실제로는 API 응답에 따라 결정)
+    setIsVerificationCompleted(true);
   };
 
   const handleResendCode = () => {
@@ -146,63 +158,11 @@ export default function SignupVerifyPage() {
     startTimer();
   };
 
-  const slides = [
-    {
-      image: '/images/background_01.png',
-      content: '/images/Content_1.svg',
-      title: '실시간 프롬프트 필터링',
-      description:
-        '프롬프트 입력 시 이름, 연락처, 계좌번호 등 민감정보를 즉시 감지하고 자동 가명화하여 유출을 방지합니다. 사용자가 인식하지 못하는 사이에 모든 개인정보가 안전하게 보호됩니다.',
-    },
-    {
-      image: '/images/background_03.png',
-      content: '/images/Content_2.svg',
-      title: '문서 내 민감정보 탐지',
-      description:
-        '업로드/첨부되는 각종 문서에서도 민감정보를 실시간으로 탐지하여 자동 가명화 또는 마스킹 처리합니다. AI가 대량의 문서 속 숨겨진 개인정보까지 놓치지 않고 안전하게 관리합니다.',
-    },
-    {
-      image: '/images/background_02.png',
-      content: '/images/Content_3.svg',
-      title: '문맥 기반 정보 탐지',
-      description:
-        '단어 단위가 아닌, 문맥적 의미까지 AI가 이해하여 지능적으로 탐지합니다. 개인정보뿐만 아니라, 회사별/산업별 중요정보까지 보호할 수 있습니다.',
-    },
-    {
-      image: '/images/background_03.png',
-      content: '/images/Content_4.svg',
-      title: 'ON-PREMISE 독립 운영',
-      description:
-        '외부 클라우드 없이 사내망 내에서 완전한 독립 설치가 가능하며, 더욱 더 안전한 이용이 가능합니다.  기업의 보안 정책에 완벽하게 부합하는 솔루션입니다.',
-    },
-  ];
-
-  useEffect(() => {
-    if (token) {
-      // TODO: 백엔드에 토큰 검증 API 요청
-      console.log('Token received:', token);
-    }
-  }, [token]);
-
   const handleGoogleSignup = () => {
     console.log('Google signup clicked');
   };
 
   const handleSignup = () => {
-    // 성 필드 유효성 검사
-    const lastNameResult = validateLastName(formData.lastName, true);
-    if (!lastNameResult.isValid) {
-      setLastNameError(lastNameResult.message);
-      return;
-    }
-
-    // 이름 필드 유효성 검사
-    const firstNameResult = validateFirstName(formData.firstName, true);
-    if (!firstNameResult.isValid) {
-      setFirstNameError(firstNameResult.message);
-      return;
-    }
-
     // 연락처 유효성 검사
     const contactResult = validateContactNumber(formData.contactNumber, true);
     if (!contactResult.isValid) {
@@ -217,6 +177,34 @@ export default function SignupVerifyPage() {
     window.location.href = '/signup/success';
 
     // 실패 시: window.location.href = '/signup/fail';
+  };
+
+  // 인증요청 버튼 활성화 조건
+  const isVerificationButtonEnabled = () => {
+    return (
+      formData.email.trim() !== '' &&
+      formData.lastName.trim() !== '' &&
+      formData.firstName.trim() !== '' &&
+      formData.country !== '' &&
+      formData.contactNumber.trim() !== '' &&
+      !contactError
+    );
+  };
+
+  // 회원가입 버튼 활성화 조건
+  const isSignupButtonEnabled = () => {
+    return (
+      formData.email.trim() !== '' &&
+      formData.lastName.trim() !== '' &&
+      formData.firstName.trim() !== '' &&
+      formData.country !== '' &&
+      formData.contactNumber.trim() !== '' &&
+      !contactError &&
+      isVerificationSent &&
+      verificationCode.trim() !== '' &&
+      isVerificationCompleted &&
+      termsAgreement
+    );
   };
 
   return (
@@ -242,7 +230,7 @@ export default function SignupVerifyPage() {
                 labelType='required'
                 size='large'
                 value={formData.email}
-                placeholder='email@example.com'
+                placeholder='user@example.com'
                 status='positive'
                 disabled
               />
@@ -259,15 +247,8 @@ export default function SignupVerifyPage() {
                     onChange={(e) =>
                       handleInputChange('lastName', e.target.value)
                     }
-                    onBlur={() => {
-                      setLastNameTouched(true);
-                      const result = validateLastName(formData.lastName, true);
-                      setLastNameError(result.message);
-                    }}
                     placeholder='예) 홍'
                     maxLength={50}
-                    description={lastNameError}
-                    status={lastNameError ? 'negative' : 'default'}
                   />
                 </div>
                 <div style={{ flex: 1 }}>
@@ -279,18 +260,8 @@ export default function SignupVerifyPage() {
                     onChange={(e) =>
                       handleInputChange('firstName', e.target.value)
                     }
-                    onBlur={() => {
-                      setFirstNameTouched(true);
-                      const result = validateFirstName(
-                        formData.firstName,
-                        true
-                      );
-                      setFirstNameError(result.message);
-                    }}
                     placeholder='예) 길동'
                     maxLength={50}
-                    description={firstNameError}
-                    status={firstNameError ? 'negative' : 'default'}
                   />
                 </div>
               </div>
@@ -298,6 +269,7 @@ export default function SignupVerifyPage() {
 
             <FormField>
               <Dropdown
+                labelType='required'
                 label='국가'
                 size='large'
                 value={formData.country}
@@ -343,7 +315,7 @@ export default function SignupVerifyPage() {
                     variant='primary'
                     size='large'
                     onClick={handleRequestVerification}
-                    disabled={isVerificationSent}
+                    disabled={!isVerificationButtonEnabled()}
                   >
                     인증요청
                   </StyledVerificationButton>
@@ -416,20 +388,75 @@ export default function SignupVerifyPage() {
                 size='large'
                 value={formData.company}
                 onChange={(e) => handleInputChange('company', e.target.value)}
+                onBlur={() => {
+                  setCompanyTouched(true);
+                  const result = validateCompany(formData.company, true);
+                  setCompanyError(result.message);
+                }}
                 placeholder='회사명을 입력해 주세요.'
                 maxLength={50}
+                description={companyError}
+                status={companyError ? 'negative' : 'default'}
               />
             </FormField>
 
-            <SignupButton variant='primary' size='large' onClick={handleSignup}>
+            <AgreementSection>
+              <AgreementItem>
+                <Checkbox
+                  variant='primary'
+                  state={termsAgreement ? 'checked' : 'unchecked'}
+                  onChange={(checked) =>
+                    handleCheckboxChange('termsAgreement', checked)
+                  }
+                />
+                <AgreementText>
+                  (필수){' '}
+                  <AgreementLink onClick={handlePrivacyLinkClick}>
+                    개인정보 수집·이용 및 이용 약관에 동의합니다.
+                  </AgreementLink>
+                </AgreementText>
+              </AgreementItem>
+              <AgreementItem>
+                <Checkbox
+                  variant='primary'
+                  state={marketingConsent ? 'checked' : 'unchecked'}
+                  onChange={(checked) =>
+                    handleCheckboxChange('marketingConsent', checked)
+                  }
+                />
+                <AgreementTextOptional>
+                  (선택){' '}
+                  <AgreementLink onClick={handleMarketingLinkClick}>
+                    마케팅 정보 수신 동의
+                  </AgreementLink>
+                </AgreementTextOptional>
+              </AgreementItem>
+            </AgreementSection>
+
+            <SignupButton
+              variant='primary'
+              size='large'
+              onClick={handleSignup}
+              disabled={!isSignupButtonEnabled()}
+            >
               회원가입
             </SignupButton>
           </SignupForm>
         </SignupLeft>
+
         <SignupRight>
-          <CarouselSection slides={slides} />
+          <CarouselSection />
         </SignupRight>
       </SignupWrapper>
+
+      <PrivacyConsentModal
+        isOpen={isPrivacyModalOpen}
+        onClose={() => setIsPrivacyModalOpen(false)}
+      />
+      <MarketingConsentModal
+        isOpen={isMarketingModalOpen}
+        onClose={() => setIsMarketingModalOpen(false)}
+      />
     </SignupContainer>
   );
 }
@@ -469,22 +496,22 @@ const SignupLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 160px 40px 40px 40px;
+  padding: 80px 40px 40px 40px;
 
   @media (max-width: 1920px) {
-    padding: 160px 40px 40px 40px;
+    padding: 80px 40px 40px 40px;
   }
 
   @media (max-width: 1440px) {
-    padding: 160px 40px 40px 40px;
+    padding: 80px 40px 40px 40px;
   }
 
   @media (max-width: 768px) {
-    padding: 120px 20px 20px 20px;
+    padding: 60px 20px 20px 20px;
   }
 
   @media (max-width: 375px) {
-    padding: 100px 16px 16px 16px;
+    padding: 60px 16px 16px 16px;
   }
 `;
 
@@ -528,6 +555,43 @@ const FormField = styled.div`
   gap: 8px;
   margin-bottom: 20px;
   width: 100%;
+`;
+
+const AgreementSection = styled.div`
+  margin-bottom: 32px;
+  width: 100%;
+`;
+
+const AgreementItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const AgreementText = styled.span`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-strong']};
+`;
+
+const AgreementTextOptional = styled.span`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const AgreementLink = styled.a`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-strong']};
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: ${textColor.light['fg-neutral-primary']};
+  }
 `;
 
 const ResendButton = styled.button`
