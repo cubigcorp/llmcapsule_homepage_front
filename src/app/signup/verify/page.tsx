@@ -4,64 +4,69 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   SolidButton,
   TextButton,
   TextField,
-  Checkbox,
   Dropdown,
+  Checkbox,
 } from '@cubig/design-system';
-import {
-  typography,
-  textColor,
-  color,
-  radius,
-  borderColor,
-} from '@cubig/design-system';
+import { typography, textColor } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
-import GoogleIcon from '@/assets/icons/Google.svg';
 import { countries } from '@/utils/countries';
-import { validateContactNumber, validateCompany } from '@/utils/validation';
+import {
+  validateEmail,
+  validatePassword,
+  validateConfirmPassword,
+  validateContactNumber,
+  validateCompany,
+} from '@/utils/validation';
+import { authService } from '@/services/auth';
+import { otpService } from '@/services/otp';
+import { env } from '@/utils/env';
 import PrivacyConsentModal from '@/components/modals/PrivacyConsentModal';
 import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
 
 export default function SignupVerifyPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get('token');
-
-  // 토큰에서 이메일 추출 (실제로는 토큰 디코딩 또는 API 호출)
-  const extractEmailFromToken = (token: string | null) => {
-    // TODO: 실제 토큰에서 이메일 추출 로직
-    // 임시로 하드코딩된 이메일 반환
-    return 'user@example.com';
-  };
+  const emailFromUrl = searchParams.get('email');
+  const tokenFromUrl = searchParams.get('token');
 
   const [formData, setFormData] = useState({
-    email: extractEmailFromToken(token),
+    email: emailFromUrl || '',
     lastName: '',
     firstName: '',
     country: '',
     contactNumber: '',
     company: '',
+    password: '',
+    confirmPassword: '',
   });
 
   const [contactError, setContactError] = useState('');
-  const [contactTouched, setContactTouched] = useState(false);
   const [companyError, setCompanyError] = useState('');
-  const [companyTouched, setCompanyTouched] = useState(false);
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
-  const [timeLeft, setTimeLeft] = useState(120); // 2분 (120초)
+  const [timeLeft, setTimeLeft] = useState(120);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isVerificationCompleted, setIsVerificationCompleted] = useState(false);
   const [termsAgreement, setTermsAgreement] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isMarketingModalOpen, setIsMarketingModalOpen] = useState(false);
-
-  const contactRegex = /^[0-9]{10,11}$/;
+  const [selectedCountry, setSelectedCountry] = useState<{
+    value: string;
+    label: string;
+  } | null>(null);
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [countryError, setCountryError] = useState('');
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -77,6 +82,25 @@ export default function SignupVerifyPage() {
       const result = validateCompany(value, false);
       setCompanyError(result.message);
     }
+  };
+
+  const handleCountryChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, country: value }));
+
+    // 선택된 국가 객체 찾기
+    const country = countries.find((c) => c.value === value);
+    if (country) {
+      setSelectedCountry(country);
+      setCountryError('');
+    } else {
+      setSelectedCountry(null);
+    }
+  };
+
+  // 국가 코드에서 숫자만 추출하는 함수
+  const extractCountryCode = (countryValue: string): string => {
+    const match = countryValue.match(/\+(\d+)/);
+    return match ? match[1] : '';
   };
 
   const handleCheckboxChange = (field: string, checked: boolean) => {
@@ -124,45 +148,146 @@ export default function SignupVerifyPage() {
     return () => clearInterval(interval);
   }, [isTimerRunning, timeLeft]);
 
-  const handleRequestVerification = () => {
+  const handleRequestVerification = async () => {
     const result = validateContactNumber(formData.contactNumber, true);
+
     if (!result.isValid) {
       setContactError(result.message);
       return;
     }
 
-    // TODO: 인증 요청 API 호출
-    console.log('Request verification for:', formData.contactNumber);
-    setIsVerificationSent(true);
-    startTimer();
+    if (!selectedCountry) {
+      setCountryError('국가를 선택해주세요.');
+      return;
+    }
+
+    setContactError('');
+    setCountryError('');
+
+    try {
+      // 실제 OTP 전송 API 호출
+      const response = await otpService.sendOtp(
+        {
+          phone: formData.contactNumber,
+          country_code: extractCountryCode(selectedCountry.value),
+          otp_type: 'phone',
+          service_name: 'cubig-auth',
+        },
+        env.OTP_API_KEY
+      );
+
+      if (response.success) {
+        // 성공 시 인증 요청 완료 처리
+        setIsVerificationSent(true);
+        startTimer();
+      } else {
+        // 실패 시 에러 메시지 표시
+        alert('인증번호 전송에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch (error) {
+      // 실패 시 에러 메시지 표시
+      alert('인증번호 전송에 실패했습니다. 다시 시도해 주세요.');
+    }
   };
 
-  const handleVerifyCode = () => {
+  const handleVerifyCode = async () => {
     if (!verificationCode) {
       alert('인증번호를 입력해 주세요.');
       return;
     }
 
-    // TODO: 인증번호 확인 API 호출
-    console.log('Verify code:', verificationCode);
+    try {
+      // 실제 OTP 검증 API 호출
+      const response = await otpService.verifyOtp(
+        {
+          phone: formData.contactNumber,
+          otp_type: 'phone',
+          otp: verificationCode,
+        },
+        env.OTP_API_KEY
+      );
 
-    // 임시로 인증 완료 처리 (실제로는 API 응답에 따라 결정)
-    setIsVerificationCompleted(true);
+      if (response.success) {
+        // 성공 시 인증 완료 처리
+        setIsVerificationCompleted(true);
+        setIsTimerRunning(false);
+      } else {
+        // 실패 시 에러 메시지 표시
+        alert('인증번호가 올바르지 않습니다. 다시 확인해 주세요.');
+      }
+    } catch {
+      // 실패 시 에러 메시지 표시
+      alert('인증번호가 올바르지 않습니다. 다시 확인해 주세요.');
+    }
   };
 
-  const handleResendCode = () => {
+  const handleResendCode = async () => {
     if (timeLeft > 0) return; // 타이머가 실행 중이면 재발송 불가
 
-    // TODO: 인증번호 재발송 API 호출
-    console.log('Resend verification code for:', formData.contactNumber);
-    startTimer();
+    try {
+      // 실제 OTP 재발송 API 호출
+      const response = await otpService.sendOtp(
+        {
+          phone: formData.contactNumber,
+          country_code: extractCountryCode(selectedCountry!.value),
+          otp_type: 'phone',
+          service_name: 'cubig-auth',
+        },
+        env.OTP_API_KEY
+      );
+
+      if (response.success) {
+        // 성공 시 타이머 재시작
+        startTimer();
+        alert('인증번호가 재발송되었습니다.');
+      } else {
+        // 실패 시 에러 메시지 표시
+        alert('인증번호 재발송에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch {
+      // 실패 시 에러 메시지 표시
+      alert('인증번호 재발송에 실패했습니다. 다시 시도해 주세요.');
+    }
   };
 
-  const handleGoogleSignup = () => {
-    console.log('Google signup clicked');
-  };
+  const handleSignup = async () => {
+    // 필수 필드 검증
+    if (!formData.firstName.trim()) {
+      setFirstNameError('이름을 입력해주세요.');
+      return;
+    }
+    if (!formData.lastName.trim()) {
+      setLastNameError('성을 입력해주세요.');
+      return;
+    }
+    if (!formData.email.trim()) {
+      setEmailError('이메일을 입력해주세요.');
+      return;
+    }
+    if (!formData.contactNumber.trim()) {
+      setContactError('연락처를 입력해주세요.');
+      return;
+    }
+    if (!formData.company.trim()) {
+      setCompanyError('회사/조직명을 입력해주세요.');
+      return;
+    }
+    if (!selectedCountry) {
+      setCountryError('국가를 선택해주세요.');
+      return;
+    }
+    if (!termsAgreement) {
+      alert('필수 약관에 동의해주세요.');
+      return;
+    }
 
-  const handleSignup = () => {
+    // 이메일 유효성 검사
+    const emailResult = validateEmail(formData.email, true);
+    if (!emailResult.isValid) {
+      setEmailError(emailResult.message);
+      return;
+    }
+
     // 연락처 유효성 검사
     const contactResult = validateContactNumber(formData.contactNumber, true);
     if (!contactResult.isValid) {
@@ -170,13 +295,44 @@ export default function SignupVerifyPage() {
       return;
     }
 
-    // TODO: 회원가입 API 호출
-    console.log('Signup with data:', formData);
+    // 회사명 유효성 검사
+    const companyResult = validateCompany(formData.company, true);
+    if (!companyResult.isValid) {
+      setCompanyError(companyResult.message);
+      return;
+    }
 
-    // 임시로 성공 페이지로 이동 (실제로는 API 응답에 따라 결정)
-    window.location.href = '/signup/success';
+    try {
+      if (!tokenFromUrl) {
+        alert('유효하지 않은 링크입니다.');
+        return;
+      }
 
-    // 실패 시: window.location.href = '/signup/fail';
+      const signupData = {
+        user_auth_info_token: tokenFromUrl,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        phone: formData.contactNumber,
+        phone_country_code: extractCountryCode(selectedCountry.value),
+        organization_name: formData.company,
+        consent_personal_info: termsAgreement,
+        consent_marketing: marketingConsent,
+      };
+
+      // 실제 회원가입 API 호출
+      const response = await authService.signupEmail(signupData);
+
+      if (response.success) {
+        // 성공 시 성공 페이지로 이동
+        router.push('/signup/success');
+      } else {
+        // 실패 시 실패 페이지로 이동
+        router.push('/signup/fail');
+      }
+    } catch (error) {
+      // 실패 시 실패 페이지로 이동
+      router.push('/signup/fail');
+    }
   };
 
   // 인증요청 버튼 활성화 조건
@@ -187,7 +343,8 @@ export default function SignupVerifyPage() {
       formData.firstName.trim() !== '' &&
       formData.country !== '' &&
       formData.contactNumber.trim() !== '' &&
-      !contactError
+      !contactError &&
+      !isVerificationCompleted // 인증 완료되면 비활성화
     );
   };
 
@@ -273,8 +430,10 @@ export default function SignupVerifyPage() {
                 label='국가'
                 size='large'
                 value={formData.country}
-                onChange={(value) => handleInputChange('country', value)}
+                onChange={handleCountryChange}
                 options={countries}
+                description={countryError}
+                status={countryError ? 'negative' : 'default'}
               />
             </FormField>
 
@@ -296,7 +455,6 @@ export default function SignupVerifyPage() {
                       handleInputChange('contactNumber', e.target.value)
                     }
                     onBlur={() => {
-                      setContactTouched(true);
                       const result = validateContactNumber(
                         formData.contactNumber,
                         true
@@ -304,10 +462,17 @@ export default function SignupVerifyPage() {
                       setContactError(result.message);
                     }}
                     placeholder='휴대폰 번호를 입력해 주세요.'
-                    description={contactError}
-                    status={contactError ? 'negative' : 'default'}
+                    description={isVerificationCompleted ? '' : contactError}
+                    status={
+                      isVerificationCompleted
+                        ? 'positive'
+                        : contactError
+                          ? 'negative'
+                          : 'default'
+                    }
                     inputMode='numeric'
                     pattern='[0-9]*'
+                    disabled={isVerificationCompleted}
                   />
                 </div>
                 <div style={{ width: '95px', marginTop: '24px' }}>
@@ -339,41 +504,44 @@ export default function SignupVerifyPage() {
                       onChange={(e) => setVerificationCode(e.target.value)}
                       placeholder='인증번호 입력'
                     />
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginTop: '8px',
-                      }}
-                    >
-                      <ResendButton
-                        onClick={handleResendCode}
-                        disabled={isTimerRunning}
+                    {!isVerificationCompleted && (
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginTop: '8px',
+                        }}
                       >
-                        인증번호 재발송
-                      </ResendButton>
-                      {isTimerRunning && (
-                        <TimerContainer>
-                          <TimerText>
-                            <Image
-                              src={getAssetPath('/icons/Icon_history.svg')}
-                              alt='Timer'
-                              width={16}
-                              height={16}
-                            />
-                            <TimeText>{formatTime(timeLeft)}</TimeText>
-                            <RemainingText> 남음</RemainingText>
-                          </TimerText>
-                        </TimerContainer>
-                      )}
-                    </div>
+                        <ResendButton
+                          onClick={handleResendCode}
+                          disabled={isTimerRunning}
+                        >
+                          인증번호 재발송
+                        </ResendButton>
+                        {isTimerRunning && (
+                          <TimerContainer>
+                            <TimerText>
+                              <Image
+                                src={getAssetPath('/icons/Icon_history.svg')}
+                                alt='Timer'
+                                width={16}
+                                height={16}
+                              />
+                              <TimeText>{formatTime(timeLeft)}</TimeText>
+                              <RemainingText> 남음</RemainingText>
+                            </TimerText>
+                          </TimerContainer>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div style={{ width: '95px', marginTop: '0' }}>
                     <StyledVerificationButton
                       variant='secondary'
                       size='large'
                       onClick={handleVerifyCode}
+                      disabled={isVerificationCompleted}
                     >
                       확인
                     </StyledVerificationButton>
@@ -389,7 +557,6 @@ export default function SignupVerifyPage() {
                 value={formData.company}
                 onChange={(e) => handleInputChange('company', e.target.value)}
                 onBlur={() => {
-                  setCompanyTouched(true);
                   const result = validateCompany(formData.company, true);
                   setCompanyError(result.message);
                 }}

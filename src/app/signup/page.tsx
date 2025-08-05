@@ -4,17 +4,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  SolidButton,
-  TextButton,
-  TextField,
-  Checkbox,
-  IconButton,
-} from '@cubig/design-system';
+import { SolidButton, TextField } from '@cubig/design-system';
 import {
   typography,
   textColor,
-  color,
   radius,
   borderColor,
 } from '@cubig/design-system';
@@ -27,6 +20,7 @@ import {
   validatePassword,
   validateConfirmPassword,
 } from '@/utils/validation';
+import { authService } from '@/services/auth';
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -73,15 +67,74 @@ export default function SignupPage() {
     console.log('Google signup clicked');
   };
 
-  const handleSignup = () => {
-    // TODO: 실제 회원가입 API 호출
-    console.log('Signup data:', formData);
-    setIsEmailVerification(true);
+  const handleSignup = async () => {
+    // 이메일 유효성 검사
+    const emailResult = validateEmail(formData.email, true);
+    if (!emailResult.isValid) {
+      setEmailError(emailResult.message);
+      return;
+    }
+
+    // 비밀번호 유효성 검사
+    const passwordResult = validatePassword(formData.password, true);
+    if (!passwordResult.isValid) {
+      setPasswordError(passwordResult.message);
+      return;
+    }
+
+    // 비밀번호 확인 검사
+    const confirmPasswordResult = validateConfirmPassword(
+      formData.confirmPassword,
+      formData.password,
+      true
+    );
+    if (!confirmPasswordResult.isValid) {
+      setConfirmPasswordError(confirmPasswordResult.message);
+      return;
+    }
+
+    setEmailError('');
+    setPasswordError('');
+    setConfirmPasswordError('');
+
+    try {
+      // 실제 이메일 인증 API 호출
+      const response = await authService.verifyEmail({
+        email: formData.email,
+        password: formData.password,
+        redirect_url: `${window.location.origin}/signup/verify`,
+      });
+
+      if (response.success) {
+        // 성공 시 이메일 확인 화면으로 변경
+        setIsEmailVerification(true);
+      } else {
+        // 실패 시 에러 메시지 표시
+        alert('이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch {
+      // 실패 시 에러 메시지 표시
+      alert('이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.');
+    }
   };
 
-  const handleResendEmail = () => {
-    // TODO: 이메일 재발송 API 호출
-    console.log('Resend email to:', formData.email);
+  const handleResendEmail = async () => {
+    try {
+      // 실제 이메일 재발송 API 호출
+      const response = await authService.verifyEmail({
+        email: formData.email,
+        password: formData.password,
+        redirect_url: `${window.location.origin}/signup/verify`,
+      });
+
+      if (response.success) {
+        alert('이메일이 재발송되었습니다.');
+      } else {
+        alert('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch {
+      alert('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+    }
   };
 
   return (

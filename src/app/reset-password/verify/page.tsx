@@ -6,16 +6,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { SolidButton, TextButton, TextField } from '@cubig/design-system';
-import {
-  typography,
-  textColor,
-  color,
-  radius,
-  borderColor,
-} from '@cubig/design-system';
+import { typography, textColor } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import { validatePassword, validateConfirmPassword } from '@/utils/validation';
+import { authService } from '@/services/auth';
 
 export default function ResetPasswordVerifyPage() {
   const searchParams = useSearchParams();
@@ -53,6 +48,11 @@ export default function ResetPasswordVerifyPage() {
   };
 
   const handleResetPassword = async () => {
+    if (!token) {
+      alert('유효하지 않은 링크입니다.');
+      return;
+    }
+
     // 비밀번호 유효성 검사
     const passwordResult = validatePassword(formData.password, true);
     if (!passwordResult.isValid) {
@@ -72,13 +72,21 @@ export default function ResetPasswordVerifyPage() {
     }
 
     try {
-      // TODO: 실제 비밀번호 재설정 API 호출
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1초 지연으로 API 호출 시뮬레이션
+      // 실제 비밀번호 재설정 API 호출
+      const response = await authService.confirmPasswordReset({
+        token: token,
+        password: formData.password,
+        password_confirm: formData.confirmPassword,
+      });
 
-      // 성공 시 로그인 페이지로 이동
-      alert('비밀번호가 성공적으로 재설정되었습니다.');
-      window.location.href = '/login';
-    } catch (error) {
+      if (response.success) {
+        // 성공 시 로그인 페이지로 이동
+        alert('비밀번호가 성공적으로 재설정되었습니다.');
+        window.location.href = '/login';
+      } else {
+        alert('비밀번호 재설정에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch {
       alert('비밀번호 재설정에 실패했습니다. 다시 시도해 주세요.');
     }
   };
@@ -151,7 +159,7 @@ export default function ResetPasswordVerifyPage() {
             <HelperText>
               비밀번호가 기억나셨나요?{' '}
               <Link href='/login'>
-                <TextButton variant='secondary' size='small'>
+                <TextButton variant='primary' size='small'>
                   로그인
                 </TextButton>
               </Link>

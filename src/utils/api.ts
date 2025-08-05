@@ -1,0 +1,301 @@
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { env } from './env';
+
+/**
+ * API 응답 타입
+ */
+export interface ApiResponse<T = unknown> {
+  success: boolean;
+  data?: T;
+  message?: string;
+  error?: string;
+}
+
+// Signup API Types
+export interface SignupEmailRequest {
+  user_auth_info_token: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  phone_country_code: string;
+  organization_name: string;
+  consent_personal_info: boolean;
+  consent_marketing: boolean;
+}
+
+export interface SignupGoogleRequest {
+  sub: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  phone_country_code: string;
+  organization_name: string;
+  consent_marketing: boolean;
+}
+
+export interface SignupResponse {
+  id: number;
+  email: string;
+  created_at: string;
+}
+
+export interface VerifyEmailRequest {
+  email: string;
+  password: string;
+  redirect_url: string;
+}
+
+export interface VerifyEmailGoogleRequest {
+  id_token: string;
+}
+
+/**
+ * 로그인 관련 타입
+ */
+export interface LoginEmailRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginGoogleRequest {
+  id_token: string;
+}
+
+export interface LoginResponse {
+  access_token: string;
+  refresh_token: string;
+}
+
+/**
+ * 이메일 중복 확인 타입
+ */
+export interface CheckEmailResponse {
+  email: string;
+  is_available: boolean;
+}
+
+/**
+ * OTP 관련 타입
+ */
+export interface SendOtpRequest {
+  phone: string;
+  country_code: string;
+  otp_type: string;
+  service_name: string;
+}
+
+export interface VerifyOtpRequest {
+  phone: string;
+  otp_type: string;
+  otp: string;
+}
+
+/**
+ * 비밀번호 재설정 타입
+ */
+export interface PasswordResetRequestRequest {
+  email: string;
+  redirect_url: string;
+}
+
+export interface PasswordResetConfirmRequest {
+  token: string;
+  password: string;
+  password_confirm: string;
+}
+
+/**
+ * 사용자 정보 타입
+ */
+export interface UserInfo {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  phone_country_code: string;
+  organization_name: string;
+  consent_personal_info: boolean;
+  consent_marketing: boolean;
+  created_at: string;
+}
+
+/**
+ * 기본 API 클라이언트
+ */
+class ApiClient {
+  private axiosInstance: AxiosInstance;
+
+  constructor(baseURL: string) {
+    this.axiosInstance = axios.create({
+      baseURL,
+      timeout: 10000,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // 요청 인터셉터
+    this.axiosInstance.interceptors.request.use(
+      (config) => {
+        // 요청 로깅 (개발 환경에서만)
+        if (env.NODE_ENV === 'development') {
+          console.log(
+            'API Request:',
+            config.method?.toUpperCase(),
+            config.url,
+            config.data
+          );
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
+    // 응답 인터셉터
+    this.axiosInstance.interceptors.response.use(
+      (response: AxiosResponse) => {
+        // 응답 로깅 (개발 환경에서만)
+        if (env.NODE_ENV === 'development') {
+          console.log('API Response:', response.status, response.data);
+        }
+        return response;
+      },
+      (error) => {
+        // 에러 로깅 (개발 환경에서만)
+        if (env.NODE_ENV === 'development') {
+          console.error(
+            'API Error:',
+            error.response?.status,
+            error.response?.data
+          );
+        }
+        return Promise.reject(error);
+      }
+    );
+  }
+
+  /**
+   * API 요청 실행
+   */
+  private async request<T>(
+    config: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    try {
+      const response = await this.axiosInstance.request<T>(config);
+      return {
+        success: true,
+        data: response.data,
+      };
+    } catch (error: unknown) {
+      return {
+        success: false,
+        error:
+          (error as { response?: { data?: { message?: string } } })?.response
+            ?.data?.message ||
+          (error as Error)?.message ||
+          'Unknown error occurred',
+      };
+    }
+  }
+
+  /**
+   * GET 요청
+   */
+  async get<T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>({ ...config, method: 'GET', url });
+  }
+
+  /**
+   * POST 요청
+   */
+  async post<T>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>({ ...config, method: 'POST', url, data });
+  }
+
+  /**
+   * PUT 요청
+   */
+  async put<T>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>({ ...config, method: 'PUT', url, data });
+  }
+
+  /**
+   * DELETE 요청
+   */
+  async delete<T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>({ ...config, method: 'DELETE', url });
+  }
+
+  /**
+   * PATCH 요청
+   */
+  async patch<T>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>({ ...config, method: 'PATCH', url, data });
+  }
+}
+
+/**
+ * API 클라이언트 인스턴스
+ */
+export const apiClient = new ApiClient(env.API_BASE_URL);
+
+/**
+ * API 엔드포인트 상수
+ */
+export const API_ENDPOINTS = {
+  // 회원가입 관련
+  SIGNUP: {
+    EMAIL: '/signup/email',
+    GOOGLE: '/signup/google',
+  },
+  // 로그인 관련
+  LOGIN: {
+    EMAIL: '/login/email',
+    GOOGLE: '/login/google',
+  },
+  // 이메일 인증 관련
+  VERIFY: {
+    EMAIL: '/verify-email',
+    EMAIL_GOOGLE: '/verify-email/google',
+  },
+  // 이메일 중복 확인
+  USERS: {
+    CHECK_EMAIL: '/users/check-email',
+    ME: '/users/me',
+    BY_ID: (id: number) => `/users/${id}`,
+  },
+  // OTP 관련
+  OTP: {
+    SEND: '/send-otp',
+    VERIFY: '/verify-otp',
+  },
+  // 토큰 리프레시
+  REFRESH: '/refresh',
+  // 비밀번호 재설정
+  PASSWORD_RESET: {
+    REQUEST: '/password-reset/request',
+    CONFIRM: '/password-reset/confirm',
+  },
+} as const;

@@ -6,7 +6,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {
   SolidButton,
-  TextButton,
   TextField,
   Checkbox,
   Dropdown,
@@ -15,7 +14,6 @@ import {
 import {
   typography,
   textColor,
-  color,
   radius,
   borderColor,
 } from '@cubig/design-system';

@@ -10,11 +10,13 @@ import { getAssetPath } from '@/utils/path';
 interface EmailVerificationSectionProps {
   email: string;
   onResendEmail: () => void;
+  type?: 'signup' | 'password-reset';
 }
 
 export default function EmailVerificationSection({
   email,
   onResendEmail,
+  type = 'signup',
 }: EmailVerificationSectionProps) {
   const ResendIcon = () => (
     <svg
@@ -31,6 +33,23 @@ export default function EmailVerificationSection({
     </svg>
   );
 
+  const getTitle = () => {
+    return type === 'password-reset'
+      ? '비밀번호 재설정 이메일을 확인해주세요'
+      : '이메일을 확인해주세요';
+  };
+
+  const getDescription = () => {
+    if (type === 'password-reset') {
+      return `비밀번호를 재설정하려면 ${email}로 보낸 링크를 클릭해주세요.`;
+    }
+    return `계정 설정을 완료하려면 ${email}로 보낸 링크를 클릭해주세요.`;
+  };
+
+  const getButtonText = () => {
+    return type === 'password-reset' ? '재설정 이메일 재발송' : '메일 재발송';
+  };
+
   return (
     <EmailVerificationWrapper>
       <Image
@@ -39,17 +58,15 @@ export default function EmailVerificationSection({
         width={48}
         height={48}
       />
-      <Title>이메일을 확인해주세요</Title>
-      <Description>
-        계정 설정을 완료하려면 {email}로 보낸 링크를 클릭해주세요.
-      </Description>
+      <Title>{getTitle()}</Title>
+      <Description>{getDescription()}</Description>
       <ResendButton
         variant='secondary'
         size='small'
         onClick={onResendEmail}
         leadingIcon={ResendIcon}
       >
-        메일 재발송
+        {getButtonText()}
       </ResendButton>
     </EmailVerificationWrapper>
   );

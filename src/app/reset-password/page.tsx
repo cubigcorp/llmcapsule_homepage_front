@@ -5,56 +5,78 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SolidButton, TextButton, TextField } from '@cubig/design-system';
-import { typography, textColor, color, radius } from '@cubig/design-system';
+import { typography, textColor } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import EmailVerificationSection from '@/components/common/EmailVerificationSection';
+import { authService } from '@/services/auth';
+import { validateEmail } from '@/utils/validation';
 
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
 
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
-
-  const validateEmail = (email: string) => {
-    if (!email) return '';
-    if (!emailRegex.test(email)) {
-      return '유효한 이메일을 입력해 주세요.';
-    }
-    return '';
-  };
-
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-    setEmailError(validateEmail(value));
+
+    // 실시간 이메일 검증
+    const result = validateEmail(value, false);
+    setEmailError(result.message);
   };
 
   const handleSubmit = async () => {
-    const error = validateEmail(email);
-    if (error) {
-      setEmailError(error);
+    // 이메일 유효성 검사
+    const emailResult = validateEmail(email, true);
+    if (!emailResult.isValid) {
+      setEmailError(emailResult.message);
       return;
     }
 
     setEmailError('');
 
     try {
-      // TODO: 실제 비밀번호 재설정 API 호출
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1초 지연으로 API 호출 시뮬레이션
+      // 실제 비밀번호 재설정 API 호출
+      const response = await authService.requestPasswordReset({
+        email: email,
+        redirect_url: `${window.location.origin}/reset-password/verify`,
+      });
 
-      // 성공 시 이메일 확인 화면으로 변경
-      setIsEmailSent(true);
-    } catch (error) {
+      if (response.success) {
+        // 성공 시 이메일 확인 화면으로 변경
+        setIsEmailSent(true);
+      } else {
+        // 실패 시 에러 메시지 표시
+        setEmailError('입력하신 정보를 다시 확인해주세요.');
+      }
+    } catch {
       // 실패 시 에러 메시지 표시
       setEmailError('입력하신 정보를 다시 확인해주세요.');
     }
   };
 
-  const handleResendEmail = () => {
-    // TODO: 이메일 재발송 API 호출
-    console.log('Resend reset email to:', email);
+  const handleResendEmail = async () => {
+    try {
+      // 실제 비밀번호 재설정 이메일 재발송 API 호출
+      const response = await authService.requestPasswordReset({
+        email: email,
+        redirect_url: `${window.location.origin}/reset-password/verify`,
+      });
+
+      if (response.success) {
+        alert('비밀번호 재설정 이메일이 재발송되었습니다.');
+      } else {
+        alert('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch {
+      alert('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+    }
+  };
+
+  // 버튼 활성화 조건
+  const isSubmitButtonEnabled = () => {
+    return email.trim() !== '' && !validateEmail(email, false).message;
   };
 
   return (
@@ -89,10 +111,9 @@ export default function ResetPasswordPage() {
                 </FormField>
 
                 <SubmitButton
-                  variant='primary'
                   size='large'
                   onClick={handleSubmit}
-                  disabled={!email.trim() || !!validateEmail(email)}
+                  disabled={!isSubmitButtonEnabled()}
                 >
                   재설정 이메일 보내기
                 </SubmitButton>
@@ -100,7 +121,7 @@ export default function ResetPasswordPage() {
                 <HelperText>
                   이메일이 기억나지 않으시나요?{' '}
                   <Link href='/contact'>
-                    <TextButton variant='primary' size='small'>
+                    <TextButton variant='secondary' size='small'>
                       문의하기
                     </TextButton>
                   </Link>
@@ -110,6 +131,7 @@ export default function ResetPasswordPage() {
               <EmailVerificationSection
                 email={email}
                 onResendEmail={handleResendEmail}
+                type='password-reset'
               />
             )}
           </ResetPasswordForm>

@@ -91,6 +91,13 @@ export const validateContactNumber = (
   contactNumber: string,
   isTouched: boolean = false
 ): ValidationResult => {
+  if (isTouched && !contactNumber) {
+    return {
+      isValid: false,
+      message: '연락처를 입력해 주세요.',
+    };
+  }
+
   const contactRegex = /^[0-9]{10,11}$/;
 
   if (contactNumber && !contactRegex.test(contactNumber)) {

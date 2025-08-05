@@ -4,30 +4,20 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  SolidButton,
-  TextButton,
-  TextField,
-  IconButton,
-  Checkbox,
-} from '@cubig/design-system';
-import {
-  typography,
-  textColor,
-  color,
-  radius,
-  borderColor,
-} from '@cubig/design-system';
+import { useRouter } from 'next/navigation';
+import { SolidButton, TextButton, TextField } from '@cubig/design-system';
+import { typography, textColor, borderColor } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import GoogleIcon from '@/assets/icons/Google.svg';
+import { authService } from '@/services/auth';
 import { validateEmail } from '@/utils/validation';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    keepLogin: false,
   });
 
   const [emailError, setEmailError] = useState('');
@@ -42,41 +32,53 @@ export default function LoginPage() {
     }
   };
 
-  const handleCheckboxChange = (checked: boolean) => {
-    setFormData((prev) => ({ ...prev, keepLogin: checked }));
-  };
-
-  const handleGoogleLogin = () => {
-    // 구글 로그인 로직
-    console.log('Google login clicked');
-  };
-
   const handleLogin = async () => {
     // 이메일 유효성 검사
-    const emailResult = validateEmail(formData.email, false);
+    const emailResult = validateEmail(formData.email, true);
     if (!emailResult.isValid) {
       setEmailError(emailResult.message);
       return;
     }
 
-    // 에러 초기화
     setEmailError('');
     setPasswordError('');
 
     try {
-      // TODO: 실제 로그인 API 호출
-      // const response = await loginAPI(formData.email, formData.password);
+      const response = await authService.loginEmail({
+        email: formData.email,
+        password: formData.password,
+      });
 
-      // 임시로 API 응답 시뮬레이션 (실패 케이스)
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1초 대기
+      if (response.success) {
+        // 로그인 성공 시 토큰 저장
+        localStorage.setItem('access_token', response.data!.access_token);
+        localStorage.setItem('refresh_token', response.data!.refresh_token);
 
-      // API 응답이 실패인 경우 (이메일 또는 비밀번호가 틀린 경우)
-      setPasswordError('입력하신 정보를 다시 확인해주세요.');
-
-      // 성공인 경우: window.location.href = '/dashboard';
+        // 홈페이지로 이동
+        router.push('/');
+      } else {
+        // 로그인 실패 시 에러 메시지 표시
+        setPasswordError('입력하신 정보를 다시 확인해주세요.');
+      }
     } catch (error) {
+      console.error('Login error:', error);
       setPasswordError('입력하신 정보를 다시 확인해주세요.');
     }
+  };
+
+  const handleGoogleLogin = async () => {
+    // TODO: 구글 로그인 구현
+    console.log('Google login clicked');
+    // 구글 OAuth 플로우 구현 필요
+  };
+
+  // 로그인 버튼 활성화 조건
+  const isLoginButtonEnabled = () => {
+    return (
+      formData.email.trim() !== '' &&
+      formData.password.trim() !== '' &&
+      !emailError
+    );
   };
 
   return (
@@ -96,26 +98,14 @@ export default function LoginPage() {
           <LoginForm>
             <LoginTitle>로그인</LoginTitle>
 
-            <StyledGoogleButton
-              variant='secondary'
-              size='large'
-              leadingIcon={GoogleIcon}
-              onClick={handleGoogleLogin}
-            >
-              구글 계정으로 로그인
-            </StyledGoogleButton>
-
-            <Divider>
-              <DividerText>or</DividerText>
-            </Divider>
-
             <FormField>
               <TextField
                 label='이메일'
+                labelType='required'
                 size='large'
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                placeholder='user@example.com'
+                placeholder='email@example.com'
                 description={emailError}
                 status={emailError ? 'negative' : 'default'}
               />
@@ -124,6 +114,7 @@ export default function LoginPage() {
             <FormField>
               <TextField
                 label='비밀번호'
+                labelType='required'
                 size='large'
                 type='password'
                 value={formData.password}
@@ -134,40 +125,43 @@ export default function LoginPage() {
               />
             </FormField>
 
-            <LoginOptions>
-              <CheckboxWrapper>
-                <Checkbox
-                  variant='primary'
-                  state={formData.keepLogin ? 'checked' : 'unchecked'}
-                  onChange={handleCheckboxChange}
-                />
-                <CheckboxLabel>로그인 상태 유지</CheckboxLabel>
-              </CheckboxWrapper>
-              <OptionLinks>
-                <OptionLink href='/reset-password'>비밀번호 찾기</OptionLink>
-              </OptionLinks>
-            </LoginOptions>
-
             <LoginButton
               size='large'
               onClick={handleLogin}
-              disabled={
-                !formData.email.trim() ||
-                !formData.password.trim() ||
-                !validateEmail(formData.email, false).isValid
-              }
+              disabled={!isLoginButtonEnabled()}
             >
               로그인
             </LoginButton>
 
-            <SignUpPrompt>
-              처음 방문하셨나요?{' '}
-              <Link href='/signup'>
-                <StyledSignUpButton variant='secondary' size='small'>
-                  회원가입
-                </StyledSignUpButton>
+            <HelperText>
+              <Link href='/reset-password'>
+                <TextButton variant='primary' size='small'>
+                  비밀번호 찾기
+                </TextButton>
               </Link>
-            </SignUpPrompt>
+            </HelperText>
+
+            <Divider>
+              <DividerText>or</DividerText>
+            </Divider>
+
+            <GoogleButton
+              variant='secondary'
+              size='large'
+              leadingIcon={GoogleIcon}
+              onClick={handleGoogleLogin}
+            >
+              구글 계정으로 로그인
+            </GoogleButton>
+
+            <SignupText>
+              처음 방문하시나요?{' '}
+              <Link href='/signup'>
+                <TextButton variant='secondary' size='small'>
+                  회원가입
+                </TextButton>
+              </Link>
+            </SignupText>
           </LoginForm>
         </LoginLeft>
 
@@ -211,13 +205,17 @@ const LoginWrapper = styled.div`
 
 const LoginLeft = styled.div`
   flex: 1;
-  background-color: white;
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding: 200px 40px 40px 40px;
+  padding: 120px 40px 40px 40px;
+
+  @media (max-width: 1920px) {
+    padding: 120px 40px 40px 40px;
+  }
 
   @media (max-width: 768px) {
-    padding: 100px 24px 24px 24px;
+    padding: 100px 20px 20px 20px;
   }
 
   @media (max-width: 375px) {
@@ -227,57 +225,12 @@ const LoginLeft = styled.div`
 
 const LoginRight = styled.div`
   flex: 1;
-  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media (max-width: 768px) {
-    padding: 16px;
-    min-height: 300px;
     display: none;
-  }
-
-  @media (max-width: 375px) {
-    padding: 12px;
-    min-height: 250px;
-  }
-`;
-
-const SvgWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  border-radius: ${radius['rounded-5']};
-  flex-shrink: 0;
-  overflow: hidden;
-  position: relative;
-`;
-
-const BackgroundImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: ${radius['rounded-5']};
-`;
-
-const ContentOverlay = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 472px;
-  height: 252px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  pointer-events: none;
-  z-index: 10;
-
-  @media (max-width: 768px) {
-    width: 320px;
-    height: 170px;
-  }
-
-  @media (max-width: 375px) {
-    width: 280px;
-    height: 150px;
   }
 `;
 
@@ -286,28 +239,51 @@ const LoginForm = styled.div`
   max-width: 398px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: left;
+  height: 100%;
 `;
 
 const LoginTitle = styled.h1`
   ${typography('ko', 'title1', 'semibold')}
+  color: ${textColor.light['fg-neutral-strong']};
+  margin: 0 0 60px 0;
   text-align: center;
-  margin: 0;
-  margin-bottom: 60px;
+
+  @media (max-width: 768px) {
+    margin: 0 0 40px 0;
+  }
+
+  @media (max-width: 375px) {
+    margin: 0 0 32px 0;
+  }
 `;
 
-const StyledGoogleButton = styled(SolidButton)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
+const FormField = styled.div`
   width: 100%;
+  margin-bottom: 20px;
+
+  &:last-of-type {
+    margin-bottom: 32px;
+  }
+`;
+
+const LoginButton = styled(SolidButton)`
+  width: 100%;
+  margin-bottom: 20px;
+`;
+
+const HelperText = styled.div`
+  text-align: center;
+  margin-bottom: 20px;
 `;
 
 const Divider = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 20px 0;
+  width: 100%;
+  margin-bottom: 20px;
 
   &::before,
   &::after {
@@ -319,61 +295,20 @@ const Divider = styled.div`
 
 const DividerText = styled.span`
   ${typography('ko', 'caption2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
+  color: ${textColor.light['fg-neutral-assistive']};
   padding: 0 16px;
 `;
 
-const FormField = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
-`;
-
-const LoginOptions = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-`;
-
-const CheckboxWrapper = styled.div`
+const GoogleButton = styled(SolidButton)`
   display: flex;
   align-items: center;
-  gap: 8px;
-`;
-
-const CheckboxLabel = styled.span`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-strong']};
-`;
-
-const OptionLinks = styled.div`
-  display: flex;
-  gap: 16px;
-`;
-
-const OptionLink = styled.a`
-  ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  text-decoration: underline;
-  cursor: pointer;
-
-  &:hover {
-    color: ${textColor.light['fg-neutral-strong']};
-  }
-`;
-
-const LoginButton = styled(SolidButton)`
+  justify-content: center;
+  gap: 12px;
   width: 100%;
-  margin-top: 8px;
   margin-bottom: 20px;
 `;
 
-const SignUpPrompt = styled.div`
+const SignupText = styled.div`
   text-align: center;
-  ${typography('ko', 'body2', 'regular')};
-  color: ${textColor.light['fg-neutral-alternative']};
+  margin-top: 20px;
 `;
-
-const StyledSignUpButton = styled(TextButton)``;
