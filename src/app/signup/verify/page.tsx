@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   SolidButton,
-  TextButton,
   TextField,
   Dropdown,
   Checkbox,
@@ -18,8 +17,6 @@ import CarouselSection from '@/components/common/CarouselSection';
 import { countries } from '@/utils/countries';
 import {
   validateEmail,
-  validatePassword,
-  validateConfirmPassword,
   validateContactNumber,
   validateCompany,
 } from '@/utils/validation';
@@ -65,11 +62,6 @@ export default function SignupVerifyPage() {
     value: string;
     label: string;
   } | null>(null);
-  const [firstNameError, setFirstNameError] = useState('');
-  const [lastNameError, setLastNameError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [countryError, setCountryError] = useState('');
 
   const handleInputChange = (field: string, value: string) => {
@@ -83,7 +75,7 @@ export default function SignupVerifyPage() {
     }
 
     if (field === 'company') {
-      const result = validateCompany(value, false);
+      const result = validateCompany(value);
       setCompanyError(result.message);
     }
   };
@@ -188,7 +180,7 @@ export default function SignupVerifyPage() {
         // 실패 시 에러 메시지 표시
         alert('인증번호 전송에 실패했습니다. 다시 시도해 주세요.');
       }
-    } catch (error) {
+    } catch {
       // 실패 시 에러 메시지 표시
       alert('인증번호 전송에 실패했습니다. 다시 시도해 주세요.');
     }
@@ -257,15 +249,15 @@ export default function SignupVerifyPage() {
   const handleSignup = async () => {
     // 필수 필드 검증
     if (!formData.firstName.trim()) {
-      setFirstNameError('이름을 입력해주세요.');
+      alert('이름을 입력해주세요.');
       return;
     }
     if (!formData.lastName.trim()) {
-      setLastNameError('성을 입력해주세요.');
+      alert('성을 입력해주세요.');
       return;
     }
     if (!formData.email.trim()) {
-      setEmailError('이메일을 입력해주세요.');
+      alert('이메일을 입력해주세요.');
       return;
     }
     if (!formData.contactNumber.trim()) {
@@ -288,7 +280,7 @@ export default function SignupVerifyPage() {
     // 이메일 유효성 검사
     const emailResult = validateEmail(formData.email, true);
     if (!emailResult.isValid) {
-      setEmailError(emailResult.message);
+      alert(emailResult.message);
       return;
     }
 
@@ -300,7 +292,7 @@ export default function SignupVerifyPage() {
     }
 
     // 회사명 유효성 검사
-    const companyResult = validateCompany(formData.company, true);
+    const companyResult = validateCompany(formData.company);
     if (!companyResult.isValid) {
       setCompanyError(companyResult.message);
       return;
@@ -351,7 +343,7 @@ export default function SignupVerifyPage() {
         // 실패 시 실패 페이지로 이동
         router.push('/signup/fail');
       }
-    } catch (error) {
+    } catch {
       // 실패 시 실패 페이지로 이동
       router.push('/signup/fail');
     }
@@ -366,13 +358,13 @@ export default function SignupVerifyPage() {
       formData.country !== '' &&
       formData.contactNumber.trim() !== '' &&
       !contactError &&
-      !isVerificationCompleted // 인증 완료되면 비활성화
+      !isVerificationCompleted
     );
   };
 
   // 회원가입 버튼 활성화 조건
   const isSignupButtonEnabled = () => {
-    const baseConditions =
+    return (
       formData.email.trim() !== '' &&
       formData.lastName.trim() !== '' &&
       formData.firstName.trim() !== '' &&
@@ -382,9 +374,8 @@ export default function SignupVerifyPage() {
       isVerificationSent &&
       verificationCode.trim() !== '' &&
       isVerificationCompleted &&
-      termsAgreement;
-
-    return baseConditions;
+      termsAgreement
+    );
   };
 
   return (
@@ -580,7 +571,7 @@ export default function SignupVerifyPage() {
                 value={formData.company}
                 onChange={(e) => handleInputChange('company', e.target.value)}
                 onBlur={() => {
-                  const result = validateCompany(formData.company, true);
+                  const result = validateCompany(formData.company);
                   setCompanyError(result.message);
                 }}
                 placeholder='회사명을 입력해 주세요. (선택사항)'

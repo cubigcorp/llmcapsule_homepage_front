@@ -7,11 +7,13 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { spacing, TextButton, SolidButton } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
+import { authService } from '@/services/auth';
 
 export default function Header() {
   const pathname = usePathname();
   const [isAuthPage, setIsAuthPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     setIsAuthPage(
@@ -28,14 +30,46 @@ export default function Header() {
         pathname === '/contact' ||
         pathname === '/contact/'
     );
+
+    // 로그인 상태 확인
+    const accessToken = localStorage.getItem('access_token');
+    setIsLoggedIn(!!accessToken);
+
     setIsLoaded(true);
   }, [pathname]);
+
+  // 로그인 상태 변화 감지를 위한 추가 useEffect
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const accessToken = localStorage.getItem('access_token');
+      setIsLoggedIn(!!accessToken);
+    };
+
+    // 초기 상태 확인
+    checkLoginStatus();
+
+    // storage 이벤트 리스너 추가 (다른 탭에서 로그인/로그아웃 시)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'access_token' || e.key === 'refresh_token') {
+        checkLoginStatus();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    // 주기적으로 로그인 상태 확인 (5초마다)
+    const interval = setInterval(checkLoginStatus, 5000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
 
   // 초기 로딩 중이거나 인증 페이지인 경우 헤더를 숨김
   if (!isLoaded || isAuthPage) {
     return null;
   }
-  console.log('Current pathname:', pathname);
   return (
     <HeaderContainer>
       <HeaderWrapper>
@@ -65,14 +99,48 @@ export default function Header() {
           </Leading>
 
           <ButtonGroup>
-            <Link href='/login'>
-              <TextButton variant='primary' size='medium'>
-                로그인
-              </TextButton>
-            </Link>
-            <SolidButton variant='primary' size='medium'>
-              문의하기
-            </SolidButton>
+            {isLoggedIn ? (
+              <>
+                <TextButton
+                  variant='primary'
+                  size='medium'
+                  onClick={async () => {
+                    try {
+                      // 로그아웃 API 호출
+                      await authService.logout();
+                    } catch (error) {
+                      console.error('로그아웃 API 호출 실패:', error);
+                    } finally {
+                      // 성공/실패 관계없이 클라이언트 토큰 제거
+                      localStorage.removeItem('access_token');
+                      localStorage.removeItem('refresh_token');
+                      setIsLoggedIn(false);
+                      window.location.href = '/';
+                    }
+                  }}
+                >
+                  로그아웃
+                </TextButton>
+                <Link href='/contact'>
+                  <SolidButton variant='primary' size='medium'>
+                    문의하기
+                  </SolidButton>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href='/login'>
+                  <TextButton variant='primary' size='medium'>
+                    로그인
+                  </TextButton>
+                </Link>
+                <Link href='/contact'>
+                  <SolidButton variant='primary' size='medium'>
+                    문의하기
+                  </SolidButton>
+                </Link>
+              </>
+            )}
           </ButtonGroup>
         </GNB>
       </HeaderWrapper>
@@ -151,10 +219,4 @@ const Leading = styled.div`
   display: flex;
   align-items: center;
   gap: 64px;
-`;
-
-const Menu = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
 `;

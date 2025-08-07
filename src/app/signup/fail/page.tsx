@@ -4,8 +4,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-import { SolidButton, TextButton } from '@cubig/design-system';
-import { typography, textColor, borderColor } from '@cubig/design-system';
+import { SolidButton } from '@cubig/design-system';
+import { typography, textColor } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 

@@ -22,6 +22,7 @@ import CarouselSection from '@/components/common/CarouselSection';
 import PrivacyConsentModal from '@/components/modals/PrivacyConsentModal';
 import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
 import { validateEmail, validateContactNumber } from '@/utils/validation';
+import { contactService } from '@/services/contact';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -86,13 +87,45 @@ export default function ContactPage() {
     setIsMarketingModalOpen(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!isSubmitButtonEnabled()) {
       alert('모든 필수 항목을 입력하고 동의해 주세요.');
       return;
     }
-    console.log('Submit inquiry:', formData);
-    alert('문의가 접수되었습니다.');
+
+    try {
+      const contactData = {
+        email: formData.email,
+        name_or_organization: formData.name,
+        phone: formData.contactNumber,
+        contact_type: formData.inquiryType,
+        content: formData.inquiryContent,
+        consent_personal_info: formData.privacyAgreement,
+        consent_marketing: formData.marketingConsent,
+        service_name: 'cubig-auth',
+      };
+
+      const response = await contactService.sendContact(contactData);
+
+      if (response.success) {
+        alert('문의가 성공적으로 접수되었습니다.');
+        // 폼 초기화
+        setFormData({
+          email: '',
+          name: '',
+          contactNumber: '',
+          inquiryType: '',
+          inquiryContent: '',
+          privacyAgreement: false,
+          marketingConsent: false,
+        });
+      } else {
+        alert('문의 접수에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch (error) {
+      console.error('문의 접수 오류:', error);
+      alert('문의 접수 중 오류가 발생했습니다. 다시 시도해 주세요.');
+    }
   };
 
   const isSubmitButtonEnabled = () => {

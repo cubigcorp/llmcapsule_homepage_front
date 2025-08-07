@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useGoogleLogin } from '@react-oauth/google';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -12,6 +13,13 @@ import CarouselSection from '@/components/common/CarouselSection';
 import GoogleIcon from '@/assets/icons/Google.svg';
 import { authService } from '@/services/auth';
 import { validateEmail } from '@/utils/validation';
+
+interface GoogleTokenResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  scope: string;
+}
 
 export default function LoginPage() {
   const router = useRouter();
@@ -32,7 +40,10 @@ export default function LoginPage() {
     }
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e?: React.MouseEvent) => {
+    // 기본 동작 방지
+    e?.preventDefault();
+
     // 이메일 유효성 검사
     const emailResult = validateEmail(formData.email, true);
     if (!emailResult.isValid) {
@@ -60,16 +71,53 @@ export default function LoginPage() {
         // 로그인 실패 시 에러 메시지 표시
         setPasswordError('입력하신 정보를 다시 확인해주세요.');
       }
-    } catch (error) {
-      console.error('Login error:', error);
+    } catch {
       setPasswordError('입력하신 정보를 다시 확인해주세요.');
     }
   };
 
-  const handleGoogleLogin = async () => {
-    // TODO: 구글 로그인 구현
-    console.log('Google login clicked');
-    // 구글 OAuth 플로우 구현 필요
+  const login = useGoogleLogin({
+    onSuccess: async (tokenResponse: GoogleTokenResponse) => {
+      try {
+        // Google API로 사용자 정보 가져오기 (현재는 사용하지 않음)
+        await fetch(
+          `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokenResponse.access_token}`
+        );
+
+        // 구글 로그인 API 호출
+        const loginResponse = await authService.loginGoogle({
+          access_token: tokenResponse.access_token,
+        });
+
+        if (loginResponse.success) {
+          // 로그인 성공 시 토큰 저장
+          localStorage.setItem(
+            'access_token',
+            loginResponse.data!.access_token
+          );
+          localStorage.setItem(
+            'refresh_token',
+            loginResponse.data!.refresh_token
+          );
+
+          // 홈페이지로 이동
+          router.push('/');
+        } else {
+          alert('구글 로그인에 실패했습니다.');
+        }
+      } catch {
+        alert('구글 로그인 중 오류가 발생했습니다.');
+      }
+    },
+    onError: () => {
+      alert('구글 로그인에 실패했습니다.');
+    },
+  });
+
+  const handleGoogleLogin = (e?: React.MouseEvent) => {
+    // 기본 동작 방지
+    e?.preventDefault();
+    login();
   };
 
   // 로그인 버튼 활성화 조건

@@ -47,7 +47,7 @@ export interface VerifyEmailRequest {
 }
 
 export interface VerifyEmailGoogleRequest {
-  id_token: string;
+  access_token: string;
 }
 
 /**
@@ -59,12 +59,26 @@ export interface LoginEmailRequest {
 }
 
 export interface LoginGoogleRequest {
-  id_token: string;
+  access_token: string;
 }
 
 export interface LoginResponse {
   access_token: string;
   refresh_token: string;
+}
+
+/**
+ * 문의하기 관련 타입
+ */
+export interface ContactRequest {
+  email: string;
+  name_or_organization: string;
+  phone: string;
+  contact_type: string;
+  content: string;
+  consent_personal_info: boolean;
+  consent_marketing: boolean;
+  service_name: string;
 }
 
 /**
@@ -139,6 +153,12 @@ class ApiClient {
     // 요청 인터셉터
     this.axiosInstance.interceptors.request.use(
       (config) => {
+        // Authorization 헤더 추가
+        const accessToken = localStorage.getItem('access_token');
+        if (accessToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+
         // 요청 로깅 (개발 환경에서만)
         if (env.NODE_ENV === 'development') {
           console.log(
@@ -167,7 +187,7 @@ class ApiClient {
       (error) => {
         // 에러 로깅 (개발 환경에서만)
         if (env.NODE_ENV === 'development') {
-          console.error(
+          console.log(
             'API Error:',
             error.response?.status,
             error.response?.data
@@ -275,6 +295,10 @@ export const API_ENDPOINTS = {
     EMAIL: '/login/email',
     GOOGLE: '/login/google',
   },
+  // 로그아웃 관련
+  LOGOUT: '/logout',
+  // 문의하기 관련
+  CONTACT: '/contact',
   // 이메일 인증 관련
   VERIFY: {
     EMAIL: '/verify-email',

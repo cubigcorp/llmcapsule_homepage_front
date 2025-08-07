@@ -37,8 +37,10 @@ export default function SignupSuccessPage() {
                 height={48}
               />
             </SuccessIcon>
-            <Title>LLM Capsule</Title>
-            <SubTitle>회원가입을 환영합니다!</SubTitle>
+            <Title>
+              LLM Capsule <br />
+              회원가입을 환영합니다!{' '}
+            </Title>
             <ButtonContainer>
               <StartButton size='large' onClick={handleGoToHome}>
                 시작하기
@@ -136,19 +138,13 @@ const SignupForm = styled.div`
 `;
 
 const SuccessIcon = styled.div`
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 `;
 
 const Title = styled.h1`
   ${typography('ko', 'title1', 'semibold')}
   color: ${textColor.light['fg-neutral-strong']};
-  margin: 0 0 24px 0;
-`;
-
-const SubTitle = styled.h2`
-  ${typography('ko', 'title2', 'semibold')}
-  color: ${textColor.light['fg-neutral-strong']};
-  margin: 0 0 48px 0;
+  margin: 0 0 60px 0;
 `;
 
 const ButtonContainer = styled.div`

@@ -6,7 +6,6 @@ import {
   textColor,
   color,
   borderColor,
-  radius,
 } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 
@@ -176,12 +175,6 @@ const FooterColumn = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`;
-
-const FooterColumnItem = styled.span`
-  ${typography('ko', 'body3', 'medium')}
-  color: ${textColor.dark['fg-neutral-primary']};
-  cursor: pointer;
 `;
 
 const Logo = styled.div`

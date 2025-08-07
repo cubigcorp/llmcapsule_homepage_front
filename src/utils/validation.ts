@@ -114,10 +114,7 @@ export const validateContactNumber = (
 };
 
 // 회사/소속기관명 유효성 검사
-export const validateCompany = (
-  company: string,
-  isTouched: boolean = false
-): ValidationResult => {
+export const validateCompany = (company: string): ValidationResult => {
   if (company && company.trim().length < 2) {
     return {
       isValid: false,

@@ -1,12 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import {
-  typography,
-  textColor,
-  radius,
-  borderColor,
-} from '@cubig/design-system';
+import { typography, textColor, radius } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 
 export default function ProcessSection() {

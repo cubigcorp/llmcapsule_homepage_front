@@ -47,6 +47,13 @@ export const authService = {
   },
 
   /**
+   * 로그아웃
+   */
+  async logout() {
+    return apiClient.post(API_ENDPOINTS.LOGOUT);
+  },
+
+  /**
    * 이메일 인증 (회원가입 링크 발송)
    */
   async verifyEmail(data: VerifyEmailRequest) {
