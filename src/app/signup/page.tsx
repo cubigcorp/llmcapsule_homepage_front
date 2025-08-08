@@ -338,18 +338,18 @@ const LogoWrapper = styled.div`
 `;
 
 const SignupWrapper = styled.div`
-  max-width: 1440px;
+  max-width: ${({ theme }) => theme.container.lg};
   margin: 0 auto;
   display: flex;
   width: 100%;
   height: 100%;
   position: relative;
 
-  @media (min-width: 1920px) {
-    max-width: 1920px;
+  @media (min-width: 1921px) {
+    max-width: ${({ theme }) => theme.container.xl};
   }
 
-  @media (max-width: 768px) {
+  ${({ theme }) => theme.media.maxMd} {
     flex-direction: column;
   }
 `;
@@ -395,17 +395,9 @@ const SignupLeft = styled.div<{ $isEmailVerification?: boolean }>`
 
 const SignupRight = styled.div`
   flex: 1;
-  padding: 24px;
 
   @media (max-width: 768px) {
-    padding: 16px;
-    min-height: 300px;
     display: none;
-  }
-
-  @media (max-width: 375px) {
-    padding: 12px;
-    min-height: 250px;
   }
 `;
 

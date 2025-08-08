@@ -252,18 +252,18 @@ const LogoWrapper = styled.div`
 `;
 
 const LoginWrapper = styled.div`
-  max-width: 1440px;
+  max-width: ${({ theme }) => theme.container.lg};
   margin: 0 auto;
   display: flex;
   width: 100%;
   height: 100%;
   position: relative;
 
-  @media (min-width: 1920px) {
-    max-width: 1920px;
+  @media (min-width: 1921px) {
+    max-width: ${({ theme }) => theme.container.xl};
   }
 
-  @media (max-width: 768px) {
+  ${({ theme }) => theme.media.maxMd} {
     flex-direction: column;
   }
 `;
@@ -273,18 +273,21 @@ const LoginLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 120px 40px 40px 40px;
+  padding: 120px ${({ theme }) => theme.spacing.xl}
+    ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
 
-  @media (max-width: 1920px) {
-    padding: 120px 40px 40px 40px;
+  ${({ theme }) => theme.media.maxXl} {
+    padding: 120px ${({ theme }) => theme.spacing.xl}
+      ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
   }
 
-  @media (max-width: 768px) {
+  ${({ theme }) => theme.media.maxMd} {
     padding: 100px 20px 20px 20px;
   }
 
-  @media (max-width: 375px) {
-    padding: 80px 16px 16px 16px;
+  ${({ theme }) => theme.media.maxSm} {
+    padding: 80px ${({ theme }) => theme.spacing.sm}
+      ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.sm};
   }
 `;
 
@@ -294,7 +297,7 @@ const LoginRight = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media (max-width: 768px) {
+  ${({ theme }) => theme.media.maxMd} {
     display: none;
   }
 `;

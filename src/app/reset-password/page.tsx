@@ -21,7 +21,6 @@ export default function ResetPasswordPage() {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
-  const [isResending, setIsResending] = useState(false);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -63,8 +62,6 @@ export default function ResetPasswordPage() {
   };
 
   const handleResendEmail = async () => {
-    setIsResending(true);
-
     try {
       // 실제 비밀번호 재설정 이메일 재발송 API 호출
       const response = await authService.requestPasswordReset({
@@ -81,8 +78,6 @@ export default function ResetPasswordPage() {
       }
     } catch {
       toast.error('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
-    } finally {
-      setIsResending(false);
     }
   };
 
@@ -164,18 +159,18 @@ const ResetPasswordContainer = styled.div`
 `;
 
 const ResetPasswordWrapper = styled.div`
-  max-width: 1440px;
+  max-width: ${({ theme }) => theme.container.lg};
   margin: 0 auto;
   display: flex;
   width: 100%;
   height: 100%;
   position: relative;
 
-  @media (min-width: 1920px) {
-    max-width: 1920px;
+  @media (min-width: 1921px) {
+    max-width: ${({ theme }) => theme.container.xl};
   }
 
-  @media (max-width: 768px) {
+  ${({ theme }) => theme.media.maxMd} {
     flex-direction: column;
   }
 `;
@@ -185,34 +180,30 @@ const ResetPasswordLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 160px 40px 40px 40px;
+  padding: 160px ${({ theme }) => theme.spacing.xl}
+    ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
 
-  @media (max-width: 1920px) {
-    padding: 160px 40px 40px 40px;
+  ${({ theme }) => theme.media.maxXl} {
+    padding: 160px ${({ theme }) => theme.spacing.xl}
+      ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
   }
 
-  @media (max-width: 768px) {
-    padding: 100px 24px 24px 24px;
+  ${({ theme }) => theme.media.maxMd} {
+    padding: 100px ${({ theme }) => theme.spacing.md}
+      ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.md};
   }
 
-  @media (max-width: 375px) {
-    padding: 80px 16px 16px 16px;
+  ${({ theme }) => theme.media.maxSm} {
+    padding: 80px ${({ theme }) => theme.spacing.sm}
+      ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.sm};
   }
 `;
 
 const ResetPasswordRight = styled.div`
   flex: 1;
-  padding: 24px;
 
-  @media (max-width: 768px) {
-    padding: 16px;
-    min-height: 300px;
+  ${({ theme }) => theme.media.maxMd} {
     display: none;
-  }
-
-  @media (max-width: 375px) {
-    padding: 12px;
-    min-height: 250px;
   }
 `;
 
