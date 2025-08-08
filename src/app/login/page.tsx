@@ -1,224 +1,341 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useGoogleLogin } from '@react-oauth/google';
 import styled from 'styled-components';
-import {
-  typography,
-  textColor,
-  radius,
-  color,
-  borderColor,
-  SolidButton,
-  TextField,
-  Checkbox,
-} from '@cubig/design-system';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { SolidButton, TextButton, TextField } from '@cubig/design-system';
+import { typography, textColor, borderColor } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
+import CarouselSection from '@/components/common/CarouselSection';
+import GoogleIcon from '@/assets/icons/Google.svg';
+import { authService } from '@/services/auth';
+import { validateEmail } from '@/utils/validation';
+
+interface GoogleTokenResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  scope: string;
+}
 
 export default function LoginPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    keepLoggedIn: false,
   });
+
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+
+    if (field === 'email') {
+      const result = validateEmail(value, false);
+      setEmailError(result.message);
+    }
   };
 
-  const handleCheckboxChange = (checked: boolean) => {
-    setFormData((prev) => ({ ...prev, keepLoggedIn: checked }));
+  const handleLogin = async (e?: React.MouseEvent) => {
+    // 기본 동작 방지
+    e?.preventDefault();
+
+    // 이메일 유효성 검사
+    const emailResult = validateEmail(formData.email, true);
+    if (!emailResult.isValid) {
+      setEmailError(emailResult.message);
+      return;
+    }
+
+    setEmailError('');
+    setPasswordError('');
+
+    try {
+      const response = await authService.loginEmail({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (response.success) {
+        // 로그인 성공 시 토큰 저장
+        localStorage.setItem('access_token', response.data!.access_token);
+        localStorage.setItem('refresh_token', response.data!.refresh_token);
+
+        // 홈페이지로 이동
+        router.push('/');
+      } else {
+        // 로그인 실패 시 에러 메시지 표시
+        setPasswordError('입력하신 정보를 다시 확인해주세요.');
+      }
+    } catch {
+      setPasswordError('입력하신 정보를 다시 확인해주세요.');
+    }
   };
 
-  const handleGoogleLogin = () => {
-    // 구글 로그인 로직
-    console.log('Google login clicked');
+  const login = useGoogleLogin({
+    onSuccess: async (tokenResponse: GoogleTokenResponse) => {
+      try {
+        // Google API로 사용자 정보 가져오기 (현재는 사용하지 않음)
+        await fetch(
+          `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokenResponse.access_token}`
+        );
+
+        // 구글 로그인 API 호출
+        const loginResponse = await authService.loginGoogle({
+          access_token: tokenResponse.access_token,
+        });
+
+        if (loginResponse.success) {
+          // 로그인 성공 시 토큰 저장
+          localStorage.setItem(
+            'access_token',
+            loginResponse.data!.access_token
+          );
+          localStorage.setItem(
+            'refresh_token',
+            loginResponse.data!.refresh_token
+          );
+
+          // 홈페이지로 이동
+          router.push('/');
+        } else {
+          const userInfoResponse = await fetch(
+            `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokenResponse.access_token}`
+          );
+          const userInfo = await userInfoResponse.json();
+
+          const verifyResponse = await authService.verifyEmailGoogle({
+            access_token: tokenResponse.access_token,
+          });
+
+          if (verifyResponse.success) {
+            const params = new URLSearchParams({
+              google: 'true',
+              email: userInfo.email,
+            });
+            window.location.href = `/signup/verify?${params.toString()}`;
+          } else {
+            alert('구글 이메일 인증에 실패했습니다.');
+          }
+        }
+      } catch {
+        alert('구글 로그인 중 오류가 발생했습니다.');
+      }
+    },
+    onError: () => {
+      alert('구글 로그인에 실패했습니다.');
+    },
+  });
+
+  const handleGoogleLogin = (e?: React.MouseEvent) => {
+    // 기본 동작 방지
+    e?.preventDefault();
+    login();
   };
 
-  const handleLogin = () => {
-    // 로그인 로직
-    console.log('Login clicked', formData);
+  // 로그인 버튼 활성화 조건
+  const isLoginButtonEnabled = () => {
+    return (
+      formData.email.trim() !== '' &&
+      formData.password.trim() !== '' &&
+      !emailError
+    );
   };
 
   return (
     <LoginContainer>
-      <LoginLeft>
-        <LoginForm>
-          <LoginTitle>로그인</LoginTitle>
-
-          <GoogleLoginButton onClick={handleGoogleLogin}>
-            <GoogleIcon>
-              <img src={getAssetPath('/icons/Google.svg')} alt='Google' />
-            </GoogleIcon>
-            구글 계정으로 로그인
-          </GoogleLoginButton>
-
-          <Divider>
-            <DividerText>or</DividerText>
-          </Divider>
-
-          <FormField>
-            <TextField
-              label='이메일'
-              size='large'
-              value={formData.email}
-              onChange={(e) => handleInputChange('email', e.target.value)}
-              placeholder='이메일을 입력해주세요.'
+      <LoginWrapper>
+        <LogoWrapper>
+          <Link href='/'>
+            <Image
+              src={getAssetPath('/icons/Logo.svg')}
+              alt='Logo'
+              width={32}
+              height={32}
             />
-          </FormField>
+          </Link>
+        </LogoWrapper>
+        <LoginLeft>
+          <LoginForm>
+            <LoginTitle>로그인</LoginTitle>
 
-          <FormField>
-            <TextField
-              label='비밀번호'
-              size='large'
-              type='password'
-              value={formData.password}
-              onChange={(e) => handleInputChange('password', e.target.value)}
-              placeholder='비밀번호를 입력해주세요.'
-            />
-          </FormField>
-
-          <LoginOptions>
-            <CheckboxWrapper>
-              <Checkbox
-                state={formData.keepLoggedIn ? 'checked' : 'unchecked'}
-                onChange={handleCheckboxChange}
+            <FormField>
+              <TextField
+                label='이메일'
+                labelType='required'
+                size='large'
+                value={formData.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                placeholder='email@example.com'
+                description={emailError}
+                status={emailError ? 'negative' : 'default'}
               />
-              <CheckboxLabel>로그인 상태 유지</CheckboxLabel>
-            </CheckboxWrapper>
-            <OptionLinks>
-              <OptionLink href='/find-account'>계정 찾기</OptionLink>
-              <OptionLink href='/find-password'>비밀번호 찾기</OptionLink>
-            </OptionLinks>
-          </LoginOptions>
+            </FormField>
 
-          <LoginButton onClick={handleLogin}>로그인</LoginButton>
+            <FormField>
+              <TextField
+                label='비밀번호'
+                labelType='required'
+                size='large'
+                type='password'
+                value={formData.password}
+                onChange={(e) => handleInputChange('password', e.target.value)}
+                placeholder='비밀번호를 입력해주세요.'
+                description={passwordError}
+                status={passwordError ? 'negative' : 'default'}
+              />
+            </FormField>
 
-          <SignUpPrompt>
-            처음 방문하셨나요? <SignUpLink href='/signup'>회원가입</SignUpLink>
-          </SignUpPrompt>
+            <LoginButton
+              size='large'
+              onClick={handleLogin}
+              disabled={!isLoginButtonEnabled()}
+            >
+              로그인
+            </LoginButton>
 
-          <Copyright>© CUBIG All Rights Reserved.</Copyright>
-        </LoginForm>
-      </LoginLeft>
+            <HelperText>
+              <Link href='/reset-password'>
+                <TextButton variant='primary' size='small'>
+                  비밀번호 찾기
+                </TextButton>
+              </Link>
+            </HelperText>
 
-      <LoginRight>
-        <DemoContent>
-          <DemoBox>
-            <DemoText>
-              홍길동님(010-9876-5432) 최근 구매내역 기반으로 맞춤 추천 문구
-              작성해줘. 그리고 국민은행 123456-78-901234 계좌로 결제 유도 문구도
-              포함해 줘.
-            </DemoText>
-            <DemoNumbers>
-              <DemoNumber>01</DemoNumber>
-              <DemoNumber>02</DemoNumber>
-              <DemoNumber>03</DemoNumber>
-            </DemoNumbers>
-          </DemoBox>
+            <Divider>
+              <DividerText>or</DividerText>
+            </Divider>
 
-          <FilteredBox>
-            <FilteredHeader>
-              <FilteredDot />
-              <FilteredTitle>실시간 프롬프트 필터링</FilteredTitle>
-              <FilteredCheck />
-            </FilteredHeader>
-            <FilteredText>
-              [이름]([연락처 C]) 최근 구매내역 기반으로 맞춤 추천 문구 작성해줘.
-              그리고 국민은행 [계좌 D]로 결제 유도 문구도 포함해 줘.
-            </FilteredText>
-          </FilteredBox>
+            <GoogleButton
+              variant='secondary'
+              size='large'
+              leadingIcon={GoogleIcon}
+              onClick={handleGoogleLogin}
+            >
+              구글 계정으로 로그인
+            </GoogleButton>
 
-          <FeatureDescription>
-            <FeatureTitle>실시간 프롬프트 필터링</FeatureTitle>
-            <FeatureText>
-              프롬프트 입력 시 이름, 연락처, 계좌번호 등 민감정보를 즉시
-              감지하고 자동 가명화하여 유출을 방지합니다. 사용자가 인식하지
-              못하는 사이에 모든 개인정보가 안전하게 보호됩니다.
-            </FeatureText>
-          </FeatureDescription>
+            <SignupText>
+              처음 방문하시나요?{' '}
+              <Link href='/signup'>
+                <TextButton variant='secondary' size='small'>
+                  회원가입
+                </TextButton>
+              </Link>
+            </SignupText>
+          </LoginForm>
+        </LoginLeft>
 
-          <NavigationArrows>
-            <ArrowButton>&lt;</ArrowButton>
-            <ArrowButton>&gt;</ArrowButton>
-          </NavigationArrows>
-        </DemoContent>
-      </LoginRight>
+        <LoginRight>
+          <CarouselSection />
+        </LoginRight>
+      </LoginWrapper>
     </LoginContainer>
   );
 }
 
 const LoginContainer = styled.div`
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  position: relative;
+`;
+
+const LogoWrapper = styled.div`
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  z-index: 10;
+`;
+
+const LoginWrapper = styled.div`
+  max-width: ${({ theme }) => theme.container.lg};
+  margin: 0 auto;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  @media (min-width: 1921px) {
+    max-width: ${({ theme }) => theme.container.xl};
+  }
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+  }
 `;
 
 const LoginLeft = styled.div`
   flex: 1;
-  background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
 `;
 
 const LoginRight = styled.div`
   flex: 1;
-  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+
+  @media (max-width: 992px) {
+    display: none;
+  }
 `;
 
 const LoginForm = styled.div`
   width: 100%;
-  max-width: 400px;
+  max-width: 398px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  align-items: center;
+  text-align: left;
+  height: auto;
 `;
 
 const LoginTitle = styled.h1`
-  ${typography('ko', 'title3', 'semibold')}
-  text-align: center;
-  margin: 0;
-`;
-
-const GoogleLoginButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  width: 100%;
-  padding: 12px 16px;
-  background-color: white;
-  border: 1px solid ${borderColor.light['color-border-primary']};
-  border-radius: ${radius['rounded-2']};
-  ${typography('ko', 'body2', 'medium')}
+  ${typography('ko', 'title1', 'semibold')}
   color: ${textColor.light['fg-neutral-strong']};
-  cursor: pointer;
-  transition: all 0.2s ease;
+  margin: 0 0 60px 0;
+  text-align: center;
 
-  &:hover {
-    background-color: ${color.gray['50']};
+  @media (max-width: 768px) {
+    margin: 0 0 40px 0;
+  }
+
+  @media (max-width: 375px) {
+    margin: 0 0 32px 0;
   }
 `;
 
-const GoogleIcon = styled.div`
-  width: 20px;
-  height: 20px;
+const FormField = styled.div`
+  width: 100%;
+  margin-bottom: 20px;
 
-  img {
-    width: 100%;
-    height: 100%;
+  &:last-of-type {
+    margin-bottom: 32px;
   }
+`;
+
+const LoginButton = styled(SolidButton)`
+  width: 100%;
+  margin-bottom: 20px;
+`;
+
+const HelperText = styled.div`
+  text-align: center;
+  margin-bottom: 20px;
 `;
 
 const Divider = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 20px 0;
+  width: 100%;
+  margin-bottom: 20px;
 
   &::before,
   &::after {
@@ -229,211 +346,21 @@ const Divider = styled.div`
 `;
 
 const DividerText = styled.span`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
+  ${typography('ko', 'caption2', 'regular')}
+  color: ${textColor.light['fg-neutral-assistive']};
   padding: 0 16px;
 `;
 
-const FormField = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const LoginOptions = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const CheckboxWrapper = styled.div`
+const GoogleButton = styled(SolidButton)`
   display: flex;
   align-items: center;
-  gap: 8px;
-`;
-
-const CheckboxLabel = styled.span`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-strong']};
-`;
-
-const OptionLinks = styled.div`
-  display: flex;
-  gap: 16px;
-`;
-
-const OptionLink = styled.a`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    color: ${textColor.light['fg-neutral-strong']};
-  }
-`;
-
-const LoginButton = styled(SolidButton)`
+  justify-content: center;
+  gap: 12px;
   width: 100%;
-  margin-top: 8px;
+  margin-bottom: 20px;
 `;
 
-const SignUpPrompt = styled.div`
+const SignupText = styled.div`
   text-align: center;
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-`;
-
-const SignUpLink = styled.a`
-  color: ${textColor.light['fg-neutral-strong']};
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const Copyright = styled.div`
-  text-align: center;
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  margin-top: auto;
-`;
-
-const DemoContent = styled.div`
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  position: relative;
-`;
-
-const DemoBox = styled.div`
-  background-color: white;
-  border-radius: ${radius['rounded-3']};
-  padding: 20px;
-  position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-`;
-
-const DemoText = styled.p`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-strong']};
-  margin: 0;
-  line-height: 1.6;
-`;
-
-const DemoNumbers = styled.div`
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  display: flex;
-  gap: 4px;
-`;
-
-const DemoNumber = styled.div`
-  width: 24px;
-  height: 24px;
-  background-color: ${color.green['500']};
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  ${typography('ko', 'body3', 'medium')}
-  font-size: 12px;
-`;
-
-const FilteredBox = styled.div`
-  background-color: white;
-  border-radius: ${radius['rounded-3']};
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-`;
-
-const FilteredHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-`;
-
-const FilteredDot = styled.div`
-  width: 8px;
-  height: 8px;
-  background-color: ${color.green['500']};
-  border-radius: 50%;
-`;
-
-const FilteredTitle = styled.span`
-  ${typography('ko', 'body2', 'medium')}
-  color: ${textColor.light['fg-neutral-strong']};
-  flex: 1;
-`;
-
-const FilteredCheck = styled.div`
-  width: 16px;
-  height: 16px;
-  background-color: ${color.green['500']};
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 10px;
-  font-weight: bold;
-`;
-
-const FilteredText = styled.p`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-strong']};
-  margin: 0;
-  line-height: 1.6;
-`;
-
-const FeatureDescription = styled.div`
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: ${radius['rounded-3']};
-  padding: 24px;
-`;
-
-const FeatureTitle = styled.h3`
-  ${typography('ko', 'title3', 'semibold')}
-  color: white;
-  margin: 0 0 16px 0;
-`;
-
-const FeatureText = styled.p`
-  ${typography('ko', 'body3', 'regular')}
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0;
-  line-height: 1.6;
-`;
-
-const NavigationArrows = styled.div`
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  display: flex;
-  gap: 8px;
-`;
-
-const ArrowButton = styled.button`
-  width: 40px;
-  height: 40px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border: none;
-  border-radius: 50%;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  ${typography('ko', 'body2', 'medium')}
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-  }
+  margin-top: 20px;
 `;

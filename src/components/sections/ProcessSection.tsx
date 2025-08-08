@@ -1,12 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import {
-  typography,
-  textColor,
-  radius,
-  borderColor,
-} from '@cubig/design-system';
+import { typography, textColor, radius } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 
 export default function ProcessSection() {
@@ -37,6 +32,14 @@ const ProcessContainer = styled.section`
   display: flex;
   justify-content: center;
   padding-bottom: 120px;
+
+  @media (max-width: 768px) {
+    padding-bottom: 80px;
+  }
+
+  @media (max-width: 375px) {
+    padding-bottom: 60px;
+  }
 `;
 
 const ProcessWrapper = styled.div`
@@ -46,6 +49,23 @@ const ProcessWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+    padding: 120px 0;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 60px 24px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 40px 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 32px 12px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -71,11 +91,21 @@ const ProcessDescription = styled.p`
   color: ${textColor.dark['fg-neutral-alternative']};
   text-align: center;
   margin-bottom: 56px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 375px) {
+    margin-bottom: 32px;
+  }
 `;
 
 const ProcessImageWrapper = styled.div`
-  width: 1280px;
-  height: 418px;
+  width: 100%;
+  max-width: 1280px;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,7 +113,6 @@ const ProcessImageWrapper = styled.div`
 
   img {
     width: 100%;
-    max-width: 1280px;
     height: auto;
     display: block;
   }

@@ -127,12 +127,32 @@ const SolutionContainer = styled.section`
 `;
 
 const SolutionWrapper = styled.div`
-  width: 1440px;
+  width: 100%;
+  max-width: 1440px;
   padding: 80px;
   display: flex;
   flex-direction: column;
   gap: 22px;
   margin: 0 auto;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+    padding: 120px;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 60px 24px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 40px 16px;
+    gap: 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 32px 12px;
+    gap: 12px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -148,17 +168,35 @@ const SectionTitle = styled.h2`
 const SolutionHeader = styled.div`
   text-align: center;
   margin-bottom: 80px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 375px) {
+    margin-bottom: 32px;
+  }
 `;
 
 const SolutionTitle = styled.h2`
   ${typography('ko', 'title4', 'semibold')}
   margin-bottom: 24px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+  }
 `;
 
 const SolutionDescription = styled.p`
   ${typography('ko', 'heading1', 'medium')}
   color: ${textColor.light['fg-neutral-alternative']};
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    br {
+      display: none;
+    }
+  }
 `;
 
 const SolutionGrid = styled.div`
@@ -166,13 +204,32 @@ const SolutionGrid = styled.div`
   flex-direction: column;
   gap: 40px;
   margin-top: 60px;
+
+  @media (max-width: 768px) {
+    gap: 32px;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 375px) {
+    gap: 24px;
+    margin-top: 32px;
+  }
 `;
 
 const SolutionCard = styled.div`
   border-radius: ${radius['rounded-4']};
   display: flex;
   gap: 62px;
-  align-items: stretch;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  @media (max-width: 375px) {
+    gap: 16px;
+  }
 `;
 
 const CardNumber = styled.div`
@@ -194,6 +251,17 @@ const CardDescription = styled.p`
   height: 355px;
   border-left: 1px solid ${borderColor.light['color-border-primary']};
   padding-left: 20px;
+
+  @media (max-width: 768px) {
+    height: auto;
+    min-height: 200px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 375px) {
+    min-height: 150px;
+    padding-left: 16px;
+  }
 `;
 
 const CardContent = styled.div`
@@ -204,7 +272,7 @@ const CardContent = styled.div`
 
 const CardVisual = styled.div`
   width: 800px;
-  height: 480px;
+  height: auto;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -214,5 +282,24 @@ const CardVisual = styled.div`
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+
+  @media (max-width: 1200px) {
+    width: 600px;
+  }
+
+  @media (max-width: 992px) {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+  }
+
+  @media (max-width: 375px) {
+    max-width: 300px;
   }
 `;

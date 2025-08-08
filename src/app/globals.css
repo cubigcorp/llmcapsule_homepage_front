@@ -4,6 +4,16 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* 반응형 브레이크포인트 */
+  --breakpoint-desktop: 1920px;
+  --breakpoint-laptop: 1440px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-mobile: 375px;
+
+  /* 컨테이너 최대 너비 */
+  --container-max-width: 1440px;
+  --container-padding: 80px;
 }
 
 @theme inline {
@@ -11,6 +21,13 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -25,61 +42,131 @@ body {
 .container-1440 {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 2rem; /* 32px */
+  padding: 0 2rem;
+  /* 32px */
 }
 
 /* 섹션 공통 스타일 */
 .section-padding {
-  padding: 4rem 0; /* 64px top/bottom */
+  padding: 4rem 0;
+  /* 64px top/bottom */
 }
 
 .section-padding-lg {
-  padding: 6rem 0; /* 96px top/bottom */
+  padding: 6rem 0;
+  /* 96px top/bottom */
 }
 
 /* 헤더 높이 보정 */
 .pt-header {
-  padding-top: 5rem; /* 80px - 헤더 높이 보정 */
+  padding-top: 5rem;
+  /* 80px - 헤더 높이 보정 */
 }
 
 /* 텍스트 크기 - 1440px 기준 */
 .text-hero {
-  font-size: 4rem; /* 64px */
+  font-size: 4rem;
+  /* 64px */
   line-height: 1.1;
   font-weight: 700;
 }
 
 .text-section-title {
-  font-size: 2.5rem; /* 40px */
+  font-size: 2.5rem;
+  /* 40px */
   line-height: 1.2;
   font-weight: 700;
 }
 
 .text-large {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
+  /* 24px */
   line-height: 1.5;
 }
 
-@media (max-width: 1440px) {
+/* 1920px 이상 (대형 데스크톱) */
+@media (min-width: 1920px) {
   .container-1440 {
-    padding: 0 1.5rem; /* 24px */
-  }
-}
-
-@media (max-width: 768px) {
-  .container-1440 {
-    padding: 0 1rem; /* 16px */
+    max-width: 1920px;
+    padding: 0 120px;
   }
 
   .text-hero {
-    font-size: 2.5rem; /* 40px */
+    font-size: 5rem;
+    /* 80px */
   }
 
   .text-section-title {
-    font-size: 2rem; /* 32px */
+    font-size: 3rem;
+    /* 48px */
   }
 
   .text-large {
-    font-size: 1.25rem; /* 20px */
+    font-size: 1.75rem;
+    /* 28px */
+  }
+}
+
+/* 1440px 이하 (노트북) */
+@media (max-width: 1440px) {
+  .container-1440 {
+    padding: 0 1.5rem;
+    /* 24px */
+  }
+}
+
+/* 768px 이하 (태블릿) */
+@media (max-width: 768px) {
+  .container-1440 {
+    padding: 0 1rem;
+    /* 16px */
+  }
+
+  .text-hero {
+    font-size: 2.5rem;
+    /* 40px */
+  }
+
+  .text-section-title {
+    font-size: 2rem;
+    /* 32px */
+  }
+
+  .text-large {
+    font-size: 1.25rem;
+    /* 20px */
+  }
+}
+
+/* 375px 이하 (모바일) */
+@media (max-width: 375px) {
+  .container-1440 {
+    padding: 0 0.75rem;
+    /* 12px */
+  }
+
+  .text-hero {
+    font-size: 2rem;
+    /* 32px */
+  }
+
+  .text-section-title {
+    font-size: 1.5rem;
+    /* 24px */
+  }
+
+  .text-large {
+    font-size: 1rem;
+    /* 16px */
+  }
+
+  .section-padding {
+    padding: 2rem 0;
+    /* 32px top/bottom */
+  }
+
+  .section-padding-lg {
+    padding: 3rem 0;
+    /* 48px top/bottom */
   }
 }
