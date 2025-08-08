@@ -297,7 +297,7 @@ const LoginRight = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${({ theme }) => theme.media.maxMd} {
+  @media (max-width: 992px) {
     display: none;
   }
 `;

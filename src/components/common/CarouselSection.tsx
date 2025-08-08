@@ -164,10 +164,13 @@ const CarouselContainer = styled.div`
   height: 100%;
   padding: 24px;
 
+  @media (max-width: 992px) {
+    display: none;
+  }
+
   @media (max-width: 768px) {
     padding: 16px;
     min-height: 300px;
-    display: none;
   }
 
   @media (max-width: 375px) {
@@ -298,19 +301,19 @@ const TextContent = styled.div`
   position: absolute;
   bottom: 40px;
   left: 40px;
-  max-width: 368px;
+  right: 180px;
   z-index: 20;
 
   @media (max-width: 768px) {
     bottom: 20px;
     left: 20px;
-    max-width: 300px;
+    right: 120px;
   }
 
   @media (max-width: 375px) {
     bottom: 16px;
     left: 16px;
-    max-width: 250px;
+    right: 100px;
   }
 `;
 
