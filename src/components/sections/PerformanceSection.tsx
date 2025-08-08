@@ -15,93 +15,89 @@ export default function PerformanceSection() {
       <PerformanceWrapper>
         <SectionTitle>Performance & Certification</SectionTitle>
         <CardsContainer>
-          <CardsRow>
-            <PerformanceCard>
-              <CardTitle>1종 오류 정확도</CardTitle>
-              <CardValue>98.10%</CardValue>
-              <CardDescription>
-                정상 데이터를 불필요하게 차단하지 않아 효율적인
-                <br /> 데이터 활용이 가능합니다.
-              </CardDescription>
-            </PerformanceCard>
-            <PerformanceCard>
-              <CardTitle>2종 오류 정확도</CardTitle>
-              <CardValue>99.14%</CardValue>
-              <CardDescription>
-                민감정보를 놓치지 않고 탐지·차단하여
-                <br /> 기업 데이터 유출 위험을 최소화합니다.
-              </CardDescription>
-            </PerformanceCard>
-            <PerformanceCard>
-              <CardTitle>정형화된 개인정보 보호</CardTitle>
-              <CardValue>100%</CardValue>
-              <CardDescription>
-                정형 데이터에서 개인정보 노출 가능성을 <br />
-                완벽히 차단합니다.
-              </CardDescription>
-            </PerformanceCard>
-            <PerformanceCard>
-              <CardTitle>Public LLM 유사도</CardTitle>
-              <CardValue>98%</CardValue>
-              <CardDescription>
-                민감정보 보호 후에도 답변의 의미와 문맥이
-                <br /> 거의 유지됩니다.
-              </CardDescription>
-            </PerformanceCard>
-          </CardsRow>
-          <CardsRow>
-            <PerformanceCard>
-              <CardTitle>Privacy-Utility</CardTitle>
-              <CardValue>Trade-off 개선</CardValue>
-              <CardDescription>
-                고도화된 변환 기술로 보안과 데이터 활용성의
-                <br /> 최적 균형을 실현합니다.
-              </CardDescription>
-            </PerformanceCard>
-            <PerformanceCard>
-              <CardTitle>벤처나라 등록 제품</CardTitle>
-              <CardValue>
-                <LogoImage
-                  src={getAssetPath('/icons/public-procurement-service.svg')}
-                  alt='조달청'
-                  style={{ width: '135px', height: '52px' }}
-                />
-              </CardValue>
-              <CardDescription>
-                조달청 공식 등록으로 공공기관 도입 신뢰성을
-                <br />
-                확보했습니다.
-              </CardDescription>
-            </PerformanceCard>
-            <PerformanceCard>
-              <CardTitle>개인정보 비식별 가이드라인 준수</CardTitle>
-              <CardValue>
-                <LogoImage
-                  src={getAssetPath('/icons/ministry-interior-safety.svg')}
-                  alt='행정안전부'
-                  style={{ width: '183px', height: '52px' }}
-                />
-              </CardValue>
-              <CardDescription>
-                공식 가이드라인을 준수하여 데이터 안정성과
-                <br /> 법적 신뢰성을 실현합니다.
-              </CardDescription>
-            </PerformanceCard>
-            <PerformanceCard>
-              <CardTitle>24년도 정보보호제품 혁신 대상</CardTitle>
-              <CardValue>
-                <LogoImage
-                  src={getAssetPath('/icons/ministry-science-ict.svg')}
-                  alt='과학기술정보통신부'
-                  style={{ width: '268px', height: '52px' }}
-                />
-              </CardValue>
-              <CardDescription>
-                국가로부터 혁신성과 기술력을 공식 인정받은
-                <br /> 제품입니다.
-              </CardDescription>
-            </PerformanceCard>
-          </CardsRow>
+          <PerformanceCard>
+            <CardTitle>1종 오류 정확도</CardTitle>
+            <CardValue>98.10%</CardValue>
+            <CardDescription>
+              정상 데이터를 불필요하게 차단하지 않아 효율적인
+              <br /> 데이터 활용이 가능합니다.
+            </CardDescription>
+          </PerformanceCard>
+          <PerformanceCard>
+            <CardTitle>2종 오류 정확도</CardTitle>
+            <CardValue>99.14%</CardValue>
+            <CardDescription>
+              민감정보를 놓치지 않고 탐지·차단하여
+              <br /> 기업 데이터 유출 위험을 최소화합니다.
+            </CardDescription>
+          </PerformanceCard>
+          <PerformanceCard>
+            <CardTitle>정형화된 개인정보 보호</CardTitle>
+            <CardValue>100%</CardValue>
+            <CardDescription>
+              정형 데이터에서 개인정보 노출 가능성을 <br />
+              완벽히 차단합니다.
+            </CardDescription>
+          </PerformanceCard>
+          <PerformanceCard>
+            <CardTitle>Public LLM 유사도</CardTitle>
+            <CardValue>98%</CardValue>
+            <CardDescription>
+              민감정보 보호 후에도 답변의 의미와 문맥이
+              <br /> 거의 유지됩니다.
+            </CardDescription>
+          </PerformanceCard>
+          <PerformanceCard>
+            <CardTitle>Privacy-Utility</CardTitle>
+            <CardValue>Trade-off 개선</CardValue>
+            <CardDescription>
+              고도화된 변환 기술로 보안과 데이터 활용성의
+              <br /> 최적 균형을 실현합니다.
+            </CardDescription>
+          </PerformanceCard>
+          <PerformanceCard>
+            <CardTitle>벤처나라 등록 제품</CardTitle>
+            <CardValue>
+              <LogoImage
+                src={getAssetPath('/icons/public-procurement-service.svg')}
+                alt='조달청'
+                style={{ width: '135px', height: '52px' }}
+              />
+            </CardValue>
+            <CardDescription>
+              조달청 공식 등록으로 공공기관 도입 신뢰성을
+              <br />
+              확보했습니다.
+            </CardDescription>
+          </PerformanceCard>
+          <PerformanceCard>
+            <CardTitle>개인정보 비식별 가이드라인 준수</CardTitle>
+            <CardValue>
+              <LogoImage
+                src={getAssetPath('/icons/ministry-interior-safety.svg')}
+                alt='행정안전부'
+                style={{ width: '183px', height: '52px' }}
+              />
+            </CardValue>
+            <CardDescription>
+              공식 가이드라인을 준수하여 데이터 안정성과
+              <br /> 법적 신뢰성을 실현합니다.
+            </CardDescription>
+          </PerformanceCard>
+          <PerformanceCard>
+            <CardTitle>24년도 정보보호제품 혁신 대상</CardTitle>
+            <CardValue>
+              <LogoImage
+                src={getAssetPath('/icons/ministry-science-ict.svg')}
+                alt='과학기술정보통신부'
+                style={{ width: '268px', height: '52px' }}
+              />
+            </CardValue>
+            <CardDescription>
+              국가로부터 혁신성과 기술력을 공식 인정받은
+              <br /> 제품입니다.
+            </CardDescription>
+          </PerformanceCard>
         </CardsContainer>
       </PerformanceWrapper>
     </PerformanceContainer>
@@ -153,44 +149,31 @@ const SectionTitle = styled.h2`
 
 const CardsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 80px;
-  flex: 1 0 0;
+  flex-wrap: wrap;
+  gap: 80px 10px;
+
+  @media (max-width: 1200px) {
+    gap: 60px 20px;
+  }
 
   @media (max-width: 768px) {
-    gap: 40px;
-  }
-
-  @media (max-width: 375px) {
-    gap: 32px;
-  }
-`;
-
-const CardsRow = styled.div`
-  display: flex;
-  gap: 10px;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  @media (max-width: 375px) {
-    gap: 16px;
+    gap: 40px 0;
   }
 `;
 
 const PerformanceCard = styled.div`
   display: flex;
-  width: 314px;
   flex-direction: column;
   align-items: flex-start;
-  flex: 1 0 0;
+  flex-basis: calc(25% - 8px);
+  flex-grow: 1;
+
+  @media (max-width: 1200px) {
+    flex-basis: calc(50% - 10px);
+  }
 
   @media (max-width: 768px) {
-    width: 100%;
+    flex-basis: 100%;
   }
 `;
 
@@ -205,6 +188,10 @@ const CardValue = styled.div`
   color: ${textColor.light['fg-neutral-strong']};
   margin-bottom: 64px;
 
+  @media (max-width: 1200px) {
+    margin-bottom: 52px;
+  }
+
   @media (max-width: 768px) {
     margin-bottom: 40px;
   }
@@ -218,21 +205,16 @@ const CardDescription = styled.p`
   ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
   position: relative;
+  padding-bottom: 20px;
 
   &::after {
     content: '';
     position: absolute;
-    bottom: -20px;
+    bottom: 0;
     left: 0;
-    width: 314px;
+    width: 100%;
     height: 1px;
     background-color: ${borderColor.light['color-border-primary']};
-  }
-
-  @media (max-width: 768px) {
-    &::after {
-      width: 100%;
-    }
   }
 `;
 
