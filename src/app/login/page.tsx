@@ -263,7 +263,7 @@ const LoginWrapper = styled.div`
     max-width: ${({ theme }) => theme.container.xl};
   }
 
-  ${({ theme }) => theme.media.maxMd} {
+  @media (max-width: 992px) {
     flex-direction: column;
   }
 `;
@@ -273,22 +273,6 @@ const LoginLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 120px ${({ theme }) => theme.spacing.xl}
-    ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
-
-  ${({ theme }) => theme.media.maxXl} {
-    padding: 120px ${({ theme }) => theme.spacing.xl}
-      ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
-  }
-
-  ${({ theme }) => theme.media.maxMd} {
-    padding: 100px 20px 20px 20px;
-  }
-
-  ${({ theme }) => theme.media.maxSm} {
-    padding: 80px ${({ theme }) => theme.spacing.sm}
-      ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.sm};
-  }
 `;
 
 const LoginRight = styled.div`
@@ -309,7 +293,7 @@ const LoginForm = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: left;
-  height: 100%;
+  height: auto;
 `;
 
 const LoginTitle = styled.h1`

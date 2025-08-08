@@ -349,7 +349,7 @@ const SignupWrapper = styled.div`
     max-width: ${({ theme }) => theme.container.xl};
   }
 
-  ${({ theme }) => theme.media.maxMd} {
+  @media (max-width: 992px) {
     flex-direction: column;
   }
 `;
@@ -359,44 +359,17 @@ const SignupLeft = styled.div<{ $isEmailVerification?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: ${(props) =>
-    props.$isEmailVerification
-      ? '40px 40px 40px 40px'
-      : '160px 40px 40px 40px'};
-
-  @media (max-width: 1920px) {
-    padding: ${(props) =>
-      props.$isEmailVerification
-        ? '40px 40px 40px 40px'
-        : '160px 40px 40px 40px'};
-  }
-
-  @media (max-width: 1440px) {
-    padding: ${(props) =>
-      props.$isEmailVerification
-        ? '40px 40px 40px 40px'
-        : '160px 40px 40px 40px'};
-  }
+  padding: 40px;
 
   @media (max-width: 768px) {
-    padding: ${(props) =>
-      props.$isEmailVerification
-        ? '40px 20px 20px 20px'
-        : '120px 20px 20px 20px'};
-  }
-
-  @media (max-width: 375px) {
-    padding: ${(props) =>
-      props.$isEmailVerification
-        ? '40px 16px 16px 16px'
-        : '100px 16px 16px 16px'};
+    padding: 20px;
   }
 `;
 
 const SignupRight = styled.div`
   flex: 1;
 
-  @media (max-width: 768px) {
+  @media (max-width: 992px) {
     display: none;
   }
 `;
@@ -408,7 +381,7 @@ const SignupForm = styled.div<{ $isEmailVerification?: boolean }>`
   flex-direction: ${(props) => (props.$isEmailVerification ? 'row' : 'column')};
   align-items: center;
   text-align: left;
-  height: 100%;
+  height: auto;
 `;
 
 const SignupTitle = styled.h1`

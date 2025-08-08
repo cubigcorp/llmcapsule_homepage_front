@@ -661,7 +661,7 @@ const SignupWrapper = styled.div`
     max-width: ${({ theme }) => theme.container.xl};
   }
 
-  ${({ theme }) => theme.media.maxMd} {
+  @media (max-width: 992px) {
     flex-direction: column;
   }
 `;
@@ -671,29 +671,12 @@ const SignupLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 120px ${({ theme }) => theme.spacing.xl};
-
-  ${({ theme }) => theme.media.maxXl} {
-    padding: 100px ${({ theme }) => theme.spacing.xl};
-  }
-
-  ${({ theme }) => theme.media.maxLg} {
-    padding: 80px ${({ theme }) => theme.spacing.xl};
-  }
-
-  ${({ theme }) => theme.media.maxMd} {
-    padding: 60px 20px;
-  }
-
-  ${({ theme }) => theme.media.maxSm} {
-    padding: 40px ${({ theme }) => theme.spacing.sm};
-  }
 `;
 
 const SignupRight = styled.div`
   flex: 1;
 
-  ${({ theme }) => theme.media.maxMd} {
+  @media (max-width: 992px) {
     display: none;
   }
 `;
