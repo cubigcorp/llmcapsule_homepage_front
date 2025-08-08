@@ -433,25 +433,20 @@ const CategoryButtons = styled.div`
   box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.06);
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
+  }
+
+  @media (max-width: 375px) {
+    grid-template-columns: 1fr;
   }
 `;
 
 const DemoCard = styled.div`
   width: 100%;
   max-width: 1018px;
-  height: 360px;
   background-color: #fff;
-
-  @media (max-width: 768px) {
-    height: auto;
-    min-height: 300px;
-  }
-
-  @media (max-width: 375px) {
-    min-height: 250px;
-  }
   border-radius: 20px;
   padding: 16px;
   display: flex;
@@ -460,6 +455,11 @@ const DemoCard = styled.div`
   box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.06);
   position: relative;
   gap: 16px;
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+    height: auto;
+  }
 `;
 
 const QuestionSection = styled.div`
@@ -470,7 +470,7 @@ const QuestionSection = styled.div`
 
 const QuestionBox = styled.div`
   display: flex;
-  width: 485px;
+  width: 100%;
   flex-direction: column;
   flex: 1;
   min-height: 200px;
@@ -614,7 +614,8 @@ const SlidingButton = styled.button<{ $active: boolean }>`
 `;
 
 const StyledSolidButton = styled(SolidButton)`
-  width: 456px;
+  width: 100%;
+  max-width: 456px;
   margin-bottom: 20px;
 `;
 
@@ -644,6 +645,10 @@ const TransferButton = styled.button`
   &:hover {
     background-color: #333;
   }
+
+  @media (max-width: 992px) {
+    display: none;
+  }
 `;
 
 const TransferIcon = styled.img`
@@ -660,7 +665,7 @@ const AnswerSection = styled.div`
 const AnswerBox = styled.div<{ $hasAnswer: boolean }>`
   flex: 1;
   min-height: 200px;
-  width: 485px;
+  width: 100%;
   padding: 20px;
   border: 1px solid
     ${({ $hasAnswer }) =>

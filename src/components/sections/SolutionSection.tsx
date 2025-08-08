@@ -220,7 +220,7 @@ const SolutionCard = styled.div`
   border-radius: ${radius['rounded-4']};
   display: flex;
   gap: 62px;
-  align-items: stretch;
+  align-items: center;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -272,7 +272,7 @@ const CardContent = styled.div`
 
 const CardVisual = styled.div`
   width: 800px;
-  height: 480px;
+  height: auto;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -284,12 +284,22 @@ const CardVisual = styled.div`
     object-fit: contain;
   }
 
+  @media (max-width: 1200px) {
+    width: 600px;
+  }
+
+  @media (max-width: 992px) {
+    width: 100%;
+    max-width: 500px;
+  }
+
   @media (max-width: 768px) {
     width: 100%;
-    height: 300px;
+    max-width: 400px;
+    height: auto;
   }
 
   @media (max-width: 375px) {
-    height: 200px;
+    max-width: 300px;
   }
 `;

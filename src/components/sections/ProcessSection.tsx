@@ -103,8 +103,9 @@ const ProcessDescription = styled.p`
 `;
 
 const ProcessImageWrapper = styled.div`
-  width: 1280px;
-  height: 418px;
+  width: 100%;
+  max-width: 1280px;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,17 +113,7 @@ const ProcessImageWrapper = styled.div`
 
   img {
     width: 100%;
-    max-width: 1280px;
     height: auto;
     display: block;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    height: auto;
-  }
-
-  @media (max-width: 375px) {
-    height: auto;
   }
 `;
