@@ -671,26 +671,22 @@ const SignupLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px ${({ theme }) => theme.spacing.xl}
-    ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
+  padding: 120px ${({ theme }) => theme.spacing.xl};
 
   ${({ theme }) => theme.media.maxXl} {
-    padding: 80px ${({ theme }) => theme.spacing.xl}
-      ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
+    padding: 100px ${({ theme }) => theme.spacing.xl};
   }
 
   ${({ theme }) => theme.media.maxLg} {
-    padding: 80px ${({ theme }) => theme.spacing.xl}
-      ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
+    padding: 80px ${({ theme }) => theme.spacing.xl};
   }
 
   ${({ theme }) => theme.media.maxMd} {
-    padding: 60px 20px 20px 20px;
+    padding: 60px 20px;
   }
 
   ${({ theme }) => theme.media.maxSm} {
-    padding: 60px ${({ theme }) => theme.spacing.sm}
-      ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.sm};
+    padding: 40px ${({ theme }) => theme.spacing.sm};
   }
 `;
 
@@ -709,7 +705,7 @@ const SignupForm = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: left;
-  height: 100%;
+  height: auto;
 `;
 
 const SignupTitle = styled.h1`
