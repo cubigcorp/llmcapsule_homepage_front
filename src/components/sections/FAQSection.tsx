@@ -99,11 +99,29 @@ const FAQContainer = styled.section`
 `;
 
 const FAQWrapper = styled.div`
-  width: 1440px;
+  width: 100%;
+  max-width: 1440px;
   padding: 120px 80px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+    padding: 120px 120px;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 80px 24px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 60px 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 40px 12px;
+  }
 `;
 
 const FAQHeader = styled.div`
@@ -112,6 +130,14 @@ const FAQHeader = styled.div`
   justify-content: flex-start;
   gap: 16px;
   margin-bottom: 60px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 375px) {
+    margin-bottom: 32px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -145,6 +171,16 @@ const FAQItem = styled.div`
 
   &:last-child {
     border-bottom: 1px solid ${borderColor.light['color-border-primary']};
+  }
+
+  @media (max-width: 768px) {
+    padding: 20px 16px;
+    gap: 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 16px 12px;
+    gap: 12px;
   }
 `;
 
@@ -180,4 +216,8 @@ const FAQAnswer = styled.div`
   color: ${textColor.light['fg-neutral-alternative']};
   line-height: 1.6;
   width: 840px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;

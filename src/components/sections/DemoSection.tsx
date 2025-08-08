@@ -323,12 +323,30 @@ const DemoContainer = styled.section`
 `;
 
 const DemoWrapper = styled.div`
-  width: 1440px;
+  width: 100%;
+  max-width: 1440px;
   padding: 120px 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+    padding: 120px 120px;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 80px 24px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 60px 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 40px 12px;
+  }
 `;
 
 const DemoHeader = styled.div`
@@ -337,6 +355,14 @@ const DemoHeader = styled.div`
   align-items: center;
   gap: 16px;
   margin-bottom: 60px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 375px) {
+    margin-bottom: 32px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -405,12 +431,21 @@ const CategoryButtons = styled.div`
   padding: 8px;
   border-radius: 16px;
   box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.06);
+
+  @media (max-width: 768px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  @media (max-width: 375px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const DemoCard = styled.div`
   width: 100%;
   max-width: 1018px;
-  height: 360px;
   background-color: #fff;
   border-radius: 20px;
   padding: 16px;
@@ -420,6 +455,11 @@ const DemoCard = styled.div`
   box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.06);
   position: relative;
   gap: 16px;
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+    height: auto;
+  }
 `;
 
 const QuestionSection = styled.div`
@@ -430,7 +470,7 @@ const QuestionSection = styled.div`
 
 const QuestionBox = styled.div`
   display: flex;
-  width: 485px;
+  width: 100%;
   flex-direction: column;
   flex: 1;
   min-height: 200px;
@@ -574,7 +614,8 @@ const SlidingButton = styled.button<{ $active: boolean }>`
 `;
 
 const StyledSolidButton = styled(SolidButton)`
-  width: 456px;
+  width: 100%;
+  max-width: 456px;
   margin-bottom: 20px;
 `;
 
@@ -604,6 +645,10 @@ const TransferButton = styled.button`
   &:hover {
     background-color: #333;
   }
+
+  @media (max-width: 992px) {
+    display: none;
+  }
 `;
 
 const TransferIcon = styled.img`
@@ -620,7 +665,7 @@ const AnswerSection = styled.div`
 const AnswerBox = styled.div<{ $hasAnswer: boolean }>`
   flex: 1;
   min-height: 200px;
-  width: 485px;
+  width: 100%;
   padding: 20px;
   border: 1px solid
     ${({ $hasAnswer }) =>

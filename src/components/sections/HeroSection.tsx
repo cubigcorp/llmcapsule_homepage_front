@@ -58,20 +58,47 @@ const HeroContainer = styled.section`
 `;
 
 const HeroWrapper = styled.div`
-  width: 1440px;
+  width: 100%;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 0 80px;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+    padding: 0 120px;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 0 24px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 0 12px;
+  }
 `;
 
 const ContentArea = styled.div`
   display: flex;
   gap: 80px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 40px;
+  }
 `;
 
 const LeftContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 40px;
+
+  @media (max-width: 768px) {
+    gap: 24px;
+  }
 `;
 
 const TextContent = styled.div`
@@ -79,6 +106,16 @@ const TextContent = styled.div`
   padding-top: 80px;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: 768px) {
+    padding-top: 40px;
+    gap: 16px;
+  }
+
+  @media (max-width: 375px) {
+    padding-top: 24px;
+    gap: 12px;
+  }
 `;
 
 const SubTitle = styled.p`
@@ -106,6 +143,11 @@ const Description = styled.p`
 const ButtonGroup = styled.div`
   display: flex;
   gap: 12px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 8px;
+  }
 `;
 
 const ImageArea = styled.div`
@@ -114,4 +156,14 @@ const ImageArea = styled.div`
   justify-content: center;
   align-items: center;
   background: rgba(255, 255, 255, 0.1);
+
+  @media (max-width: 768px) {
+    flex: none;
+    order: -1;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 `;
