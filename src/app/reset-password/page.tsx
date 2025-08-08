@@ -4,7 +4,12 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-import { SolidButton, TextButton, TextField } from '@cubig/design-system';
+import {
+  SolidButton,
+  TextButton,
+  TextField,
+  toast,
+} from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
@@ -16,6 +21,7 @@ export default function ResetPasswordPage() {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [isResending, setIsResending] = useState(false);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -57,6 +63,8 @@ export default function ResetPasswordPage() {
   };
 
   const handleResendEmail = async () => {
+    setIsResending(true);
+
     try {
       // 실제 비밀번호 재설정 이메일 재발송 API 호출
       const response = await authService.requestPasswordReset({
@@ -65,12 +73,16 @@ export default function ResetPasswordPage() {
       });
 
       if (response.success) {
-        alert('비밀번호 재설정 이메일이 재발송되었습니다.');
+        toast.success(
+          '인증 메일을 재발송하였습니다.\n메일함을 확인해주시기 바랍니다.'
+        );
       } else {
-        alert('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+        toast.error('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
       }
     } catch {
-      alert('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+      toast.error('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+    } finally {
+      setIsResending(false);
     }
   };
 

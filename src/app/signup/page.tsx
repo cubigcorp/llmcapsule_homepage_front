@@ -23,7 +23,7 @@ declare global {
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-import { SolidButton, TextField } from '@cubig/design-system';
+import { SolidButton, TextField, toast } from '@cubig/design-system';
 import { typography, textColor, borderColor } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
 
@@ -181,7 +181,13 @@ export default function SignupPage() {
     }
   };
 
+  const [isResending, setIsResending] = useState(false);
+
   const handleResendEmail = async () => {
+    console.log('이메일 재발송 버튼 클릭됨');
+
+    setIsResending(true);
+
     try {
       // 실제 이메일 재발송 API 호출
       const response = await authService.verifyEmail({
@@ -190,13 +196,22 @@ export default function SignupPage() {
         redirect_url: `${window.location.origin}/signup/verify`,
       });
 
+      console.log('API 응답:', response);
+
       if (response.success) {
-        alert('이메일이 재발송되었습니다.');
+        console.log('Toast 성공 메시지 표시');
+        toast.success(
+          '인증 메일을 재발송하였습니다.\n메일함을 확인해주시기 바랍니다.'
+        );
       } else {
-        alert('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+        console.log('Toast 실패 메시지 표시');
+        toast.error('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
       }
-    } catch {
-      alert('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+    } catch (error) {
+      console.log('API 에러:', error);
+      toast.error('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -294,6 +309,7 @@ export default function SignupPage() {
                 <EmailVerificationSection
                   email={formData.email}
                   onResendEmail={handleResendEmail}
+                  loading={isResending}
                 />
               </>
             )}

@@ -103,7 +103,24 @@ export default function LoginPage() {
           // 홈페이지로 이동
           router.push('/');
         } else {
-          alert('구글 로그인에 실패했습니다.');
+          const userInfoResponse = await fetch(
+            `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokenResponse.access_token}`
+          );
+          const userInfo = await userInfoResponse.json();
+
+          const verifyResponse = await authService.verifyEmailGoogle({
+            access_token: tokenResponse.access_token,
+          });
+
+          if (verifyResponse.success) {
+            const params = new URLSearchParams({
+              google: 'true',
+              email: userInfo.email,
+            });
+            window.location.href = `/signup/verify?${params.toString()}`;
+          } else {
+            alert('구글 이메일 인증에 실패했습니다.');
+          }
         }
       } catch {
         alert('구글 로그인 중 오류가 발생했습니다.');

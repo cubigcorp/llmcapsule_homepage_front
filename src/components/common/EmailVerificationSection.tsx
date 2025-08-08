@@ -11,12 +11,14 @@ interface EmailVerificationSectionProps {
   email: string;
   onResendEmail: () => void;
   type?: 'signup' | 'password-reset';
+  loading?: boolean;
 }
 
 export default function EmailVerificationSection({
   email,
   onResendEmail,
   type = 'signup',
+  loading = false,
 }: EmailVerificationSectionProps) {
   const ResendIcon = () => (
     <svg
@@ -65,6 +67,8 @@ export default function EmailVerificationSection({
         size='small'
         onClick={onResendEmail}
         leadingIcon={ResendIcon}
+        loading={loading}
+        disabled={loading}
       >
         {getButtonText()}
       </ResendButton>

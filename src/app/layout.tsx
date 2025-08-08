@@ -3,6 +3,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import StyledComponentsRegistry from '@/lib/registry';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import ToastProvider from '@/components/providers/ToastProvider';
 
 export const metadata: Metadata = {
   title: 'LLM Capsule - AI 기반 솔루션',
@@ -26,8 +27,10 @@ export default function RootLayout({
       <body>
         <StyledComponentsRegistry>
           <GoogleOAuthProvider clientId='827074253539-i0qbolbrlllgv24rrcd32ktm8h9uo21i.apps.googleusercontent.com'>
-            <Header />
-            {children}
+            <ToastProvider>
+              <Header />
+              {children}
+            </ToastProvider>
           </GoogleOAuthProvider>
         </StyledComponentsRegistry>
       </body>

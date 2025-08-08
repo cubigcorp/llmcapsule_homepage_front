@@ -10,6 +10,7 @@ import {
   TextField,
   Dropdown,
   Checkbox,
+  toast,
 } from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
 import { getAssetPath } from '@/utils/path';
@@ -218,8 +219,6 @@ export default function SignupVerifyPage() {
   };
 
   const handleResendCode = async () => {
-    if (timeLeft > 0) return; // 타이머가 실행 중이면 재발송 불가
-
     try {
       // 실제 OTP 재발송 API 호출
       const response = await otpService.sendOtp(
@@ -235,7 +234,7 @@ export default function SignupVerifyPage() {
       if (response.success) {
         // 성공 시 타이머 재시작
         startTimer();
-        alert('인증번호가 재발송되었습니다.');
+        toast.success('요청하신 인증번호를 재발송하였습니다.');
       } else {
         // 실패 시 에러 메시지 표시
         alert('인증번호 재발송에 실패했습니다. 다시 시도해 주세요.');
@@ -518,37 +517,32 @@ export default function SignupVerifyPage() {
                       onChange={(e) => setVerificationCode(e.target.value)}
                       placeholder='인증번호 입력'
                     />
-                    {!isVerificationCompleted && (
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          marginTop: '8px',
-                        }}
-                      >
-                        <ResendButton
-                          onClick={handleResendCode}
-                          disabled={isTimerRunning}
-                        >
-                          인증번호 재발송
-                        </ResendButton>
-                        {isTimerRunning && (
-                          <TimerContainer>
-                            <TimerText>
-                              <Image
-                                src={getAssetPath('/icons/Icon_history.svg')}
-                                alt='Timer'
-                                width={16}
-                                height={16}
-                              />
-                              <TimeText>{formatTime(timeLeft)}</TimeText>
-                              <RemainingText> 남음</RemainingText>
-                            </TimerText>
-                          </TimerContainer>
-                        )}
-                      </div>
-                    )}
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginTop: '8px',
+                      }}
+                    >
+                      <ResendButton onClick={handleResendCode}>
+                        인증번호 재발송
+                      </ResendButton>
+                      {isTimerRunning && (
+                        <TimerContainer>
+                          <TimerText>
+                            <Image
+                              src={getAssetPath('/icons/Icon_history.svg')}
+                              alt='Timer'
+                              width={16}
+                              height={16}
+                            />
+                            <TimeText>{formatTime(timeLeft)}</TimeText>
+                            <RemainingText> 남음</RemainingText>
+                          </TimerText>
+                        </TimerContainer>
+                      )}
+                    </div>
                   </div>
                   <div style={{ width: '95px', marginTop: '0' }}>
                     <StyledVerificationButton
