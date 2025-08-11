@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   SolidButton,
   TextField,
@@ -27,24 +27,17 @@ import { env } from '@/utils/env';
 import PrivacyConsentModal from '@/components/modals/PrivacyConsentModal';
 import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
 
-interface VerifyClientProps {
-  token?: string;
-  email?: string;
-  google?: string;
-  firstName?: string;
-  lastName?: string;
-  sub?: string;
-}
-
-export default function VerifyClient({
-  token,
-  email,
-  google,
-  firstName,
-  lastName,
-  sub,
-}: VerifyClientProps) {
+export default function VerifyClient() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const token = searchParams.get('token') || '';
+  const email = searchParams.get('email') || '';
+  const google = searchParams.get('google') || '';
+  const firstName = searchParams.get('firstName') || '';
+  const lastName = searchParams.get('lastName') || '';
+  const sub = searchParams.get('sub') || '';
+
   const isGoogleSignup = google === 'true';
 
   const [formData, setFormData] = useState({
