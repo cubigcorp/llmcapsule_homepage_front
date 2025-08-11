@@ -12,6 +12,7 @@ import {
   Badge,
   layerColor,
 } from '@cubig/design-system';
+import { getAssetPath } from '@/utils/path';
 import CourtIcon from '@/assets/icons/Icon_court.svg';
 import MoneyIcon from '@/assets/icons/Icon_money.svg';
 import HeartIcon from '@/assets/icons/Icon_heart.svg';
@@ -19,7 +20,6 @@ import CompareIcon from '@/assets/icons/Icon_compare.svg';
 import FilterIcon from '@/assets/icons/Icon_tune.svg';
 import FilterModal from '@/components/modals/FilterModal';
 import DocumentModal from '@/components/modals/DocumentModal';
-import { getAssetPath } from '@/utils/path';
 
 const categories = [
   {
@@ -317,7 +317,7 @@ const DemoContainer = styled.section`
   width: 100%;
   display: flex;
   background-color: ${color.gray['50']};
-  background-image: url('/images/Background Pattern.svg');
+  background-image: url('${getAssetPath('/images/Background Pattern.svg')}');
   background-repeat: repeat;
   background-size: auto;
 `;
