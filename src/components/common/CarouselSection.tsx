@@ -7,6 +7,7 @@ import { color, radius, typography, textColor } from '@cubig/design-system';
 
 interface SlideData {
   image: string;
+  video?: string;
   content: string;
   title: string;
   description: string;
@@ -19,6 +20,7 @@ interface CarouselSectionProps {
 const defaultSlides: SlideData[] = [
   {
     image: '/images/background_01.png',
+    video: '/images/background_01.mp4',
     content: '/images/Content_1.svg',
     title: '실시간 프롬프트 필터링',
     description:
@@ -26,6 +28,7 @@ const defaultSlides: SlideData[] = [
   },
   {
     image: '/images/background_03.png',
+    video: '/images/background_03.mp4',
     content: '/images/Content_2.svg',
     title: '문서 내 민감정보 탐지',
     description:
@@ -33,6 +36,7 @@ const defaultSlides: SlideData[] = [
   },
   {
     image: '/images/background_02.png',
+    video: '/images/background_02.mp4',
     content: '/images/Content_3.svg',
     title: '문맥 기반 정보 탐지',
     description:
@@ -40,6 +44,7 @@ const defaultSlides: SlideData[] = [
   },
   {
     image: '/images/background_03.png',
+    video: '/images/background_03.mp4',
     content: '/images/Content_4.svg',
     title: 'ON-PREMISE 독립 운영',
     description:
@@ -52,6 +57,7 @@ export default function CarouselSection({
 }: CarouselSectionProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const resetTimer = () => {
     if (timerRef.current) {
@@ -71,16 +77,66 @@ export default function CarouselSection({
     };
   }, [currentSlide]);
 
+  // Ensure the active slide video is playing, and others are paused
+  useEffect(() => {
+    videoRefs.current.forEach((video, index) => {
+      if (!video) return;
+      if (index === currentSlide) {
+        try {
+          video.muted = true;
+          void video.play();
+        } catch (_) {}
+      } else {
+        try {
+          video.pause();
+        } catch (_) {}
+      }
+    });
+  }, [currentSlide]);
+
+  const goToSlide = (nextIndex: number, reset = true) => {
+    const nextVideo = videoRefs.current[nextIndex];
+    if (nextVideo) {
+      try {
+        nextVideo.pause();
+        nextVideo.currentTime = 0;
+        nextVideo.load();
+      } catch (_) {}
+    }
+    setCurrentSlide(nextIndex);
+    if (reset) resetTimer();
+  };
+
   const handlePreviousSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    setCurrentSlide((prev) => {
+      const nextIndex = prev === 0 ? slides.length - 1 : prev - 1;
+      const prevVideo = videoRefs.current[nextIndex];
+      if (prevVideo) {
+        try {
+          prevVideo.pause();
+          prevVideo.currentTime = 0;
+          prevVideo.load();
+        } catch (_) {}
+      }
+      return nextIndex;
+    });
     resetTimer();
   };
 
   const handleNextSlide = (reset = true) => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    if (reset) {
-      resetTimer();
-    }
+    setCurrentSlide((prev) => {
+      const nextIndex = prev === slides.length - 1 ? 0 : prev + 1;
+      const nextVideo = videoRefs.current[nextIndex];
+      if (nextVideo) {
+        try {
+          nextVideo.pause();
+          nextVideo.currentTime = 0;
+          nextVideo.load();
+        } catch (_) {}
+      }
+      return nextIndex;
+    });
+    if (reset) resetTimer();
   };
 
   const LeftArrowIcon = () => (
@@ -118,7 +174,23 @@ export default function CarouselSection({
       <SvgWrapper>
         {slides.map((slide, index) => (
           <Slide key={index} $active={index === currentSlide}>
-            <BackgroundImage src={slide.image} alt='Content' />
+            {slide.video ? (
+              <BackgroundVideo
+                ref={(el) => {
+                  videoRefs.current[index] = el;
+                }}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload='auto'
+                poster={slide.image}
+              >
+                <source src={slide.video} type='video/mp4' />
+              </BackgroundVideo>
+            ) : (
+              <BackgroundImage src={slide.image} alt='Content' />
+            )}
             <ContentOverlay
               $slideIndex={index}
               style={{ backgroundImage: `url(${slide.content})` }}
@@ -189,6 +261,13 @@ const SvgWrapper = styled.div`
 `;
 
 const BackgroundImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: ${radius['rounded-5']};
+`;
+
+const BackgroundVideo = styled.video`
   width: 100%;
   height: 100%;
   object-fit: cover;
