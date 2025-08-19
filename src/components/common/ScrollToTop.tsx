@@ -30,8 +30,8 @@ export default function ScrollToTop() {
   if (!isVisible) return null;
 
   return (
-    <Button onClick={scrollToTop} $visible={isVisible}>
-      <img src={'/icons/Icon_arrow_upward.svg'} alt='top' />
+    <Button onClick={scrollToTop}>
+      <ArrowIcon src={'/icons/Icon_arrow_upward.svg'} alt='top' />
     </Button>
   );
 }
