@@ -210,19 +210,6 @@ const ResetPasswordLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 120px 40px 40px 40px;
-
-  @media (max-width: 1920px) {
-    padding: 120px 40px 40px 40px;
-  }
-
-  @media (max-width: 768px) {
-    padding: 100px 20px 20px 20px;
-  }
-
-  @media (max-width: 375px) {
-    padding: 80px 16px 16px 16px;
-  }
 `;
 
 const ResetPasswordRight = styled.div`

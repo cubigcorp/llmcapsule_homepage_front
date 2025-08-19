@@ -323,19 +323,6 @@ const ContactLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 120px 40px 40px 40px;
-
-  @media (max-width: 1920px) {
-    padding: 120px 40px 40px 40px;
-  }
-
-  @media (max-width: 768px) {
-    padding: 100px 20px 20px 20px;
-  }
-
-  @media (max-width: 375px) {
-    padding: 80px 16px 16px 16px;
-  }
 `;
 
 const ContactRight = styled.div`
@@ -356,7 +343,6 @@ const ContactForm = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: left;
-  height: 100%;
 `;
 
 const ContactTitle = styled.h1`

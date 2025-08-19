@@ -180,23 +180,6 @@ const ResetPasswordLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 160px ${({ theme }) => theme.spacing.xl}
-    ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
-
-  ${({ theme }) => theme.media.maxXl} {
-    padding: 160px ${({ theme }) => theme.spacing.xl}
-      ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
-  }
-
-  ${({ theme }) => theme.media.maxMd} {
-    padding: 100px ${({ theme }) => theme.spacing.md}
-      ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.md};
-  }
-
-  ${({ theme }) => theme.media.maxSm} {
-    padding: 80px ${({ theme }) => theme.spacing.sm}
-      ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.sm};
-  }
 `;
 
 const ResetPasswordRight = styled.div`

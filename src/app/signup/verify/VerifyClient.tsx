@@ -613,17 +613,6 @@ const SignupLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px ${({ theme }) => theme.spacing.xl}
-    ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
-
-  @media (max-width: 992px) {
-    padding: 60px 20px 20px 20px;
-  }
-
-  @media (max-width: 375px) {
-    padding: 60px ${({ theme }) => theme.spacing.sm}
-      ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.sm};
-  }
 `;
 
 const SignupRight = styled.div`
