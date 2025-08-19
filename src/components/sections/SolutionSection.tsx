@@ -7,7 +7,6 @@ import {
   radius,
   borderColor,
 } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 
 export default function SolutionSection() {
   return (
@@ -37,10 +36,7 @@ export default function SolutionSection() {
               </CardDescription>
             </CardContent>
             <CardVisual>
-              <img
-                src={getAssetPath('/images/Content_04.svg')}
-                alt='ON-PREMISE 독립 운영'
-              />
+              <img src={'/images/Content_04.svg'} alt='ON-PREMISE 독립 운영' />
             </CardVisual>
           </SolutionCard>
 
@@ -56,7 +52,7 @@ export default function SolutionSection() {
             </CardContent>
             <CardVisual>
               <img
-                src={getAssetPath('/images/Content_01.svg')}
+                src={'/images/Content_01.svg'}
                 alt='실시간 프롬프트 필터링'
               />
             </CardVisual>
@@ -73,10 +69,7 @@ export default function SolutionSection() {
               </CardDescription>
             </CardContent>
             <CardVisual>
-              <img
-                src={getAssetPath('/images/Content_02.svg')}
-                alt='문서 내 민감정보 탐지'
-              />
+              <img src={'/images/Content_02.svg'} alt='문서 내 민감정보 탐지' />
             </CardVisual>
           </SolutionCard>
 
@@ -91,10 +84,7 @@ export default function SolutionSection() {
               </CardDescription>
             </CardContent>
             <CardVisual>
-              <img
-                src={getAssetPath('/images/Content_03.svg')}
-                alt='문맥 기반 정보 탐지'
-              />
+              <img src={'/images/Content_03.svg'} alt='문맥 기반 정보 탐지' />
             </CardVisual>
           </SolutionCard>
 
@@ -109,10 +99,7 @@ export default function SolutionSection() {
               </CardDescription>
             </CardContent>
             <CardVisual>
-              <img
-                src={getAssetPath('/images/Content_05.svg')}
-                alt='어드민 사용자 관리'
-              />
+              <img src={'/images/Content_05.svg'} alt='어드민 사용자 관리' />
             </CardVisual>
           </SolutionCard>
         </SolutionGrid>

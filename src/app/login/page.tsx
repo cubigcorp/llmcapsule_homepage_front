@@ -8,7 +8,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { SolidButton, TextButton, TextField } from '@cubig/design-system';
 import { typography, textColor, borderColor } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import GoogleIcon from '@/assets/icons/Google.svg';
 import { authService } from '@/services/auth';
@@ -151,12 +150,7 @@ export default function LoginPage() {
       <LoginWrapper>
         <LogoWrapper>
           <Link href='/'>
-            <Image
-              src={getAssetPath('/icons/Logo.svg')}
-              alt='Logo'
-              width={32}
-              height={32}
-            />
+            <Image src={'/icons/Logo.svg'} alt='Logo' width={32} height={32} />
           </Link>
         </LogoWrapper>
         <LoginLeft>

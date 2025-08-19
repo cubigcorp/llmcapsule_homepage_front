@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { SolidButton, TextButton, TextField } from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import { validatePassword, validateConfirmPassword } from '@/utils/validation';
 import { authService } from '@/services/auth';
@@ -106,12 +105,7 @@ export default function ResetPasswordVerifyClient() {
       <ResetPasswordWrapper>
         <LogoWrapper>
           <Link href='/'>
-            <Image
-              src={getAssetPath('/icons/Logo.svg')}
-              alt='Logo'
-              width={32}
-              height={32}
-            />
+            <Image src={'/icons/Logo.svg'} alt='Logo' width={32} height={32} />
           </Link>
         </LogoWrapper>
         <ResetPasswordLeft>

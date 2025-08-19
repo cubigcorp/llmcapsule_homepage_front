@@ -8,7 +8,6 @@ import {
   color,
   SolidButton,
 } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 
 interface FeatureProps {
   children: React.ReactNode;
@@ -17,7 +16,7 @@ interface FeatureProps {
 function Feature({ children }: FeatureProps) {
   return (
     <FeatureItem>
-      <img src={getAssetPath('/icons/Check.svg')} alt='check' />
+      <img src={'/icons/Check.svg'} alt='check' />
       {children}
     </FeatureItem>
   );

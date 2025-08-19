@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import { SolidButton } from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 
 interface EmailVerificationSectionProps {
   email: string;
@@ -54,12 +53,7 @@ export default function EmailVerificationSection({
 
   return (
     <EmailVerificationWrapper>
-      <Image
-        src={getAssetPath('/icons/Icon_info.svg')}
-        alt='Info'
-        width={48}
-        height={48}
-      />
+      <Image src={'/icons/Icon_info.svg'} alt='Info' width={48} height={48} />
       <Title>{getTitle()}</Title>
       <Description>{getDescription()}</Description>
       <ResendButton

@@ -25,7 +25,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { SolidButton, TextField, toast } from '@cubig/design-system';
 import { typography, textColor, borderColor } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
+// import { getAssetPath } from '@/utils/path';
 
 import CarouselSection from '@/components/common/CarouselSection';
 import EmailVerificationSection from '@/components/common/EmailVerificationSection';
@@ -220,12 +220,7 @@ export default function SignupPage() {
       <SignupWrapper>
         <LogoWrapper>
           <Link href='/'>
-            <Image
-              src={getAssetPath('/icons/Logo.svg')}
-              alt='Logo'
-              width={32}
-              height={32}
-            />
+            <Image src={'/icons/Logo.svg'} alt='Logo' width={32} height={32} />
           </Link>
         </LogoWrapper>
         <SignupLeft $isEmailVerification={isEmailVerification}>

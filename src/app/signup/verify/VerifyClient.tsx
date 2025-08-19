@@ -13,7 +13,6 @@ import {
   toast,
 } from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import { countries } from '@/utils/countries';
 import {
@@ -323,12 +322,7 @@ export default function VerifyClient() {
     <SignupContainer>
       <LogoWrapper>
         <Link href='/'>
-          <Image
-            src={getAssetPath('/icons/Logo.svg')}
-            alt='Logo'
-            width={32}
-            height={32}
-          />
+          <Image src={'/icons/Logo.svg'} alt='Logo' width={32} height={32} />
         </Link>
       </LogoWrapper>
       <SignupWrapper>
@@ -474,7 +468,7 @@ export default function VerifyClient() {
                         <TimerContainer>
                           <TimerText>
                             <Image
-                              src={getAssetPath('/icons/Icon_history.svg')}
+                              src={'/icons/Icon_history.svg'}
                               alt='Timer'
                               width={16}
                               height={16}

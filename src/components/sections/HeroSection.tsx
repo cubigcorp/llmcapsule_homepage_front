@@ -7,7 +7,6 @@ import {
   typography,
   textColor,
 } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 
 export default function HeroSection() {
   return (
@@ -39,10 +38,7 @@ export default function HeroSection() {
             </ButtonGroup>
           </LeftContent>
           <ImageArea>
-            <img
-              src={getAssetPath('/images/Hero.svg')}
-              alt='LLM Capsule 인터페이스'
-            />
+            <img src={'/images/Hero.svg'} alt='LLM Capsule 인터페이스' />
           </ImageArea>
         </ContentArea>
       </HeroWrapper>

@@ -2,7 +2,6 @@
 
 import styled from 'styled-components';
 import { typography, textColor, radius } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 
 export default function ProcessSection() {
   return (
@@ -16,10 +15,7 @@ export default function ProcessSection() {
           GPT는 오직 안전하게 처리된 정보만 받아볼 수 있습니다.
         </ProcessDescription>
         <ProcessImageWrapper>
-          <img
-            src={getAssetPath('/images/Process.svg')}
-            alt='AI 보안 프로세스'
-          />
+          <img src={'/images/Process.svg'} alt='AI 보안 프로세스' />
         </ProcessImageWrapper>
       </ProcessWrapper>
     </ProcessContainer>

@@ -17,7 +17,6 @@ import {
   radius,
   borderColor,
 } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import PrivacyConsentModal from '@/components/modals/PrivacyConsentModal';
 import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
@@ -147,12 +146,7 @@ export default function ContactPage() {
       <ContactWrapper>
         <LogoWrapper>
           <Link href='/'>
-            <Image
-              src={getAssetPath('/icons/Logo.svg')}
-              alt='Logo'
-              width={32}
-              height={32}
-            />
+            <Image src={'/icons/Logo.svg'} alt='Logo' width={32} height={32} />
           </Link>
         </LogoWrapper>
         <ContactLeft>

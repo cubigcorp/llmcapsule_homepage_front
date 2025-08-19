@@ -6,7 +6,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { SolidButton } from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 
 export default function SignupFailPage() {
@@ -23,19 +22,14 @@ export default function SignupFailPage() {
       <SignupWrapper>
         <LogoWrapper>
           <Link href='/'>
-            <Image
-              src={getAssetPath('/icons/Logo.svg')}
-              alt='Logo'
-              width={32}
-              height={32}
-            />
+            <Image src={'/icons/Logo.svg'} alt='Logo' width={32} height={32} />
           </Link>
         </LogoWrapper>
         <SignupLeft>
           <SignupForm>
             <ErrorIcon>
               <Image
-                src={getAssetPath('/icons/Icon_error.svg')}
+                src={'/icons/Icon_error.svg'}
                 alt='Error'
                 width={48}
                 height={48}

@@ -7,7 +7,6 @@ import {
   color,
   borderColor,
 } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 
 export default function Footer() {
   return (
@@ -17,10 +16,7 @@ export default function Footer() {
         <FooterTopSection>
           <FooterLeft>
             <Logo>
-              <LogoImage
-                src={getAssetPath('/icons/Logo2.svg')}
-                alt='LLM Capsule Logo'
-              />
+              <LogoImage src='/icons/Logo2.svg' alt='LLM Capsule Logo' />
             </Logo>
             <BrandText>
               <BrandTitle>Capsule Your</BrandTitle>
@@ -63,7 +59,7 @@ export default function Footer() {
           <Copyright>© 2025 CUBIG Co.Ltd All rights Reserved.</Copyright>
           <SocialIcons>
             {/* <SocialIcon>
-              <SocialIconImage src={getAssetPath('/icons/logo_blog.svg')} alt='Blog' />
+              <SocialIconImage src={'/icons/logo_blog.svg'} alt='Blog' />
             </SocialIcon> */}
             <SocialIcon>
               <a
@@ -71,10 +67,7 @@ export default function Footer() {
                 target='_blank'
                 rel='noopener noreferrer'
               >
-                <SocialIconImage
-                  src={getAssetPath('/icons/logo_insta.svg')}
-                  alt='Instagram'
-                />
+                <SocialIconImage src='/icons/logo_insta.svg' alt='Instagram' />
               </a>
             </SocialIcon>
             <SocialIcon>
@@ -83,10 +76,7 @@ export default function Footer() {
                 target='_blank'
                 rel='noopener noreferrer'
               >
-                <SocialIconImage
-                  src={getAssetPath('/icons/logo_youtube.svg')}
-                  alt='YouTube'
-                />
+                <SocialIconImage src='/icons/logo_youtube.svg' alt='YouTube' />
               </a>
             </SocialIcon>
             <SocialIcon>
@@ -95,10 +85,7 @@ export default function Footer() {
                 target='_blank'
                 rel='noopener noreferrer'
               >
-                <SocialIconImage
-                  src={getAssetPath('/icons/logo_linken.svg')}
-                  alt='LinkedIn'
-                />
+                <SocialIconImage src='/icons/logo_linken.svg' alt='LinkedIn' />
               </a>
             </SocialIcon>
           </SocialIcons>
