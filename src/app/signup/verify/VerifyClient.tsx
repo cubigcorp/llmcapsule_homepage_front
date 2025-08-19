@@ -586,16 +586,10 @@ const LogoWrapper = styled.div`
 `;
 
 const SignupWrapper = styled.div`
-  max-width: ${({ theme }) => theme.container.lg};
-  margin: 0 auto;
   display: flex;
   width: 100%;
   height: 100%;
   position: relative;
-
-  @media (min-width: 1921px) {
-    max-width: ${({ theme }) => theme.container.xl};
-  }
 
   @media (max-width: 992px) {
     flex-direction: column;

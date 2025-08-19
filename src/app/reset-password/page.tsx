@@ -153,16 +153,10 @@ const ResetPasswordContainer = styled.div`
 `;
 
 const ResetPasswordWrapper = styled.div`
-  max-width: ${({ theme }) => theme.container.lg};
-  margin: 0 auto;
   display: flex;
   width: 100%;
   height: 100%;
   position: relative;
-
-  @media (min-width: 1921px) {
-    max-width: ${({ theme }) => theme.container.xl};
-  }
 
   ${({ theme }) => theme.media.maxMd} {
     flex-direction: column;
