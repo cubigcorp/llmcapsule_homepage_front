@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { getAssetPath } from '@/utils/path';
 import { color } from '@cubig/design-system';
 
 export default function ScrollToTop() {
@@ -31,16 +30,13 @@ export default function ScrollToTop() {
   if (!isVisible) return null;
 
   return (
-    <ScrollButton onClick={scrollToTop}>
-      <ArrowIcon
-        src={getAssetPath('/icons/Icon_arrow_upward.svg')}
-        alt='최상단으로'
-      />
-    </ScrollButton>
+    <Button onClick={scrollToTop}>
+      <ArrowIcon src={'/icons/Icon_arrow_upward.svg'} alt='top' />
+    </Button>
   );
 }
 
-const ScrollButton = styled.button`
+const Button = styled.button`
   position: fixed;
   bottom: 20px;
   right: calc(50% - 720px + 20px);

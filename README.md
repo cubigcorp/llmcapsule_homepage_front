@@ -24,29 +24,61 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 npm run build
 ```
 
+## Environment Configuration
+
+이 프로젝트는 개발 환경과 프로덕션 환경을 지원합니다.
+
+### 환경별 API 엔드포인트
+
+- **Development**: `https://q3jgflfye9.execute-api.ap-northeast-2.amazonaws.com/api`
+- **Production**: `https://yottf79147.execute-api.ap-northeast-2.amazonaws.com/api`
+
+### 환경 자동 감지
+
+시스템은 호스트명을 기반으로 자동으로 환경을 감지합니다:
+
+- `localhost`, `dev`, `staging` → Development 환경
+- `prod`, `production`, `cubig.gabia.io` → Production 환경
+
 ## Deploy
 
-이 프로젝트는 GitHub Pages로 배포됩니다.
+이 프로젝트는 EC2 서버에 배포됩니다.
 
-### GitHub Pages 배포 방법
+### 배포 방법
 
-1. **GitHub 저장소 설정**
-   - GitHub 저장소의 Settings > Pages로 이동
-   - Source를 "GitHub Actions"로 설정
+1. **개발 환경 배포**
 
-2. **자동 배포**
-   - `main` 브랜치에 push하면 자동으로 배포됩니다
-   - GitHub Actions가 빌드하고 GitHub Pages에 배포합니다
-
-3. **수동 배포**
    ```bash
-   npm run deploy
+   ./deploy.sh development
    ```
 
-### 배포 URL
+2. **프로덕션 환경 배포**
 
-배포 후 다음 URL에서 확인할 수 있습니다:
-`https://[username].github.io/llmcapsule_homepage_front/`
+   ```bash
+   ./deploy.sh production
+   ```
+
+3. **기본값 (개발 환경)**
+   ```bash
+   ./deploy.sh
+   ```
+
+### 배포 설정
+
+- **개발 환경**: `develop` 브랜치, `NODE_ENV=development`, `ec2-3-37-36-2.ap-northeast-2.compute.amazonaws.com`
+- **프로덕션 환경**: `main` 브랜치, `NODE_ENV=production`, `ec2-3-39-187-55.ap-northeast-2.compute.amazonaws.com`
+- **PM2 프로세스**: 환경별로 분리 (`llmcapsule-homepage-development`, `llmcapsule-homepage-production`)
+
+### 환경 변수 설정
+
+필요한 경우 `.env.local` 파일을 생성하여 환경별 설정을 오버라이드할 수 있습니다:
+
+```bash
+# .env.local
+NEXT_PUBLIC_API_BASE_URL=https://your-custom-api-endpoint.com/api
+NEXT_PUBLIC_OTP_API_KEY=your-otp-api-key
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
+```
 
 ## Tech Stack
 

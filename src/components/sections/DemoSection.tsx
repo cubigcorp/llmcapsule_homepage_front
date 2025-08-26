@@ -12,7 +12,6 @@ import {
   Badge,
   layerColor,
 } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 import CourtIcon from '@/assets/icons/Icon_court.svg';
 import MoneyIcon from '@/assets/icons/Icon_money.svg';
 import HeartIcon from '@/assets/icons/Icon_heart.svg';
@@ -102,7 +101,7 @@ export default function DemoSection() {
   }, [showAnswer, activeCategory, activeAction]);
 
   return (
-    <DemoContainer>
+    <DemoContainer id='demo-section'>
       <DemoWrapper>
         <DemoHeader>
           <SectionTitle>Demo</SectionTitle>
@@ -150,10 +149,7 @@ export default function DemoSection() {
                   }}
                 >
                   <FileLeftArea>
-                    <FileIcon
-                      src={getAssetPath('/icons/Icon_file.svg')}
-                      alt='file'
-                    />
+                    <FileIcon src={'/icons/Icon_file.svg'} alt='file' />
                   </FileLeftArea>
                   <FileRightArea>
                     <FileInfo>
@@ -182,7 +178,7 @@ export default function DemoSection() {
                     </FileInfo>
                     <RemoveButton>
                       <RemoveIcon
-                        src={getAssetPath('/icons/Icon_arrow_forward.svg')}
+                        src={'/icons/Icon_arrow_forward.svg'}
                         alt='remove'
                       />
                     </RemoveButton>
@@ -206,7 +202,7 @@ export default function DemoSection() {
                     }}
                   >
                     <ActionIcon
-                      src={getAssetPath('/icons/Icon_Anonymization.svg')}
+                      src={'/icons/Icon_Anonymization.svg'}
                       alt='anonymize'
                     />
                     정보 가리기
@@ -220,10 +216,7 @@ export default function DemoSection() {
                       setIsTyping(false);
                     }}
                   >
-                    <ActionIcon
-                      src={getAssetPath('/icons/Icon_sync-lock.svg')}
-                      alt='sync'
-                    />
+                    <ActionIcon src={'/icons/Icon_sync-lock.svg'} alt='sync' />
                     정보 바꾸기
                   </SlidingButton>
                 </SlidingButtonWrapper>
@@ -241,10 +234,7 @@ export default function DemoSection() {
           </QuestionSection>
 
           <TransferButton>
-            <TransferIcon
-              src={getAssetPath('/icons/arrows_outward.svg')}
-              alt='transfer'
-            />
+            <TransferIcon src={'/icons/arrows_outward.svg'} alt='transfer' />
           </TransferButton>
 
           <AnswerSection>
@@ -317,7 +307,7 @@ const DemoContainer = styled.section`
   width: 100%;
   display: flex;
   background-color: ${color.gray['50']};
-  background-image: url('${getAssetPath('/images/Background Pattern.svg')}');
+  background-image: url('/images/Background Pattern.svg');
   background-repeat: repeat;
   background-size: auto;
 `;

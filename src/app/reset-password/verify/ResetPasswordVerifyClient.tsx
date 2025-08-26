@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { SolidButton, TextButton, TextField } from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import { validatePassword, validateConfirmPassword } from '@/utils/validation';
 import { authService } from '@/services/auth';
@@ -106,12 +105,7 @@ export default function ResetPasswordVerifyClient() {
       <ResetPasswordWrapper>
         <LogoWrapper>
           <Link href='/'>
-            <Image
-              src={getAssetPath('/icons/Logo.svg')}
-              alt='Logo'
-              width={32}
-              height={32}
-            />
+            <Image src={'/icons/Logo.svg'} alt='Logo' width={32} height={32} />
           </Link>
         </LogoWrapper>
         <ResetPasswordLeft>
@@ -189,16 +183,10 @@ const LogoWrapper = styled.div`
 `;
 
 const ResetPasswordWrapper = styled.div`
-  max-width: 1440px;
-  margin: 0 auto;
   display: flex;
   width: 100%;
   height: 100%;
   position: relative;
-
-  @media (min-width: 1920px) {
-    max-width: 1920px;
-  }
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -210,19 +198,6 @@ const ResetPasswordLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 120px 40px 40px 40px;
-
-  @media (max-width: 1920px) {
-    padding: 120px 40px 40px 40px;
-  }
-
-  @media (max-width: 768px) {
-    padding: 100px 20px 20px 20px;
-  }
-
-  @media (max-width: 375px) {
-    padding: 80px 16px 16px 16px;
-  }
 `;
 
 const ResetPasswordRight = styled.div`

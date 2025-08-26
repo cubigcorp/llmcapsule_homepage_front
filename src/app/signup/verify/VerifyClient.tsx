@@ -13,7 +13,6 @@ import {
   toast,
 } from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import { countries } from '@/utils/countries';
 import {
@@ -323,12 +322,7 @@ export default function VerifyClient() {
     <SignupContainer>
       <LogoWrapper>
         <Link href='/'>
-          <Image
-            src={getAssetPath('/icons/Logo.svg')}
-            alt='Logo'
-            width={32}
-            height={32}
-          />
+          <Image src={'/icons/Logo.svg'} alt='Logo' width={32} height={32} />
         </Link>
       </LogoWrapper>
       <SignupWrapper>
@@ -474,7 +468,7 @@ export default function VerifyClient() {
                         <TimerContainer>
                           <TimerText>
                             <Image
-                              src={getAssetPath('/icons/Icon_history.svg')}
+                              src={'/icons/Icon_history.svg'}
                               alt='Timer'
                               width={16}
                               height={16}
@@ -592,16 +586,10 @@ const LogoWrapper = styled.div`
 `;
 
 const SignupWrapper = styled.div`
-  max-width: ${({ theme }) => theme.container.lg};
-  margin: 0 auto;
   display: flex;
   width: 100%;
   height: 100%;
   position: relative;
-
-  @media (min-width: 1921px) {
-    max-width: ${({ theme }) => theme.container.xl};
-  }
 
   @media (max-width: 992px) {
     flex-direction: column;
@@ -613,17 +601,6 @@ const SignupLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px ${({ theme }) => theme.spacing.xl}
-    ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
-
-  @media (max-width: 992px) {
-    padding: 60px 20px 20px 20px;
-  }
-
-  @media (max-width: 375px) {
-    padding: 60px ${({ theme }) => theme.spacing.sm}
-      ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.sm};
-  }
 `;
 
 const SignupRight = styled.div`

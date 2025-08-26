@@ -2,7 +2,6 @@
 
 import styled from 'styled-components';
 import { typography, textColor, radius } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 
 export default function ProcessSection() {
   return (
@@ -16,10 +15,7 @@ export default function ProcessSection() {
           GPT는 오직 안전하게 처리된 정보만 받아볼 수 있습니다.
         </ProcessDescription>
         <ProcessImageWrapper>
-          <img
-            src={getAssetPath('/images/Process.svg')}
-            alt='AI 보안 프로세스'
-          />
+          <img src={'/images/Process.svg'} alt='AI 보안 프로세스' />
         </ProcessImageWrapper>
       </ProcessWrapper>
     </ProcessContainer>
@@ -28,7 +24,7 @@ export default function ProcessSection() {
 
 const ProcessContainer = styled.section`
   width: 100%;
-  background: #18191c;
+  background: #f7f7f8;
   display: flex;
   justify-content: center;
   padding-bottom: 120px;
@@ -71,8 +67,8 @@ const ProcessWrapper = styled.div`
 const SectionTitle = styled.h2`
   width: fit-content;
   ${typography('ko', 'body3', 'medium')}
-  color: #fff;
-  border: 1px solid #fff;
+  color: ${textColor.light['fg-neutral-primary']};
+  border: 1px solid ${textColor.light['fg-neutral-primary']};
   padding: 2px 8px;
   border-radius: ${radius['rounded-1.5']};
   margin: 0 auto 26px auto;
@@ -80,7 +76,7 @@ const SectionTitle = styled.h2`
 
 const ProcessTitle = styled.h2`
   ${typography('ko', 'title4', 'medium')}
-  color: #fff;
+  color: ${textColor.light['fg-neutral-primary']};
   text-align: center;
   margin-bottom: 24px;
 `;
@@ -88,7 +84,7 @@ const ProcessTitle = styled.h2`
 const ProcessDescription = styled.p`
   width: 600px;
   ${typography('ko', 'heading1', 'medium')}
-  color: ${textColor.dark['fg-neutral-alternative']};
+  color: ${textColor.light['fg-neutral-alternative']};
   text-align: center;
   margin-bottom: 56px;
 

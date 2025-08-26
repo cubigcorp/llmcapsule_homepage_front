@@ -11,7 +11,6 @@ import {
   toast,
 } from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 import CarouselSection from '@/components/common/CarouselSection';
 import EmailVerificationSection from '@/components/common/EmailVerificationSection';
 import { authService } from '@/services/auth';
@@ -91,12 +90,7 @@ export default function ResetPasswordPage() {
       <ResetPasswordWrapper>
         <LogoWrapper>
           <Link href='/'>
-            <Image
-              src={getAssetPath('/icons/Logo.svg')}
-              alt='Logo'
-              width={32}
-              height={32}
-            />
+            <Image src={'/icons/Logo.svg'} alt='Logo' width={32} height={32} />
           </Link>
         </LogoWrapper>
         <ResetPasswordLeft>
@@ -159,16 +153,10 @@ const ResetPasswordContainer = styled.div`
 `;
 
 const ResetPasswordWrapper = styled.div`
-  max-width: ${({ theme }) => theme.container.lg};
-  margin: 0 auto;
   display: flex;
   width: 100%;
   height: 100%;
   position: relative;
-
-  @media (min-width: 1921px) {
-    max-width: ${({ theme }) => theme.container.xl};
-  }
 
   ${({ theme }) => theme.media.maxMd} {
     flex-direction: column;
@@ -180,23 +168,6 @@ const ResetPasswordLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 160px ${({ theme }) => theme.spacing.xl}
-    ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
-
-  ${({ theme }) => theme.media.maxXl} {
-    padding: 160px ${({ theme }) => theme.spacing.xl}
-      ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.xl};
-  }
-
-  ${({ theme }) => theme.media.maxMd} {
-    padding: 100px ${({ theme }) => theme.spacing.md}
-      ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.md};
-  }
-
-  ${({ theme }) => theme.media.maxSm} {
-    padding: 80px ${({ theme }) => theme.spacing.sm}
-      ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.sm};
-  }
 `;
 
 const ResetPasswordRight = styled.div`

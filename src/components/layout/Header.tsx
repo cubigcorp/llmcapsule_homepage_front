@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { spacing, TextButton, SolidButton } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 import { authService } from '@/services/auth';
 
 export default function Header() {
@@ -78,7 +77,7 @@ export default function Header() {
             <LogoWrapper>
               <Link href='/'>
                 <Image
-                  src={getAssetPath('/icons/Logo.svg')}
+                  src={'/icons/Logo.svg'}
                   alt='Logo'
                   width={32}
                   height={32}
@@ -129,11 +128,11 @@ export default function Header() {
               </>
             ) : (
               <>
-                <Link href='/login'>
+                {/* <Link href='/login'>
                   <TextButton variant='primary' size='medium'>
                     로그인
                   </TextButton>
-                </Link>
+                </Link> */}
                 <Link href='/contact'>
                   <SolidButton variant='primary' size='medium'>
                     문의하기

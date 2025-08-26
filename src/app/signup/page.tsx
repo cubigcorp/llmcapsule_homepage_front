@@ -25,7 +25,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { SolidButton, TextField, toast } from '@cubig/design-system';
 import { typography, textColor, borderColor } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
+// import { getAssetPath } from '@/utils/path';
 
 import CarouselSection from '@/components/common/CarouselSection';
 import EmailVerificationSection from '@/components/common/EmailVerificationSection';
@@ -220,12 +220,7 @@ export default function SignupPage() {
       <SignupWrapper>
         <LogoWrapper>
           <Link href='/'>
-            <Image
-              src={getAssetPath('/icons/Logo.svg')}
-              alt='Logo'
-              width={32}
-              height={32}
-            />
+            <Image src={'/icons/Logo.svg'} alt='Logo' width={32} height={32} />
           </Link>
         </LogoWrapper>
         <SignupLeft $isEmailVerification={isEmailVerification}>
@@ -338,16 +333,10 @@ const LogoWrapper = styled.div`
 `;
 
 const SignupWrapper = styled.div`
-  max-width: ${({ theme }) => theme.container.lg};
-  margin: 0 auto;
   display: flex;
   width: 100%;
   height: 100%;
   position: relative;
-
-  @media (min-width: 1921px) {
-    max-width: ${({ theme }) => theme.container.xl};
-  }
 
   @media (max-width: 992px) {
     flex-direction: column;
@@ -359,10 +348,9 @@ const SignupLeft = styled.div<{ $isEmailVerification?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
 
   @media (max-width: 768px) {
-    padding: 20px;
+    padding: 0;
   }
 `;
 

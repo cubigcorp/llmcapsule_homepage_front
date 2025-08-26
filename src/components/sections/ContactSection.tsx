@@ -1,53 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import styled from 'styled-components';
-import {
-  typography,
-  textColor,
-  radius,
-  color,
-  borderColor,
-  SolidButton,
-  TextField,
-  Checkbox,
-} from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
-import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
-import PrivacyConsentModal from '@/components/modals/PrivacyConsentModal';
+import { typography, textColor, color, radius } from '@cubig/design-system';
+import ContactFormComponent from '@/components/common/ContactForm';
 
 export default function ContactSection() {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    company: '',
-    department: '',
-    position: '',
-    businessConcern: '',
-    requiredConsent: false,
-    marketingConsent: false,
-  });
-
-  const [isMarketingModalOpen, setIsMarketingModalOpen] = useState(false);
-  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleCheckboxChange = (field: string, checked: boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: checked }));
-  };
-
-  const handleMarketingConsentClick = () => {
-    setIsMarketingModalOpen(true);
-  };
-
-  const handlePrivacyConsentClick = () => {
-    setIsPrivacyModalOpen(true);
-  };
-
   return (
     <ContactContainer>
       <ContactLeft>
@@ -64,7 +21,7 @@ export default function ContactSection() {
           <ContactInfo>
             <InfoBlock>
               <InfoIcon>
-                <img src={getAssetPath('/icons/company.svg')} alt='company' />
+                <img src={'/icons/company.svg'} alt='company' />
               </InfoIcon>
               <InfoContent>
                 <InfoTitle>기업의 문의 내용에 따른 맞춤형 안내</InfoTitle>
@@ -77,10 +34,7 @@ export default function ContactSection() {
             </InfoBlock>
             <InfoBlock>
               <InfoIcon>
-                <img
-                  src={getAssetPath('/icons/structure.svg')}
-                  alt='structure'
-                />
+                <img src={'/icons/structure.svg'} alt='structure' />
               </InfoIcon>
               <InfoContent>
                 <InfoTitle>LLM Capsule 제품에 대한 상세한 소개</InfoTitle>
@@ -96,132 +50,8 @@ export default function ContactSection() {
       </ContactLeft>
 
       <ContactRight>
-        <ContactForm>
-          <TextField
-            label='이름'
-            labelType='required'
-            size='large'
-            value={formData.name}
-            onChange={(e) => handleInputChange('name', e.target.value)}
-            placeholder='이름을 입력해 주세요.'
-          />
-
-          <TextField
-            label='휴대전화번호'
-            labelType='required'
-            size='large'
-            value={formData.phone}
-            onChange={(e) => handleInputChange('phone', e.target.value)}
-            placeholder='- 없이 숫자만 입력해 주세요.'
-          />
-
-          <TextField
-            label='업무용 메일'
-            labelType='required'
-            size='large'
-            value={formData.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
-            placeholder='업무용 메일을 입력해 주세요.'
-          />
-
-          <TextField
-            label='회사/소속기관명'
-            labelType='required'
-            size='large'
-            value={formData.company}
-            onChange={(e) => handleInputChange('company', e.target.value)}
-            placeholder='회사/소속기관명을 입력해 주세요.'
-          />
-
-          <RowFormField>
-            <TextField
-              label='부서명'
-              size='large'
-              value={formData.department}
-              onChange={(e) => handleInputChange('department', e.target.value)}
-              placeholder='부서명을 입력해 주세요.'
-            />
-
-            <TextField
-              label='직함'
-              size='large'
-              value={formData.position}
-              onChange={(e) => handleInputChange('position', e.target.value)}
-              placeholder='직함을 입력해 주세요.'
-            />
-          </RowFormField>
-
-          <FormField>
-            <FormLabel>해결하고 싶은 비즈니스 고민</FormLabel>
-            <FormTextarea
-              placeholder='문의 내용을 입력해주세요.'
-              value={formData.businessConcern}
-              onChange={(e) =>
-                handleInputChange('businessConcern', e.target.value)
-              }
-            />
-          </FormField>
-
-          <ConsentSection>
-            <ConsentItem>
-              <Checkbox
-                id='required'
-                variant='primary'
-                state={formData.requiredConsent ? 'checked' : 'unchecked'}
-                onChange={(checked) =>
-                  handleCheckboxChange('requiredConsent', checked)
-                }
-              />
-              <span style={{ textDecoration: 'none', color: 'inherit' }}>
-                (필수)
-              </span>
-              <span
-                style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                onClick={handlePrivacyConsentClick}
-              >
-                개인정보 수집 및 이용 동의
-              </span>
-            </ConsentItem>
-            <ConsentItem>
-              <Checkbox
-                id='optional'
-                variant='primary'
-                state={formData.marketingConsent ? 'checked' : 'unchecked'}
-                onChange={(checked) =>
-                  handleCheckboxChange('marketingConsent', checked)
-                }
-              />
-              <span
-                style={{
-                  textDecoration: 'none',
-                  color: textColor.light['fg-neutral-alternative'],
-                }}
-              >
-                (선택){' '}
-              </span>
-              <span
-                style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                onClick={handleMarketingConsentClick}
-              >
-                마케팅 정보 수신 동의
-              </span>
-            </ConsentItem>
-          </ConsentSection>
-
-          <SolidButton variant='primary' size='large' state='default'>
-            도입 문의하기
-          </SolidButton>
-        </ContactForm>
+        <ContactFormComponent title='도입 문의하기' />
       </ContactRight>
-
-      <MarketingConsentModal
-        isOpen={isMarketingModalOpen}
-        onClose={() => setIsMarketingModalOpen(false)}
-      />
-      <PrivacyConsentModal
-        isOpen={isPrivacyModalOpen}
-        onClose={() => setIsPrivacyModalOpen(false)}
-      />
     </ContactContainer>
   );
 }
@@ -379,81 +209,4 @@ const InfoDivider = styled.hr`
   height: 1px;
   background-color: ${color.gray['800']};
   margin: 0;
-`;
-
-const ContactForm = styled.div`
-  width: 100%;
-  background-color: #fff;
-  padding: 120px 80px;
-  border-radius: ${radius['rounded-2']};
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-  @media (max-width: 768px) {
-    padding: 60px 24px;
-    gap: 16px;
-  }
-
-  @media (max-width: 375px) {
-    padding: 40px 16px;
-    gap: 12px;
-  }
-`;
-
-const FormField = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const RowFormField = styled.div`
-  display: flex;
-  gap: 16px;
-
-  > * {
-    flex: 1;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 12px;
-  }
-`;
-
-const FormLabel = styled.label`
-  ${typography('ko', 'body2', 'medium')}
-  color: ${textColor.light['fg-neutral-strong']};
-`;
-
-const FormTextarea = styled.textarea`
-  padding: 12px 16px;
-  border: 1px solid ${borderColor.light['color-border-primary']};
-  border-radius: ${radius['rounded-1']};
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-strong']};
-  min-height: 120px;
-  resize: vertical;
-
-  &::placeholder {
-    color: ${textColor.light['fg-neutral-assistive']} !important;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: ${color.gray['400']};
-  }
-`;
-
-const ConsentSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 8px;
-`;
-
-const ConsentItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
 `;

@@ -11,7 +11,6 @@ import {
   SolidButton,
   Chip,
 } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 
 interface FilterModalProps {
   isOpen: boolean;
@@ -41,80 +40,47 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
     {
       id: 'year',
       name: '연도',
-      icon: (
-        <FilterIcon src={getAssetPath('/icons/Icon_calendar.svg')} alt='연도' />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_calendar.svg'} alt='연도' />,
     },
     {
       id: 'phone',
       name: '전화번호',
-      icon: (
-        <FilterIcon src={getAssetPath('/icons/Icon_call.svg')} alt='전화번호' />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_call.svg'} alt='전화번호' />,
     },
     {
       id: 'age',
       name: '나이',
-      icon: (
-        <FilterIcon src={getAssetPath('/icons/Icon_profile.svg')} alt='나이' />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_profile.svg'} alt='나이' />,
     },
     {
       id: 'name',
       name: '이름',
-      icon: (
-        <FilterIcon src={getAssetPath('/icons/Icon_profile.svg')} alt='이름' />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_profile.svg'} alt='이름' />,
     },
     {
       id: 'birthdate',
       name: '연월일',
-      icon: (
-        <FilterIcon
-          src={getAssetPath('/icons/Icon_calendar.svg')}
-          alt='연월일'
-        />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_calendar.svg'} alt='연월일' />,
     },
     {
       id: 'residentNumber',
       name: '주민등록번호',
-      icon: (
-        <FilterIcon
-          src={getAssetPath('/icons/Icon_badge.svg')}
-          alt='주민등록번호'
-        />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_badge.svg'} alt='주민등록번호' />,
     },
     {
       id: 'alienNumber',
       name: '외국인등록번호',
-      icon: (
-        <FilterIcon
-          src={getAssetPath('/icons/Icon_badge.svg')}
-          alt='외국인등록번호'
-        />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_badge.svg'} alt='외국인등록번호' />,
     },
     {
       id: 'driverLicense',
       name: '운전면허번호',
-      icon: (
-        <FilterIcon
-          src={getAssetPath('/icons/Icon_car.svg')}
-          alt='운전면허번호'
-        />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_car.svg'} alt='운전면허번호' />,
     },
     {
       id: 'passport',
       name: '여권번호',
-      icon: (
-        <FilterIcon
-          src={getAssetPath('/icons/Icon_badge.svg')}
-          alt='여권번호'
-        />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_badge.svg'} alt='여권번호' />,
     },
   ];
 
@@ -122,83 +88,47 @@ export default function FilterModal({ isOpen, onClose }: FilterModalProps) {
     {
       id: 'accountNumber',
       name: '계좌번호',
-      icon: (
-        <FilterIcon
-          src={getAssetPath('/icons/Icon_accunt.svg')}
-          alt='계좌번호'
-        />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_accunt.svg'} alt='계좌번호' />,
     },
     {
       id: 'creditCard',
       name: '신용카드번호',
-      icon: (
-        <FilterIcon
-          src={getAssetPath('/icons/Icon_card.svg')}
-          alt='신용카드번호'
-        />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_card.svg'} alt='신용카드번호' />,
     },
     {
       id: 'carNumber',
       name: '자동차번호',
-      icon: (
-        <FilterIcon
-          src={getAssetPath('/icons/Icon_car.svg')}
-          alt='자동차번호'
-        />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_car.svg'} alt='자동차번호' />,
     },
     {
       id: 'email',
       name: '이메일주소',
-      icon: (
-        <FilterIcon
-          src={getAssetPath('/icons/Icon_mail.svg')}
-          alt='이메일주소'
-        />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_mail.svg'} alt='이메일주소' />,
     },
     {
       id: 'businessNumber',
       name: '사업자등록번호',
-      icon: (
-        <FilterIcon
-          src={getAssetPath('/icons/Icon_badge.svg')}
-          alt='사업자등록번호'
-        />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_badge.svg'} alt='사업자등록번호' />,
     },
     {
       id: 'corporateNumber',
       name: '법인등록번호',
-      icon: (
-        <FilterIcon
-          src={getAssetPath('/icons/Icon_badge.svg')}
-          alt='법인등록번호'
-        />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_badge.svg'} alt='법인등록번호' />,
     },
     {
       id: 'amount',
       name: '금액',
-      icon: (
-        <FilterIcon src={getAssetPath('/icons/Icon_money.svg')} alt='금액' />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_money.svg'} alt='금액' />,
     },
     {
       id: 'height',
       name: 'Cm(신장)',
-      icon: (
-        <FilterIcon src={getAssetPath('/icons/Icon_height.svg')} alt='신장' />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_height.svg'} alt='신장' />,
     },
     {
       id: 'weight',
       name: 'Kg(몸무게)',
-      icon: (
-        <FilterIcon src={getAssetPath('/icons/Icon_weight.svg')} alt='몸무게' />
-      ),
+      icon: <FilterIcon src={'/icons/Icon_weight.svg'} alt='몸무게' />,
     },
   ];
 

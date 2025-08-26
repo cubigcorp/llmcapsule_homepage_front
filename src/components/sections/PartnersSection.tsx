@@ -7,22 +7,21 @@ import {
   radius,
   borderColor,
 } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 
 const partnerLogos = [
-  { src: getAssetPath('/icons/airforce.svg'), alt: 'Air Force' },
-  { src: getAssetPath('/icons/Amazon.svg'), alt: 'Amazon' },
-  { src: getAssetPath('/icons/army.svg'), alt: 'Army' },
-  { src: getAssetPath('/icons/ewha.svg'), alt: 'Ewha' },
-  { src: getAssetPath('/icons/gangnamgu.svg'), alt: 'Gangnam' },
-  { src: getAssetPath('/icons/hanabank.svg'), alt: 'Hana Bank' },
-  { src: getAssetPath('/icons/ibk.svg'), alt: 'IBK 기업은행' },
-  { src: getAssetPath('/icons/kyobo.svg'), alt: 'KYOBO' },
-  { src: getAssetPath('/icons/naver_cloud.svg'), alt: 'Naver Cloud' },
-  { src: getAssetPath('/icons/police.svg'), alt: 'Police' },
-  { src: getAssetPath('/icons/shinseunglaw.svg'), alt: 'Shinseung Law' },
-  { src: getAssetPath('/icons/sktelecom.svg'), alt: 'SK telecom' },
-  { src: getAssetPath('/icons/wooribank.svg'), alt: 'Woori Bank' },
+  { src: '/icons/airforce.svg', alt: 'Air Force' },
+  { src: '/icons/Amazon.svg', alt: 'Amazon' },
+  { src: '/icons/army.svg', alt: 'Army' },
+  { src: '/icons/ewha.svg', alt: 'Ewha' },
+  { src: '/icons/gangnamgu.svg', alt: 'Gangnam' },
+  { src: '/icons/hanabank.svg', alt: 'Hana Bank' },
+  { src: '/icons/ibk.svg', alt: 'IBK 기업은행' },
+  { src: '/icons/kyobo.svg', alt: 'KYOBO' },
+  { src: '/icons/naver_cloud.svg', alt: 'Naver Cloud' },
+  { src: '/icons/police.svg', alt: 'Police' },
+  { src: '/icons/shinseunglaw.svg', alt: 'Shinseung Law' },
+  { src: '/icons/sktelecom.svg', alt: 'SK telecom' },
+  { src: '/icons/wooribank.svg', alt: 'Woori Bank' },
 ];
 
 export default function PartnersSection() {

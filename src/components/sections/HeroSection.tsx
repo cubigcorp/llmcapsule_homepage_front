@@ -7,7 +7,6 @@ import {
   typography,
   textColor,
 } from '@cubig/design-system';
-import { getAssetPath } from '@/utils/path';
 
 export default function HeroSection() {
   return (
@@ -30,19 +29,37 @@ export default function HeroSection() {
               </Description>
             </TextContent>
             <ButtonGroup>
-              <SolidButton variant='primary' size='large'>
-                구매하기
-              </SolidButton>
-              <OutlineButton variant='secondary' size='large'>
+              <OutlineButton
+                variant='secondary'
+                size='large'
+                onClick={() => {
+                  const demoSection = document.getElementById('demo-section');
+                  if (demoSection) {
+                    demoSection.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    });
+                  }
+                }}
+              >
                 데모 체험하기
               </OutlineButton>
+              <SolidButton
+                variant='primary'
+                size='large'
+                onClick={() => {
+                  window.open(
+                    'https://cubig.gabia.io/QR_files/Brochure_LLM_K.pdf',
+                    '_blank'
+                  );
+                }}
+              >
+                제품 브로슈어
+              </SolidButton>
             </ButtonGroup>
           </LeftContent>
           <ImageArea>
-            <img
-              src={getAssetPath('/images/Hero.svg')}
-              alt='LLM Capsule 인터페이스'
-            />
+            <img src={'/images/Hero.svg'} alt='LLM Capsule 인터페이스' />
           </ImageArea>
         </ContentArea>
       </HeroWrapper>
