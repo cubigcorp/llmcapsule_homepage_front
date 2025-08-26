@@ -70,7 +70,7 @@ export default function Footer() {
                 <SocialIconImage src='/icons/logo_insta.svg' alt='Instagram' />
               </a>
             </SocialIcon>
-            <SocialIcon>
+            {/* <SocialIcon>
               <a
                 href='https://www.youtube.com/@azoo_ai'
                 target='_blank'
@@ -78,7 +78,7 @@ export default function Footer() {
               >
                 <SocialIconImage src='/icons/logo_youtube.svg' alt='YouTube' />
               </a>
-            </SocialIcon>
+            </SocialIcon> */}
             <SocialIcon>
               <a
                 href='https://www.linkedin.com/company/cubig-corp/posts/?feedView=all'
