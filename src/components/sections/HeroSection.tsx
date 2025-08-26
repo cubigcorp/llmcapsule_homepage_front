@@ -32,7 +32,19 @@ export default function HeroSection() {
               <SolidButton variant='primary' size='large'>
                 구매하기
               </SolidButton>
-              <OutlineButton variant='secondary' size='large'>
+              <OutlineButton
+                variant='secondary'
+                size='large'
+                onClick={() => {
+                  const demoSection = document.getElementById('demo-section');
+                  if (demoSection) {
+                    demoSection.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    });
+                  }
+                }}
+              >
                 데모 체험하기
               </OutlineButton>
             </ButtonGroup>

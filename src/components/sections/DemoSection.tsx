@@ -101,7 +101,7 @@ export default function DemoSection() {
   }, [showAnswer, activeCategory, activeAction]);
 
   return (
-    <DemoContainer>
+    <DemoContainer id='demo-section'>
       <DemoWrapper>
         <DemoHeader>
           <SectionTitle>Demo</SectionTitle>
