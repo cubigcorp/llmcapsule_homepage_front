@@ -29,9 +29,6 @@ export default function HeroSection() {
               </Description>
             </TextContent>
             <ButtonGroup>
-              <SolidButton variant='primary' size='large'>
-                구매하기
-              </SolidButton>
               <OutlineButton
                 variant='secondary'
                 size='large'
@@ -47,6 +44,18 @@ export default function HeroSection() {
               >
                 데모 체험하기
               </OutlineButton>
+              <SolidButton
+                variant='primary'
+                size='large'
+                onClick={() => {
+                  window.open(
+                    'https://cubig.gabia.io/QR_files/Brochure_LLM_K.pdf',
+                    '_blank'
+                  );
+                }}
+              >
+                제품 브로슈어
+              </SolidButton>
             </ButtonGroup>
           </LeftContent>
           <ImageArea>
