@@ -103,6 +103,10 @@ const ContactWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
   display: flex;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const ContactHeader = styled.div`
