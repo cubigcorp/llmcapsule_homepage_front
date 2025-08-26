@@ -140,7 +140,7 @@ export default function ContactFormComponent({
       formData.name.trim() !== '' &&
       formData.contactNumber.trim() !== '' &&
       formData.inquiryType !== '' &&
-      formData.inquiryContent.trim().length >= 10 &&
+      formData.inquiryContent.trim().length >= 2 &&
       formData.privacyAgreement &&
       !emailError &&
       !nameError &&
@@ -213,14 +213,14 @@ export default function ContactFormComponent({
         </FormField>
 
         <FormField>
-          <Label type='required'>문의 내용</Label>
+          <Label type='required'>문의 내용 (2자 이상)</Label>
           <div style={{ marginTop: '4px' }}>
             <Textarea
               value={formData.inquiryContent}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 handleInputChange('inquiryContent', e.target.value)
               }
-              placeholder='문의하실 내용을 입력해주세요. (10자 이상)'
+              placeholder=''
               rows={4}
             />
           </div>
