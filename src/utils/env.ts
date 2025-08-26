@@ -31,7 +31,7 @@ function getApiBaseUrl(): string {
   if (
     hostname.includes('prod') ||
     hostname.includes('production') ||
-    hostname.includes('cubig.gabia.io')
+    hostname === 'llmcapsule.ai'
   ) {
     return 'https://yottf79147.execute-api.ap-northeast-2.amazonaws.com/api';
   }
@@ -77,7 +77,7 @@ function getEnvironmentName(hostname: string): string {
   if (
     hostname.includes('prod') ||
     hostname.includes('production') ||
-    hostname.includes('cubig.gabia.io')
+    hostname === 'llmcapsule.ai'
   ) {
     return 'production';
   }
