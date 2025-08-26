@@ -7,8 +7,8 @@ import ContactFormComponent from '@/components/common/ContactForm';
 export default function ContactSection() {
   return (
     <ContactContainer>
-      <ContactLeft>
-        <ContactWrapper>
+      <ContactWrapper>
+        <ContactLeft>
           <ContactHeader>
             <SectionTitle>Contact</SectionTitle>
             <ContactTitle>알맞은 플랜을 찾고 계신가요?</ContactTitle>
@@ -46,49 +46,41 @@ export default function ContactSection() {
               </InfoContent>
             </InfoBlock>
           </ContactInfo>
-        </ContactWrapper>
-      </ContactLeft>
+        </ContactLeft>
 
-      <ContactRight>
-        <ContactFormComponent title='도입 문의하기' />
-      </ContactRight>
+        <ContactRight>
+          <ContactFormComponent title='도입 문의하기' />
+        </ContactRight>
+      </ContactWrapper>
     </ContactContainer>
   );
 }
 
 const ContactContainer = styled.section`
-  width: 100vw;
-  max-width: 1440px;
+  width: 100%;
   display: flex;
-  margin: 0 auto;
-
-  @media (min-width: 1920px) {
-    max-width: 1920px;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
 `;
 
 const ContactLeft = styled.div`
-  width: 640px;
+  flex: 1;
   background-color: ${color.gray['950']};
-  display: flex;
   align-items: center;
+  padding: 120px 80px;
 
   @media (max-width: 768px) {
     width: 100%;
     min-height: 400px;
+    padding: 60px 24px;
   }
 
   @media (max-width: 375px) {
     min-height: 300px;
+    padding: 40px 16px;
   }
 `;
 
 const ContactRight = styled.div`
-  width: 800px;
+  flex: 1;
   background-color: #fff;
   display: flex;
   align-items: center;
@@ -97,25 +89,39 @@ const ContactRight = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     min-height: 500px;
+    padding: 60px 24px;
   }
 
   @media (max-width: 375px) {
     min-height: 400px;
+    padding: 40px 16px;
   }
 `;
 
 const ContactWrapper = styled.div`
   width: 100%;
-  padding: 120px 80px;
+  max-width: 1440px;
+  margin: 0 auto;
   display: flex;
-  flex-direction: column;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+    padding: 0 120px;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 0 24px;
+  }
 
   @media (max-width: 768px) {
+    flex-direction: column;
     padding: 60px 24px;
+    gap: 40px;
   }
 
   @media (max-width: 375px) {
     padding: 40px 16px;
+    gap: 24px;
   }
 `;
 
