@@ -128,11 +128,11 @@ export default function Header() {
               </>
             ) : (
               <>
-                <Link href='/login'>
+                {/* <Link href='/login'>
                   <TextButton variant='primary' size='medium'>
                     로그인
                   </TextButton>
-                </Link>
+                </Link> */}
                 <Link href='/contact'>
                   <SolidButton variant='primary' size='medium'>
                     문의하기
