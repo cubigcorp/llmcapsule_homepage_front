@@ -85,6 +85,7 @@ const ContactRight = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 120px 80px;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -100,28 +101,11 @@ const ContactRight = styled.div`
 
 const ContactWrapper = styled.div`
   width: 100%;
-  max-width: 1440px;
   margin: 0 auto;
   display: flex;
 
-  @media (min-width: 1920px) {
-    max-width: 1920px;
-    padding: 0 120px;
-  }
-
-  @media (max-width: 1440px) {
-    padding: 0 24px;
-  }
-
   @media (max-width: 768px) {
     flex-direction: column;
-    padding: 60px 24px;
-    gap: 40px;
-  }
-
-  @media (max-width: 375px) {
-    padding: 40px 16px;
-    gap: 24px;
   }
 `;
 
