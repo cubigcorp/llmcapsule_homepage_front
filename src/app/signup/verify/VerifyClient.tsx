@@ -375,6 +375,7 @@ export default function VerifyClient() {
 
             <FormField>
               <Dropdown
+                type='combobox'
                 labelType='required'
                 label='국가'
                 size='large'
