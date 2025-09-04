@@ -90,6 +90,14 @@ export interface CheckEmailResponse {
 }
 
 /**
+ * 전화번호 중복 확인 타입
+ */
+export interface CheckPhoneResponse {
+  phone: string;
+  is_available: boolean;
+}
+
+/**
  * OTP 관련 타입
  */
 export interface SendOtpRequest {
@@ -307,6 +315,7 @@ export const API_ENDPOINTS = {
   // 이메일 중복 확인
   USERS: {
     CHECK_EMAIL: '/users/check-email',
+    CHECK_PHONE: '/users/check-phone',
     ME: '/users/me',
     BY_ID: (id: number) => `/users/${id}`,
   },

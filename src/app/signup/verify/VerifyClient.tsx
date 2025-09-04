@@ -52,6 +52,9 @@ export default function VerifyClient() {
 
   const [contactError, setContactError] = useState('');
   const [companyError, setCompanyError] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [verificationError, setVerificationError] = useState('');
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [timeLeft, setTimeLeft] = useState(120);
@@ -80,6 +83,22 @@ export default function VerifyClient() {
     if (field === 'company') {
       const result = validateCompany(value);
       setCompanyError(result.message);
+    }
+  };
+
+  const handleFirstNameBlur = () => {
+    if (!formData.firstName.trim()) {
+      setFirstNameError('이름을 입력해 주세요.');
+    } else {
+      setFirstNameError('');
+    }
+  };
+
+  const handleLastNameBlur = () => {
+    if (!formData.lastName.trim()) {
+      setLastNameError('성을 입력해 주세요.');
+    } else {
+      setLastNameError('');
     }
   };
 
@@ -151,6 +170,22 @@ export default function VerifyClient() {
       setCountryError('국가를 선택해주세요.');
       return;
     }
+
+    try {
+      const phoneCheckResponse = await authService.checkPhone(
+        formData.contactNumber
+      );
+      if (phoneCheckResponse.data && !phoneCheckResponse.data.is_available) {
+        setContactError('이미 등록된 연락처입니다.');
+        return;
+      }
+    } catch (error) {
+      console.error('Phone check error:', error);
+      return;
+    }
+
+    setFirstNameError('');
+    setLastNameError('');
     setContactError('');
     setCountryError('');
 
@@ -177,9 +212,12 @@ export default function VerifyClient() {
 
   const handleVerifyCode = async () => {
     if (!verificationCode) {
-      alert('인증번호를 입력해 주세요.');
+      setVerificationError('인증번호를 입력해 주세요.');
       return;
     }
+
+    setVerificationError('');
+
     try {
       const response = await otpService.verifyOtp(
         {
@@ -192,11 +230,12 @@ export default function VerifyClient() {
       if (response.success) {
         setIsVerificationCompleted(true);
         setIsTimerRunning(false);
+        setVerificationError('');
       } else {
-        alert('인증번호가 올바르지 않습니다. 다시 확인해 주세요.');
+        setVerificationError('인증번호가 일치하지 않습니다.');
       }
     } catch {
-      alert('인증번호가 올바르지 않습니다. 다시 확인해 주세요.');
+      setVerificationError('인증번호가 일치하지 않습니다.');
     }
   };
 
@@ -223,11 +262,17 @@ export default function VerifyClient() {
   };
 
   const handleSignup = async () => {
-    if (!formData.firstName.trim()) return alert('이름을 입력해주세요.');
-    if (!formData.lastName.trim()) return alert('성을 입력해주세요.');
+    if (!formData.firstName.trim()) {
+      setFirstNameError('이름을 입력해 주세요.');
+      return;
+    }
+    if (!formData.lastName.trim()) {
+      setLastNameError('성을 입력해 주세요.');
+      return;
+    }
     if (!formData.email.trim()) return alert('이메일을 입력해주세요.');
     if (!formData.contactNumber.trim()) {
-      setContactError('연락처를 입력해주세요.');
+      setContactError('휴대번호를 입력해주세요.');
       return;
     }
     if (!formData.company.trim()) {
@@ -249,11 +294,30 @@ export default function VerifyClient() {
       return;
     }
 
+    try {
+      const phoneCheckResponse = await authService.checkPhone(
+        formData.contactNumber
+      );
+      if (phoneCheckResponse.data && !phoneCheckResponse.data.is_available) {
+        setContactError('이미 등록된 연락처입니다.');
+        return;
+      }
+    } catch (error) {
+      console.error('Phone check error:', error);
+      return;
+    }
+
     const companyResult = validateCompany(formData.company);
     if (!companyResult.isValid) {
       setCompanyError(companyResult.message);
       return;
     }
+
+    setFirstNameError('');
+    setLastNameError('');
+    setContactError('');
+    setCompanyError('');
+    setCountryError('');
 
     try {
       let response;
@@ -353,7 +417,10 @@ export default function VerifyClient() {
                     onChange={(e) =>
                       handleInputChange('lastName', e.target.value)
                     }
+                    onBlur={handleLastNameBlur}
                     placeholder='예) 홍'
+                    description={lastNameError}
+                    status={lastNameError ? 'negative' : 'default'}
                     maxLength={50}
                   />
                 </div>
@@ -366,7 +433,10 @@ export default function VerifyClient() {
                     onChange={(e) =>
                       handleInputChange('firstName', e.target.value)
                     }
+                    onBlur={handleFirstNameBlur}
                     placeholder='예) 길동'
+                    description={firstNameError}
+                    status={firstNameError ? 'negative' : 'default'}
                     maxLength={50}
                   />
                 </div>
@@ -451,8 +521,15 @@ export default function VerifyClient() {
                     <TextField
                       size='large'
                       value={verificationCode}
-                      onChange={(e) => setVerificationCode(e.target.value)}
+                      onChange={(e) => {
+                        setVerificationCode(e.target.value);
+                        if (verificationError) {
+                          setVerificationError('');
+                        }
+                      }}
                       placeholder='인증번호 입력'
+                      description={verificationError}
+                      status={verificationError ? 'negative' : 'default'}
                     />
                     <div
                       style={{

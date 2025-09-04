@@ -119,7 +119,6 @@ export default function SignupPage() {
                 });
 
                 if (verifyResponse.success) {
-                  // 성공 시 verify 페이지로 이동 (사용자 정보 포함)
                   const params = new URLSearchParams({
                     google: 'true',
                     email: userInfo.email,

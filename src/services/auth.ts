@@ -9,6 +9,7 @@ import type {
   SignupResponse,
   LoginResponse,
   CheckEmailResponse,
+  CheckPhoneResponse,
   UserInfo,
   PasswordResetRequestRequest,
   PasswordResetConfirmRequest,
@@ -73,6 +74,15 @@ export const authService = {
   async checkEmail(email: string) {
     return apiClient.get<CheckEmailResponse>(API_ENDPOINTS.USERS.CHECK_EMAIL, {
       params: { email },
+    });
+  },
+
+  /**
+   * 전화번호 중복 확인
+   */
+  async checkPhone(phone: string) {
+    return apiClient.get<CheckPhoneResponse>(API_ENDPOINTS.USERS.CHECK_PHONE, {
+      params: { phone },
     });
   },
 

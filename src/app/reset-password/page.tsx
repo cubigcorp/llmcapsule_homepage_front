@@ -52,7 +52,7 @@ export default function ResetPasswordPage() {
         setIsEmailSent(true);
       } else {
         // 실패 시 에러 메시지 표시
-        setEmailError('입력하신 정보를 다시 확인해주세요.');
+        setEmailError('가입되지 않은 이메일입니다.');
       }
     } catch {
       // 실패 시 에러 메시지 표시
