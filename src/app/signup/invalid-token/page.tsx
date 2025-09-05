@@ -99,8 +99,12 @@ const SignupContainer = styled.div`
 const SignupWrapper = styled.div`
   display: flex;
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
+  height: 100%;
+  position: relative;
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+  }
 `;
 
 const LogoWrapper = styled.div`
@@ -116,14 +120,14 @@ const SignupLeft = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 40px;
-  background: white;
 `;
 
 const SignupRight = styled.div`
   flex: 1;
-  position: relative;
-  overflow: hidden;
+
+  @media (max-width: 992px) {
+    display: none;
+  }
 `;
 
 const SignupForm = styled.div`

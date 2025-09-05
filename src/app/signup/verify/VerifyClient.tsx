@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Lottie from 'lottie-react';
+import loadingAnimation from '@/assets/animations/loading.json';
 import {
   SolidButton,
   TextField,
@@ -419,7 +421,11 @@ export default function VerifyClient() {
               }}
             >
               <div style={{ textAlign: 'center' }}>
-                <div>토큰 검증 중...</div>
+                <Lottie
+                  animationData={loadingAnimation}
+                  style={{ width: 120, height: 120 }}
+                  loop={true}
+                />
               </div>
             </div>
           </SignupLeft>
