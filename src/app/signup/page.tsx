@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 // Google Identity Services 타입 정의
@@ -29,6 +29,7 @@ import { typography, textColor, borderColor } from '@cubig/design-system';
 // import { getAssetPath } from '@/utils/path';
 
 import CarouselSection from '@/components/common/CarouselSection';
+import SignupLoading from '@/components/common/SignupLoading';
 import EmailVerificationSection from '@/components/common/EmailVerificationSection';
 import GoogleIcon from '@/assets/icons/Google.svg';
 import {
@@ -38,7 +39,7 @@ import {
 } from '@/utils/validation';
 import { authService } from '@/services/auth';
 
-export default function SignupPage() {
+function SignupPageContent() {
   const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     email: '',
@@ -471,3 +472,11 @@ const StyledGoogleButton = styled(SolidButton)`
   width: 100%;
   margin-top: 20px;
 `;
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<SignupLoading />}>
+      <SignupPageContent />
+    </Suspense>
+  );
+}
