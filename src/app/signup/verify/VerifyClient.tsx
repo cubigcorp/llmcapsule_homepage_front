@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Lottie from 'lottie-react';
-import loadingAnimation from '@/assets/animations/loading.json';
+import SignupLoading from '@/components/common/SignupLoading';
 import {
   SolidButton,
   TextField,
@@ -408,33 +407,7 @@ export default function VerifyClient() {
 
   // 토큰 검증 중일 때 로딩 화면 표시
   if (isTokenValidating) {
-    return (
-      <SignupContainer>
-        <SignupWrapper>
-          <SignupLeft>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100%',
-              }}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <Lottie
-                  animationData={loadingAnimation}
-                  style={{ width: 120, height: 120 }}
-                  loop={true}
-                />
-              </div>
-            </div>
-          </SignupLeft>
-          <SignupRight>
-            <CarouselSection />
-          </SignupRight>
-        </SignupWrapper>
-      </SignupContainer>
-    );
+    return <SignupLoading />;
   }
 
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import styled from 'styled-components';
 import Link from 'next/link';
@@ -8,9 +8,10 @@ import Image from 'next/image';
 import { SolidButton, toast } from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
 import CarouselSection from '@/components/common/CarouselSection';
+import SignupLoading from '@/components/common/SignupLoading';
 import { authService } from '@/services/auth';
 
-export default function InvalidTokenPage() {
+function InvalidTokenContent() {
   const searchParams = useSearchParams();
   const email = searchParams.get('email') || '';
 
@@ -87,6 +88,14 @@ export default function InvalidTokenPage() {
         </SignupRight>
       </SignupWrapper>
     </SignupContainer>
+  );
+}
+
+export default function InvalidTokenPage() {
+  return (
+    <Suspense fallback={<SignupLoading />}>
+      <InvalidTokenContent />
+    </Suspense>
   );
 }
 
