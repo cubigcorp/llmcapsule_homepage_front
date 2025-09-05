@@ -136,6 +136,7 @@ export default function VerifyClient() {
   const startTimer = () => {
     setTimeLeft(120);
     setIsTimerRunning(true);
+    setVerificationError('');
   };
 
   const formatTime = (seconds: number) => {
@@ -151,6 +152,9 @@ export default function VerifyClient() {
         setTimeLeft((prev) => {
           if (prev <= 1) {
             setIsTimerRunning(false);
+            setVerificationError(
+              '인증 시간이 만료되었습니다. 다시 시도해 주세요.'
+            );
             return 0;
           }
           return prev - 1;
