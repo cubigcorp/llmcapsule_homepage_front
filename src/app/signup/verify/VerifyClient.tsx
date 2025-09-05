@@ -79,11 +79,6 @@ export default function VerifyClient() {
       const result = validateContactNumber(numericValue, false);
       setContactError(result.message);
     }
-
-    if (field === 'company') {
-      const result = validateCompany(value);
-      setCompanyError(result.message);
-    }
   };
 
   const handleFirstNameBlur = () => {
@@ -279,10 +274,6 @@ export default function VerifyClient() {
       setContactError('휴대번호를 입력해주세요.');
       return;
     }
-    if (!formData.company.trim()) {
-      setCompanyError('회사/조직명을 입력해주세요.');
-      return;
-    }
     if (!selectedCountry) {
       setCountryError('국가를 선택해주세요.');
       return;
@@ -308,12 +299,6 @@ export default function VerifyClient() {
       }
     } catch (error) {
       console.error('Phone check error:', error);
-      return;
-    }
-
-    const companyResult = validateCompany(formData.company);
-    if (!companyResult.isValid) {
-      setCompanyError(companyResult.message);
       return;
     }
 
@@ -582,14 +567,8 @@ export default function VerifyClient() {
                 size='large'
                 value={formData.company}
                 onChange={(e) => handleInputChange('company', e.target.value)}
-                onBlur={() => {
-                  const result = validateCompany(formData.company);
-                  setCompanyError(result.message);
-                }}
                 placeholder='회사명을 입력해 주세요. (선택사항)'
                 maxLength={50}
-                description={companyError}
-                status={companyError ? 'negative' : 'default'}
               />
             </FormField>
 
