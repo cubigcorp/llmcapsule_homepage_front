@@ -175,7 +175,7 @@ export default function VerifyClient() {
         formData.contactNumber
       );
       if (phoneCheckResponse.data && !phoneCheckResponse.data.is_available) {
-        setContactError('이미 등록된 연락처입니다.');
+        setContactError('이미 등록된 휴대폰 번호입니다.');
         return;
       }
     } catch (error) {
@@ -251,7 +251,7 @@ export default function VerifyClient() {
       );
       if (response.success) {
         startTimer();
-        toast.success('요청하신 인증번호를 재발송하였습니다.');
+        toast.success('인증번호를 재발송하였습니다.');
       } else {
         alert('인증번호 재발송에 실패했습니다. 다시 시도해 주세요.');
       }
@@ -271,7 +271,7 @@ export default function VerifyClient() {
     }
     if (!formData.email.trim()) return alert('이메일을 입력해주세요.');
     if (!formData.contactNumber.trim()) {
-      setContactError('휴대번호를 입력해주세요.');
+      setContactError('휴대폰 번호를 입력해주세요.');
       return;
     }
     if (!selectedCountry) {
@@ -294,7 +294,7 @@ export default function VerifyClient() {
         formData.contactNumber
       );
       if (phoneCheckResponse.data && !phoneCheckResponse.data.is_available) {
-        setContactError('이미 등록된 연락처입니다.');
+        setContactError('이미 등록된 휴대폰 번호입니다.');
         return;
       }
     } catch (error) {
@@ -497,7 +497,7 @@ export default function VerifyClient() {
               </div>
             </FormField>
 
-            {isVerificationSent && (
+            {isVerificationSent && !isVerificationCompleted && (
               <FormField>
                 <div
                   style={{
