@@ -10,6 +10,7 @@ import type {
   LoginResponse,
   CheckEmailResponse,
   CheckPhoneResponse,
+  CheckEmailTokenResponse,
   UserInfo,
   PasswordResetRequestRequest,
   PasswordResetConfirmRequest,
@@ -84,6 +85,18 @@ export const authService = {
     return apiClient.get<CheckPhoneResponse>(API_ENDPOINTS.USERS.CHECK_PHONE, {
       params: { phone },
     });
+  },
+
+  /**
+   * 이메일 토큰 검증
+   */
+  async checkEmailToken(token: string) {
+    return apiClient.get<CheckEmailTokenResponse>(
+      API_ENDPOINTS.USERS.CHECK_EMAIL_TOKEN,
+      {
+        params: { token },
+      }
+    );
   },
 
   /**

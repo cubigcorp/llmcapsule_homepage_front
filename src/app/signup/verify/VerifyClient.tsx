@@ -69,6 +69,39 @@ export default function VerifyClient() {
     label: string;
   } | null>(null);
   const [countryError, setCountryError] = useState('');
+  const [isTokenValidating, setIsTokenValidating] = useState(true);
+
+  // 토큰 검증
+  useEffect(() => {
+    const validateToken = async () => {
+      if (!token) {
+        const params = new URLSearchParams();
+        if (email) params.append('email', email);
+        router.push(`/signup/invalid-token?${params.toString()}`);
+        return;
+      }
+
+      try {
+        const response = await authService.checkEmailToken(token);
+
+        if (!response.data?.is_valid) {
+          const params = new URLSearchParams();
+          if (email) params.append('email', email);
+          router.push(`/signup/invalid-token?${params.toString()}`);
+          return;
+        }
+
+        setIsTokenValidating(false);
+      } catch (error) {
+        console.error('Token validation error:', error);
+        const params = new URLSearchParams();
+        if (email) params.append('email', email);
+        router.push(`/signup/invalid-token?${params.toString()}`);
+      }
+    };
+
+    validateToken();
+  }, [token, email, router]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -370,6 +403,33 @@ export default function VerifyClient() {
       termsAgreement
     );
   };
+
+  // 토큰 검증 중일 때 로딩 화면 표시
+  if (isTokenValidating) {
+    return (
+      <SignupContainer>
+        <SignupWrapper>
+          <SignupLeft>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+              }}
+            >
+              <div style={{ textAlign: 'center' }}>
+                <div>토큰 검증 중...</div>
+              </div>
+            </div>
+          </SignupLeft>
+          <SignupRight>
+            <CarouselSection />
+          </SignupRight>
+        </SignupWrapper>
+      </SignupContainer>
+    );
+  }
 
   return (
     <SignupContainer>
