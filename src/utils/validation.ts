@@ -98,9 +98,7 @@ export const validateContactNumber = (
     };
   }
 
-  const contactRegex = /^[0-9]{10,11}$/;
-
-  if (contactNumber && !contactRegex.test(contactNumber)) {
+  if (contactNumber && contactNumber.length < 7) {
     return {
       isValid: false,
       message: '올바른 휴대번호를 입력해 주세요.',
