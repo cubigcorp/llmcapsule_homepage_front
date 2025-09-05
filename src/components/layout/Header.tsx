@@ -21,6 +21,7 @@ export default function Header() {
         pathname === '/signup' ||
         pathname === '/signup/' ||
         pathname.startsWith('/signup/verify') ||
+        pathname.startsWith('/signup/invalid-token') ||
         pathname.startsWith('/signup/success') ||
         pathname.startsWith('/signup/fail') ||
         pathname === '/reset-password' ||
