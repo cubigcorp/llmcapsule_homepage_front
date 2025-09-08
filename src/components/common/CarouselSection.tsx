@@ -94,19 +94,6 @@ export default function CarouselSection({
     });
   }, [currentSlide]);
 
-  const goToSlide = (nextIndex: number, reset = true) => {
-    const nextVideo = videoRefs.current[nextIndex];
-    if (nextVideo) {
-      try {
-        nextVideo.pause();
-        nextVideo.currentTime = 0;
-        nextVideo.load();
-      } catch (_) {}
-    }
-    setCurrentSlide(nextIndex);
-    if (reset) resetTimer();
-  };
-
   const handlePreviousSlide = () => {
     setCurrentSlide((prev) => {
       const nextIndex = prev === 0 ? slides.length - 1 : prev - 1;
@@ -204,12 +191,14 @@ export default function CarouselSection({
         <NavigationButtons>
           <IconButton
             type='outline'
+            variant='secondary'
             size='medium'
             icon={LeftArrowIcon}
             onClick={handlePreviousSlide}
           />
           <IconButton
             type='outline'
+            variant='secondary'
             size='medium'
             icon={RightArrowIcon}
             onClick={() => handleNextSlide()}

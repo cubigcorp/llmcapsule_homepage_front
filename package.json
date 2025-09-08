@@ -16,7 +16,7 @@
     "deploy": "npm run build"
   },
   "dependencies": {
-    "@cubig/design-system": "^0.12.5",
+    "@cubig/design-system": "^0.13.1",
     "@react-oauth/google": "^0.12.2",
     "@svgr/webpack": "^8.1.0",
     "axios": "^1.11.0",

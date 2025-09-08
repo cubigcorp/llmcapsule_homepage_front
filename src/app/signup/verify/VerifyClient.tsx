@@ -386,7 +386,8 @@ export default function VerifyClient() {
       formData.country !== '' &&
       formData.contactNumber.trim() !== '' &&
       !contactError &&
-      !isVerificationCompleted
+      !isVerificationCompleted &&
+      (!isVerificationSent || !isTimerRunning)
     );
   };
 
