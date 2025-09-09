@@ -102,30 +102,20 @@ export default function Header() {
           <ButtonGroup>
             {isLoggedIn ? (
               <>
-                <TextButton
-                  variant='primary'
-                  size='medium'
-                  onClick={async () => {
-                    try {
-                      // 로그아웃 API 호출
-                      await authService.logout();
-                    } catch (error) {
-                      console.error('로그아웃 API 호출 실패:', error);
-                    } finally {
-                      // 성공/실패 관계없이 클라이언트 토큰 제거
-                      localStorage.removeItem('access_token');
-                      localStorage.removeItem('refresh_token');
-                      setIsLoggedIn(false);
-                      window.location.href = '/';
-                    }
-                  }}
-                >
-                  로그아웃
-                </TextButton>
                 <Link href='/contact'>
                   <SolidButton variant='primary' size='medium'>
                     문의하기
                   </SolidButton>
+                </Link>
+                <Link href='/mypage'>
+                  <Avatar>
+                    <Image
+                      src='/icons/Avatar.svg'
+                      alt='Avatar'
+                      width={32}
+                      height={32}
+                    />
+                  </Avatar>
                 </Link>
               </>
             ) : (
@@ -207,19 +197,20 @@ const LogoWrapper = styled.div`
 const ButtonGroup = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
-
-  @media (max-width: 768px) {
-    gap: 8px;
-  }
-
-  @media (max-width: 375px) {
-    gap: 4px;
-  }
+  gap: 12px;
 `;
 
 const Leading = styled.div`
   display: flex;
   align-items: center;
   gap: 64px;
+`;
+
+const Avatar = styled.div`
+  cursor: pointer;
+
+  svg,
+  img {
+    display: block;
+  }
 `;

@@ -64,8 +64,8 @@ export default function LoginPage() {
         localStorage.setItem('access_token', response.data!.access_token);
         localStorage.setItem('refresh_token', response.data!.refresh_token);
 
-        // 홈페이지로 이동
-        router.push('/');
+        // 마이페이지로 이동
+        router.push('/mypage');
       } else {
         // 로그인 실패 시 에러 메시지 표시
         setPasswordError('이메일 또는 비밀번호가 일치하지 않습니다.');
@@ -99,8 +99,8 @@ export default function LoginPage() {
             loginResponse.data!.refresh_token
           );
 
-          // 홈페이지로 이동
-          router.push('/');
+          // 마이페이지로 이동
+          router.push('/mypage');
         } else {
           const userInfoResponse = await fetch(
             `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokenResponse.access_token}`
