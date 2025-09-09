@@ -20,12 +20,14 @@ if [[ "$ENVIRONMENT" == "development" ]]; then
   NODE_ENV="development"
   APP_NAME="llmcapsule-homepage-dev"          # dev는 항상 이 이름 1개만
   echo "🚀 개발(dev) 배포 시작..."
+  ENV_SYNC_CMD='if [ -f .env.development ]; then echo "🔄 Using .env.development for build"; cp .env.development .env.production; fi'
 else
   HOST="ubuntu@ec2-3-39-187-55.ap-northeast-2.compute.amazonaws.com"
   BRANCH="main"
   NODE_ENV="production"
   APP_NAME="llmcapsule-homepage"              # prod는 항상 이 이름 1개만
   echo "🚀 프로덕션(prod) 배포 시작..."
+  ENV_SYNC_CMD='echo "🔒 Using .env.production for build"'
 fi
 
 HOST_ADDR="${HOST#*@}"                        # URL 출력용 IP/호스트만 추출
@@ -57,6 +59,7 @@ git reset --hard "origin/$BRANCH"
 # 의존성 & 빌드 (ci 실패 시 i)
 npm ci || npm i
 rm -rf .next
+$ENV_SYNC_CMD
 npm run build
 
 # 항상 1개만: 같은 이름 삭제 + 포트 비우기(선택)

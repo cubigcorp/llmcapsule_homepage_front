@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isProdStage } from '@/utils/env';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import StyledComponentsRegistry from '@/lib/registry';
@@ -15,7 +16,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isProduction = isProdStage;
   return (
     <html lang='ko'>
       <head>

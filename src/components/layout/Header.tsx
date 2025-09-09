@@ -7,14 +7,13 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { spacing, TextButton, SolidButton } from '@cubig/design-system';
 import { authService } from '@/services/auth';
-import { getEnvironmentConfig } from '@/utils/env';
+import { isDevStage } from '@/utils/env';
 
 export default function Header() {
   const pathname = usePathname();
   const [isAuthPage, setIsAuthPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { isDevelopment } = getEnvironmentConfig();
 
   useEffect(() => {
     setIsAuthPage(
@@ -131,7 +130,7 @@ export default function Header() {
               </>
             ) : (
               <>
-                {isDevelopment && (
+                {isDevStage && (
                   <Link href='/login'>
                     <TextButton variant='primary' size='medium'>
                       로그인

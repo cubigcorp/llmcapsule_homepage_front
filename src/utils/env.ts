@@ -9,15 +9,8 @@ export const env = {
   GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
 } as const;
 
-/**
- * 환경별 설정 반환
- */
-export function getEnvironmentConfig() {
-  return {
-    isDevelopment: env.NODE_ENV === 'development',
-    isProduction: env.NODE_ENV === 'production',
-    isTest: env.NODE_ENV === 'test',
-    apiBaseUrl: env.API_BASE_URL,
-    environment: env.NODE_ENV ?? 'development',
-  };
-}
+export const stage = (process.env.NEXT_PUBLIC_STAGE || 'development') as
+  | 'development'
+  | 'production';
+export const isDevStage = stage === 'development';
+export const isProdStage = stage === 'production';
