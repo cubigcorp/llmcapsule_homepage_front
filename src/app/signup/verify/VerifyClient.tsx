@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+import SignupLoading from '@/components/common/SignupLoading';
 import {
   SolidButton,
   TextField,
@@ -52,6 +53,9 @@ export default function VerifyClient() {
 
   const [contactError, setContactError] = useState('');
   const [companyError, setCompanyError] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [verificationError, setVerificationError] = useState('');
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [timeLeft, setTimeLeft] = useState(120);
@@ -66,6 +70,39 @@ export default function VerifyClient() {
     label: string;
   } | null>(null);
   const [countryError, setCountryError] = useState('');
+  const [isTokenValidating, setIsTokenValidating] = useState(true);
+
+  // 토큰 검증
+  useEffect(() => {
+    const validateToken = async () => {
+      if (!token) {
+        const params = new URLSearchParams();
+        if (email) params.append('email', email);
+        router.push(`/signup/invalid-token?${params.toString()}`);
+        return;
+      }
+
+      try {
+        const response = await authService.checkEmailToken(token);
+
+        if (!response.data?.is_valid) {
+          const params = new URLSearchParams();
+          if (email) params.append('email', email);
+          router.push(`/signup/invalid-token?${params.toString()}`);
+          return;
+        }
+
+        setIsTokenValidating(false);
+      } catch (error) {
+        console.error('Token validation error:', error);
+        const params = new URLSearchParams();
+        if (email) params.append('email', email);
+        router.push(`/signup/invalid-token?${params.toString()}`);
+      }
+    };
+
+    validateToken();
+  }, [token, email, router]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -76,10 +113,21 @@ export default function VerifyClient() {
       const result = validateContactNumber(numericValue, false);
       setContactError(result.message);
     }
+  };
 
-    if (field === 'company') {
-      const result = validateCompany(value);
-      setCompanyError(result.message);
+  const handleFirstNameBlur = () => {
+    if (!formData.firstName.trim()) {
+      setFirstNameError('이름을 입력해 주세요.');
+    } else {
+      setFirstNameError('');
+    }
+  };
+
+  const handleLastNameBlur = () => {
+    if (!formData.lastName.trim()) {
+      setLastNameError('성을 입력해 주세요.');
+    } else {
+      setLastNameError('');
     }
   };
 
@@ -117,6 +165,7 @@ export default function VerifyClient() {
   const startTimer = () => {
     setTimeLeft(120);
     setIsTimerRunning(true);
+    setVerificationError('');
   };
 
   const formatTime = (seconds: number) => {
@@ -132,6 +181,9 @@ export default function VerifyClient() {
         setTimeLeft((prev) => {
           if (prev <= 1) {
             setIsTimerRunning(false);
+            setVerificationError(
+              '인증 시간이 만료되었습니다. 다시 시도해 주세요.'
+            );
             return 0;
           }
           return prev - 1;
@@ -151,6 +203,22 @@ export default function VerifyClient() {
       setCountryError('국가를 선택해주세요.');
       return;
     }
+
+    try {
+      const phoneCheckResponse = await authService.checkPhone(
+        formData.contactNumber
+      );
+      if (phoneCheckResponse.data && !phoneCheckResponse.data.is_available) {
+        setContactError('이미 등록된 휴대폰 번호입니다.');
+        return;
+      }
+    } catch (error) {
+      console.error('Phone check error:', error);
+      return;
+    }
+
+    setFirstNameError('');
+    setLastNameError('');
     setContactError('');
     setCountryError('');
 
@@ -177,9 +245,12 @@ export default function VerifyClient() {
 
   const handleVerifyCode = async () => {
     if (!verificationCode) {
-      alert('인증번호를 입력해 주세요.');
+      setVerificationError('인증번호를 입력해 주세요.');
       return;
     }
+
+    setVerificationError('');
+
     try {
       const response = await otpService.verifyOtp(
         {
@@ -192,11 +263,12 @@ export default function VerifyClient() {
       if (response.success) {
         setIsVerificationCompleted(true);
         setIsTimerRunning(false);
+        setVerificationError('');
       } else {
-        alert('인증번호가 올바르지 않습니다. 다시 확인해 주세요.');
+        setVerificationError('인증번호가 일치하지 않습니다.');
       }
     } catch {
-      alert('인증번호가 올바르지 않습니다. 다시 확인해 주세요.');
+      setVerificationError('인증번호가 일치하지 않습니다.');
     }
   };
 
@@ -213,7 +285,7 @@ export default function VerifyClient() {
       );
       if (response.success) {
         startTimer();
-        toast.success('요청하신 인증번호를 재발송하였습니다.');
+        toast.success('인증번호를 재발송하였습니다.');
       } else {
         alert('인증번호 재발송에 실패했습니다. 다시 시도해 주세요.');
       }
@@ -223,15 +295,17 @@ export default function VerifyClient() {
   };
 
   const handleSignup = async () => {
-    if (!formData.firstName.trim()) return alert('이름을 입력해주세요.');
-    if (!formData.lastName.trim()) return alert('성을 입력해주세요.');
-    if (!formData.email.trim()) return alert('이메일을 입력해주세요.');
-    if (!formData.contactNumber.trim()) {
-      setContactError('연락처를 입력해주세요.');
+    if (!formData.firstName.trim()) {
+      setFirstNameError('이름을 입력해 주세요.');
       return;
     }
-    if (!formData.company.trim()) {
-      setCompanyError('회사/조직명을 입력해주세요.');
+    if (!formData.lastName.trim()) {
+      setLastNameError('성을 입력해 주세요.');
+      return;
+    }
+    if (!formData.email.trim()) return alert('이메일을 입력해주세요.');
+    if (!formData.contactNumber.trim()) {
+      setContactError('휴대폰 번호를 입력해주세요.');
       return;
     }
     if (!selectedCountry) {
@@ -249,11 +323,24 @@ export default function VerifyClient() {
       return;
     }
 
-    const companyResult = validateCompany(formData.company);
-    if (!companyResult.isValid) {
-      setCompanyError(companyResult.message);
+    try {
+      const phoneCheckResponse = await authService.checkPhone(
+        formData.contactNumber
+      );
+      if (phoneCheckResponse.data && !phoneCheckResponse.data.is_available) {
+        setContactError('이미 등록된 휴대폰 번호입니다.');
+        return;
+      }
+    } catch (error) {
+      console.error('Phone check error:', error);
       return;
     }
+
+    setFirstNameError('');
+    setLastNameError('');
+    setContactError('');
+    setCompanyError('');
+    setCountryError('');
 
     try {
       let response;
@@ -299,7 +386,8 @@ export default function VerifyClient() {
       formData.country !== '' &&
       formData.contactNumber.trim() !== '' &&
       !contactError &&
-      !isVerificationCompleted
+      !isVerificationCompleted &&
+      (!isVerificationSent || !isTimerRunning)
     );
   };
 
@@ -317,6 +405,11 @@ export default function VerifyClient() {
       termsAgreement
     );
   };
+
+  // 토큰 검증 중일 때 로딩 화면 표시
+  if (isTokenValidating) {
+    return <SignupLoading />;
+  }
 
   return (
     <SignupContainer>
@@ -353,7 +446,10 @@ export default function VerifyClient() {
                     onChange={(e) =>
                       handleInputChange('lastName', e.target.value)
                     }
+                    onBlur={handleLastNameBlur}
                     placeholder='예) 홍'
+                    description={lastNameError}
+                    status={lastNameError ? 'negative' : 'default'}
                     maxLength={50}
                   />
                 </div>
@@ -366,7 +462,10 @@ export default function VerifyClient() {
                     onChange={(e) =>
                       handleInputChange('firstName', e.target.value)
                     }
+                    onBlur={handleFirstNameBlur}
                     placeholder='예) 길동'
+                    description={firstNameError}
+                    status={firstNameError ? 'negative' : 'default'}
                     maxLength={50}
                   />
                 </div>
@@ -438,7 +537,7 @@ export default function VerifyClient() {
               </div>
             </FormField>
 
-            {isVerificationSent && (
+            {isVerificationSent && !isVerificationCompleted && (
               <FormField>
                 <div
                   style={{
@@ -451,8 +550,15 @@ export default function VerifyClient() {
                     <TextField
                       size='large'
                       value={verificationCode}
-                      onChange={(e) => setVerificationCode(e.target.value)}
+                      onChange={(e) => {
+                        setVerificationCode(e.target.value);
+                        if (verificationError) {
+                          setVerificationError('');
+                        }
+                      }}
                       placeholder='인증번호 입력'
+                      description={verificationError}
+                      status={verificationError ? 'negative' : 'default'}
                     />
                     <div
                       style={{
@@ -501,14 +607,8 @@ export default function VerifyClient() {
                 size='large'
                 value={formData.company}
                 onChange={(e) => handleInputChange('company', e.target.value)}
-                onBlur={() => {
-                  const result = validateCompany(formData.company);
-                  setCompanyError(result.message);
-                }}
                 placeholder='회사명을 입력해 주세요. (선택사항)'
                 maxLength={50}
-                description={companyError}
-                status={companyError ? 'negative' : 'default'}
               />
             </FormField>
 

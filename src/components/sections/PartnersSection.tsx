@@ -19,7 +19,6 @@ const partnerLogos = [
   { src: '/icons/kyobo.svg', alt: 'KYOBO' },
   { src: '/icons/naver_cloud.svg', alt: 'Naver Cloud' },
   { src: '/icons/police.svg', alt: 'Police' },
-  { src: '/icons/shinseunglaw.svg', alt: 'Shinseung Law' },
   { src: '/icons/sktelecom.svg', alt: 'SK telecom' },
   { src: '/icons/wooribank.svg', alt: 'Woori Bank' },
 ];

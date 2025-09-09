@@ -7,12 +7,14 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { spacing, TextButton, SolidButton } from '@cubig/design-system';
 import { authService } from '@/services/auth';
+import { getEnvironmentConfig } from '@/utils/env';
 
 export default function Header() {
   const pathname = usePathname();
   const [isAuthPage, setIsAuthPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isDevelopment } = getEnvironmentConfig();
 
   useEffect(() => {
     setIsAuthPage(
@@ -21,6 +23,7 @@ export default function Header() {
         pathname === '/signup' ||
         pathname === '/signup/' ||
         pathname.startsWith('/signup/verify') ||
+        pathname.startsWith('/signup/invalid-token') ||
         pathname.startsWith('/signup/success') ||
         pathname.startsWith('/signup/fail') ||
         pathname === '/reset-password' ||
@@ -128,11 +131,13 @@ export default function Header() {
               </>
             ) : (
               <>
-                {/* <Link href='/login'>
-                  <TextButton variant='primary' size='medium'>
-                    로그인
-                  </TextButton>
-                </Link> */}
+                {isDevelopment && (
+                  <Link href='/login'>
+                    <TextButton variant='primary' size='medium'>
+                      로그인
+                    </TextButton>
+                  </Link>
+                )}
                 <Link href='/contact'>
                   <SolidButton variant='primary' size='medium'>
                     문의하기

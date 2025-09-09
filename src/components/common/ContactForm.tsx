@@ -65,7 +65,7 @@ export default function ContactFormComponent({
 
     if (field === 'name') {
       if (value && value.trim().length < 2) {
-        setNameError('이름/소속을 2자 이상 입력해 주세요.');
+        setNameError('2자 이상 입력해 주세요.');
       } else {
         setNameError('');
       }

@@ -68,10 +68,10 @@ export default function LoginPage() {
         router.push('/');
       } else {
         // 로그인 실패 시 에러 메시지 표시
-        setPasswordError('입력하신 정보를 다시 확인해주세요.');
+        setPasswordError('이메일 또는 비밀번호가 일치하지 않습니다.');
       }
     } catch {
-      setPasswordError('입력하신 정보를 다시 확인해주세요.');
+      setPasswordError('이메일 또는 비밀번호가 일치하지 않습니다.');
     }
   };
 

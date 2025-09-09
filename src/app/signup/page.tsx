@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 // Google Identity Services 타입 정의
 declare global {
@@ -28,6 +29,7 @@ import { typography, textColor, borderColor } from '@cubig/design-system';
 // import { getAssetPath } from '@/utils/path';
 
 import CarouselSection from '@/components/common/CarouselSection';
+import SignupLoading from '@/components/common/SignupLoading';
 import EmailVerificationSection from '@/components/common/EmailVerificationSection';
 import GoogleIcon from '@/assets/icons/Google.svg';
 import {
@@ -37,12 +39,20 @@ import {
 } from '@/utils/validation';
 import { authService } from '@/services/auth';
 
-export default function SignupPage() {
+function SignupPageContent() {
+  const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     confirmPassword: '',
   });
+
+  useEffect(() => {
+    const emailParam = searchParams.get('email');
+    if (emailParam) {
+      setFormData((prev) => ({ ...prev, email: emailParam }));
+    }
+  }, [searchParams]);
 
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -77,6 +87,25 @@ export default function SignupPage() {
     }
   };
 
+  const handleEmailBlur = () => {
+    const result = validateEmail(formData.email, true);
+    setEmailError(result.message);
+  };
+
+  const handlePasswordBlur = () => {
+    const result = validatePassword(formData.password, true);
+    setPasswordError(result.message);
+  };
+
+  const handleConfirmPasswordBlur = () => {
+    const result = validateConfirmPassword(
+      formData.confirmPassword,
+      formData.password,
+      true
+    );
+    setConfirmPasswordError(result.message);
+  };
+
   const handleGoogleSignup = async () => {
     try {
       // Google Identity Services 초기화
@@ -100,7 +129,6 @@ export default function SignupPage() {
                 });
 
                 if (verifyResponse.success) {
-                  // 성공 시 verify 페이지로 이동 (사용자 정보 포함)
                   const params = new URLSearchParams({
                     google: 'true',
                     email: userInfo.email,
@@ -135,6 +163,18 @@ export default function SignupPage() {
     const emailResult = validateEmail(formData.email, true);
     if (!emailResult.isValid) {
       setEmailError(emailResult.message);
+      return;
+    }
+
+    // 이메일 중복 검사
+    try {
+      const emailCheckResponse = await authService.checkEmail(formData.email);
+      if (emailCheckResponse.data && !emailCheckResponse.data.is_available) {
+        setEmailError('이미 사용 중인 이메일 주소입니다.');
+        return;
+      }
+    } catch (error) {
+      console.error('Email check error:', error);
       return;
     }
 
@@ -175,9 +215,17 @@ export default function SignupPage() {
         // 실패 시 에러 메시지 표시
         alert('이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.');
       }
-    } catch {
-      // 실패 시 에러 메시지 표시
-      alert('이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.');
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response: { status: number } };
+        if (axiosError.response?.status === 409) {
+          setEmailError('이미 사용 중인 이메일 주소입니다.');
+        } else {
+          alert('이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.');
+        }
+      } else {
+        alert('이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.');
+      }
     }
   };
 
@@ -236,6 +284,7 @@ export default function SignupPage() {
                     size='large'
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
+                    onBlur={handleEmailBlur}
                     placeholder='user@example.com'
                     description={emailError}
                     status={emailError ? 'negative' : 'default'}
@@ -252,6 +301,7 @@ export default function SignupPage() {
                     onChange={(e) =>
                       handleInputChange('password', e.target.value)
                     }
+                    onBlur={handlePasswordBlur}
                     placeholder='비밀번호를 입력해주세요.'
                     description={passwordError}
                     status={passwordError ? 'negative' : 'default'}
@@ -268,6 +318,7 @@ export default function SignupPage() {
                     onChange={(e) =>
                       handleInputChange('confirmPassword', e.target.value)
                     }
+                    onBlur={handleConfirmPasswordBlur}
                     placeholder='비밀번호를 다시 입력해주세요.'
                     description={confirmPasswordError}
                     status={confirmPasswordError ? 'negative' : 'default'}
@@ -421,3 +472,11 @@ const StyledGoogleButton = styled(SolidButton)`
   width: 100%;
   margin-top: 20px;
 `;
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<SignupLoading />}>
+      <SignupPageContent />
+    </Suspense>
+  );
+}

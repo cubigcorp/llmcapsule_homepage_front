@@ -94,16 +94,14 @@ export const validateContactNumber = (
   if (isTouched && !contactNumber) {
     return {
       isValid: false,
-      message: '연락처를 입력해 주세요.',
+      message: '휴대폰 번호를 입력해 주세요.',
     };
   }
 
-  const contactRegex = /^[0-9]{10,11}$/;
-
-  if (contactNumber && !contactRegex.test(contactNumber)) {
+  if (contactNumber && contactNumber.length < 7) {
     return {
       isValid: false,
-      message: '올바른 연락처를 입력해 주세요.',
+      message: '올바른 휴대폰 번호를 입력해 주세요.',
     };
   }
 
@@ -118,7 +116,7 @@ export const validateCompany = (company: string): ValidationResult => {
   if (company && company.trim().length < 2) {
     return {
       isValid: false,
-      message: '회사/팀명을 2자 이상 입력해 주세요.',
+      message: '2자 이상 입력해 주세요.',
     };
   }
 

@@ -218,7 +218,7 @@ const ResetPasswordForm = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: left;
-  height: 100%;
+  height: auto;
 `;
 
 const Title = styled.h1`
