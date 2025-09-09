@@ -9,8 +9,9 @@ export const env = {
   GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
 } as const;
 
-export const stage = (process.env.NEXT_PUBLIC_STAGE || 'development') as
-  | 'development'
-  | 'production';
+export const stage = (
+  process.env.NEXT_PUBLIC_STAGE === 'development' ? 'development' : 'production'
+) as 'development' | 'production';
+
 export const isDevStage = stage === 'development';
 export const isProdStage = stage === 'production';
