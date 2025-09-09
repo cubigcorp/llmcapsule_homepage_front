@@ -75,6 +75,11 @@ export default function VerifyClient() {
   // 토큰 검증
   useEffect(() => {
     const validateToken = async () => {
+      if (isGoogleSignup || (!token && email)) {
+        setIsTokenValidating(false);
+        return;
+      }
+
       if (!token) {
         const params = new URLSearchParams();
         if (email) params.append('email', email);
