@@ -390,7 +390,7 @@ export default function CheckoutPage() {
             </AddOnGroup>
 
             <AddOnGroup>
-              <AddOnSubTitle>정형 민감 키워드 구축</AddOnSubTitle>
+              <AddOnSubTitle>중앙 관리자 콘솔 Admin 구축</AddOnSubTitle>
               <AddOnNote>최적 수 기준 권장가: ₩25,000,000</AddOnNote>
               <AddOnOptions>
                 <AddOnOption
@@ -1133,7 +1133,7 @@ const AddOnSubCard = styled.div<{
   }
 
   span:last-child {
-    ${typography('ko', 'body3', 'medium')}
+    ${typography('ko', 'body2', 'regular')}
     color: ${textColor.light['fg-neutral-alternative']};
   }
 `;
@@ -1147,25 +1147,23 @@ const AddOnItemList = styled.div`
 const AddOnItem = styled.div<{ $isSelected?: boolean }>`
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
+  gap: 10px;
+  padding: 16px 20px;
   border: ${(props) =>
     props.$isSelected
       ? `1.8px solid ${borderColor.light['color-border-focused']}`
       : `1px solid ${borderColor.light['color-border-primary']}`};
   border-radius: 8px;
-  background: ${color.gray['50']};
   cursor: pointer;
   user-select: none;
 
   span:nth-child(2) {
     ${typography('ko', 'body3', 'medium')}
-    color: ${textColor.light['fg-neutral-primary']};
     flex: 1;
   }
 
   span:last-child {
-    ${typography('ko', 'body3', 'medium')}
+    ${typography('ko', 'body3', 'regular')}
     color: ${textColor.light['fg-neutral-alternative']};
   }
 `;
