@@ -21,7 +21,7 @@ import AddIcon from '@/assets/icons/icon_add.svg';
 import SmallAddIcon from '@/assets/icons/icon_add_small.svg';
 import IndeterminateIcon from '@/assets/icons/icon_indeterminate.svg';
 import InfoIcon from '@/assets/icons/icon_info.svg';
-
+import SmallInfoIcon from '@/assets/icons/icon_info_small.svg';
 // 플랜 데이터 정의
 const plans = {
   basic: { name: 'Basic', price: 10500, minTokens: 0, maxTokens: 119999 },
@@ -258,61 +258,60 @@ export default function CheckoutPage() {
                   </TokenBreakdownHeader>
                   <TokenBreakdownContent>
                     <TokenBreakdownItem>
-                      <span>한글</span>
-                      <span>
+                      <TokenBreakdownLabel>한글</TokenBreakdownLabel>
+                      <TokenBreakdownValue>
                         {Math.round(tokenUsage / 0.58).toLocaleString()}자
-                      </span>
+                      </TokenBreakdownValue>
                     </TokenBreakdownItem>
                     <TokenBreakdownItem>
-                      <span>입력</span>
-                      <span>
+                      <TokenBreakdownLabel>입력</TokenBreakdownLabel>
+                      <TokenBreakdownValue>
                         {Math.round((tokenUsage * 0.6) / 0.58).toLocaleString()}
-                      </span>
+                      </TokenBreakdownValue>
                     </TokenBreakdownItem>
                     <TokenBreakdownItem>
-                      <span>출력</span>
-                      <span>
+                      <TokenBreakdownLabel>출력</TokenBreakdownLabel>
+                      <TokenBreakdownValue>
                         {Math.round((tokenUsage * 0.4) / 0.58).toLocaleString()}
-                      </span>
+                      </TokenBreakdownValue>
                     </TokenBreakdownItem>
                     <TokenBreakdownItem>
-                      <span>영어</span>
-                      <span>
+                      <TokenBreakdownLabel>영어</TokenBreakdownLabel>
+                      <TokenBreakdownValue>
                         {Math.round(tokenUsage / 0.25).toLocaleString()}자
-                      </span>
+                      </TokenBreakdownValue>
                     </TokenBreakdownItem>
                     <TokenBreakdownItem>
-                      <span>입력</span>
-                      <span>
+                      <TokenBreakdownLabel>입력</TokenBreakdownLabel>
+                      <TokenBreakdownValue>
                         {Math.round((tokenUsage * 0.6) / 0.25).toLocaleString()}
-                      </span>
+                      </TokenBreakdownValue>
                     </TokenBreakdownItem>
                     <TokenBreakdownItem>
-                      <span>출력</span>
-                      <span>
+                      <TokenBreakdownLabel>출력</TokenBreakdownLabel>
+                      <TokenBreakdownValue>
                         {Math.round((tokenUsage * 0.4) / 0.25).toLocaleString()}
-                      </span>
+                      </TokenBreakdownValue>
                     </TokenBreakdownItem>
                     <TokenBreakdownItem>
-                      <span>워드프레스</span>
-                      <span>
+                      <TokenBreakdownLabel>워드프레스</TokenBreakdownLabel>
+                      <TokenBreakdownValue>
                         약 {Math.round(tokenUsage / 1200).toLocaleString()}장
-                      </span>
+                      </TokenBreakdownValue>
                     </TokenBreakdownItem>
                     <TokenBreakdownSubItem>
                       <span>(기준 1,200자/장)</span>
                     </TokenBreakdownSubItem>
+                    <TokenNote style={{ marginTop: '20px' }}>
+                      <SmallInfoIcon />
+                      <span>
+                        가정: 한글 1토큰≈2자, 영어 1토큰≈4자, WP 1장
+                        ≈1,200자(관리자 변경 가능)
+                      </span>
+                    </TokenNote>
                   </TokenBreakdownContent>
                 </TokenBreakdownCard>
               </TokenBreakdownGrid>
-
-              <TokenNote>
-                <span>ⓘ</span>
-                <span>
-                  가정: 한글 1토큰≈2자, 영어 1토큰≈4자, WP 1장 ≈1,200자(관리자
-                  변경 가능)
-                </span>
-              </TokenNote>
             </TokenBreakdownSection>
           </Section>
 
@@ -990,6 +989,7 @@ const TokenBreakdownGrid = styled.div`
 const TokenBreakdownCard = styled.div`
   border: 1px solid ${borderColor.light['color-border-primary']};
   border-radius: 8px;
+  overflow: visible;
 `;
 
 const TokenBreakdownHeader = styled.div`
@@ -1074,29 +1074,28 @@ const TokenBreakdownTotalValue = styled.div`
 const TokenBreakdownSubItem = styled.div`
   font-size: 11px;
   color: ${textColor.light['fg-neutral-alternative']};
-  text-align: center;
+  text-align: right;
   margin-top: 4px;
 `;
 
 const TokenNote = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
-  padding: 12px;
+  padding: 8px 20px;
   background: ${color.gray['50']};
-  border-radius: 6px;
-  border: 1px solid ${borderColor.light['color-border-primary']};
+  border-radius: 12px;
 
-  span:first-child {
-    font-size: 12px;
-    color: ${textColor.light['fg-neutral-alternative']};
-    margin-top: 1px;
+  svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
   }
 
   span:last-child {
-    font-size: 11px;
+    ${typography('ko', 'caption2', 'regular')}
     color: ${textColor.light['fg-neutral-alternative']};
-    line-height: 1.4;
+    flex: 1;
   }
 `;
 
