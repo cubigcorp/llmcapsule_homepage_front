@@ -18,6 +18,9 @@ import {
 } from '@cubig/design-system';
 import RemoveIcon from '@/assets/icons/icon_remove.svg';
 import AddIcon from '@/assets/icons/icon_add.svg';
+import SmallAddIcon from '@/assets/icons/icon_add_small.svg';
+import IndeterminateIcon from '@/assets/icons/icon_indeterminate.svg';
+import InfoIcon from '@/assets/icons/icon_info.svg';
 
 export default function CheckoutPage() {
   const [userCount, setUserCount] = useState<number>(200);
@@ -250,7 +253,7 @@ export default function CheckoutPage() {
                 </Chip>
                 <Chip
                   size='x-small'
-                  leadingIcon={<AddIcon />}
+                  leadingIcon={<SmallAddIcon />}
                   onClick={() => setUserCount(userCount + 50)}
                 >
                   50명
@@ -397,7 +400,7 @@ export default function CheckoutPage() {
                   />
                   <span>기본 모듈</span>
                 </AddOnToggle>
-                <AddOnPrice>₩25,000,000</AddOnPrice>
+                <AddOnCardPrice>₩25,000,000</AddOnCardPrice>
               </AddOnCard>
 
               <AddOnSubOptions>
@@ -431,7 +434,7 @@ export default function CheckoutPage() {
                   />
                   <span>RAG 시스템</span>
                 </AddOnToggle>
-                <AddOnPrice>₩10,000,000</AddOnPrice>
+                <AddOnCardPrice>₩10,000,000</AddOnCardPrice>
               </AddOnCard>
 
               <AddOnList>
@@ -454,45 +457,50 @@ export default function CheckoutPage() {
           {/* 반복 비용 */}
           <Section>
             <SectionTitle>반복 비용 (Add-on)</SectionTitle>
-            <TokenPackSection>
-              <TokenPackHeader>
-                <span>₩13,000</span>
-                <span>10만 토큰/월 당</span>
-              </TokenPackHeader>
-              <TokenPackControls>
-                <ControlButton
+            <AddOnDescription>추가 토큰 팩</AddOnDescription>
+            <RepeatCostCard>
+              <RepeatCostLeft>
+                <RepeatCostPrice>₩13,000</RepeatCostPrice>
+                <RepeatCostUnit>10만 토큰/월 당</RepeatCostUnit>
+              </RepeatCostLeft>
+              <CounterContainer>
+                <CounterButton
                   onClick={() =>
                     setTokenPackCount(Math.max(0, tokenPackCount - 1))
                   }
                 >
-                  -
-                </ControlButton>
-                <TokenPackValue>{tokenPackCount}</TokenPackValue>
-                <ControlButton
+                  <IndeterminateIcon />
+                </CounterButton>
+                <CounterDisplay>{tokenPackCount}</CounterDisplay>
+                <CounterButton
                   onClick={() => setTokenPackCount(tokenPackCount + 1)}
                 >
-                  +
-                </ControlButton>
-              </TokenPackControls>
-            </TokenPackSection>
-
-            <TokenInfo>
-              <InfoTitle>Token/모델 비용 고지</InfoTitle>
-              <InfoList>
-                <InfoItem>
-                  • Seat(Base): 플랜별 토큰 Cap 포함. Cap 내 사용은 추가 과금
-                  없음.
-                </InfoItem>
-                <InfoItem>
-                  • Cap 초과 정책: 차단 또는 추가 구매는 별도 정책으로 안내.
-                </InfoItem>
-                <InfoItem>
-                  • Seat(Base): 플랜별 토큰 Cap 포함. Cap 내 사용은 추가 과금
-                  없음.
-                </InfoItem>
-              </InfoList>
-            </TokenInfo>
+                  <AddIcon />
+                </CounterButton>
+              </CounterContainer>
+            </RepeatCostCard>
           </Section>
+
+          {/* Token 정보 */}
+          <TokenInfoSection>
+            <TokenInfoHeader>
+              <InfoIcon />
+              <TokenInfoTitle>Token/모델 비용 고지</TokenInfoTitle>
+            </TokenInfoHeader>
+            <TokenInfoList>
+              <TokenInfoItem>
+                • Seat(Base): 플랜별 토큰 Cap 포함. Cap 내 사용은 추가 과금
+                없음.
+              </TokenInfoItem>
+              <TokenInfoItem>
+                • Cap 초과 정책: 차단 또는 추가 구매는 별도 정책으로 안내.
+              </TokenInfoItem>
+              <TokenInfoItem>
+                • Seat(Base): 플랜별 토큰 Cap 포함. Cap 내 사용은 추가 과금
+                없음.
+              </TokenInfoItem>
+            </TokenInfoList>
+          </TokenInfoSection>
         </LeftSection>
 
         <RightSection>
@@ -604,7 +612,9 @@ export default function CheckoutPage() {
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  padding-bottom: 94px;
+`;
 
 const Header = styled.div`
   display: flex;
@@ -967,9 +977,83 @@ const PrepayDescription = styled.p`
 `;
 
 const AddOnDescription = styled.p`
-  font-size: 14px;
+  ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
-  margin: 0 0 20px 0;
+  margin: 8px 0 20px 0;
+`;
+
+const AddOnCardPrice = styled.span`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const RepeatCostCard = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border: 1px solid ${borderColor.light['color-border-primary']};
+  border-radius: 16px;
+  background: white;
+`;
+
+const RepeatCostLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const RepeatCostPrice = styled.span`
+  ${typography('ko', 'body3', 'medium')}
+`;
+
+const RepeatCostUnit = styled.span`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const CounterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid ${borderColor.light['color-border-primary']};
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+const CounterButton = styled.button`
+  padding: 8px;
+  border: none;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  ${typography('ko', 'body1', 'medium')}
+  color: ${textColor.light['fg-neutral-primary']};
+  border-right: 1px solid ${borderColor.light['color-border-primary']};
+
+  svg {
+    color: ${textColor.light['fg-neutral-primary']};
+  }
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &:hover {
+    background: ${color.gray['50']};
+  }
+`;
+
+const CounterDisplay = styled.div`
+  padding: 4px 12px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${typography('ko', 'body2', 'medium')}
+  border-right: 1px solid ${borderColor.light['color-border-primary']};
 `;
 
 const AddOnGroup = styled.div`
@@ -1055,12 +1139,6 @@ const AddOnToggle = styled.label`
     font-size: 14px;
     font-weight: 500;
   }
-`;
-
-const AddOnPrice = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${textColor.light['fg-neutral-primary']};
 `;
 
 const AddOnSubOptions = styled.div`
@@ -1152,29 +1230,32 @@ const TokenPackValue = styled.span`
   text-align: center;
 `;
 
-const TokenInfo = styled.div`
-  background: #fff8e1;
-  padding: 16px;
-  border-radius: 8px;
-  border-left: 4px solid #ffc107;
+const TokenInfoSection = styled.div`
+  background: ${color.gray['50']};
+  padding: 20px;
+  border-radius: 12px;
 `;
 
-const InfoTitle = styled.h5`
-  font-size: 14px;
-  font-weight: 600;
+const TokenInfoHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+`;
+
+const TokenInfoTitle = styled.h5`
+  ${typography('ko', 'body3', 'semibold')}
   color: ${textColor.light['fg-neutral-primary']};
-  margin: 0 0 8px 0;
+  margin: 0;
 `;
 
-const InfoList = styled.div`
+const TokenInfoList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
 `;
 
-const InfoItem = styled.div`
-  font-size: 12px;
-  color: ${textColor.light['fg-neutral-alternative']};
+const TokenInfoItem = styled.div`
+  ${typography('ko', 'body2', 'regular')}
 `;
 
 const RightSection = styled.div`
