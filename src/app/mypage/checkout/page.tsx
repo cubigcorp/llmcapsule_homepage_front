@@ -221,32 +221,42 @@ export default function CheckoutPage() {
             <TokenBreakdownSection>
               <TokenBreakdownGrid>
                 <TokenBreakdownCard>
-                  <TokenBreakdownTitle>토큰 분배</TokenBreakdownTitle>
-                  <TokenBreakdownSubtitle>입/출력 6:4</TokenBreakdownSubtitle>
-                  <TokenBreakdownList>
+                  <TokenBreakdownHeader>
+                    <TokenBreakdownTitle>토큰 분배</TokenBreakdownTitle>
+                    <Badge size='small' type='solid' variant='secondary'>
+                      입/출력 6:4
+                    </Badge>
+                  </TokenBreakdownHeader>
+                  <TokenBreakdownContent>
                     <TokenBreakdownItem>
-                      <span>입력(60%)</span>
-                      <span>
+                      <TokenBreakdownLabel>입력(60%)</TokenBreakdownLabel>
+                      <TokenBreakdownValue>
                         {Math.round(tokenUsage * 0.6).toLocaleString()}
-                      </span>
+                      </TokenBreakdownValue>
                     </TokenBreakdownItem>
                     <TokenBreakdownItem>
-                      <span>출력(40%)</span>
-                      <span>
+                      <TokenBreakdownLabel>출력(40%)</TokenBreakdownLabel>
+                      <TokenBreakdownValue>
                         {Math.round(tokenUsage * 0.4).toLocaleString()}
-                      </span>
+                      </TokenBreakdownValue>
                     </TokenBreakdownItem>
+                    <Divider style={{ margin: '20px 0 12px 0' }} />
                     <TokenBreakdownTotal>
-                      <span>총합</span>
-                      <span>{tokenUsage.toLocaleString()}</span>
+                      <TokenBreakdownTotalLabel>총 합</TokenBreakdownTotalLabel>
+                      <TokenBreakdownTotalValue>
+                        {tokenUsage.toLocaleString()}
+                      </TokenBreakdownTotalValue>
                     </TokenBreakdownTotal>
-                  </TokenBreakdownList>
+                  </TokenBreakdownContent>
                 </TokenBreakdownCard>
-
                 <TokenBreakdownCard>
-                  <TokenBreakdownTitle>문자·페이지 환산</TokenBreakdownTitle>
-                  <TokenBreakdownSubtitle>가정값</TokenBreakdownSubtitle>
-                  <TokenBreakdownList>
+                  <TokenBreakdownHeader>
+                    <TokenBreakdownTitle>문자·페이지 환산</TokenBreakdownTitle>
+                    <Badge size='small' type='solid' variant='secondary'>
+                      가정값
+                    </Badge>
+                  </TokenBreakdownHeader>
+                  <TokenBreakdownContent>
                     <TokenBreakdownItem>
                       <span>한글</span>
                       <span>
@@ -292,7 +302,7 @@ export default function CheckoutPage() {
                     <TokenBreakdownSubItem>
                       <span>(기준 1,200자/장)</span>
                     </TokenBreakdownSubItem>
-                  </TokenBreakdownList>
+                  </TokenBreakdownContent>
                 </TokenBreakdownCard>
               </TokenBreakdownGrid>
 
@@ -974,61 +984,91 @@ const TokenBreakdownGrid = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   margin-bottom: 16px;
+  align-items: start;
 `;
 
 const TokenBreakdownCard = styled.div`
-  background: white;
   border: 1px solid ${borderColor.light['color-border-primary']};
   border-radius: 8px;
-  padding: 20px;
+`;
+
+const TokenBreakdownHeader = styled.div`
+  border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid ${borderColor.light['color-border-primary']};
+  padding: 10px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: ${color.gray['50']};
 `;
 
 const TokenBreakdownTitle = styled.h5`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${textColor.light['fg-neutral-primary']};
-  margin: 0 0 6px 0;
+  ${typography('ko', 'body2', 'medium')}
+  margin: 0;
 `;
 
-const TokenBreakdownSubtitle = styled.p`
-  font-size: 12px;
-  color: ${textColor.light['fg-neutral-alternative']};
-  margin: 0 0 16px 0;
-`;
-
-const TokenBreakdownList = styled.div`
+const TokenBreakdownContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  padding: 8px 12px;
 `;
 
 const TokenBreakdownItem = styled.div`
   display: flex;
-  justify-content: space-between;
   font-size: 13px;
+  background: white;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
 
-  span:first-child {
-    color: ${textColor.light['fg-neutral-alternative']};
+  &:last-child {
+    margin-bottom: 0;
   }
+`;
 
-  span:last-child {
-    font-weight: 500;
-    color: ${textColor.light['fg-neutral-primary']};
-  }
+const TokenBreakdownLabel = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  ${typography('ko', 'body2', 'medium')}
+  background: ${color.gray['50']};
+  padding: 4px 20px;
+  text-align: center;
+`;
+
+const TokenBreakdownValue = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  ${typography('ko', 'body2', 'regular')}
+  padding: 4px 20px;
+  text-align: center;
+  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const TokenBreakdownTotal = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  font-size: 13px;
-  font-weight: 600;
-  padding-top: 8px;
-  border-top: 1px solid ${borderColor.light['color-border-primary']};
-  margin-top: 8px;
+  margin-top: 6px;
+`;
 
-  span {
-    color: ${textColor.light['fg-neutral-primary']};
-  }
+const TokenBreakdownTotalLabel = styled.div`
+  ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const TokenBreakdownTotalValue = styled.div`
+  ${typography('ko', 'body2', 'regular')}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  color: ${textColor.light['fg-neutral-alternative']};
+  padding: 4px 20px;
 `;
 
 const TokenBreakdownSubItem = styled.div`
