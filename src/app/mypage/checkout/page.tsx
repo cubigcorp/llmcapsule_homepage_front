@@ -22,6 +22,14 @@ import SmallAddIcon from '@/assets/icons/icon_add_small.svg';
 import IndeterminateIcon from '@/assets/icons/icon_indeterminate.svg';
 import InfoIcon from '@/assets/icons/icon_info.svg';
 
+// 플랜 데이터 정의
+const plans = {
+  basic: { name: 'Basic', price: 10500, minTokens: 0, maxTokens: 119999 },
+  plus: { name: 'Plus', price: 15500, minTokens: 120000, maxTokens: 279999 },
+  pro: { name: 'Pro', price: 25500, minTokens: 280000, maxTokens: 599999 },
+  max: { name: 'Max', price: 51000, minTokens: 600000, maxTokens: 999999 },
+};
+
 export default function CheckoutPage() {
   const [userCount, setUserCount] = useState<number>(200);
   const [tokenUsage, setTokenUsage] = useState<number>(280000);
@@ -41,8 +49,18 @@ export default function CheckoutPage() {
   const [aiAnswerEnabled, setAiAnswerEnabled] = useState<boolean>(false);
   const [tokenPackCount, setTokenPackCount] = useState<number>(12);
 
+  const getCurrentPlan = (tokens: number) => {
+    if (tokens >= plans.max.minTokens) return plans.max;
+    if (tokens >= plans.pro.minTokens) return plans.pro;
+    if (tokens >= plans.plus.minTokens) return plans.plus;
+    if (tokens >= plans.basic.minTokens) return plans.basic;
+    return plans.basic;
+  };
+
+  const currentPlan = getCurrentPlan(tokenUsage);
+
   // 가격 계산
-  const basePrice = 10500 * userCount;
+  const basePrice = currentPlan.price * userCount;
   const contractDiscounts = { 1: 0, 6: 3, 12: 5, 18: 7, 24: 10 };
   const discountRate =
     contractDiscounts[contractPeriod as keyof typeof contractDiscounts] || 0;
@@ -118,66 +136,93 @@ export default function CheckoutPage() {
           <Section>
             <SectionHeader>
               <SectionTitle>플랜 선택</SectionTitle>
-              <PlanBadge>토큰 사용량 기반</PlanBadge>
+              <Badge type='solid' variant='info'>
+                토큰 사용량 기반
+              </Badge>
             </SectionHeader>
             <PlanDescription>
               슬라이더로 월 예상 토큰 사용량을 지정해보세요.
             </PlanDescription>
-
+            <Divider />
             <SubSectionTitle>선택된 플랜</SubSectionTitle>
             <PlanCard>
-              <PlanName>Pro 플랜</PlanName>
-              <PlanPrice>₩10,500/Seat</PlanPrice>
+              <PlanName>{currentPlan.name} 플랜</PlanName>
+              <PlanPrice>₩{currentPlan.price.toLocaleString()}/Seat</PlanPrice>
             </PlanCard>
 
-            <TokenUsageTitle>토큰 사용량</TokenUsageTitle>
             <TokenUsageRow>
-              <div>
-                <SliderContainer>
-                  <SliderTrack>
-                    <input
-                      type='range'
-                      min='70000'
-                      max='600000'
-                      value={tokenUsage}
-                      onChange={(e) => setTokenUsage(parseInt(e.target.value))}
-                    />
-                  </SliderTrack>
-                  <SliderLabels>
-                    <SliderLabel>
-                      <span>70,000</span>
-                      <span>Basic</span>
-                    </SliderLabel>
-                    <SliderLabel>
-                      <span>120,000</span>
-                      <span>Plus</span>
-                    </SliderLabel>
-                    <SliderLabel>
-                      <span>280,000</span>
-                      <span>Pro</span>
-                    </SliderLabel>
-                    <SliderLabel>
-                      <span>600,000</span>
-                      <span>Max</span>
-                    </SliderLabel>
-                  </SliderLabels>
-                </SliderContainer>
-              </div>
+              <TokenUsageTitle>토큰 사용량</TokenUsageTitle>
               <TokenInputRight>
-                <Input
+                <TextField
+                  style={{
+                    width: '116px',
+                  }}
                   value={tokenUsage.toString()}
-                  onChange={(e) => setTokenUsage(parseInt(e.target.value) || 0)}
+                  onChange={(e) => {
+                    const newValue = parseInt(e.target.value) || 0;
+                    // 최소/최대값 제한
+                    const clampedValue = Math.min(
+                      Math.max(newValue, 0),
+                      600000
+                    );
+                    setTokenUsage(clampedValue);
+                  }}
                   placeholder='280000'
                 />
                 <span>토큰</span>
               </TokenInputRight>
             </TokenUsageRow>
 
+            <SliderContainer>
+              <SliderTrack>
+                <SliderProgress $progress={(tokenUsage / 600000) * 100} />
+                <input
+                  type='range'
+                  min='0'
+                  max='600000'
+                  step='1000'
+                  value={tokenUsage}
+                  onChange={(e) => {
+                    const newValue = parseInt(e.target.value);
+                    setTokenUsage(newValue);
+                  }}
+                />
+              </SliderTrack>
+              <SliderLabels>
+                <SliderLabel style={{ left: '11.67%' }}>
+                  <span>70,000</span>
+                  <Badge size='small' type='solid' variant='primary'>
+                    Basic
+                  </Badge>
+                </SliderLabel>
+                <SliderLabel style={{ left: '20%' }}>
+                  <span>120,000</span>
+                  <Badge size='small' type='solid' variant='primary'>
+                    Plus
+                  </Badge>
+                </SliderLabel>
+                <SliderLabel style={{ left: '46.67%' }}>
+                  <span>280,000</span>
+                  <Badge size='small' type='solid' variant='primary'>
+                    Pro
+                  </Badge>
+                </SliderLabel>
+                <SliderLabel
+                  style={{ left: '100%', transform: 'translateX(-100%)' }}
+                >
+                  <span>600,000</span>
+                  <Badge size='small' type='strong' variant='primary'>
+                    Max
+                  </Badge>
+                </SliderLabel>
+              </SliderLabels>
+            </SliderContainer>
+
             <TokenBreakdownSection>
               <TokenBreakdownGrid>
                 <TokenBreakdownCard>
-                  <TokenBreakdownTitle>토큰 분해</TokenBreakdownTitle>
-                  <TokenBreakdownSubtitle>임/출력 6:4</TokenBreakdownSubtitle>
+                  <TokenBreakdownTitle>토큰 분배</TokenBreakdownTitle>
+                  <TokenBreakdownSubtitle>입/출력 6:4</TokenBreakdownSubtitle>
                   <TokenBreakdownList>
                     <TokenBreakdownItem>
                       <span>입력(60%)</span>
@@ -192,14 +237,14 @@ export default function CheckoutPage() {
                       </span>
                     </TokenBreakdownItem>
                     <TokenBreakdownTotal>
-                      <span>총 합</span>
+                      <span>총합</span>
                       <span>{tokenUsage.toLocaleString()}</span>
                     </TokenBreakdownTotal>
                   </TokenBreakdownList>
                 </TokenBreakdownCard>
 
                 <TokenBreakdownCard>
-                  <TokenBreakdownTitle>문자-페이지 환산</TokenBreakdownTitle>
+                  <TokenBreakdownTitle>문자·페이지 환산</TokenBreakdownTitle>
                   <TokenBreakdownSubtitle>가정값</TokenBreakdownSubtitle>
                   <TokenBreakdownList>
                     <TokenBreakdownItem>
@@ -252,9 +297,9 @@ export default function CheckoutPage() {
               </TokenBreakdownGrid>
 
               <TokenNote>
-                <span>ℹ️</span>
+                <span>ⓘ</span>
                 <span>
-                  가정: 한글 1토큰=2자, 영어 1토큰=4자, WP 1장 =1,200자(관리자
+                  가정: 한글 1토큰≈2자, 영어 1토큰≈4자, WP 1장 ≈1,200자(관리자
                   변경 가능)
                 </span>
               </TokenNote>
@@ -597,7 +642,9 @@ export default function CheckoutPage() {
                 <SummaryLabel>선택 사양 합계</SummaryLabel>
                 <SummaryDetails>
                   <SummaryDetail>
-                    플랜: Pro (₩25,500/Seat · Cap 280,000)
+                    플랜: {currentPlan.name} (₩
+                    {currentPlan.price.toLocaleString()}/Seat · Cap{' '}
+                    {tokenUsage.toLocaleString()})
                   </SummaryDetail>
                   <SummaryDetail>좌석: {userCount}</SummaryDetail>
                   <SummaryDetail>
@@ -738,7 +785,7 @@ const Section = styled.div`
 
 const SectionHeader = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 8px;
   align-items: center;
   margin-bottom: 8px;
 `;
@@ -747,48 +794,40 @@ const SectionTitle = styled.h3`
   ${typography('ko', 'body3', 'semibold')}
 `;
 
-const PlanBadge = styled.span`
-  background: #e3f2fd;
-  color: #1976d2;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-`;
-
 const PlanDescription = styled.p`
-  font-size: 14px;
-  color: ${textColor.light['fg-neutral-alternative']};
-  margin: 0 0 16px 0;
+  ${typography('ko', 'body2', 'regular')}
+  margin: 0 0 24px 0;
 `;
 
 const PlanCard = styled.div`
-  background: linear-gradient(270deg, #313043 0%, #8a8ead 100%);
+  border-radius: 12px;
+  background: linear-gradient(
+    91deg,
+    #131218 1.14%,
+    #626479 65.49%,
+    #a0a5cf 129.85%
+  );
   color: white;
-  padding: 20px 24px;
-  height: 72px;
+  padding: 24px;
   border-radius: 12px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
 `;
 
 const PlanName = styled.span`
-  font-size: 16px;
-  font-weight: 600;
+  ${typography('ko', 'body3', 'medium')}
 `;
 
 const PlanPrice = styled.span`
-  font-size: 16px;
-  font-weight: 600;
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.dark['fg-neutral-primary']};
 `;
 
 const SubSectionTitle = styled.h4`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${textColor.light['fg-neutral-primary']};
-  margin: 16px 0 8px 0;
+  ${typography('ko', 'body2', 'medium')}
+  margin: 24px 0 12px 0;
 `;
 
 const SliderContainer = styled.div`
@@ -796,76 +835,132 @@ const SliderContainer = styled.div`
 `;
 
 const SliderTrack = styled.div`
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #e1e5e9;
+    border-radius: 3px;
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(100% / 6 - 1px),
+      #e6e7e9 calc(100% / 6 - 1px),
+      #d1d5db calc(100% / 6)
+    );
+    border-radius: 9999px;
+    pointer-events: none;
+  }
 
   input[type='range'] {
     width: 100%;
-    height: 6px;
+    height: 20px;
     border-radius: 3px;
-    background: #e1e5e9;
+    background: transparent;
     outline: none;
     -webkit-appearance: none;
+    position: relative;
+    z-index: 2;
+
+    &::-webkit-slider-track {
+      background: transparent;
+      height: 4px;
+      border-radius: 3px;
+    }
+
+    &::-webkit-slider-runnable-track {
+      background: transparent;
+      height: 4px;
+      border-radius: 3px;
+    }
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
-      background: #007bff;
+      background: white;
+      border: 2px solid ${color.neutral[950]};
       cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+      top: -2px;
     }
   }
 `;
 
+const SliderProgress = styled.div<{ $progress: number }>`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: ${(props) => props.$progress}%;
+  height: 4px;
+  background: ${color.neutral[950]};
+  border-radius: 3px;
+  transform: translateY(-50%);
+  z-index: 1;
+`;
+
 const SliderLabels = styled.div`
-  display: flex;
-  justify-content: space-between;
+  position: relative;
+  height: 40px;
 `;
 
 const SliderLabel = styled.div`
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
   text-align: center;
   font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 
-  span:first-child {
-    display: block;
-    color: ${textColor.light['fg-neutral-primary']};
-    font-weight: 500;
-    margin-bottom: 2px;
-  }
 
-  span:last-child {
-    color: ${textColor.light['fg-neutral-alternative']};
-    background: white;
-    border: 1px solid ${borderColor.light['color-border-primary']};
-    padding: 2px 8px;
-    border-radius: 999px;
-    font-size: 10px;
   }
 `;
 
 const TokenUsageTitle = styled.h4`
-  font-size: 16px;
-  font-weight: 600;
-  color: ${textColor.light['fg-neutral-primary']};
-  margin: 0 0 16px 0;
+  ${typography('ko', 'body2', 'medium')}
+  margin: 0;
+  flex-shrink: 0;
+  width: 100px;
 `;
 
 const TokenUsageRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 140px;
+  display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
+  justify-content: space-between;
+  margin-bottom: 16px;
 `;
 
 const TokenInputRight = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 
   span {
-    font-size: 12px;
+    ${typography('ko', 'body2', 'regular')}
     color: ${textColor.light['fg-neutral-alternative']};
   }
 `;
@@ -877,40 +972,40 @@ const TokenBreakdownSection = styled.div`
 const TokenBreakdownGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 20px;
   margin-bottom: 16px;
 `;
 
 const TokenBreakdownCard = styled.div`
-  background: #f8f9fa;
+  background: white;
   border: 1px solid ${borderColor.light['color-border-primary']};
   border-radius: 8px;
-  padding: 16px;
+  padding: 20px;
 `;
 
 const TokenBreakdownTitle = styled.h5`
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: ${textColor.light['fg-neutral-primary']};
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
 `;
 
 const TokenBreakdownSubtitle = styled.p`
-  font-size: 11px;
+  font-size: 12px;
   color: ${textColor.light['fg-neutral-alternative']};
-  margin: 0 0 12px 0;
+  margin: 0 0 16px 0;
 `;
 
 const TokenBreakdownList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 `;
 
 const TokenBreakdownItem = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 13px;
 
   span:first-child {
     color: ${textColor.light['fg-neutral-alternative']};
@@ -925,11 +1020,11 @@ const TokenBreakdownItem = styled.div`
 const TokenBreakdownTotal = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  padding-top: 6px;
+  padding-top: 8px;
   border-top: 1px solid ${borderColor.light['color-border-primary']};
-  margin-top: 6px;
+  margin-top: 8px;
 
   span {
     color: ${textColor.light['fg-neutral-primary']};
@@ -937,7 +1032,7 @@ const TokenBreakdownTotal = styled.div`
 `;
 
 const TokenBreakdownSubItem = styled.div`
-  font-size: 10px;
+  font-size: 11px;
   color: ${textColor.light['fg-neutral-alternative']};
   text-align: center;
   margin-top: 4px;
@@ -945,20 +1040,23 @@ const TokenBreakdownSubItem = styled.div`
 
 const TokenNote = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   padding: 12px;
-  background: #fff8e1;
+  background: ${color.gray['50']};
   border-radius: 6px;
-  border-left: 3px solid #ffc107;
+  border: 1px solid ${borderColor.light['color-border-primary']};
 
   span:first-child {
-    font-size: 14px;
+    font-size: 12px;
+    color: ${textColor.light['fg-neutral-alternative']};
+    margin-top: 1px;
   }
 
   span:last-child {
     font-size: 11px;
     color: ${textColor.light['fg-neutral-alternative']};
+    line-height: 1.4;
   }
 `;
 
