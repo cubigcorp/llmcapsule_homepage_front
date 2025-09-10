@@ -11,7 +11,13 @@ import {
   Divider,
   layerColor,
   Checkbox,
+  TextField,
+  Chip,
+  Badge,
+  color,
 } from '@cubig/design-system';
+import RemoveIcon from '@/assets/icons/icon_remove.svg';
+import AddIcon from '@/assets/icons/icon_add.svg';
 
 export default function CheckoutPage() {
   const [userCount, setUserCount] = useState<number>(200);
@@ -228,24 +234,27 @@ export default function CheckoutPage() {
           <Section>
             <SectionTitle>사용자 수</SectionTitle>
             <UserInputSection>
-              <Label>사용 인원</Label>
-              <UserCountInput>
-                <Input
-                  value={userCount.toString()}
-                  onChange={(e) => handleUserCountChange(e.target.value)}
-                  placeholder='200'
-                />
-                <span>명</span>
-              </UserCountInput>
+              <TextField
+                label='사용 인원'
+                size='large'
+                value={userCount.toString()}
+                onChange={(e) => handleUserCountChange(e.target.value)}
+              />
               <UserCountControls>
-                <ControlButton
+                <Chip
+                  size='x-small'
+                  leadingIcon={<RemoveIcon />}
                   onClick={() => setUserCount(Math.max(0, userCount - 50))}
                 >
-                  - 50명
-                </ControlButton>
-                <ControlButton onClick={() => setUserCount(userCount + 50)}>
-                  + 50명
-                </ControlButton>
+                  50명
+                </Chip>
+                <Chip
+                  size='x-small'
+                  leadingIcon={<AddIcon />}
+                  onClick={() => setUserCount(userCount + 50)}
+                >
+                  50명
+                </Chip>
               </UserCountControls>
             </UserInputSection>
           </Section>
@@ -270,26 +279,41 @@ export default function CheckoutPage() {
                   onClick={() => setContractPeriod(option.months)}
                 >
                   <span>{option.months}개월</span>
-                  {option.discount > 0 && (
-                    <Discount>{option.discount}%</Discount>
-                  )}
+                  <Badge
+                    size='small'
+                    type='solid'
+                    variant={option.discount === 0 ? 'primary' : 'info'}
+                  >
+                    {option.discount}%
+                  </Badge>
                 </PeriodOption>
               ))}
             </PeriodOptions>
-
+            <Divider />
             <PrepaySection>
               <PrepayToggle>
-                <input
-                  type='checkbox'
-                  checked={prepayEnabled}
-                  onChange={(e) => setPrepayEnabled(e.target.checked)}
+                <Checkbox
+                  variant='primary'
+                  state={prepayEnabled ? 'checked' : 'unchecked'}
+                  onChange={(checked) => setPrepayEnabled(checked)}
                 />
-                <span>선결제</span>
-                <PrepayBadge>할인율 0.002%</PrepayBadge>
+                <PrepayContent>
+                  <PrepayTop>
+                    <span>선결제</span>
+                    <PrepayBadges>
+                      <Badge size='small' type='strong' variant='info'>
+                        일시불
+                      </Badge>
+                      <Badge size='small' type='outline' variant='info'>
+                        0.2%
+                      </Badge>
+                    </PrepayBadges>
+                  </PrepayTop>
+                  <PrepayDescription>
+                    기간 할인은 운영 정책에 따라 달라질 수 있습니다.
+                  </PrepayDescription>
+                </PrepayContent>
               </PrepayToggle>
-              <PrepayDescription>
-                기간 할인은 운영 정책에 따라 달라질 수 있습니다.
-              </PrepayDescription>
             </PrepaySection>
           </Section>
 
@@ -614,7 +638,7 @@ const Section = styled.div`
   background: white;
   border: 1px solid ${borderColor.light['color-border-primary']};
   border-radius: 12px;
-  padding: 24px;
+  padding: 24px 20px;
 `;
 
 const SectionHeader = styled.div`
@@ -625,10 +649,7 @@ const SectionHeader = styled.div`
 `;
 
 const SectionTitle = styled.h3`
-  font-size: 16px;
-  font-weight: 600;
-  color: ${textColor.light['fg-neutral-primary']};
-  margin: 0;
+  ${typography('ko', 'body3', 'semibold')}
 `;
 
 const PlanBadge = styled.span`
@@ -846,33 +867,14 @@ const TokenNote = styled.div`
   }
 `;
 
-const UserInputSection = styled.div``;
-
-const Label = styled.div`
-  font-size: 14px;
-  color: ${textColor.light['fg-neutral-primary']};
-  margin-bottom: 8px;
-`;
-
-const UserCountInput = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-
-  input {
-    flex: 1;
-  }
-
-  span {
-    font-size: 14px;
-    color: ${textColor.light['fg-neutral-alternative']};
-  }
+const UserInputSection = styled.div`
+  margin-top: 20px;
 `;
 
 const UserCountControls = styled.div`
   display: flex;
   gap: 8px;
+  margin-top: 10px;
 `;
 
 const ControlButton = styled.button`
@@ -890,9 +892,9 @@ const ControlButton = styled.button`
 `;
 
 const PeriodDescription = styled.p`
-  font-size: 14px;
+  ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
-  margin: 0 0 16px 0;
+  margin: 8px 0 20px 0;
 `;
 
 const PeriodOptions = styled.div`
@@ -902,67 +904,64 @@ const PeriodOptions = styled.div`
 `;
 
 const PeriodOption = styled.div<{ $isSelected: boolean }>`
-  padding: 12px 16px;
+  padding: 16px 20px;
   border: 1px solid
     ${(props) =>
       props.$isSelected
-        ? '#007bff'
+        ? borderColor.light['color-border-focused']
         : borderColor.light['color-border-primary']};
-  border-radius: 8px;
-  background: ${(props) => (props.$isSelected ? '#f0f8ff' : 'white')};
+  border-radius: 12px;
+  background: ${color.gray['50']};
   cursor: pointer;
-  text-align: center;
   flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 
-  span {
-    display: block;
-    font-size: 14px;
-    font-weight: 500;
-    color: ${textColor.light['fg-neutral-primary']};
+  > span {
+    ${typography('ko', 'body3', 'medium')}
   }
-`;
-
-const Discount = styled.span`
-  font-size: 12px;
-  color: #007bff !important;
-  font-weight: 600 !important;
 `;
 
 const PrepaySection = styled.div`
   padding: 16px;
   background: #f8f9fa;
   border-radius: 8px;
+  margin-top: 20px;
 `;
 
-const PrepayToggle = styled.label`
+const PrepayToggle = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  cursor: pointer;
+  gap: 12px;
+`;
 
-  input {
-    width: 16px;
-    height: 16px;
-  }
+const PrepayContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
 
-  span {
-    font-size: 14px;
-    font-weight: 500;
+const PrepayTop = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  > span {
+    ${typography('ko', 'body3', 'medium')}
+    color: ${textColor.light['fg-neutral-primary']};
   }
 `;
 
-const PrepayBadge = styled.span`
-  background: #e3f2fd;
-  color: #1976d2;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 11px !important;
-  font-weight: 500 !important;
+const PrepayBadges = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 const PrepayDescription = styled.p`
-  font-size: 12px;
+  ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
   margin: 0;
 `;
