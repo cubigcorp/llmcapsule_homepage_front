@@ -32,8 +32,13 @@ export default function CheckoutPage() {
   // Add-on 상태
   const [securityGuideCount, setSecurityGuideCount] = useState<number>(0);
   const [policyGuideCount, setPolicyGuideCount] = useState<number>(0);
-  const [basicModuleEnabled, setBasicModuleEnabled] = useState<boolean>(true);
+  const [basicModuleEnabled, setBasicModuleEnabled] = useState<boolean>(false);
+  const [selectedSubOption, setSelectedSubOption] = useState<string>('');
   const [ragSystemEnabled, setRagSystemEnabled] = useState<boolean>(true);
+  const [graphRagEnabled, setGraphRagEnabled] = useState<boolean>(false);
+  const [documentSecurityEnabled, setDocumentSecurityEnabled] =
+    useState<boolean>(false);
+  const [aiAnswerEnabled, setAiAnswerEnabled] = useState<boolean>(false);
   const [tokenPackCount, setTokenPackCount] = useState<number>(12);
 
   // 가격 계산
@@ -47,10 +52,33 @@ export default function CheckoutPage() {
 
   // Add-on 가격
   const addOnPrices = {
-    security: securityGuideCount * 12000000,
-    policy: policyGuideCount * 15000000,
+    security:
+      securityGuideCount === 5
+        ? 12000000
+        : securityGuideCount === 8
+          ? 15000000
+          : securityGuideCount === 12
+            ? 18000000
+            : 0,
+    policy:
+      policyGuideCount === 0
+        ? 25000000
+        : policyGuideCount === 200
+          ? 15000000
+          : 0,
     basicModule: basicModuleEnabled ? 25000000 : 0,
+    subOption:
+      selectedSubOption === 'filter5'
+        ? 5000000
+        : selectedSubOption === 'filter8'
+          ? 10000000
+          : selectedSubOption === 'filter12'
+            ? 15000000
+            : 0,
     rag: ragSystemEnabled ? 10000000 : 0,
+    graphRag: graphRagEnabled ? 38000000 : 0,
+    documentSecurity: documentSecurityEnabled ? 5000000 : 0,
+    aiAnswer: aiAnswerEnabled ? 5000000 : 0,
     tokenPack: tokenPackCount * 13000,
   };
 
@@ -369,14 +397,14 @@ export default function CheckoutPage() {
                   $isSelected={policyGuideCount === 0}
                   onClick={() => setPolicyGuideCount(0)}
                 >
-                  <span>0 ~ 200</span>
+                  <span>0 - 200</span>
                   <span>₩25,000,000</span>
                 </AddOnOption>
                 <AddOnOption
                   $isSelected={policyGuideCount === 200}
                   onClick={() => setPolicyGuideCount(200)}
                 >
-                  <span>200 ~ 500</span>
+                  <span>200 - 500</span>
                   <span>₩15,000,000</span>
                 </AddOnOption>
                 <AddOnOption
@@ -390,67 +418,124 @@ export default function CheckoutPage() {
             </AddOnGroup>
 
             <AddOnGroup>
-              <AddOnSubTitle>비정형 민감정보 보건 모듈</AddOnSubTitle>
-              <AddOnCard $isEnabled={basicModuleEnabled}>
-                <AddOnToggle>
-                  <input
-                    type='checkbox'
-                    checked={basicModuleEnabled}
-                    onChange={(e) => setBasicModuleEnabled(e.target.checked)}
+              <AddOnSubTitle>비정형 민감정보 조건 모듈</AddOnSubTitle>
+              <LargeAddOnCard $isSelected={basicModuleEnabled}>
+                <AddOnMainToggle>
+                  <Checkbox
+                    variant='primary'
+                    state={basicModuleEnabled ? 'checked' : 'unchecked'}
+                    onChange={(checked) => {
+                      setBasicModuleEnabled(checked);
+                      if (checked) {
+                        setSelectedSubOption('none');
+                      } else {
+                        setSelectedSubOption('');
+                      }
+                    }}
                   />
                   <span>기본 모듈</span>
-                </AddOnToggle>
-                <AddOnCardPrice>₩25,000,000</AddOnCardPrice>
-              </AddOnCard>
+                  <AddOnMainPrice>₩25,000,000</AddOnMainPrice>
+                </AddOnMainToggle>
 
-              <AddOnSubOptions>
-                <AddOnSubOption>
-                  <span>선택 안 함</span>
-                  <span>₩0</span>
-                </AddOnSubOption>
-                <AddOnSubOption>
-                  <span>필터 5개</span>
-                  <span>₩5,000,000</span>
-                </AddOnSubOption>
-                <AddOnSubOption>
-                  <span>필터 8개</span>
-                  <span>₩10,000,000</span>
-                </AddOnSubOption>
-                <AddOnSubOption>
-                  <span>필터 12개</span>
-                  <span>₩15,000,000</span>
-                </AddOnSubOption>
-              </AddOnSubOptions>
+                <AddOnSubGrid>
+                  <AddOnSubCard
+                    $isSelected={selectedSubOption === 'none'}
+                    $isDisabled={!basicModuleEnabled}
+                    onClick={() =>
+                      basicModuleEnabled && setSelectedSubOption('none')
+                    }
+                  >
+                    <span>선택 안 함</span>
+                    <span>₩0</span>
+                  </AddOnSubCard>
+                  <AddOnSubCard
+                    $isSelected={selectedSubOption === 'filter5'}
+                    $isDisabled={!basicModuleEnabled}
+                    onClick={() =>
+                      basicModuleEnabled && setSelectedSubOption('filter5')
+                    }
+                  >
+                    <span>필터 5개</span>
+                    <span>₩5,000,000</span>
+                  </AddOnSubCard>
+                  <AddOnSubCard
+                    $isSelected={selectedSubOption === 'filter8'}
+                    $isDisabled={!basicModuleEnabled}
+                    onClick={() =>
+                      basicModuleEnabled && setSelectedSubOption('filter8')
+                    }
+                  >
+                    <span>필터 8개</span>
+                    <span>₩10,000,000</span>
+                  </AddOnSubCard>
+                  <AddOnSubCard
+                    $isSelected={selectedSubOption === 'filter12'}
+                    $isDisabled={!basicModuleEnabled}
+                    onClick={() =>
+                      basicModuleEnabled && setSelectedSubOption('filter12')
+                    }
+                  >
+                    <span>필터 12개</span>
+                    <span>₩15,000,000</span>
+                  </AddOnSubCard>
+                </AddOnSubGrid>
+              </LargeAddOnCard>
             </AddOnGroup>
 
             <AddOnGroup>
               <AddOnSubTitle>기타 모듈</AddOnSubTitle>
-              <AddOnCard $isEnabled={ragSystemEnabled}>
-                <AddOnToggle>
-                  <input
-                    type='checkbox'
-                    checked={ragSystemEnabled}
-                    onChange={(e) => setRagSystemEnabled(e.target.checked)}
+              <AddOnItemList>
+                <AddOnItem
+                  $isSelected={ragSystemEnabled}
+                  onClick={() => setRagSystemEnabled(!ragSystemEnabled)}
+                >
+                  <Checkbox
+                    variant='primary'
+                    state={ragSystemEnabled ? 'checked' : 'unchecked'}
+                    onChange={(checked) => setRagSystemEnabled(checked)}
                   />
                   <span>RAG 시스템</span>
-                </AddOnToggle>
-                <AddOnCardPrice>₩10,000,000</AddOnCardPrice>
-              </AddOnCard>
-
-              <AddOnList>
-                <AddOnListItem>
+                  <span>₩10,000,000</span>
+                </AddOnItem>
+                <AddOnItem
+                  $isSelected={graphRagEnabled}
+                  onClick={() => setGraphRagEnabled(!graphRagEnabled)}
+                >
+                  <Checkbox
+                    variant='primary'
+                    state={graphRagEnabled ? 'checked' : 'unchecked'}
+                    onChange={(checked) => setGraphRagEnabled(checked)}
+                  />
                   <span>최신 기술 Graph RAG 적용</span>
                   <span>₩38,000,000</span>
-                </AddOnListItem>
-                <AddOnListItem>
+                </AddOnItem>
+                <AddOnItem
+                  $isSelected={documentSecurityEnabled}
+                  onClick={() =>
+                    setDocumentSecurityEnabled(!documentSecurityEnabled)
+                  }
+                >
+                  <Checkbox
+                    variant='primary'
+                    state={documentSecurityEnabled ? 'checked' : 'unchecked'}
+                    onChange={(checked) => setDocumentSecurityEnabled(checked)}
+                  />
                   <span>문서보안등급별 접근 제어</span>
                   <span>₩5,000,000</span>
-                </AddOnListItem>
-                <AddOnListItem>
+                </AddOnItem>
+                <AddOnItem
+                  $isSelected={aiAnswerEnabled}
+                  onClick={() => setAiAnswerEnabled(!aiAnswerEnabled)}
+                >
+                  <Checkbox
+                    variant='primary'
+                    state={aiAnswerEnabled ? 'checked' : 'unchecked'}
+                    onChange={(checked) => setAiAnswerEnabled(checked)}
+                  />
                   <span>문맥 기반 AI 답변 적용</span>
                   <span>₩5,000,000</span>
-                </AddOnListItem>
-              </AddOnList>
+                </AddOnItem>
+              </AddOnItemList>
             </AddOnGroup>
           </Section>
 
@@ -915,11 +1000,10 @@ const PeriodOptions = styled.div`
 
 const PeriodOption = styled.div<{ $isSelected: boolean }>`
   padding: 16px 20px;
-  border: 1px solid
-    ${(props) =>
-      props.$isSelected
-        ? borderColor.light['color-border-focused']
-        : borderColor.light['color-border-primary']};
+  border: ${(props) =>
+    props.$isSelected
+      ? `1.8px solid ${borderColor.light['color-border-focused']}`
+      : `1px solid ${borderColor.light['color-border-primary']}`};
   border-radius: 12px;
   background: ${color.gray['50']};
   cursor: pointer;
@@ -986,6 +1070,104 @@ const AddOnCardPrice = styled.span`
   font-size: 14px;
   font-weight: 600;
   color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const LargeAddOnCard = styled.div<{ $isSelected?: boolean }>`
+  border: ${(props) =>
+    props.$isSelected
+      ? `1.8px solid ${borderColor.light['color-border-focused']}`
+      : `1px solid ${borderColor.light['color-border-primary']}`};
+  border-radius: 12px;
+  padding: 24px;
+  background: white;
+`;
+
+const AddOnMainToggle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid ${borderColor.light['color-border-primary']};
+  margin-bottom: 20px;
+
+  > span:nth-child(2) {
+    ${typography('ko', 'body2', 'semibold')}
+    color: ${textColor.light['fg-neutral-primary']};
+    flex: 1;
+  }
+`;
+
+const AddOnMainPrice = styled.span`
+  ${typography('ko', 'body3', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const AddOnSubGrid = styled.div`
+  display: flex;
+  gap: 12px;
+`;
+
+const AddOnSubCard = styled.div<{
+  $isSelected: boolean;
+  $isDisabled?: boolean;
+}>`
+  padding: 16px;
+  border: ${(props) =>
+    props.$isSelected
+      ? `1.8px solid ${borderColor.light['color-border-focused']}`
+      : `1px solid ${borderColor.light['color-border-primary']}`};
+  border-radius: 8px;
+  background: ${color.gray['50']};
+  cursor: ${(props) => (props.$isDisabled ? 'not-allowed' : 'pointer')};
+  opacity: ${(props) => (props.$isDisabled ? 0.5 : 1)};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  flex: 1;
+
+  span:first-child {
+    ${typography('ko', 'body3', 'medium')}
+    color: ${textColor.light['fg-neutral-primary']};
+  }
+
+  span:last-child {
+    ${typography('ko', 'body3', 'medium')}
+    color: ${textColor.light['fg-neutral-alternative']};
+  }
+`;
+
+const AddOnItemList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const AddOnItem = styled.div<{ $isSelected?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: ${(props) =>
+    props.$isSelected
+      ? `1.8px solid ${borderColor.light['color-border-focused']}`
+      : `1px solid ${borderColor.light['color-border-primary']}`};
+  border-radius: 8px;
+  background: ${color.gray['50']};
+  cursor: pointer;
+  user-select: none;
+
+  span:nth-child(2) {
+    ${typography('ko', 'body3', 'medium')}
+    color: ${textColor.light['fg-neutral-primary']};
+    flex: 1;
+  }
+
+  span:last-child {
+    ${typography('ko', 'body3', 'medium')}
+    color: ${textColor.light['fg-neutral-alternative']};
+  }
 `;
 
 const RepeatCostCard = styled.div`
@@ -1065,46 +1247,43 @@ const AddOnGroup = styled.div`
 `;
 
 const AddOnSubTitle = styled.h4`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${textColor.light['fg-neutral-primary']};
+  ${typography('ko', 'body2', 'medium')}
   margin: 0 0 8px 0;
 `;
 
 const AddOnNote = styled.p`
-  font-size: 12px;
-  color: ${textColor.light['fg-neutral-alternative']};
+  ${typography('ko', 'body2', 'regular')}
   margin: 0 0 12px 0;
 `;
 
 const AddOnOptions = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 `;
 
 const AddOnOption = styled.div<{ $isSelected: boolean }>`
-  padding: 12px;
-  border: 1px solid
-    ${(props) =>
-      props.$isSelected
-        ? '#007bff'
-        : borderColor.light['color-border-primary']};
-  border-radius: 8px;
-  background: ${(props) => (props.$isSelected ? '#f0f8ff' : '#f8f9fa')};
+  padding: 16px 20px;
+  border: ${(props) =>
+    props.$isSelected
+      ? `1.8px solid ${borderColor.light['color-border-focused']}`
+      : `1px solid ${borderColor.light['color-border-primary']}`};
+  border-radius: 12px;
+  background: ${color.gray['50']};
   cursor: pointer;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 
   span:first-child {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
+    ${typography('ko', 'body3', 'semibold')}
     color: ${textColor.light['fg-neutral-primary']};
-    margin-bottom: 4px;
   }
 
   span:last-child {
-    font-size: 12px;
+    ${typography('ko', 'body2', 'regular')}
     color: ${textColor.light['fg-neutral-alternative']};
   }
 `;
