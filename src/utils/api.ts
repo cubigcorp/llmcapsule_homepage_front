@@ -45,6 +45,7 @@ export interface VerifyEmailRequest {
   email: string;
   password: string;
   redirect_url: string;
+  service_name: string;
 }
 
 export interface VerifyEmailGoogleRequest {

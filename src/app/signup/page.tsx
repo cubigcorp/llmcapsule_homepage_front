@@ -206,6 +206,7 @@ function SignupPageContent() {
         email: formData.email,
         password: formData.password,
         redirect_url: `${window.location.origin}/signup/verify`,
+        service_name: 'llm_capsule',
       });
 
       if (response.success) {
@@ -242,6 +243,7 @@ function SignupPageContent() {
         email: formData.email,
         password: formData.password,
         redirect_url: `${window.location.origin}/signup/verify`,
+        service_name: 'llm_capsule',
       });
 
       console.log('API 응답:', response);
