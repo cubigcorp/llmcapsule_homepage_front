@@ -39,10 +39,17 @@ export default function CheckoutPage() {
 
   // Add-on 상태
   const [securityGuideCount, setSecurityGuideCount] = useState<number>(0);
+  const [adminConsoleCount, setAdminConsoleCount] = useState<number>(0);
   const [policyGuideCount, setPolicyGuideCount] = useState<number>(0);
   const [basicModuleEnabled, setBasicModuleEnabled] = useState<boolean>(false);
+  const [unstructuredModuleEnabled, setUnstructuredModuleEnabled] =
+    useState<boolean>(false);
   const [selectedSubOption, setSelectedSubOption] = useState<string>('');
-  const [ragSystemEnabled, setRagSystemEnabled] = useState<boolean>(true);
+  const [ragSystemEnabled, setRagSystemEnabled] = useState<boolean>(false);
+  const [latestTechEnabled, setLatestTechEnabled] = useState<boolean>(false);
+  const [documentAnalysisEnabled, setDocumentAnalysisEnabled] =
+    useState<boolean>(false);
+  const [aiChatEnabled, setAiChatEnabled] = useState<boolean>(false);
   const [graphRagEnabled, setGraphRagEnabled] = useState<boolean>(false);
   const [documentSecurityEnabled, setDocumentSecurityEnabled] =
     useState<boolean>(false);
@@ -651,27 +658,112 @@ export default function CheckoutPage() {
                 <SummaryLabel>선택 사양 합계</SummaryLabel>
                 <SummaryDetails>
                   <SummaryDetail>
-                    플랜: {currentPlan.name} (₩
+                    선택된 플랜: {currentPlan.name} (₩
                     {currentPlan.price.toLocaleString()}/Seat · Cap{' '}
                     {tokenUsage.toLocaleString()})
                   </SummaryDetail>
-                  <SummaryDetail>좌석: {userCount}</SummaryDetail>
+                  <SummaryDetail>사용 인원: {userCount}</SummaryDetail>
                   <SummaryDetail>
-                    기간: {contractPeriod}개월 (기간 할인{' '}
+                    계약 기간: {contractPeriod}개월 (기간 할인{' '}
                     {contractDiscounts[
                       contractPeriod as keyof typeof contractDiscounts
                     ] || 0}
                     %)
                   </SummaryDetail>
                   <SummaryDetail>
-                    선결제: {prepayEnabled ? '예' : '아니오'}(추가{' '}
-                    {prepayEnabled ? '0.2%' : '0%'})
+                    선결제: {prepayEnabled ? '예(추가 0.2%)' : '아니오'}
+                  </SummaryDetail>
+                  <SummaryDetail>
+                    정형 민감 키워드 구축:{' '}
+                    {securityGuideCount === 0
+                      ? '선택 안함'
+                      : `${securityGuideCount}개`}
+                  </SummaryDetail>
+                  <SummaryDetail>
+                    중앙 관리자 콘솔 Admin 구축:{' '}
+                    {adminConsoleCount === 0
+                      ? '0-200'
+                      : `${adminConsoleCount}-${adminConsoleCount + 200}`}
+                  </SummaryDetail>
+                  <SummaryDetail>
+                    비정형 민감정보 조건 모듈:{' '}
+                    {unstructuredModuleEnabled
+                      ? '기본 모듈 (선택안함)'
+                      : '기본 모듈 (선택안함)'}
+                  </SummaryDetail>
+                  <SummaryDetail
+                    style={{ display: 'flex', alignItems: 'flex-start' }}
+                  >
+                    <span>기타모듈</span>
+                    <div
+                      style={{
+                        width: '1px',
+                        backgroundColor: color.neutral[200],
+                        alignSelf: 'stretch',
+                        margin: '0 12px',
+                      }}
+                    />
+                    {[
+                      ragSystemEnabled && 'RAG 시스템',
+                      graphRagEnabled && '최신 기술 Graph RAG 적용',
+                      documentSecurityEnabled && '문서보안등급별 접근 제어',
+                      aiAnswerEnabled && '문맥 기반 AI 답변 적용',
+                    ].filter(Boolean).length > 0 ? (
+                      <div style={{ flex: 1 }}>
+                        {ragSystemEnabled && (
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginBottom: '4px',
+                            }}
+                          >
+                            RAG 시스템
+                          </div>
+                        )}
+                        {graphRagEnabled && (
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginBottom: '4px',
+                            }}
+                          >
+                            최신 기술 Graph RAG 적용
+                          </div>
+                        )}
+                        {documentSecurityEnabled && (
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginBottom: '4px',
+                            }}
+                          >
+                            문서보안등급별 접근 제어
+                          </div>
+                        )}
+                        {aiAnswerEnabled && (
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginBottom: '4px',
+                            }}
+                          >
+                            문맥 기반 AI 답변 적용
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span>선택 안함</span>
+                    )}
                   </SummaryDetail>
                   <SummaryDetail>
                     추가 토큰 팩: {tokenPackCount} × ₩13,000/월
                   </SummaryDetail>
                   <SummaryDetail>
-                    VAT 포함: {vatEnabled ? 'ON' : 'OFF'}
+                    VAT 포함: {vatEnabled ? 'OFF' : 'OFF'}
                   </SummaryDetail>
                 </SummaryDetails>
               </SummaryItem>
