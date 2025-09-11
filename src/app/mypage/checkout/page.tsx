@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   SolidButton,
@@ -32,16 +32,16 @@ const plans = {
 };
 
 export default function CheckoutPage() {
-  const [userCount, setUserCount] = useState<number>(200);
+  const [userCount, setUserCount] = useState<number>(100);
   const [tokenUsage, setTokenUsage] = useState<number>(280000);
-  const [contractPeriod, setContractPeriod] = useState<number>(12);
-  const [prepayEnabled, setPrepayEnabled] = useState<boolean>(true);
+  const [contractPeriod, setContractPeriod] = useState<number>(6);
+  const [prepayEnabled, setPrepayEnabled] = useState<boolean>(false);
   const [vatEnabled, setVatEnabled] = useState<boolean>(false);
 
   // Add-on 상태
-  const [securityGuideCount, setSecurityGuideCount] = useState<number>(0);
+  const [securityGuideCount, setSecurityGuideCount] = useState<number>(-1);
   const [adminConsoleCount, setAdminConsoleCount] = useState<number>(0);
-  const [policyGuideCount, setPolicyGuideCount] = useState<number>(0);
+  const [policyGuideCount, setPolicyGuideCount] = useState<number>(-1);
   const [basicModuleEnabled, setBasicModuleEnabled] = useState<boolean>(false);
   const [unstructuredModuleEnabled, setUnstructuredModuleEnabled] =
     useState<boolean>(false);
@@ -55,7 +55,7 @@ export default function CheckoutPage() {
   const [documentSecurityEnabled, setDocumentSecurityEnabled] =
     useState<boolean>(false);
   const [aiAnswerEnabled, setAiAnswerEnabled] = useState<boolean>(false);
-  const [tokenPackCount, setTokenPackCount] = useState<number>(12);
+  const [tokenPackCount, setTokenPackCount] = useState<number>(0);
 
   const getCurrentPlan = (tokens: number) => {
     if (tokens >= plans.max.minTokens) return plans.max;
@@ -90,8 +90,10 @@ export default function CheckoutPage() {
       policyGuideCount === 0
         ? 25000000
         : policyGuideCount === 200
-          ? 15000000
-          : 0,
+          ? 30000000
+          : policyGuideCount === 500
+            ? 35000000
+            : 0,
     basicModule: basicModuleEnabled ? 25000000 : 0,
     subOption:
       selectedSubOption === 'filter5'
@@ -119,11 +121,24 @@ export default function CheckoutPage() {
   const finalTotal = afterDiscount + vatAmount;
 
   const handleUserCountChange = (value: string) => {
-    const count = parseInt(value) || 0;
-    if (count >= 0 && count <= 280000) {
+    const count = parseInt(value) || 100;
+    if (count >= 100 && count <= 280000) {
       setUserCount(count);
     }
   };
+
+  // 사용자 수에 따른 중앙관리자 콘솔 자동 선택
+  useEffect(() => {
+    if (userCount >= 100 && userCount <= 200) {
+      setPolicyGuideCount(0); // 100-200 선택
+    } else if (userCount > 200 && userCount <= 500) {
+      setPolicyGuideCount(200); // 200-500 선택
+    } else if (userCount > 500) {
+      setPolicyGuideCount(500); // 500+ 선택
+    } else {
+      setPolicyGuideCount(-1); // 선택 안함
+    }
+  }, [userCount]);
 
   const handleCheckout = () => {
     alert('결제 기능은 추후 구현 예정입니다.');
@@ -439,7 +454,7 @@ export default function CheckoutPage() {
                 <Chip
                   size='x-small'
                   leadingIcon={<RemoveIcon />}
-                  onClick={() => setUserCount(Math.max(0, userCount - 50))}
+                  onClick={() => setUserCount(Math.max(100, userCount - 50))}
                 >
                   50명
                 </Chip>
@@ -523,10 +538,10 @@ export default function CheckoutPage() {
               <AddOnSubTitle>정형 민감 키워드 구축</AddOnSubTitle>
               <AddOnOptions>
                 <AddOnOption
-                  $isSelected={securityGuideCount === 0}
-                  onClick={() => setSecurityGuideCount(0)}
+                  $isSelected={securityGuideCount === -1}
+                  onClick={() => setSecurityGuideCount(-1)}
                 >
-                  <span>선택 안 함</span>
+                  <span>선택 안함</span>
                   <span>₩0</span>
                 </AddOnOption>
                 <AddOnOption
@@ -558,10 +573,17 @@ export default function CheckoutPage() {
               <AddOnNote>최적 수 기준 권장가: ₩25,000,000</AddOnNote>
               <AddOnOptions>
                 <AddOnOption
+                  $isSelected={policyGuideCount === -1}
+                  onClick={() => setPolicyGuideCount(-1)}
+                >
+                  <span>선택 안함</span>
+                  <span>₩0</span>
+                </AddOnOption>
+                <AddOnOption
                   $isSelected={policyGuideCount === 0}
                   onClick={() => setPolicyGuideCount(0)}
                 >
-                  <span>0 - 200</span>
+                  <span>100 - 200</span>
                   <span>₩25,000,000</span>
                 </AddOnOption>
                 <AddOnOption
@@ -722,7 +744,9 @@ export default function CheckoutPage() {
                 </CounterButton>
                 <CounterDisplay>{tokenPackCount}</CounterDisplay>
                 <CounterButton
-                  onClick={() => setTokenPackCount(tokenPackCount + 1)}
+                  onClick={() =>
+                    setTokenPackCount(Math.min(userCount, tokenPackCount + 1))
+                  }
                 >
                   <AddIcon />
                 </CounterButton>
@@ -778,15 +802,19 @@ export default function CheckoutPage() {
                   </SummaryDetail>
                   <SummaryDetail>
                     정형 민감 키워드 구축:{' '}
-                    {securityGuideCount === 0
+                    {securityGuideCount === -1
                       ? '선택 안함'
                       : `${securityGuideCount}개`}
                   </SummaryDetail>
                   <SummaryDetail>
                     중앙 관리자 콘솔 Admin 구축:{' '}
-                    {adminConsoleCount === 0
-                      ? '0-200'
-                      : `${adminConsoleCount}-${adminConsoleCount + 200}`}
+                    {policyGuideCount === -1
+                      ? '선택 안함'
+                      : policyGuideCount === 0
+                        ? '100-200'
+                        : policyGuideCount === 200
+                          ? '200-500'
+                          : '500+'}
                   </SummaryDetail>
                   <SummaryDetail>
                     비정형 민감정보 조건 모듈:{' '}
@@ -1594,6 +1622,7 @@ const AddOnSubTitle = styled.h4`
 const AddOnNote = styled.p`
   ${typography('ko', 'body2', 'regular')}
   margin: 0 0 12px 0;
+  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const AddOnOptions = styled.div`
