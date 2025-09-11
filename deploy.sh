@@ -15,7 +15,7 @@ PORT=3000
 
 # ========= 환경별 설정 =========
 if [[ "$ENVIRONMENT" == "development" ]]; then
-  HOST="ubuntu@ec2-3-37-36-2.ap-northeast-2.compute.amazonaws.com"
+  HOST="ec2-13-209-70-65.ap-northeast-2.compute.amazonaws.com"
   BRANCH="develop"
   NODE_ENV="development"
   APP_NAME="llmcapsule-homepage-dev"          # dev는 항상 이 이름 1개만

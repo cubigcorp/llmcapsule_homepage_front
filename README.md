@@ -65,7 +65,7 @@ npm run build
 
 ### 배포 설정
 
-- **개발 환경**: `develop` 브랜치, `NODE_ENV=development`, `ec2-3-37-36-2.ap-northeast-2.compute.amazonaws.com`
+- **개발 환경**: `develop` 브랜치, `NODE_ENV=development`, `ec2-13-209-70-65.ap-northeast-2.compute.amazonaws.com`
 - **프로덕션 환경**: `main` 브랜치, `NODE_ENV=production`, `ec2-3-39-187-55.ap-northeast-2.compute.amazonaws.com`
 - **PM2 프로세스**: 환경별로 분리 (`llmcapsule-homepage-development`, `llmcapsule-homepage-production`)
 

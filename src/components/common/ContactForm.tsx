@@ -19,6 +19,7 @@ import PrivacyConsentModal from '@/components/modals/PrivacyConsentModal';
 import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
 import { validateEmail, validateContactNumber } from '@/utils/validation';
 import { contactService } from '@/services/contact';
+import { gtm } from '@/utils/gtm';
 
 interface ContactFormProps {
   title?: string;
@@ -113,7 +114,10 @@ export default function ContactFormComponent({
 
       const response = await contactService.sendContact(contactData);
 
-      if (response.success) {
+      if (response.status === 200) {
+        // GTM 이벤트 발동
+        gtm.submitLead(formData.inquiryType);
+
         alert('문의가 성공적으로 접수되었습니다.');
         // 폼 초기화
         setFormData({
