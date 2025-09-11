@@ -235,25 +235,25 @@ export default function CheckoutPage() {
                     </Badge>
                   </TokenBreakdownHeader>
                   <TokenBreakdownContent>
+                    <TokenBreakdownTotal>
+                      <TokenBreakdownTotalLabel>총합</TokenBreakdownTotalLabel>
+                      <TokenBreakdownTotalValue>
+                        {tokenUsage.toLocaleString()} T
+                      </TokenBreakdownTotalValue>
+                    </TokenBreakdownTotal>
+                    <Divider style={{ margin: '12px 0' }} />
                     <TokenBreakdownItem>
-                      <TokenBreakdownLabel>입력(60%)</TokenBreakdownLabel>
+                      <TokenBreakdownLabel>입력</TokenBreakdownLabel>
                       <TokenBreakdownValue>
                         {Math.round(tokenUsage * 0.6).toLocaleString()}
                       </TokenBreakdownValue>
                     </TokenBreakdownItem>
                     <TokenBreakdownItem>
-                      <TokenBreakdownLabel>출력(40%)</TokenBreakdownLabel>
+                      <TokenBreakdownLabel>출력</TokenBreakdownLabel>
                       <TokenBreakdownValue>
                         {Math.round(tokenUsage * 0.4).toLocaleString()}
                       </TokenBreakdownValue>
                     </TokenBreakdownItem>
-                    <Divider style={{ margin: '20px 0 12px 0' }} />
-                    <TokenBreakdownTotal>
-                      <TokenBreakdownTotalLabel>총 합</TokenBreakdownTotalLabel>
-                      <TokenBreakdownTotalValue>
-                        {tokenUsage.toLocaleString()}
-                      </TokenBreakdownTotalValue>
-                    </TokenBreakdownTotal>
                   </TokenBreakdownContent>
                 </TokenBreakdownCard>
                 <TokenBreakdownCard>
@@ -1107,12 +1107,10 @@ const TokenBreakdownContent = styled.div`
 
 const TokenBreakdownItem = styled.div`
   display: flex;
-  font-size: 13px;
-  background: white;
-  border-radius: 6px;
-  margin-bottom: 6px;
-  border: 1px solid #e5e7eb;
-  overflow: hidden;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px 0;
 
   &:last-child {
     margin-bottom: 0;
@@ -1120,47 +1118,32 @@ const TokenBreakdownItem = styled.div`
 `;
 
 const TokenBreakdownLabel = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
   ${typography('ko', 'body2', 'medium')}
-  background: ${color.gray['50']};
-  padding: 4px 20px;
-  text-align: center;
+  color: ${textColor.light['fg-neutral-primary']};
 `;
 
 const TokenBreakdownValue = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
   ${typography('ko', 'body2', 'regular')}
-  padding: 4px 20px;
-  text-align: center;
   color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const TokenBreakdownTotal = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 6px;
+  margin-bottom: 12px;
 `;
 
 const TokenBreakdownTotalLabel = styled.div`
   ${typography('ko', 'body2', 'medium')}
   color: ${textColor.light['fg-neutral-primary']};
+  margin-bottom: 4px;
 `;
 
 const TokenBreakdownTotalValue = styled.div`
-  ${typography('ko', 'body2', 'regular')}
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  color: ${textColor.light['fg-neutral-alternative']};
-  padding: 4px 20px;
+  ${typography('ko', 'heading1', 'semibold')}
+  color: ${textColor.light['fg-neutral-strong']};
+  font-size: 24px;
 `;
 
 const TokenBreakdownSubItem = styled.div`

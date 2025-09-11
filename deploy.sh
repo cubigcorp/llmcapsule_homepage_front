@@ -9,13 +9,13 @@ if [[ "$ENVIRONMENT" != "development" && "$ENVIRONMENT" != "production" ]]; then
 fi
 
 # ========= 공통 설정 =========
-KEY="${HOME}/.ssh/cubic_llmcapsule_web.pem"   # PEM 경로
+KEY="${HOME}/.ssh/cubig_llmcapsule_web.pem"   # PEM 경로
 APP_DIR="/home/ubuntu/llmcapsule_homepage_front" # 서버에서 앱이 있는 경로(이미 clone 되어있어야 함)
 PORT=3000
 
 # ========= 환경별 설정 =========
 if [[ "$ENVIRONMENT" == "development" ]]; then
-  HOST="ec2-13-209-70-65.ap-northeast-2.compute.amazonaws.com"
+  HOST="ubuntu@ec2-13-209-70-65.ap-northeast-2.compute.amazonaws.com"
   BRANCH="develop"
   NODE_ENV="development"
   APP_NAME="llmcapsule-homepage-dev"          # dev는 항상 이 이름 1개만
