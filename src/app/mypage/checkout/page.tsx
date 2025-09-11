@@ -375,56 +375,60 @@ export default function CheckoutPage() {
                         </LanguageContent>
                       </LanguageBox>
 
-                      <LanguageBox>
-                        <LanguageLabel>
+                      <A4BoxWithBorder>
+                        <A4LeftSection>
                           <LanguageIcon>
                             <PrintIcon />
                           </LanguageIcon>
                           <span>A4</span>
-                        </LanguageLabel>
-                        <LanguageContent>
-                          <LanguageTotal>
-                            {Math.ceil(
-                              (Math.ceil(Math.round(tokenUsage * 1.6) / 2200) +
-                                Math.ceil(
-                                  Math.round(tokenUsage * 4.5) / 3600
-                                )) /
-                                2
-                            ).toLocaleString()}{' '}
-                            <span
-                              style={{
-                                color:
-                                  textColor.light['fg-neutral-alternative'],
-                                marginRight: '4px',
-                              }}
-                            >
-                              장
-                            </span>
-                            <Badge
-                              size='small'
-                              type='outline'
-                              variant='secondary'
-                            >
-                              예상
-                            </Badge>
-                          </LanguageTotal>
-                          <Divider style={{ margin: '8px 0' }} />
-                          <LanguageBreakdown>
-                            <LanguageItem>
-                              <span>한글</span>
-                              <span>
-                                {Math.round(tokenUsage * 1.6).toLocaleString()}
-                              </span>
-                            </LanguageItem>
-                            <LanguageItem>
-                              <span>영어</span>
-                              <span>
-                                {Math.round(tokenUsage * 4.5).toLocaleString()}
-                              </span>
-                            </LanguageItem>
-                          </LanguageBreakdown>
-                        </LanguageContent>
-                      </LanguageBox>
+                        </A4LeftSection>
+                        <A4Grid>
+                          <A4Cell>
+                            <A4CellLabel>한글</A4CellLabel>
+                          </A4Cell>
+                          <A4Cell>
+                            <A4CellValue>
+                              <A4NumberWithUnit>
+                                <A4NumberText>
+                                  {Math.ceil(
+                                    Math.round(tokenUsage * 1.6) / 2200
+                                  ).toLocaleString()}
+                                </A4NumberText>
+                                <A4UnitText>장</A4UnitText>
+                              </A4NumberWithUnit>
+                              <Badge
+                                size='small'
+                                type='outline'
+                                variant='secondary'
+                              >
+                                예상
+                              </Badge>
+                            </A4CellValue>
+                          </A4Cell>
+                          <A4Cell>
+                            <A4CellLabel>영어</A4CellLabel>
+                          </A4Cell>
+                          <A4Cell>
+                            <A4CellValue>
+                              <A4NumberWithUnit>
+                                <A4NumberText>
+                                  {Math.ceil(
+                                    Math.round(tokenUsage * 4.5) / 3800
+                                  ).toLocaleString()}
+                                </A4NumberText>
+                                <A4UnitText>장</A4UnitText>
+                              </A4NumberWithUnit>
+                              <Badge
+                                size='small'
+                                type='outline'
+                                variant='secondary'
+                              >
+                                예상
+                              </Badge>
+                            </A4CellValue>
+                          </A4Cell>
+                        </A4Grid>
+                      </A4BoxWithBorder>
                     </LanguageBoxContainer>
 
                     <TokenNote>
@@ -1896,4 +1900,83 @@ const LanguageItem = styled.div`
     ${typography('ko', 'caption2', 'medium')}
     color: ${textColor.light['fg-neutral-alternative']};
   }
+`;
+
+const A4BoxWithBorder = styled.div`
+  flex: 1;
+  display: flex;
+  border: 1px solid ${borderColor.light['color-border-primary']};
+  border-radius: 12px;
+  overflow: hidden;
+  background: ${color.gray['50']};
+`;
+
+const A4LeftSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  background: ${color.gray['50']};
+  border-right: 1px solid ${borderColor.light['color-border-primary']};
+  width: 80px;
+
+  span {
+    ${typography('ko', 'body2', 'medium')}
+  }
+`;
+
+const A4Grid = styled.div`
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  grid-template-rows: 1fr 1fr;
+  flex: 1;
+`;
+
+const A4Cell = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-right: 1px solid ${borderColor.light['color-border-primary']};
+  border-bottom: 1px solid ${borderColor.light['color-border-primary']};
+  background: ${color.gray['50']};
+
+  &:nth-child(2n) {
+    border-right: none;
+    background: white;
+    justify-content: flex-start;
+  }
+
+  &:nth-child(3),
+  &:nth-child(4) {
+    border-bottom: none;
+  }
+`;
+
+const A4CellLabel = styled.span`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const A4CellValue = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+const A4NumberWithUnit = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const A4NumberText = styled.span`
+  ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const A4UnitText = styled.span`
+  ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-alternative']};
 `;
