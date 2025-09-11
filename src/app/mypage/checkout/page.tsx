@@ -22,6 +22,7 @@ import SmallAddIcon from '@/assets/icons/icon_add_small.svg';
 import IndeterminateIcon from '@/assets/icons/icon_indeterminate.svg';
 import InfoIcon from '@/assets/icons/icon_info.svg';
 import SmallInfoIcon from '@/assets/icons/icon_info_small.svg';
+import PrintIcon from '@/assets/icons/Icon_print.svg';
 // 플랜 데이터 정의
 const plans = {
   basic: { name: 'Basic', price: 10500, minTokens: 0, maxTokens: 119999 },
@@ -131,7 +132,7 @@ export default function CheckoutPage() {
   return (
     <Container>
       <Header>
-        <Title>요금 계산기</Title>
+        <Title>견적 계산기</Title>
         <Subtitle>
           비즈니스 환경에 맞는 요금제를 손쉽게 계산하고 비교해 보세요.
         </Subtitle>
@@ -234,34 +235,43 @@ export default function CheckoutPage() {
                       입/출력 6:4
                     </Badge>
                   </TokenBreakdownHeader>
-                  <TokenBreakdownContent>
-                    <TokenBreakdownTotal>
-                      <TokenBreakdownTotalLabel>총합</TokenBreakdownTotalLabel>
-                      <TokenBreakdownTotalValue>
-                        {tokenUsage.toLocaleString()}{' '}
-                        <span
-                          style={{
-                            color: textColor.light['fg-neutral-alternative'],
-                          }}
-                        >
-                          T
-                        </span>
-                      </TokenBreakdownTotalValue>
-                    </TokenBreakdownTotal>
-                    <Divider style={{ margin: '8px 0' }} />
-                    <TokenBreakdownItem>
-                      <TokenBreakdownLabel>입력</TokenBreakdownLabel>
-                      <TokenBreakdownValue>
-                        {Math.round(tokenUsage * 0.6).toLocaleString()}
-                      </TokenBreakdownValue>
-                    </TokenBreakdownItem>
-                    <TokenBreakdownItem>
-                      <TokenBreakdownLabel>출력</TokenBreakdownLabel>
-                      <TokenBreakdownValue>
-                        {Math.round(tokenUsage * 0.4).toLocaleString()}
-                      </TokenBreakdownValue>
-                    </TokenBreakdownItem>
-                  </TokenBreakdownContent>
+                  <TokenBreakdownContentNoPadding>
+                    <TokenBreakdownHorizontal>
+                      <TokenBreakdownTotalSection>
+                        <TokenBreakdownTotal>
+                          <TokenBreakdownTotalLabel>
+                            총합
+                          </TokenBreakdownTotalLabel>
+                          <TokenBreakdownTotalValue>
+                            {tokenUsage.toLocaleString()}{' '}
+                            <span
+                              style={{
+                                color:
+                                  textColor.light['fg-neutral-alternative'],
+                              }}
+                            >
+                              T
+                            </span>
+                          </TokenBreakdownTotalValue>
+                        </TokenBreakdownTotal>
+                      </TokenBreakdownTotalSection>
+                      <TokenBreakdownVerticalDivider />
+                      <TokenBreakdownItems>
+                        <TokenBreakdownItem>
+                          <TokenBreakdownLabel>입력</TokenBreakdownLabel>
+                          <TokenBreakdownValue>
+                            {Math.round(tokenUsage * 0.6).toLocaleString()}
+                          </TokenBreakdownValue>
+                        </TokenBreakdownItem>
+                        <TokenBreakdownItem>
+                          <TokenBreakdownLabel>출력</TokenBreakdownLabel>
+                          <TokenBreakdownValue>
+                            {Math.round(tokenUsage * 0.4).toLocaleString()}
+                          </TokenBreakdownValue>
+                        </TokenBreakdownItem>
+                      </TokenBreakdownItems>
+                    </TokenBreakdownHorizontal>
+                  </TokenBreakdownContentNoPadding>
                 </TokenBreakdownCard>
                 <TokenBreakdownCard>
                   <TokenBreakdownHeader>
@@ -271,141 +281,143 @@ export default function CheckoutPage() {
                     </Badge>
                   </TokenBreakdownHeader>
                   <TokenBreakdownContent>
-                    <LanguageBox>
-                      <LanguageLabel>
-                        <LanguageIcon>Kr</LanguageIcon>
-                        <span>한글</span>
-                      </LanguageLabel>
-                      <LanguageContent>
-                        <LanguageTotal>
-                          {Math.round(tokenUsage * 1.6).toLocaleString()}{' '}
-                          <span
-                            style={{
-                              color: textColor.light['fg-neutral-alternative'],
-                            }}
-                          >
-                            자
-                          </span>
-                        </LanguageTotal>
-                        <Divider style={{ margin: '12px 0' }} />
-                        <LanguageBreakdown>
-                          <LanguageItem>
-                            <span>입력</span>
-                            <span>
-                              {Math.round(
-                                tokenUsage * 0.6 * 1.6
-                              ).toLocaleString()}
+                    <LanguageBoxContainer>
+                      <LanguageBox>
+                        <LanguageLabel>
+                          <LanguageIcon>Kr</LanguageIcon>
+                          <span>한글</span>
+                        </LanguageLabel>
+                        <LanguageContent>
+                          <LanguageTotal>
+                            {Math.round(tokenUsage * 1.6).toLocaleString()}{' '}
+                            <span
+                              style={{
+                                color:
+                                  textColor.light['fg-neutral-alternative'],
+                              }}
+                            >
+                              자
                             </span>
-                          </LanguageItem>
-                          <LanguageItem>
-                            <span>출력</span>
-                            <span>
-                              {Math.round(
-                                tokenUsage * 0.4 * 1.6
-                              ).toLocaleString()}
-                            </span>
-                          </LanguageItem>
-                        </LanguageBreakdown>
-                      </LanguageContent>
-                    </LanguageBox>
+                          </LanguageTotal>
+                          <Divider style={{ margin: '8px 0' }} />
+                          <LanguageBreakdown>
+                            <LanguageItem>
+                              <span>입력</span>
+                              <span>
+                                {Math.round(
+                                  tokenUsage * 0.6 * 1.6
+                                ).toLocaleString()}
+                              </span>
+                            </LanguageItem>
+                            <LanguageItem>
+                              <span>출력</span>
+                              <span>
+                                {Math.round(
+                                  tokenUsage * 0.4 * 1.6
+                                ).toLocaleString()}
+                              </span>
+                            </LanguageItem>
+                          </LanguageBreakdown>
+                        </LanguageContent>
+                      </LanguageBox>
 
-                    <LanguageBox>
-                      <LanguageLabel>
-                        <LanguageIcon>En</LanguageIcon>
-                        <span>영어</span>
-                      </LanguageLabel>
-                      <LanguageContent>
-                        <LanguageTotal>
-                          {Math.round(tokenUsage * 4.5).toLocaleString()}{' '}
-                          <span
-                            style={{
-                              color: textColor.light['fg-neutral-alternative'],
-                            }}
-                          >
-                            자
-                          </span>
-                        </LanguageTotal>
-                        <Divider style={{ margin: '12px 0' }} />
-                        <LanguageBreakdown>
-                          <LanguageItem>
-                            <span>입력</span>
-                            <span>
-                              {Math.round(
-                                tokenUsage * 0.6 * 4.5
-                              ).toLocaleString()}
+                      <LanguageBox>
+                        <LanguageLabel>
+                          <LanguageIcon>En</LanguageIcon>
+                          <span>영어</span>
+                        </LanguageLabel>
+                        <LanguageContent>
+                          <LanguageTotal>
+                            {Math.round(tokenUsage * 4.5).toLocaleString()}{' '}
+                            <span
+                              style={{
+                                color:
+                                  textColor.light['fg-neutral-alternative'],
+                              }}
+                            >
+                              자
                             </span>
-                          </LanguageItem>
-                          <LanguageItem>
-                            <span>출력</span>
-                            <span>
-                              {Math.round(
-                                tokenUsage * 0.4 * 4.5
-                              ).toLocaleString()}
-                            </span>
-                          </LanguageItem>
-                        </LanguageBreakdown>
-                      </LanguageContent>
-                    </LanguageBox>
+                          </LanguageTotal>
+                          <Divider style={{ margin: '8px 0' }} />
+                          <LanguageBreakdown>
+                            <LanguageItem>
+                              <span>입력</span>
+                              <span>
+                                {Math.round(
+                                  tokenUsage * 0.6 * 4.5
+                                ).toLocaleString()}
+                              </span>
+                            </LanguageItem>
+                            <LanguageItem>
+                              <span>출력</span>
+                              <span>
+                                {Math.round(
+                                  tokenUsage * 0.4 * 4.5
+                                ).toLocaleString()}
+                              </span>
+                            </LanguageItem>
+                          </LanguageBreakdown>
+                        </LanguageContent>
+                      </LanguageBox>
 
-                    <LanguageBox>
-                      <LanguageLabel>
-                        <LanguageIcon>W</LanguageIcon>
-                        <span>워드프레스</span>
-                      </LanguageLabel>
-                      <LanguageContent>
-                        <LanguageTotal>
-                          {Math.round(tokenUsage * 1.6).toLocaleString()}{' '}
-                          <span
-                            style={{
-                              color: textColor.light['fg-neutral-alternative'],
-                            }}
-                          >
-                            자
-                          </span>
-                        </LanguageTotal>
-                        <Divider style={{ margin: '12px 0' }} />
-                        <LanguageBreakdown>
-                          <LanguageItem>
-                            <span>입력</span>
-                            <span>
-                              {Math.round(
-                                tokenUsage * 0.6 * 1.6
-                              ).toLocaleString()}
+                      <LanguageBox>
+                        <LanguageLabel>
+                          <LanguageIcon>
+                            <PrintIcon />
+                          </LanguageIcon>
+                          <span>A4</span>
+                        </LanguageLabel>
+                        <LanguageContent>
+                          <LanguageTotal>
+                            {Math.ceil(
+                              (Math.ceil(Math.round(tokenUsage * 1.6) / 2200) +
+                                Math.ceil(
+                                  Math.round(tokenUsage * 4.5) / 3600
+                                )) /
+                                2
+                            ).toLocaleString()}{' '}
+                            <span
+                              style={{
+                                color:
+                                  textColor.light['fg-neutral-alternative'],
+                                marginRight: '4px',
+                              }}
+                            >
+                              장
                             </span>
-                          </LanguageItem>
-                          <LanguageItem>
-                            <span>출력</span>
-                            <span>
-                              {Math.round(
-                                tokenUsage * 0.4 * 1.6
-                              ).toLocaleString()}
-                            </span>
-                          </LanguageItem>
-                        </LanguageBreakdown>
-                      </LanguageContent>
-                    </LanguageBox>
+                            <Badge
+                              size='small'
+                              type='outline'
+                              variant='secondary'
+                            >
+                              예상
+                            </Badge>
+                          </LanguageTotal>
+                          <Divider style={{ margin: '8px 0' }} />
+                          <LanguageBreakdown>
+                            <LanguageItem>
+                              <span>한글</span>
+                              <span>
+                                {Math.round(tokenUsage * 1.6).toLocaleString()}
+                              </span>
+                            </LanguageItem>
+                            <LanguageItem>
+                              <span>영어</span>
+                              <span>
+                                {Math.round(tokenUsage * 4.5).toLocaleString()}
+                              </span>
+                            </LanguageItem>
+                          </LanguageBreakdown>
+                        </LanguageContent>
+                      </LanguageBox>
+                    </LanguageBoxContainer>
+
                     <TokenNote>
-                      <TokenNoteRow $isFirstRow>
-                        <SmallInfoIcon />
-                        <TokenNoteTitle>
-                          문자 환산 가정{' '}
-                          <TokenNoteSubtitle>(1토큰당)</TokenNoteSubtitle>
-                        </TokenNoteTitle>
-                      </TokenNoteRow>
-                      <TokenNoteRow>
-                        <TokenNoteLanguage>한글</TokenNoteLanguage>
-                        <TokenNoteValue>
-                          <TokenNoteDivider />
-                          <span>CPT_KO = 1.6</span>
-                        </TokenNoteValue>
-                      </TokenNoteRow>
-                      <TokenNoteRow>
-                        <TokenNoteLanguage>영어</TokenNoteLanguage>
-                        <TokenNoteValue>
-                          <TokenNoteDivider />
-                          <span>CPT_EN = 4.5</span>
-                        </TokenNoteValue>
-                      </TokenNoteRow>
+                      <SmallInfoIcon />
+                      <TokenNoteContent>
+                        가정: 한글 1토큰≈1.6자, 영어 1토큰≈4.5자, A4
+                        1장≈2,200자(한글) / 3,600자(영어)
+                      </TokenNoteContent>
                     </TokenNote>
                   </TokenBreakdownContent>
                 </TokenBreakdownCard>
@@ -1126,8 +1138,9 @@ const SliderLabel = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 4px;
-
-
+  span {
+    ${typography('ko', 'caption2', 'regular')}
+    color: ${textColor.light['fg-neutral-alternative']};
   }
 `;
 
@@ -1162,11 +1175,9 @@ const TokenBreakdownSection = styled.div`
 `;
 
 const TokenBreakdownGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
-  margin-bottom: 16px;
-  align-items: start;
 `;
 
 const TokenBreakdownCard = styled.div`
@@ -1194,17 +1205,48 @@ const TokenBreakdownTitle = styled.h5`
 const TokenBreakdownContent = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 12px 12px;
+  padding: 12px;
+`;
+
+const TokenBreakdownContentNoPadding = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TokenBreakdownHorizontal = styled.div`
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+`;
+
+const TokenBreakdownTotalSection = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px;
+`;
+
+const TokenBreakdownVerticalDivider = styled.div`
+  width: 1px;
+  background-color: ${borderColor.light['color-border-primary']};
+`;
+
+const TokenBreakdownItems = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const TokenBreakdownItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 4px;
+  padding: 8px 12px;
+  border-bottom: 1px solid ${borderColor.light['color-border-primary']};
 
   &:last-child {
-    margin-bottom: 0;
+    border-bottom: none;
   }
 `;
 
@@ -1243,11 +1285,23 @@ const TokenBreakdownSubItem = styled.div`
 
 const TokenNote = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
   padding: 8px 20px;
   background: ${color.gray['50']};
   border-radius: 12px;
+
+  svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+const TokenNoteContent = styled.span`
+  ${typography('ko', 'caption2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+  flex: 1;
 `;
 
 const UserInputSection = styled.div`
@@ -1741,17 +1795,19 @@ const ButtonGroup = styled.div`
   gap: 12px;
 `;
 
+const LanguageBoxContainer = styled.div`
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+`;
+
 const LanguageBox = styled.div`
   display: flex;
+  flex: 1;
   border: 1px solid ${borderColor.light['color-border-primary']};
   border-radius: 12px;
-  margin-bottom: 12px;
   overflow: hidden;
   background: ${color.gray['50']};
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 `;
 
 const LanguageLabel = styled.div`
@@ -1811,41 +1867,4 @@ const LanguageItem = styled.div`
     ${typography('ko', 'caption2', 'medium')}
     color: ${textColor.light['fg-neutral-alternative']};
   }
-`;
-
-const TokenNoteTitle = styled.span`
-  ${typography('ko', 'caption2', 'medium')}
-  color: ${textColor.light['fg-neutral-primary']};
-`;
-
-const TokenNoteSubtitle = styled.span`
-  ${typography('ko', 'caption1', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-`;
-
-const TokenNoteRow = styled.div<{ $isFirstRow?: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: ${(props) => (props.$isFirstRow ? '8px' : '0')};
-`;
-
-const TokenNoteLanguage = styled.span`
-  ${typography('ko', 'caption2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-`;
-
-const TokenNoteValue = styled.div`
-  display: flex;
-  align-items: center;
-  > span {
-    ${typography('ko', 'caption2', 'regular')}
-    color: ${textColor.light['fg-neutral-alternative']};
-  }
-`;
-
-const TokenNoteDivider = styled.div`
-  width: 1px;
-  height: 12px;
-  margin: 0 4px;
-  background-color: ${color.gray['200']};
 `;
