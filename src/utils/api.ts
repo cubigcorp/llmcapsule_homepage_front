@@ -5,6 +5,7 @@ import { env } from './env';
  * API 응답 타입
  */
 export interface ApiResponse<T = unknown> {
+  status: number;
   success: boolean;
   data?: T;
   message?: string;
@@ -221,15 +222,19 @@ class ApiClient {
     try {
       const response = await this.axiosInstance.request<T>(config);
       return {
+        status: response.status,
         success: true,
         data: response.data,
       };
     } catch (error: unknown) {
+      const axiosError = error as {
+        response?: { status?: number; data?: { message?: string } };
+      };
       return {
+        status: axiosError?.response?.status || 0,
         success: false,
         error:
-          (error as { response?: { data?: { message?: string } } })?.response
-            ?.data?.message ||
+          axiosError?.response?.data?.message ||
           (error as Error)?.message ||
           'Unknown error occurred',
       };
