@@ -238,7 +238,14 @@ export default function CheckoutPage() {
                     <TokenBreakdownTotal>
                       <TokenBreakdownTotalLabel>총합</TokenBreakdownTotalLabel>
                       <TokenBreakdownTotalValue>
-                        {tokenUsage.toLocaleString()} T
+                        {tokenUsage.toLocaleString()}{' '}
+                        <span
+                          style={{
+                            color: textColor.light['fg-neutral-alternative'],
+                          }}
+                        >
+                          T
+                        </span>
                       </TokenBreakdownTotalValue>
                     </TokenBreakdownTotal>
                     <Divider style={{ margin: '12px 0' }} />
@@ -1102,15 +1109,14 @@ const TokenBreakdownTitle = styled.h5`
 const TokenBreakdownContent = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 8px 12px;
+  padding: 12px 12px;
 `;
 
 const TokenBreakdownItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
-  padding: 8px 0;
+  margin-bottom: 4px;
 
   &:last-child {
     margin-bottom: 0;
@@ -1118,32 +1124,29 @@ const TokenBreakdownItem = styled.div`
 `;
 
 const TokenBreakdownLabel = styled.div`
-  ${typography('ko', 'body2', 'medium')}
-  color: ${textColor.light['fg-neutral-primary']};
+  ${typography('ko', 'caption2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const TokenBreakdownValue = styled.div`
-  ${typography('ko', 'body2', 'regular')}
+  ${typography('ko', 'caption2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const TokenBreakdownTotal = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-bottom: 12px;
+  align-items: flex-start;
 `;
 
 const TokenBreakdownTotalLabel = styled.div`
-  ${typography('ko', 'body2', 'medium')}
-  color: ${textColor.light['fg-neutral-primary']};
+  ${typography('ko', 'caption2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
   margin-bottom: 4px;
 `;
 
 const TokenBreakdownTotalValue = styled.div`
-  ${typography('ko', 'heading1', 'semibold')}
-  color: ${textColor.light['fg-neutral-strong']};
-  font-size: 24px;
+  ${typography('ko', 'body2', 'medium')}
 `;
 
 const TokenBreakdownSubItem = styled.div`
