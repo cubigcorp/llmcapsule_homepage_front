@@ -1859,12 +1859,16 @@ const LanguageLabel = styled.div`
 `;
 
 const LanguageIcon = styled.div`
+  width: 28px;
+  height: 28px;
   ${typography('ko', 'caption2', 'medium')}
   background: white;
   color: ${textColor.light['fg-neutral-alternative']};
   border-radius: 8px;
-  padding: 5.5px 7px 6.5px 8px;
   border: 1px solid ${borderColor.light['color-border-primary']};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const LanguageContent = styled.div`

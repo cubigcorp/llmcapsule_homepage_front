@@ -8,12 +8,14 @@ import Image from 'next/image';
 import { spacing, TextButton, SolidButton } from '@cubig/design-system';
 import { authService } from '@/services/auth';
 import { isDevStage } from '@/utils/env';
-
+import type { UserInfo } from '@/utils/api';
+import ArrowDownIcon from '@/assets/icons/icon_arrow-down.svg';
 export default function Header() {
   const pathname = usePathname();
   const [isAuthPage, setIsAuthPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   useEffect(() => {
     setIsAuthPage(
@@ -41,9 +43,27 @@ export default function Header() {
 
   // 로그인 상태 변화 감지를 위한 추가 useEffect
   useEffect(() => {
-    const checkLoginStatus = () => {
+    const checkLoginStatus = async () => {
       const accessToken = localStorage.getItem('access_token');
-      setIsLoggedIn(!!accessToken);
+      const loggedIn = !!accessToken;
+      setIsLoggedIn(loggedIn);
+
+      // 로그인 상태이면 사용자 정보 조회
+      if (loggedIn) {
+        try {
+          const response = await authService.getMyInfo();
+          setUserInfo(response.data);
+        } catch (error) {
+          console.error('사용자 정보 조회 실패:', error);
+          // 토큰이 유효하지 않은 경우 로그아웃 처리
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+          setIsLoggedIn(false);
+          setUserInfo(null);
+        }
+      } else {
+        setUserInfo(null);
+      }
     };
 
     // 초기 상태 확인
@@ -58,8 +78,8 @@ export default function Header() {
 
     window.addEventListener('storage', handleStorageChange);
 
-    // 주기적으로 로그인 상태 확인 (5초마다)
-    const interval = setInterval(checkLoginStatus, 5000);
+    // 주기적으로 로그인 상태 확인 (30초마다)
+    const interval = setInterval(checkLoginStatus, 30000);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
@@ -108,14 +128,15 @@ export default function Header() {
                   </SolidButton>
                 </Link>
                 <Link href='/mypage'>
-                  <Avatar>
-                    <Image
-                      src='/icons/Avatar.svg'
-                      alt='Avatar'
-                      width={32}
-                      height={32}
-                    />
-                  </Avatar>
+                  <TextButton
+                    variant='primary'
+                    size='medium'
+                    trailingIcon={ArrowDownIcon}
+                  >
+                    {userInfo?.last_name && userInfo?.first_name
+                      ? `${userInfo.last_name}${userInfo.first_name}`
+                      : userInfo?.first_name || userInfo?.last_name || '사용자'}
+                  </TextButton>
                 </Link>
               </>
             ) : (
@@ -204,13 +225,4 @@ const Leading = styled.div`
   display: flex;
   align-items: center;
   gap: 64px;
-`;
-
-const Avatar = styled.div`
-  cursor: pointer;
-
-  svg,
-  img {
-    display: block;
-  }
 `;

@@ -2,82 +2,547 @@
 
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { textColor } from '@cubig/design-system';
-
-interface UserInfo {
-  email: string;
-  name?: string;
-}
-
+import {
+  textColor,
+  typography,
+  borderColor,
+  color,
+  IconButton,
+  SolidButton,
+  Divider,
+  Selector,
+} from '@cubig/design-system';
+import { authService } from '@/services/auth';
+import type { UserInfo } from '@/utils/api';
+import DataIcon from '@/assets/icons/icon_data.svg';
+import ArrowRightIcon from '@/assets/icons/icon_arrow_forward.svg';
+import PlanTrialImage from '@/assets/images/plan_trial.png';
+import InfoCircleIcon from '@/assets/icons/icon_info_circle.svg';
+import CallCircleIcon from '@/assets/icons/icon_call_circle.svg';
+import DashboardCircleIcon from '@/assets/icons/icon_dashboard_circle.svg';
+import UsageCircleIcon from '@/assets/icons/icon_usage_circle.svg';
+import CardCircleIcon from '@/assets/icons/icon_card_circle.svg';
+import CardIcon from '@/assets/icons/icon_card.svg';
+import PersonIcon from '@/assets/icons/icon_person.svg';
+import AccountIcon from '@/assets/icons/icon_account.svg';
+import MoneyIcon from '@/assets/icons/icon_money.svg';
+import PlanBasicImage from '@/assets/images/plan_basic.png';
+import PlanMaxImage from '@/assets/images/plan_max.png';
 export default function MyPage() {
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    email: 'user@example.com', // 실제로는 API에서 가져와야 함
-    name: '사용자',
-  });
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [hasSubscription, setHasSubscription] = useState(false); // 임시로 구독 상태 관리
 
-  // TODO: 추후 실제 API 호출로 사용자 정보 업데이트
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     try {
-  //       const userResponse = await authService.getUserInfo();
-  //       setUserInfo(userResponse.data);
-  //     } catch (error) {
-  //       console.error('사용자 정보 조회 실패:', error);
-  //     }
-  //   };
-  //   fetchUserInfo();
-  // }, []);
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await authService.getMyInfo();
+        setUserInfo(response.data || null);
+        // 임시로 구독 상태 설정 (나중에 API에서 받아올 수 있음)
+        setHasSubscription(true); // 구독이 없는 상태로 기본 설정하여 빈 상태 화면 테스트
+      } catch (error) {
+        console.error('사용자 정보 조회 실패:', error);
+        setUserInfo(null);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   return (
     <Container>
-      <WelcomeMessage>
-        안녕하세요, {userInfo.name || '사용자'}님!
-      </WelcomeMessage>
-      <UserInfo>
-        <InfoItem>
-          <Label>이메일:</Label>
-          <Value>{userInfo.email}</Value>
-        </InfoItem>
-      </UserInfo>
+      <Header>
+        <Title>마이페이지</Title>
+        <Subtitle>
+          계정 정보, 구독 현황 등 내 정보를 편리하게 확인하세요.
+        </Subtitle>
+      </Header>
+
+      <MainGrid>
+        <LeftColumn>
+          {hasSubscription ? (
+            <>
+              <StatsGrid>
+                <StatCard>
+                  <DashboardCircleIcon />
+                  <StatLabel>이용 중인 플랜</StatLabel>
+                  <StatValue>3</StatValue>
+                </StatCard>
+                <StatDivider />
+                <StatCard>
+                  <UsageCircleIcon />
+                  <StatLabel>활성화 된 시리얼</StatLabel>
+                  <StatValue>120</StatValue>
+                </StatCard>
+                <StatDivider />
+                <StatCard>
+                  <CardCircleIcon />
+                  <StatLabel>다음 결제일</StatLabel>
+                  <StatValue>25.09.18</StatValue>
+                </StatCard>
+              </StatsGrid>
+
+              <PlanSection>
+                <SectionTitle>이용 중인 플랜</SectionTitle>
+
+                <PlanSelectorWrapper>
+                  <PlanLabel>플랜 번호</PlanLabel>
+                  <Selector
+                    value='Plan-01'
+                    onChange={() => {}}
+                    options={[
+                      { value: 'Plan-01', label: 'Plan-01' },
+                      { value: 'Plan-02', label: 'Plan-02' },
+                    ]}
+                  />
+                </PlanSelectorWrapper>
+
+                <PlanCardContainer>
+                  <PlanCardHeader>
+                    <PlanCard>
+                      <PlanImageContainer>
+                        <img src={PlanMaxImage.src} alt='MAX Plan' />
+                      </PlanImageContainer>
+                      <PlanInfo>
+                        <PlanName>MAX</PlanName>
+                        <PlanTokens>600,000/tokens</PlanTokens>
+                      </PlanInfo>
+                    </PlanCard>
+                  </PlanCardHeader>
+                  <PlanDate>
+                    <CardIcon />
+                    <span>다음 결제일</span>
+                    <span>2025. 09. 16</span>
+                  </PlanDate>
+                </PlanCardContainer>
+
+                <PlanActions>
+                  <SolidButton variant='secondary' size='small'>
+                    플랜관리
+                  </SolidButton>
+                  <SolidButton variant='secondary' size='small'>
+                    영수증 보기
+                  </SolidButton>
+                </PlanActions>
+
+                <PlanDivider />
+              </PlanSection>
+            </>
+          ) : (
+            <>
+              <EmptyStateContainer>
+                <IconButton type='outline' icon={DataIcon} />
+                <EmptyStateTitle>구독 중인 플랜이 없습니다.</EmptyStateTitle>
+                <EmptyStateDescription>
+                  원하는 플랜을 선택하고 서비스를 시작해 보세요.
+                </EmptyStateDescription>
+                <SolidButton variant='primary' size='small'>
+                  나에게 맞는 플랜 찾기
+                </SolidButton>
+              </EmptyStateContainer>
+
+              <TrialCard>
+                <TrialImageContainer>
+                  <img src={PlanTrialImage.src} alt='Trial Plan' />
+                </TrialImageContainer>
+                <TrialContent>
+                  <TrialTitle>7일 동안 무료로 체험해보세요</TrialTitle>
+                  <TrialTokens>50,000/tokens</TrialTokens>
+                </TrialContent>
+                <TrialArrowIcon />
+              </TrialCard>
+            </>
+          )}
+
+          <SupportSection>
+            <SectionTitle>지원</SectionTitle>
+            <SupportGrid>
+              <SupportCard>
+                <InfoCircleIcon />
+                <SupportContent>
+                  <SupportTitle>제품 가이드</SupportTitle>
+                  <SupportDesc>
+                    LLM Capsule 사용 방법을 <br />
+                    제품 가이드와 함께 알아보세요
+                  </SupportDesc>
+                </SupportContent>
+                <SupportArrowIcon />
+              </SupportCard>
+              <SupportCard>
+                <CallCircleIcon />
+                <SupportContent>
+                  <SupportTitle>문의하기</SupportTitle>
+                  <SupportDesc>
+                    궁금한 점이나 도움이 필요할 때 <br />
+                    언제든 문의하세요.
+                  </SupportDesc>
+                </SupportContent>
+                <SupportArrowIcon />
+              </SupportCard>
+            </SupportGrid>
+          </SupportSection>
+        </LeftColumn>
+
+        <RightColumn>
+          <AccountSection>
+            <AccountTitle>
+              {userInfo?.last_name && userInfo?.first_name
+                ? `${userInfo.last_name}${userInfo.first_name}`
+                : userInfo?.first_name || userInfo?.last_name || '사용자'}
+            </AccountTitle>
+            <AccountEmail>{userInfo?.email || 'account@cubig.ai'}</AccountEmail>
+            <SolidButton variant='secondary' size='small'>
+              회원정보 수정
+            </SolidButton>
+            <AccountInfo>
+              <InfoItem>
+                <InfoLabel>연락처</InfoLabel>
+                <InfoValue>{userInfo?.phone || '01012345678'}</InfoValue>
+              </InfoItem>
+              <Divider />
+              <InfoItem>
+                <InfoLabel>회사/소속기관명</InfoLabel>
+                <InfoValue>{userInfo?.organization_name || '큐빅'}</InfoValue>
+              </InfoItem>
+            </AccountInfo>
+          </AccountSection>
+        </RightColumn>
+      </MainGrid>
     </Container>
   );
 }
 
 const Container = styled.div`
-  padding: 40px;
+  padding: 64px 32px;
 `;
 
-const WelcomeMessage = styled.h1`
-  font-size: 32px;
-  font-weight: 700;
+const Header = styled.div`
+  margin-bottom: 12px;
+`;
+
+const Title = styled.h1`
+  ${typography('ko', 'heading1', 'bold')}
   color: ${textColor.light['fg-neutral-primary']};
-  margin: 0 0 40px 0;
+  margin: 0 0 12px 0;
 `;
 
-const UserInfo = styled.div`
+const Subtitle = styled.p`
+  ${typography('ko', 'body1', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+  margin: 0;
+`;
+
+const StatsGrid = styled.div`
   background: white;
-  border: 1px solid #e1e5e9;
-  border-radius: 12px;
-  padding: 24px;
-`;
-
-const InfoItem = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
+`;
 
-  &:last-child {
-    margin-bottom: 0;
+const StatCard = styled.div`
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+`;
+
+const StatDivider = styled.div`
+  width: 1px;
+  height: 138px;
+  background: ${borderColor.light['color-border-primary']};
+  margin: 0 12px;
+`;
+
+const StatLabel = styled.div`
+  ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-alternative']};
+  margin: 20px 0 4px 0;
+`;
+
+const StatValue = styled.div`
+  ${typography('ko', 'title1', 'semibold')}
+  color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const MainGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 60px;
+  align-items: start;
+  margin-top: 64px;
+`;
+
+const LeftColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+`;
+
+const RightColumn = styled.div`
+  width: 320px;
+  position: relative;
+`;
+
+const EmptyStateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 320px;
+  width: 100%;
+`;
+
+const EmptyStateTitle = styled.h2`
+  ${typography('ko', 'body3', 'medium')}
+  color: ${textColor.light['fg-neutral-primary']};
+  margin: 20px 0 4px 0;
+`;
+
+const EmptyStateDescription = styled.p`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+  margin: 0 0 20px 0;
+`;
+
+const TrialCard = styled.div`
+  background: ${color.gray['950']};
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+`;
+
+const TrialImageContainer = styled.div`
+  width: 80px;
+  height: 64px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;
 
-const Label = styled.span`
-  font-weight: 500;
+const TrialContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const TrialTitle = styled.h3`
+  ${typography('ko', 'body3', 'medium')}
+  color: white;
+  margin: 0;
+`;
+
+const TrialTokens = styled.p`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${color.gray['300']};
+  margin: 0;
+`;
+
+const AccountSection = styled.div`
+  background: white;
+  padding: 0;
+`;
+
+const PlanSection = styled.div``;
+
+const SectionTitle = styled.h2`
+  ${typography('ko', 'heading1', 'semibold')}
+  color: ${textColor.light['fg-neutral-primary']};
+  margin: 0 0 20px 0;
+`;
+
+const AccountTitle = styled.h1`
+  ${typography('ko', 'title1', 'semibold')}
+  color: ${textColor.light['fg-neutral-primary']};
+  margin: 0 0 4px 0;
+`;
+
+const AccountEmail = styled.p`
+  ${typography('ko', 'body3', 'regular')}
+  color: ${textColor.light['fg-neutral-primary']};
+  margin: 0 0 12px 0;
+`;
+
+const AccountInfo = styled.div`
+  margin-top: 24px;
+`;
+
+const InfoItem = styled.div`
+  padding: 20px 0;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+`;
+
+const InfoLabel = styled.div`
+  ${typography('ko', 'body2', 'medium')}
   color: ${textColor.light['fg-neutral-alternative']};
+  margin-bottom: 4px;
+`;
+
+const InfoValue = styled.div`
+  ${typography('ko', 'body3', 'medium')}
+  color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const PlanSelectorWrapper = styled.div`
+  margin-bottom: 20px;
+`;
+
+const PlanLabel = styled.div`
+  ${typography('ko', 'body2', 'medium')}
+  margin-bottom: 4px;
+`;
+
+const PlanCardContainer = styled.div`
+  background: ${color.gray['50']};
+  border-radius: 12px;
+  border: none;
+`;
+
+const PlanCardHeader = styled.div`
+  padding: 4px;
+`;
+
+const PlanCard = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 8px;
+  border-radius: 12px;
+  background: white;
+`;
+
+const PlanImageContainer = styled.div`
   width: 80px;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const PlanInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const PlanName = styled.h3`
+  ${typography('ko', 'title1', 'semibold')}
+  color: ${textColor.light['fg-neutral-primary']};
+  margin: 0;
+`;
+
+const PlanTokens = styled.div`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+  margin: 0;
+`;
+
+const PlanDate = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-alternative']};
+  margin-bottom: 0;
+  padding: 8px 8px 12px 8px;
+  span:last-child {
+    color: ${textColor.light['fg-neutral-primary']};
+  }
+`;
+
+const PlanDateIcon = styled.div`
+  width: 16px;
+  height: 16px;
+  background: ${color.gray['400']};
+  border-radius: 2px;
   flex-shrink: 0;
 `;
 
-const Value = styled.span`
+const PlanActions = styled.div`
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+`;
+
+const PlanDivider = styled(Divider)`
+  margin-top: 40px;
+`;
+
+const SupportSection = styled.div``;
+
+const SupportGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+`;
+
+const SupportCard = styled.div`
+  background: white;
+  border: 1px solid ${borderColor.light['color-border-primary']};
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  &:hover {
+    border-color: ${borderColor.light['color-border-focused']};
+  }
+`;
+
+const SupportContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const SupportTitle = styled.h3`
+  ${typography('ko', 'body1', 'bold')}
   color: ${textColor.light['fg-neutral-primary']};
+  margin: 0;
+`;
+
+const SupportDesc = styled.p`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+  margin: 0;
+`;
+
+const SupportArrowIcon = styled(ArrowRightIcon)`
+  color: ${textColor.light['fg-neutral-primary']};
+  flex-shrink: 0;
+`;
+
+const TrialArrowIcon = styled(ArrowRightIcon)`
+  color: white;
+  flex-shrink: 0;
 `;

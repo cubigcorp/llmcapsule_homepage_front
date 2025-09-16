@@ -12,15 +12,13 @@ import {
   borderColor,
   textColor,
 } from '@cubig/design-system';
-import {
-  PersonIcon,
-  AccountIcon,
-  MoneyIcon,
-  DownloadIcon,
-  HeadphoneIcon,
-  LogoutIcon,
-} from '@/components/icons';
 
+import AccountIcon from '@/assets/icons/icon_account.svg';
+import DownloadIcon from '@/assets/icons/icon_download.svg';
+import HeadphoneIcon from '@/assets/icons/icon_headphone.svg';
+import LogoutIcon from '@/assets/icons/icon_logout.svg';
+import HomeIcon from '@/assets/icons/Icon_home.svg';
+import WalletIcon from '@/assets/icons/icon_wallet.svg';
 export default function MyPageLayout({
   children,
 }: {
@@ -56,16 +54,16 @@ export default function MyPageLayout({
     router.push('/contact');
   };
 
+  const handleHomeClick = () => {
+    router.push('/mypage');
+  };
+
   const handleMyInfoClick = () => {
     router.push('/mypage');
   };
 
   const handlePlanManagementClick = () => {
     console.log('플랜 관리 클릭');
-  };
-
-  const handlePricingCalculatorClick = () => {
-    router.push('/mypage/checkout');
   };
 
   const handleAppDownloadClick = () => {
@@ -80,7 +78,7 @@ export default function MyPageLayout({
     <Container>
       <LNBWrapper>
         <LNB
-          title='설정'
+          title='마이페이지'
           bottom={
             <>
               <LNBItem
@@ -99,27 +97,25 @@ export default function MyPageLayout({
             </>
           }
         >
+          <LNBItem
+            value='홈'
+            onClick={handleHomeClick}
+            leadingIcon={HomeIcon}
+          />
           <LNBItemGroup title='계정'>
             <LNBItem
-              value='내 정보'
+              value='회원정보 수정'
               onClick={handleMyInfoClick}
-              leadingIcon={PersonIcon}
+              leadingIcon={AccountIcon}
             />
           </LNBItemGroup>
-
           <LNBItemGroup title='결제'>
             <LNBItem
               value='플랜 관리'
               onClick={handlePlanManagementClick}
-              leadingIcon={AccountIcon}
-            />
-            <LNBItem
-              value='요금 계산기'
-              onClick={handlePricingCalculatorClick}
-              leadingIcon={MoneyIcon}
+              leadingIcon={WalletIcon}
             />
           </LNBItemGroup>
-
           <LNBItemGroup title='리소스'>
             <LNBItem
               value='앱 다운로드'
