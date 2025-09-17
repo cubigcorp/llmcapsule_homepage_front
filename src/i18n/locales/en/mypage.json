@@ -178,5 +178,28 @@
       "toggle": "Include VAT",
       "rate": "VAT 10%"
     }
+  },
+  "download": {
+    "title": "App Download",
+    "subtitle": "Safely boost productivity with LLM Capsule.",
+    "windows": "Windows",
+    "exe": "exe",
+    "notice": "Available on Windows 10 or later.",
+    "download": "Download",
+    "howTo": "How to Use",
+    "step1": {
+      "title": "Prepare the serial key you will use",
+      "desc": "You can install the program after entering the serial key. Once registered, it can only be used on one device."
+    },
+    "dropdown": {
+      "label": "Serial",
+      "placeholder": "Select a serial key"
+    },
+    "copySerial": "Copy Serial Key",
+    "step2": {
+      "title": "Enter the serial after running the program",
+      "desc": "After running the installer, enter the prepared serial key to proceed with installation."
+    },
+    "serialImageAlt": "Serial input UI"
   }
 }

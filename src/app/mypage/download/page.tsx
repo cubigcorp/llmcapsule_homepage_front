@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import {
   SolidButton,
@@ -18,6 +19,7 @@ import DownloadImage from '@/assets/images/llmcapsule_download.png';
 import DownloadIcon from '@/assets/icons/icon_download.svg';
 
 export default function DownloadPage() {
+  const { t } = useTranslation();
   const [selectedSerial, setSelectedSerial] = useState('1234-ABCD-3212');
 
   const serialOptions = [
@@ -37,38 +39,36 @@ export default function DownloadPage() {
   return (
     <Container>
       <Header>
-        <Title>다운로드</Title>
-        <Subtitle>
-          안전하게, 생산성을 향상시키는 LLM Capsule을 이용해 보세요.
-        </Subtitle>
+        <Title>{t('mypage:download.title')}</Title>
+        <Subtitle>{t('mypage:download.subtitle')}</Subtitle>
       </Header>
 
       <Card>
         <CardHeader>
           <Left>
             <WindowsIcon />
-            <CardTitle>Windows</CardTitle>
+            <CardTitle>{t('mypage:download.windows')}</CardTitle>
             <Badge size='medium' type='outline' variant='secondary'>
-              exe
+              {t('mypage:download.exe')}
             </Badge>
           </Left>
         </CardHeader>
         <CardBody>
           <Notice>
-            <InfoIcon /> Windows 10 이상부터 이용 가능합니다.
+            <InfoIcon /> {t('mypage:download.notice')}
           </Notice>
           <SolidButton
             variant='primary'
             size='large'
             trailingIcon={DownloadIcon}
           >
-            다운로드
+            {t('mypage:download.download')}
           </SolidButton>
         </CardBody>
       </Card>
 
       <GuideSection>
-        <SectionTitle>사용방법</SectionTitle>
+        <SectionTitle>{t('mypage:download.howTo')}</SectionTitle>
 
         <GuideGrid>
           <TimelineContainer>
@@ -80,20 +80,17 @@ export default function DownloadPage() {
           <ContentContainer>
             <StepContent>
               <StepTextArea>
-                <StepTitle>사용할 시리얼 키를 준비해주세요</StepTitle>
-                <StepDesc>
-                  시리얼 키 입력 후 프로그램을 설치할 수 있습니다. 등록이
-                  완료되면, 1개의 디바이스에서만 사용할 수 있습니다.
-                </StepDesc>
+                <StepTitle>{t('mypage:download.step1.title')}</StepTitle>
+                <StepDesc>{t('mypage:download.step1.desc')}</StepDesc>
               </StepTextArea>
               <StepActionArea>
                 <Dropdown
-                  label='시리얼'
+                  label={t('mypage:download.dropdown.label')}
                   size='medium'
                   options={serialOptions}
                   value={selectedSerial}
                   onChange={handleSerialChange}
-                  placeholder='시리얼을 선택하세요'
+                  placeholder={t('mypage:download.dropdown.placeholder')}
                 />
 
                 <CopyButton
@@ -101,22 +98,22 @@ export default function DownloadPage() {
                   size='small'
                   onClick={handleCopy}
                 >
-                  시리얼 키 복사
+                  {t('mypage:download.copySerial')}
                 </CopyButton>
               </StepActionArea>
             </StepContent>
 
             <StepContent>
               <StepTextArea>
-                <StepTitle>프로그램 실행 후 시리얼을 입력해주세요</StepTitle>
-                <StepDesc>
-                  설치 프로그램 실행 후, 준비한 시리얼 키를 입력하면 설치가
-                  진행됩니다.
-                </StepDesc>
+                <StepTitle>{t('mypage:download.step2.title')}</StepTitle>
+                <StepDesc>{t('mypage:download.step2.desc')}</StepDesc>
               </StepTextArea>
               <StepActionArea>
                 <SerialImageWrapper>
-                  <img src={DownloadImage.src} alt='시리얼 입력 UI' />
+                  <img
+                    src={DownloadImage.src}
+                    alt={t('mypage:download.serialImageAlt')}
+                  />
                 </SerialImageWrapper>
               </StepActionArea>
             </StepContent>
