@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styled from 'styled-components';
 import {
   textColor,
@@ -29,6 +30,7 @@ import MoneyIcon from '@/assets/icons/icon_money.svg';
 import PlanBasicImage from '@/assets/images/plan_basic.png';
 import PlanMaxImage from '@/assets/images/plan_max.png';
 export default function MyPage() {
+  const router = useRouter();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [hasSubscription, setHasSubscription] = useState(false); // 임시로 구독 상태 관리
 
@@ -190,7 +192,11 @@ export default function MyPage() {
                 : userInfo?.first_name || userInfo?.last_name || '사용자'}
             </AccountTitle>
             <AccountEmail>{userInfo?.email || 'account@cubig.ai'}</AccountEmail>
-            <SolidButton variant='secondary' size='small'>
+            <SolidButton
+              variant='secondary'
+              size='small'
+              onClick={() => router.push('/mypage/profile')}
+            >
               회원정보 수정
             </SolidButton>
             <AccountInfo>

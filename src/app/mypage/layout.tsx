@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { authService } from '@/services/auth';
 import {
   LNB,
@@ -25,6 +26,7 @@ export default function MyPageLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -59,7 +61,7 @@ export default function MyPageLayout({
   };
 
   const handleMyInfoClick = () => {
-    router.push('/mypage');
+    router.push('/mypage/profile');
   };
 
   const handlePlanManagementClick = () => {
@@ -101,12 +103,14 @@ export default function MyPageLayout({
             value='홈'
             onClick={handleHomeClick}
             leadingIcon={HomeIcon}
+            selected={pathname === '/mypage'}
           />
           <LNBItemGroup title='계정'>
             <LNBItem
               value='회원정보 수정'
               onClick={handleMyInfoClick}
               leadingIcon={AccountIcon}
+              selected={pathname === '/mypage/profile'}
             />
           </LNBItemGroup>
           <LNBItemGroup title='결제'>
@@ -114,6 +118,7 @@ export default function MyPageLayout({
               value='플랜 관리'
               onClick={handlePlanManagementClick}
               leadingIcon={WalletIcon}
+              selected={pathname === '/mypage/checkout'}
             />
           </LNBItemGroup>
           <LNBItemGroup title='리소스'>

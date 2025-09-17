@@ -156,6 +156,11 @@ export interface UserInfo {
  */
 class ApiClient {
   private axiosInstance: AxiosInstance;
+  private isRefreshing = false;
+  private failedQueue: Array<{
+    resolve: (value: unknown) => void;
+    reject: (error: unknown) => void;
+  }> = [];
 
   constructor(baseURL: string) {
     this.axiosInstance = axios.create({
@@ -200,7 +205,60 @@ class ApiClient {
         }
         return response;
       },
-      (error) => {
+      async (error) => {
+        const originalRequest = error.config;
+
+        // 401 에러이고 아직 재시도하지 않은 경우
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          // 이미 토큰 갱신 중인 경우, 큐에 추가
+          if (this.isRefreshing) {
+            return new Promise((resolve, reject) => {
+              this.failedQueue.push({ resolve, reject });
+            }).then(() => {
+              originalRequest.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`;
+              return this.axiosInstance(originalRequest);
+            });
+          }
+
+          originalRequest._retry = true;
+          this.isRefreshing = true;
+
+          try {
+            const refreshToken = localStorage.getItem('refresh_token');
+            if (!refreshToken) {
+              throw new Error('No refresh token');
+            }
+
+            const refreshResponse = await this.axiosInstance.post(
+              API_ENDPOINTS.REFRESH,
+              { refresh_token: refreshToken }
+            );
+
+            const newAccessToken = refreshResponse.data.access_token;
+
+            localStorage.setItem('access_token', newAccessToken);
+
+            this.processQueue(null);
+
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+            return this.axiosInstance(originalRequest);
+          } catch (refreshError) {
+            this.processQueue(refreshError);
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+
+            // 로그인 페이지로 리다이렉트
+            if (typeof window !== 'undefined') {
+              window.location.href = '/login';
+            }
+
+            return Promise.reject(refreshError);
+          } finally {
+            this.isRefreshing = false;
+          }
+        }
+
         // 에러 로깅 (개발 환경에서만)
         if (env.NODE_ENV === 'development') {
           console.log(
@@ -212,6 +270,21 @@ class ApiClient {
         return Promise.reject(error);
       }
     );
+  }
+
+  /**
+   * 대기 중인 요청들 처리
+   */
+  private processQueue(error: unknown) {
+    this.failedQueue.forEach(({ resolve, reject }) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(null);
+      }
+    });
+
+    this.failedQueue = [];
   }
 
   /**
