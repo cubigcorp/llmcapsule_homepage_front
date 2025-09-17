@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
@@ -27,6 +28,7 @@ export default function MyPageLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { t } = useTranslation('mypage');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -80,18 +82,18 @@ export default function MyPageLayout({
     <Container>
       <LNBWrapper>
         <LNB
-          title='마이페이지'
+          title={t('lnb.title')}
           bottom={
             <>
               <LNBItem
-                value='문의하기'
+                value={t('lnb.bottom.contact')}
                 onClick={handleContactClick}
                 leadingIcon={HeadphoneIcon}
                 style={{ color: textColor.light['fg-neutral-alternative'] }}
               />
               <Divider />
               <LNBItem
-                value='로그아웃'
+                value={t('lnb.bottom.logout')}
                 onClick={handleLogout}
                 leadingIcon={LogoutIcon}
                 style={{ color: textColor.light['fg-neutral-alternative'] }}
@@ -100,32 +102,33 @@ export default function MyPageLayout({
           }
         >
           <LNBItem
-            value='홈'
+            value={t('lnb.items.home')}
             onClick={handleHomeClick}
             leadingIcon={HomeIcon}
             selected={pathname === '/mypage'}
           />
-          <LNBItemGroup title='계정'>
+          <LNBItemGroup title={t('lnb.groups.account')}>
             <LNBItem
-              value='회원정보 수정'
+              value={t('lnb.items.profile')}
               onClick={handleMyInfoClick}
               leadingIcon={AccountIcon}
               selected={pathname === '/mypage/profile'}
             />
           </LNBItemGroup>
-          <LNBItemGroup title='결제'>
+          <LNBItemGroup title={t('lnb.groups.payment')}>
             <LNBItem
-              value='플랜 관리'
+              value={t('lnb.items.checkout')}
               onClick={handlePlanManagementClick}
               leadingIcon={WalletIcon}
               selected={pathname === '/mypage/checkout'}
             />
           </LNBItemGroup>
-          <LNBItemGroup title='리소스'>
+          <LNBItemGroup title={t('lnb.groups.resources')}>
             <LNBItem
-              value='앱 다운로드'
-              onClick={handleAppDownloadClick}
+              value={t('lnb.items.download')}
+              onClick={() => router.push('/mypage/download')}
               leadingIcon={DownloadIcon}
+              selected={pathname === '/mypage/download'}
             />
           </LNBItemGroup>
         </LNB>

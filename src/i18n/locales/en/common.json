@@ -1,0 +1,55 @@
+{
+  "language": {
+    "korean": "Korean",
+    "english": "English"
+  },
+  "header": {
+    "contact": "Contact",
+    "login": "Login"
+  },
+  "carousel": {
+    "slides": [
+      {
+        "title": "Real-time prompt filtering",
+        "description": "Detects sensitive info such as names, phone numbers, and account numbers in real time and pseudonymizes automatically to prevent leakage. All personal data is safely protected without users even noticing."
+      },
+      {
+        "title": "Sensitive info detection in documents",
+        "description": "Detects sensitive info in uploaded/attached documents in real time and automatically pseudonymizes or masks them. AI securely manages even hidden personal data across massive documents."
+      },
+      {
+        "title": "Context-aware detection",
+        "description": "Understands contextual meaning beyond words to detect intelligently. Protects not only personal data but also company/industry-specific critical information."
+      },
+      {
+        "title": "ON-PREMISE independent operation",
+        "description": "Can be fully installed within the intranet without external clouds for safer use, perfectly complying with enterprise security policies."
+      }
+    ]
+  },
+  "validation": {
+    "email": {
+      "required": "Please enter your email.",
+      "invalid": "Please enter a valid email."
+    },
+    "password": {
+      "required": "Please enter your password.",
+      "policy": "8–20 characters including letters, numbers, and symbols.",
+      "mismatch": "Passwords do not match."
+    },
+    "confirmPassword": {
+      "required": "Please enter your password.",
+      "mismatch": "Passwords do not match."
+    },
+    "phone": {
+      "required": "Please enter your phone number.",
+      "invalid": "Please enter a valid phone number."
+    },
+    "company": {
+      "min2": "Please enter at least 2 characters."
+    },
+    "generic": {
+      "min2": "Please enter at least 2 characters."
+    }
+  }
+}

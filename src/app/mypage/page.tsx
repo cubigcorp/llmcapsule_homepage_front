@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 import styled from 'styled-components';
 import {
@@ -31,6 +32,7 @@ import PlanBasicImage from '@/assets/images/plan_basic.png';
 import PlanMaxImage from '@/assets/images/plan_max.png';
 export default function MyPage() {
   const router = useRouter();
+  const { t } = useTranslation('mypage');
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [hasSubscription, setHasSubscription] = useState(false); // 임시로 구독 상태 관리
 
@@ -53,10 +55,8 @@ export default function MyPage() {
   return (
     <Container>
       <Header>
-        <Title>마이페이지</Title>
-        <Subtitle>
-          계정 정보, 구독 현황 등 내 정보를 편리하게 확인하세요.
-        </Subtitle>
+        <Title>{t('title')}</Title>
+        <Subtitle>{t('subtitle')}</Subtitle>
       </Header>
 
       <MainGrid>
@@ -66,28 +66,28 @@ export default function MyPage() {
               <StatsGrid>
                 <StatCard>
                   <DashboardCircleIcon />
-                  <StatLabel>이용 중인 플랜</StatLabel>
+                  <StatLabel>{t('stats.usingPlan')}</StatLabel>
                   <StatValue>3</StatValue>
                 </StatCard>
                 <StatDivider />
                 <StatCard>
                   <UsageCircleIcon />
-                  <StatLabel>활성화 된 시리얼</StatLabel>
+                  <StatLabel>{t('stats.activeSerial')}</StatLabel>
                   <StatValue>120</StatValue>
                 </StatCard>
                 <StatDivider />
                 <StatCard>
                   <CardCircleIcon />
-                  <StatLabel>다음 결제일</StatLabel>
+                  <StatLabel>{t('stats.nextPayment')}</StatLabel>
                   <StatValue>25.09.18</StatValue>
                 </StatCard>
               </StatsGrid>
 
               <PlanSection>
-                <SectionTitle>이용 중인 플랜</SectionTitle>
+                <SectionTitle>{t('plan.title')}</SectionTitle>
 
                 <PlanSelectorWrapper>
-                  <PlanLabel>플랜 번호</PlanLabel>
+                  <PlanLabel>{t('plan.number')}</PlanLabel>
                   <Selector
                     value='Plan-01'
                     onChange={() => {}}
@@ -112,17 +112,17 @@ export default function MyPage() {
                   </PlanCardHeader>
                   <PlanDate>
                     <CardIcon />
-                    <span>다음 결제일</span>
+                    <span>{t('plan.nextPayment')}</span>
                     <span>2025. 09. 16</span>
                   </PlanDate>
                 </PlanCardContainer>
 
                 <PlanActions>
                   <SolidButton variant='secondary' size='small'>
-                    플랜관리
+                    {t('plan.manage')}
                   </SolidButton>
                   <SolidButton variant='secondary' size='small'>
-                    영수증 보기
+                    {t('plan.receipt')}
                   </SolidButton>
                 </PlanActions>
 
@@ -133,12 +133,10 @@ export default function MyPage() {
             <>
               <EmptyStateContainer>
                 <IconButton type='outline' icon={DataIcon} />
-                <EmptyStateTitle>구독 중인 플랜이 없습니다.</EmptyStateTitle>
-                <EmptyStateDescription>
-                  원하는 플랜을 선택하고 서비스를 시작해 보세요.
-                </EmptyStateDescription>
+                <EmptyStateTitle>{t('empty.title')}</EmptyStateTitle>
+                <EmptyStateDescription>{t('empty.desc')}</EmptyStateDescription>
                 <SolidButton variant='primary' size='small'>
-                  나에게 맞는 플랜 찾기
+                  {t('empty.cta')}
                 </SolidButton>
               </EmptyStateContainer>
 
@@ -156,27 +154,21 @@ export default function MyPage() {
           )}
 
           <SupportSection>
-            <SectionTitle>지원</SectionTitle>
+            <SectionTitle>{t('support.title')}</SectionTitle>
             <SupportGrid>
               <SupportCard>
                 <InfoCircleIcon />
                 <SupportContent>
-                  <SupportTitle>제품 가이드</SupportTitle>
-                  <SupportDesc>
-                    LLM Capsule 사용 방법을 <br />
-                    제품 가이드와 함께 알아보세요
-                  </SupportDesc>
+                  <SupportTitle>{t('support.guide')}</SupportTitle>
+                  <SupportDesc>{t('support.guideDesc')}</SupportDesc>
                 </SupportContent>
                 <SupportArrowIcon />
               </SupportCard>
               <SupportCard>
                 <CallCircleIcon />
                 <SupportContent>
-                  <SupportTitle>문의하기</SupportTitle>
-                  <SupportDesc>
-                    궁금한 점이나 도움이 필요할 때 <br />
-                    언제든 문의하세요.
-                  </SupportDesc>
+                  <SupportTitle>{t('support.contact')}</SupportTitle>
+                  <SupportDesc>{t('support.contactDesc')}</SupportDesc>
                 </SupportContent>
                 <SupportArrowIcon />
               </SupportCard>
@@ -189,7 +181,9 @@ export default function MyPage() {
             <AccountTitle>
               {userInfo?.last_name && userInfo?.first_name
                 ? `${userInfo.last_name}${userInfo.first_name}`
-                : userInfo?.first_name || userInfo?.last_name || '사용자'}
+                : userInfo?.first_name ||
+                  userInfo?.last_name ||
+                  t('account.user')}
             </AccountTitle>
             <AccountEmail>{userInfo?.email || 'account@cubig.ai'}</AccountEmail>
             <SolidButton
@@ -197,16 +191,16 @@ export default function MyPage() {
               size='small'
               onClick={() => router.push('/mypage/profile')}
             >
-              회원정보 수정
+              {t('account.edit')}
             </SolidButton>
             <AccountInfo>
               <InfoItem>
-                <InfoLabel>연락처</InfoLabel>
+                <InfoLabel>{t('account.contact')}</InfoLabel>
                 <InfoValue>{userInfo?.phone || '01012345678'}</InfoValue>
               </InfoItem>
               <Divider />
               <InfoItem>
-                <InfoLabel>회사/소속기관명</InfoLabel>
+                <InfoLabel>{t('account.org')}</InfoLabel>
                 <InfoValue>{userInfo?.organization_name || '큐빅'}</InfoValue>
               </InfoItem>
             </AccountInfo>

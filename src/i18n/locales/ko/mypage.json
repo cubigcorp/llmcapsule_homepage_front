@@ -1,0 +1,182 @@
+{
+  "title": "마이페이지",
+  "subtitle": "계정 정보, 구독 현황 등 내 정보를 편리하게 확인하세요.",
+  "stats": {
+    "usingPlan": "이용 중인 플랜",
+    "activeSerial": "활성화 된 시리얼",
+    "nextPayment": "다음 결제일"
+  },
+  "plan": {
+    "title": "이용 중인 플랜",
+    "number": "플랜 번호",
+    "manage": "플랜관리",
+    "receipt": "영수증 보기",
+    "nextPayment": "다음 결제일"
+  },
+  "empty": {
+    "title": "구독 중인 플랜이 없습니다.",
+    "desc": "원하는 플랜을 선택하고 서비스를 시작해 보세요.",
+    "cta": "나에게 맞는 플랜 찾기"
+  },
+  "support": {
+    "title": "지원",
+    "guide": "제품 가이드",
+    "guideDesc": "LLM Capsule 사용 방법을 제품 가이드와 함께 알아보세요",
+    "contact": "문의하기",
+    "contactDesc": "궁금한 점이나 도움이 필요할 때 언제든 문의하세요."
+  },
+  "account": {
+    "edit": "회원정보 수정",
+    "contact": "연락처",
+    "org": "회사/소속기관명",
+    "user": "사용자"
+  },
+  "lnb": {
+    "title": "마이페이지",
+    "bottom": {
+      "contact": "문의하기",
+      "logout": "로그아웃"
+    },
+    "groups": {
+      "account": "계정",
+      "payment": "결제",
+      "resources": "리소스"
+    },
+    "items": {
+      "home": "홈",
+      "profile": "회원정보 수정",
+      "checkout": "플랜 관리",
+      "download": "앱 다운로드"
+    }
+  },
+  "profile": {
+    "title": "회원정보 수정",
+    "subtitle": "연락처, 기본 설정 등 내 계정 정보를 관리할 수 있습니다.",
+    "sectionUser": "회원 정보",
+    "fields": {
+      "name": "이름",
+      "phone": "연락처",
+      "org": "회사/소속기관명"
+    },
+    "edit": "수정",
+    "sectionAccount": "계정 관리",
+    "changePassword": "비밀번호 변경",
+    "changePasswordDesc": "현재 비밀번호를 새 비밀번호로 업데이트할 수 있습니다.",
+    "deleteAccount": "회원 탈퇴",
+    "deleteAccountDesc": "LLM Capsule 계정을 영구적으로 삭제합니다.",
+    "deleteAccountBtn": "회원 탈퇴",
+    "loading": "로딩 중..."
+  },
+  "checkout": {
+    "title": "견적 계산기",
+    "subtitle": "비즈니스 환경에 맞는 요금제를 손쉽게 계산하고 비교해 보세요.",
+    "planSelect": "플랜 선택",
+    "tokenBased": "토큰 사용량 기반",
+    "planGuide": "슬라이더로 월 예상 토큰 사용량을 지정해보세요.",
+    "selectedPlan": "선택된 플랜",
+    "planNameSuffix": " 플랜",
+    "tokenUsage": "토큰 사용량",
+    "tokenUnit": "토큰",
+    "breakdown": {
+      "title": "토큰 분배",
+      "ratio": "입/출력 6:4",
+      "total": "총합",
+      "input": "입력",
+      "output": "출력"
+    },
+    "convert": {
+      "title": "문자·페이지 환산",
+      "assumption": "가정값",
+      "ko": "한글",
+      "en": "영어",
+      "charUnit": "자",
+      "pageUnit": "장",
+      "estimate": "예상",
+      "note": "가정: 한글 1토큰≈1.6자, 영어 1토큰≈4.5자, A4 1장≈2,200자(한글) / 3,600자(영어)"
+    },
+    "users": {
+      "title": "사용자 수",
+      "label": "사용 인원",
+      "step": "50명"
+    },
+    "contract": {
+      "title": "계약 기간",
+      "desc": "기간 할인은 운영 정책에 따라 달라질 수 있습니다.",
+      "monthsSuffix": "개월",
+      "discount": "기간 할인",
+      "prepay": "선결제",
+      "lumpSum": "일시불",
+      "pct": "0.2%",
+      "prepayDesc": "기간 할인은 운영 정책에 따라 달라질 수 있습니다."
+    },
+    "addon": {
+      "title": "Add-on (1회성 구축비)",
+      "desc": "기간/선결제 할인이 적용되지 않습니다.",
+      "security": "정형 민감 키워드 구축",
+      "none": "선택 안함",
+      "count5": "5개",
+      "count8": "8개",
+      "count12": "12개",
+      "admin": "중앙 관리자 콘솔 Admin 구축",
+      "adminNote": "최적 수 기준 권장가: ₩25,000,000",
+      "range100_200": "100 - 200",
+      "range200_500": "200 - 500",
+      "range500p": "500+",
+      "module": "비정형 민감정보 조건 모듈",
+      "basic": "기본 모듈",
+      "noneShort": "선택 안 함",
+      "filter5": "필터 5개",
+      "filter8": "필터 8개",
+      "filter12": "필터 12개",
+      "others": "기타 모듈",
+      "rag": "RAG 시스템",
+      "graphRag": "최신 기술 Graph RAG 적용",
+      "docSec": "문서보안등급별 접근 제어",
+      "aiAnswer": "문맥 기반 AI 답변 적용"
+    },
+    "repeat": {
+      "title": "반복 비용 (Add-on)",
+      "desc": "추가 토큰 팩",
+      "unit": "10만 토큰/월 당"
+    },
+    "tokenInfo": {
+      "title": "Token/모델 비용 고지",
+      "b1": "• Seat(Base): 플랜별 토큰 Cap 포함. Cap 내 사용은 추가 과금 없음.",
+      "b2": "• Cap 초과 정책: 차단 또는 추가 구매는 별도 정책으로 안내.",
+      "b3": "• Seat(Base): 플랜별 토큰 Cap 포함. Cap 내 사용은 추가 과금 없음."
+    },
+    "summary": {
+      "title": "요약",
+      "selectedSpec": "선택 사양 합계",
+      "selectedPlan": "선택된 플랜",
+      "users": "사용 인원",
+      "contract": "계약 기간",
+      "discount": "기간 할인",
+      "prepay": "선결제",
+      "yesWith": "예(추가 0.2%)",
+      "no": "아니오",
+      "security": "정형 민감 키워드 구축",
+      "admin": "중앙 관리자 콘솔 Admin 구축",
+      "module": "비정형 민감정보 조건 모듈",
+      "others": "기타모듈",
+      "none": "선택 안함",
+      "extraTokens": "추가 토큰 팩",
+      "vatOn": "VAT 포함",
+      "monthly": "월 반복 비용",
+      "oneTime": "1회성 구축비",
+      "firstBill": "첫 청구 예상 비용(월과금)",
+      "total": "총 계약 금액",
+      "prepayApply": "선결제 적용 (추가 0.2%)",
+      "vatIncl": "VAT 포함"
+    },
+    "buttons": {
+      "buy": "구매하기",
+      "contact": "문의하기",
+      "pdf": "PDF 다운로드"
+    },
+    "vat": {
+      "toggle": "세금/VAT 포함",
+      "rate": "VAT 10%"
+    }
+  }
+}

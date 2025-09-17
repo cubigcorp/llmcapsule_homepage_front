@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import {
   SolidButton,
@@ -32,6 +33,7 @@ export default function ContactFormComponent({
   showLogo = false,
   className,
 }: ContactFormProps) {
+  const { t } = useTranslation('auth');
   const [formData, setFormData] = useState({
     email: '',
     name: '',
@@ -49,12 +51,12 @@ export default function ContactFormComponent({
   const [isMarketingModalOpen, setIsMarketingModalOpen] = useState(false);
 
   const inquiryTypes = [
-    { label: '제품 문의', value: 'product' },
-    { label: '가격 문의', value: 'pricing' },
-    { label: '견적 요청', value: 'quote' },
-    { label: '기술 지원', value: 'technical' },
-    { label: '기타', value: 'other' },
-  ];
+    { label: t('contact.options.product'), value: 'product' },
+    { label: t('contact.options.pricing'), value: 'pricing' },
+    { label: t('contact.options.quote'), value: 'quote' },
+    { label: t('contact.options.technical'), value: 'technical' },
+    { label: t('contact.options.other'), value: 'other' },
+  ] as const;
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -96,7 +98,7 @@ export default function ContactFormComponent({
 
   const handleSubmit = async () => {
     if (!isSubmitButtonEnabled()) {
-      alert('모든 필수 항목을 입력하고 동의해 주세요.');
+      alert(t('contact.toast.required'));
       return;
     }
 
@@ -118,7 +120,7 @@ export default function ContactFormComponent({
         // GTM 이벤트 발동
         gtm.submitLead(formData.inquiryType);
 
-        alert('문의가 성공적으로 접수되었습니다.');
+        alert(t('contact.toast.success'));
         // 폼 초기화
         setFormData({
           email: '',
@@ -130,11 +132,11 @@ export default function ContactFormComponent({
           marketingConsent: false,
         });
       } else {
-        alert('문의 접수에 실패했습니다. 다시 시도해 주세요.');
+        alert(t('contact.toast.fail'));
       }
     } catch (error) {
       console.error('문의 접수 오류:', error);
-      alert('문의 접수 중 오류가 발생했습니다. 다시 시도해 주세요.');
+      alert(t('contact.toast.error'));
     }
   };
 
@@ -161,16 +163,16 @@ export default function ContactFormComponent({
       )}
 
       <ContactForm>
-        <ContactTitle>{title}</ContactTitle>
+        <ContactTitle>{t('contact.title')}</ContactTitle>
 
         <FormField>
           <TextField
-            label='이메일'
+            label={t('contact.email')}
             labelType='required'
             size='large'
             value={formData.email}
             onChange={(e) => handleInputChange('email', e.target.value)}
-            placeholder='Email@example.com'
+            placeholder={t('contact.placeholders.email')}
             description={emailError}
             status={emailError ? 'negative' : 'default'}
           />
@@ -178,12 +180,12 @@ export default function ContactFormComponent({
 
         <FormField>
           <TextField
-            label='이름/소속'
+            label={t('contact.nameOrg')}
             labelType='required'
             size='large'
             value={formData.name}
             onChange={(e) => handleInputChange('name', e.target.value)}
-            placeholder='이름 혹은 소속을 입력해주세요.'
+            placeholder={t('contact.placeholders.nameOrg')}
             description={nameError}
             status={nameError ? 'negative' : 'default'}
           />
@@ -191,12 +193,12 @@ export default function ContactFormComponent({
 
         <FormField>
           <TextField
-            label='연락처'
+            label={t('contact.phone')}
             labelType='required'
             size='large'
             value={formData.contactNumber}
             onChange={(e) => handleInputChange('contactNumber', e.target.value)}
-            placeholder="'-' 없이 입력해 주세요."
+            placeholder={t('contact.placeholders.phone')}
             inputMode='numeric'
             pattern='[0-9]*'
             description={contactError}
@@ -206,25 +208,25 @@ export default function ContactFormComponent({
 
         <FormField>
           <Dropdown
-            label='문의 유형'
+            label={t('contact.type')}
             labelType='required'
             size='large'
             value={formData.inquiryType}
             onChange={(value) => handleInputChange('inquiryType', value)}
-            placeholder='선택해주세요.'
+            placeholder={t('contact.placeholders.type')}
             options={inquiryTypes}
           />
         </FormField>
 
         <FormField>
-          <Label type='required'>문의 내용 (2자 이상)</Label>
+          <Label type='required'>{t('contact.content')}</Label>
           <div style={{ marginTop: '4px' }}>
             <Textarea
               value={formData.inquiryContent}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 handleInputChange('inquiryContent', e.target.value)
               }
-              placeholder=''
+              placeholder={t('contact.placeholders.content')}
               rows={4}
             />
           </div>
@@ -240,9 +242,9 @@ export default function ContactFormComponent({
               }
             />
             <AgreementText>
-              (필수){' '}
+              {t('contact.consent.requiredPrefix')}{' '}
               <AgreementLink onClick={handlePrivacyLinkClick}>
-                개인정보 수집·이용 및 이용 약관에 동의합니다.
+                {t('contact.consent.privacy')}
               </AgreementLink>
             </AgreementText>
           </AgreementItem>
@@ -255,9 +257,9 @@ export default function ContactFormComponent({
               }
             />
             <AgreementTextOptional>
-              (선택){' '}
+              {t('contact.consent.optionalPrefix')}{' '}
               <AgreementLink onClick={handleMarketingLinkClick}>
-                마케팅 정보 수신 동의
+                {t('contact.consent.marketing')}
               </AgreementLink>
             </AgreementTextOptional>
           </AgreementItem>
@@ -268,7 +270,7 @@ export default function ContactFormComponent({
           onClick={handleSubmit}
           disabled={!isSubmitButtonEnabled()}
         >
-          문의하기
+          {t('contact.button.submit')}
         </SubmitButton>
       </ContactForm>
 

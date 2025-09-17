@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -17,6 +18,7 @@ import { authService } from '@/services/auth';
 import { validateEmail } from '@/utils/validation';
 
 export default function ResetPasswordPage() {
+  const { t } = useTranslation('auth');
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
@@ -52,11 +54,11 @@ export default function ResetPasswordPage() {
         setIsEmailSent(true);
       } else {
         // 실패 시 에러 메시지 표시
-        setEmailError('가입되지 않은 이메일입니다.');
+        setEmailError(t('reset.error.notFound'));
       }
     } catch {
       // 실패 시 에러 메시지 표시
-      setEmailError('입력하신 정보를 다시 확인해주세요.');
+      setEmailError(t('reset.error.invalid'));
     }
   };
 
@@ -69,14 +71,12 @@ export default function ResetPasswordPage() {
       });
 
       if (response.success) {
-        toast.success(
-          '인증 메일을 재발송하였습니다.\n메일함을 확인해주시기 바랍니다.'
-        );
+        toast.success(t('reset.error.resendSuccess'));
       } else {
-        toast.error('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+        toast.error(t('reset.error.resendFail'));
       }
     } catch {
-      toast.error('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+      toast.error(t('reset.error.resendFail'));
     }
   };
 
@@ -97,15 +97,15 @@ export default function ResetPasswordPage() {
           <ResetPasswordForm>
             {!isEmailSent ? (
               <>
-                <Title>비밀번호 재설정</Title>
+                <Title>{t('reset.title')}</Title>
 
                 <FormField>
                   <TextField
-                    label='이메일'
+                    label={t('reset.email')}
                     size='large'
                     value={email}
                     onChange={handleEmailChange}
-                    placeholder='Email@example.com'
+                    placeholder={t('reset.placeholder.email')}
                     description={emailError}
                     status={emailError ? 'negative' : 'default'}
                   />
@@ -116,14 +116,14 @@ export default function ResetPasswordPage() {
                   onClick={handleSubmit}
                   disabled={!isSubmitButtonEnabled()}
                 >
-                  재설정 이메일 보내기
+                  {t('reset.button.send')}
                 </SubmitButton>
 
                 <HelperText>
-                  이메일이 기억나지 않으시나요?{' '}
+                  {t('reset.helper.noEmail')}{' '}
                   <Link href='/contact'>
                     <TextButton variant='secondary' size='small'>
-                      문의하기
+                      {t('reset.helper.contact')}
                     </TextButton>
                   </Link>
                 </HelperText>

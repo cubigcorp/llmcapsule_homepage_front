@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { isProdStage } from '@/utils/env';
 import './globals.css';
 import Header from '@/components/layout/Header';
+import I18nProvider from '@/components/providers/I18nProvider';
 import StyledComponentsRegistry from '@/lib/registry';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import ToastProvider from '@/components/providers/ToastProvider';
@@ -66,8 +67,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <StyledComponentsRegistry>
           <GoogleOAuthProvider clientId='827074253539-i0qbolbrlllgv24rrcd32ktm8h9uo21i.apps.googleusercontent.com'>
             <ToastProvider>
-              <Header />
-              {children}
+              <I18nProvider>
+                <Header />
+                {children}
+              </I18nProvider>
             </ToastProvider>
           </GoogleOAuthProvider>
         </StyledComponentsRegistry>

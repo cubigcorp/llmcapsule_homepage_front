@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import {
   SolidButton,
@@ -32,6 +33,7 @@ const plans = {
 };
 
 export default function CheckoutPage() {
+  const { t } = useTranslation('mypage');
   const [userCount, setUserCount] = useState<number>(100);
   const [tokenUsage, setTokenUsage] = useState<number>(280000);
   const [contractPeriod, setContractPeriod] = useState<number>(6);
@@ -147,10 +149,8 @@ export default function CheckoutPage() {
   return (
     <Container>
       <Header>
-        <Title>견적 계산기</Title>
-        <Subtitle>
-          비즈니스 환경에 맞는 요금제를 손쉽게 계산하고 비교해 보세요.
-        </Subtitle>
+        <Title>{t('checkout.title')}</Title>
+        <Subtitle>{t('checkout.subtitle')}</Subtitle>
       </Header>
 
       <MainContent>
@@ -158,23 +158,24 @@ export default function CheckoutPage() {
           {/* 플랜 선택 */}
           <Section>
             <SectionHeader>
-              <SectionTitle>플랜 선택</SectionTitle>
+              <SectionTitle>{t('checkout.planSelect')}</SectionTitle>
               <Badge type='solid' variant='info'>
-                토큰 사용량 기반
+                {t('checkout.tokenBased')}
               </Badge>
             </SectionHeader>
-            <PlanDescription>
-              슬라이더로 월 예상 토큰 사용량을 지정해보세요.
-            </PlanDescription>
+            <PlanDescription>{t('checkout.planGuide')}</PlanDescription>
             <Divider />
-            <SubSectionTitle>선택된 플랜</SubSectionTitle>
+            <SubSectionTitle>{t('checkout.selectedPlan')}</SubSectionTitle>
             <PlanCard>
-              <PlanName>{currentPlan.name} 플랜</PlanName>
+              <PlanName>
+                {currentPlan.name}
+                {t('checkout.planNameSuffix')}
+              </PlanName>
               <PlanPrice>₩{currentPlan.price.toLocaleString()}/Seat</PlanPrice>
             </PlanCard>
 
             <TokenUsageRow>
-              <TokenUsageTitle>토큰 사용량</TokenUsageTitle>
+              <TokenUsageTitle>{t('checkout.tokenUsage')}</TokenUsageTitle>
               <TokenInputRight>
                 <TextField
                   style={{
@@ -192,7 +193,7 @@ export default function CheckoutPage() {
                   }}
                   placeholder='280000'
                 />
-                <span>토큰</span>
+                <span>{t('checkout.tokenUnit')}</span>
               </TokenInputRight>
             </TokenUsageRow>
 
@@ -245,9 +246,11 @@ export default function CheckoutPage() {
               <TokenBreakdownGrid>
                 <TokenBreakdownCard>
                   <TokenBreakdownHeader>
-                    <TokenBreakdownTitle>토큰 분배</TokenBreakdownTitle>
+                    <TokenBreakdownTitle>
+                      {t('checkout.breakdown.title')}
+                    </TokenBreakdownTitle>
                     <Badge size='small' type='solid' variant='secondary'>
-                      입/출력 6:4
+                      {t('checkout.breakdown.ratio')}
                     </Badge>
                   </TokenBreakdownHeader>
                   <TokenBreakdownContentNoPadding>
@@ -255,7 +258,7 @@ export default function CheckoutPage() {
                       <TokenBreakdownTotalSection>
                         <TokenBreakdownTotal>
                           <TokenBreakdownTotalLabel>
-                            총합
+                            {t('checkout.breakdown.total')}
                           </TokenBreakdownTotalLabel>
                           <TokenBreakdownTotalValue>
                             {tokenUsage.toLocaleString()}{' '}
@@ -273,13 +276,17 @@ export default function CheckoutPage() {
                       <TokenBreakdownVerticalDivider />
                       <TokenBreakdownItems>
                         <TokenBreakdownItem>
-                          <TokenBreakdownLabel>입력</TokenBreakdownLabel>
+                          <TokenBreakdownLabel>
+                            {t('checkout.breakdown.input')}
+                          </TokenBreakdownLabel>
                           <TokenBreakdownValue>
                             {Math.round(tokenUsage * 0.6).toLocaleString()}
                           </TokenBreakdownValue>
                         </TokenBreakdownItem>
                         <TokenBreakdownItem>
-                          <TokenBreakdownLabel>출력</TokenBreakdownLabel>
+                          <TokenBreakdownLabel>
+                            {t('checkout.breakdown.output')}
+                          </TokenBreakdownLabel>
                           <TokenBreakdownValue>
                             {Math.round(tokenUsage * 0.4).toLocaleString()}
                           </TokenBreakdownValue>
@@ -290,9 +297,11 @@ export default function CheckoutPage() {
                 </TokenBreakdownCard>
                 <TokenBreakdownCard>
                   <TokenBreakdownHeader>
-                    <TokenBreakdownTitle>문자·페이지 환산</TokenBreakdownTitle>
+                    <TokenBreakdownTitle>
+                      {t('checkout.convert.title')}
+                    </TokenBreakdownTitle>
                     <Badge size='small' type='solid' variant='secondary'>
-                      가정값
+                      {t('checkout.convert.assumption')}
                     </Badge>
                   </TokenBreakdownHeader>
                   <TokenBreakdownContent>
@@ -300,7 +309,7 @@ export default function CheckoutPage() {
                       <LanguageBox>
                         <LanguageLabel>
                           <LanguageIcon>Kr</LanguageIcon>
-                          <span>한글</span>
+                          <span>{t('checkout.convert.ko')}</span>
                         </LanguageLabel>
                         <LanguageContent>
                           <LanguageTotal>
@@ -311,13 +320,13 @@ export default function CheckoutPage() {
                                   textColor.light['fg-neutral-alternative'],
                               }}
                             >
-                              자
+                              {t('checkout.convert.charUnit')}
                             </span>
                           </LanguageTotal>
                           <Divider style={{ margin: '8px 0' }} />
                           <LanguageBreakdown>
                             <LanguageItem>
-                              <span>입력</span>
+                              <span>{t('checkout.breakdown.input')}</span>
                               <span>
                                 {Math.round(
                                   tokenUsage * 0.6 * 1.6
@@ -325,7 +334,7 @@ export default function CheckoutPage() {
                               </span>
                             </LanguageItem>
                             <LanguageItem>
-                              <span>출력</span>
+                              <span>{t('checkout.breakdown.output')}</span>
                               <span>
                                 {Math.round(
                                   tokenUsage * 0.4 * 1.6
@@ -339,7 +348,7 @@ export default function CheckoutPage() {
                       <LanguageBox>
                         <LanguageLabel>
                           <LanguageIcon>En</LanguageIcon>
-                          <span>영어</span>
+                          <span>{t('checkout.convert.en')}</span>
                         </LanguageLabel>
                         <LanguageContent>
                           <LanguageTotal>
@@ -350,13 +359,13 @@ export default function CheckoutPage() {
                                   textColor.light['fg-neutral-alternative'],
                               }}
                             >
-                              자
+                              {t('checkout.convert.charUnit')}
                             </span>
                           </LanguageTotal>
                           <Divider style={{ margin: '8px 0' }} />
                           <LanguageBreakdown>
                             <LanguageItem>
-                              <span>입력</span>
+                              <span>{t('checkout.breakdown.input')}</span>
                               <span>
                                 {Math.round(
                                   tokenUsage * 0.6 * 4.5
@@ -364,7 +373,7 @@ export default function CheckoutPage() {
                               </span>
                             </LanguageItem>
                             <LanguageItem>
-                              <span>출력</span>
+                              <span>{t('checkout.breakdown.output')}</span>
                               <span>
                                 {Math.round(
                                   tokenUsage * 0.4 * 4.5
@@ -384,7 +393,9 @@ export default function CheckoutPage() {
                         </A4LeftSection>
                         <A4Grid>
                           <A4Cell>
-                            <A4CellLabel>한글</A4CellLabel>
+                            <A4CellLabel>
+                              {t('checkout.convert.ko')}
+                            </A4CellLabel>
                           </A4Cell>
                           <A4Cell>
                             <A4CellValue>
@@ -394,19 +405,23 @@ export default function CheckoutPage() {
                                     Math.round(tokenUsage * 1.6) / 2200
                                   ).toLocaleString()}
                                 </A4NumberText>
-                                <A4UnitText>장</A4UnitText>
+                                <A4UnitText>
+                                  {t('checkout.convert.pageUnit')}
+                                </A4UnitText>
                               </A4NumberWithUnit>
                               <Badge
                                 size='small'
                                 type='outline'
                                 variant='secondary'
                               >
-                                예상
+                                {t('checkout.convert.estimate')}
                               </Badge>
                             </A4CellValue>
                           </A4Cell>
                           <A4Cell>
-                            <A4CellLabel>영어</A4CellLabel>
+                            <A4CellLabel>
+                              {t('checkout.convert.en')}
+                            </A4CellLabel>
                           </A4Cell>
                           <A4Cell>
                             <A4CellValue>
@@ -416,14 +431,16 @@ export default function CheckoutPage() {
                                     Math.round(tokenUsage * 4.5) / 3800
                                   ).toLocaleString()}
                                 </A4NumberText>
-                                <A4UnitText>장</A4UnitText>
+                                <A4UnitText>
+                                  {t('checkout.convert.pageUnit')}
+                                </A4UnitText>
                               </A4NumberWithUnit>
                               <Badge
                                 size='small'
                                 type='outline'
                                 variant='secondary'
                               >
-                                예상
+                                {t('checkout.convert.estimate')}
                               </Badge>
                             </A4CellValue>
                           </A4Cell>
@@ -434,8 +451,7 @@ export default function CheckoutPage() {
                     <TokenNote>
                       <SmallInfoIcon />
                       <TokenNoteContent>
-                        가정: 한글 1토큰≈1.6자, 영어 1토큰≈4.5자, A4
-                        1장≈2,200자(한글) / 3,600자(영어)
+                        {t('checkout.convert.note')}
                       </TokenNoteContent>
                     </TokenNote>
                   </TokenBreakdownContent>
@@ -446,10 +462,10 @@ export default function CheckoutPage() {
 
           {/* 사용자 수 */}
           <Section>
-            <SectionTitle>사용자 수</SectionTitle>
+            <SectionTitle>{t('checkout.users.title')}</SectionTitle>
             <UserInputSection>
               <TextField
-                label='사용 인원'
+                label={t('checkout.users.label')}
                 size='large'
                 value={userCount.toString()}
                 onChange={(e) => handleUserCountChange(e.target.value)}
@@ -460,14 +476,14 @@ export default function CheckoutPage() {
                   leadingIcon={<RemoveIcon />}
                   onClick={() => setUserCount(Math.max(100, userCount - 50))}
                 >
-                  50명
+                  {t('checkout.users.step')}
                 </Chip>
                 <Chip
                   size='x-small'
                   leadingIcon={<SmallAddIcon />}
                   onClick={() => setUserCount(userCount + 50)}
                 >
-                  50명
+                  {t('checkout.users.step')}
                 </Chip>
               </UserCountControls>
             </UserInputSection>
@@ -475,10 +491,8 @@ export default function CheckoutPage() {
 
           {/* 계약 기간 */}
           <Section>
-            <SectionTitle>계약 기간</SectionTitle>
-            <PeriodDescription>
-              기간 할인은 운영 정책에 따라 달라질 수 있습니다.
-            </PeriodDescription>
+            <SectionTitle>{t('checkout.contract.title')}</SectionTitle>
+            <PeriodDescription>{t('checkout.contract.desc')}</PeriodDescription>
             <PeriodOptions>
               {[
                 { months: 1, discount: 0 },
@@ -492,7 +506,10 @@ export default function CheckoutPage() {
                   $isSelected={contractPeriod === option.months}
                   onClick={() => setContractPeriod(option.months)}
                 >
-                  <span>{option.months}개월</span>
+                  <span>
+                    {option.months}
+                    {t('checkout.contract.monthsSuffix')}
+                  </span>
                   <Badge
                     size='small'
                     type='solid'
@@ -513,18 +530,18 @@ export default function CheckoutPage() {
                 />
                 <PrepayContent>
                   <PrepayTop>
-                    <span>선결제</span>
+                    <span>{t('checkout.contract.prepay')}</span>
                     <PrepayBadges>
                       <Badge size='small' type='strong' variant='info'>
-                        일시불
+                        {t('checkout.contract.lumpSum')}
                       </Badge>
                       <Badge size='small' type='outline' variant='info'>
-                        0.2%
+                        {t('checkout.contract.pct')}
                       </Badge>
                     </PrepayBadges>
                   </PrepayTop>
                   <PrepayDescription>
-                    기간 할인은 운영 정책에 따라 달라질 수 있습니다.
+                    {t('checkout.contract.prepayDesc')}
                   </PrepayDescription>
                 </PrepayContent>
               </PrepayToggle>
@@ -533,82 +550,80 @@ export default function CheckoutPage() {
 
           {/* Add-on */}
           <Section>
-            <SectionTitle>Add-on (1회성 구축비)</SectionTitle>
-            <AddOnDescription>
-              기간/선결제 할인이 적용되지 않습니다.
-            </AddOnDescription>
+            <SectionTitle>{t('checkout.addon.title')}</SectionTitle>
+            <AddOnDescription>{t('checkout.addon.desc')}</AddOnDescription>
 
             <AddOnGroup>
-              <AddOnSubTitle>정형 민감 키워드 구축</AddOnSubTitle>
+              <AddOnSubTitle>{t('checkout.addon.security')}</AddOnSubTitle>
               <AddOnOptions>
                 <AddOnOption
                   $isSelected={securityGuideCount === -1}
                   onClick={() => setSecurityGuideCount(-1)}
                 >
-                  <span>선택 안함</span>
+                  <span>{t('checkout.addon.none')}</span>
                   <span>₩0</span>
                 </AddOnOption>
                 <AddOnOption
                   $isSelected={securityGuideCount === 5}
                   onClick={() => setSecurityGuideCount(5)}
                 >
-                  <span>5개</span>
+                  <span>{t('checkout.addon.count5')}</span>
                   <span>₩12,000,000</span>
                 </AddOnOption>
                 <AddOnOption
                   $isSelected={securityGuideCount === 8}
                   onClick={() => setSecurityGuideCount(8)}
                 >
-                  <span>8개</span>
+                  <span>{t('checkout.addon.count8')}</span>
                   <span>₩15,000,000</span>
                 </AddOnOption>
                 <AddOnOption
                   $isSelected={securityGuideCount === 12}
                   onClick={() => setSecurityGuideCount(12)}
                 >
-                  <span>12개</span>
+                  <span>{t('checkout.addon.count12')}</span>
                   <span>₩18,000,000</span>
                 </AddOnOption>
               </AddOnOptions>
             </AddOnGroup>
 
             <AddOnGroup>
-              <AddOnSubTitle>중앙 관리자 콘솔 Admin 구축</AddOnSubTitle>
-              <AddOnNote>최적 수 기준 권장가: ₩25,000,000</AddOnNote>
+              <AddOnSubTitle>{t('checkout.addon.admin')}</AddOnSubTitle>
+              <AddOnNote>{t('checkout.addon.adminNote')}</AddOnNote>
               <AddOnOptions>
                 <AddOnOption
                   $isSelected={policyGuideCount === -1}
                   onClick={() => setPolicyGuideCount(-1)}
                 >
-                  <span>선택 안함</span>
+                  <span>{t('checkout.addon.none')}</span>
                   <span>₩0</span>
                 </AddOnOption>
                 <AddOnOption
                   $isSelected={policyGuideCount === 0}
                   onClick={() => setPolicyGuideCount(0)}
                 >
-                  <span>100 - 200</span>
+                  <span>{t('checkout.addon.range100_200')}</span>
                   <span>₩25,000,000</span>
                 </AddOnOption>
                 <AddOnOption
                   $isSelected={policyGuideCount === 200}
                   onClick={() => setPolicyGuideCount(200)}
                 >
-                  <span>200 - 500</span>
+                  <span>{t('checkout.addon.range200_500')}</span>
                   <span>₩15,000,000</span>
                 </AddOnOption>
                 <AddOnOption
                   $isSelected={policyGuideCount === 500}
                   onClick={() => setPolicyGuideCount(500)}
                 >
-                  <span>500+</span>
+                  <span>{t('checkout.addon.range500p')}</span>
                   <span>₩0</span>
                 </AddOnOption>
               </AddOnOptions>
             </AddOnGroup>
 
             <AddOnGroup>
-              <AddOnSubTitle>비정형 민감정보 조건 모듈</AddOnSubTitle>
+              <AddOnSubTitle>{t('checkout.addon.module')}</AddOnSubTitle>
               <LargeAddOnCard $isSelected={basicModuleEnabled}>
                 <AddOnMainToggle>
                   <Checkbox
@@ -623,7 +638,7 @@ export default function CheckoutPage() {
                       }
                     }}
                   />
-                  <span>기본 모듈</span>
+                  <span>{t('checkout.addon.basic')}</span>
                   <AddOnMainPrice>₩25,000,000</AddOnMainPrice>
                 </AddOnMainToggle>
 
@@ -635,7 +650,7 @@ export default function CheckoutPage() {
                       basicModuleEnabled && setSelectedSubOption('none')
                     }
                   >
-                    <span>선택 안 함</span>
+                    <span>{t('checkout.addon.noneShort')}</span>
                     <span>₩0</span>
                   </AddOnSubCard>
                   <AddOnSubCard
@@ -645,7 +660,7 @@ export default function CheckoutPage() {
                       basicModuleEnabled && setSelectedSubOption('filter5')
                     }
                   >
-                    <span>필터 5개</span>
+                    <span>{t('checkout.addon.filter5')}</span>
                     <span>₩5,000,000</span>
                   </AddOnSubCard>
                   <AddOnSubCard
@@ -655,7 +670,7 @@ export default function CheckoutPage() {
                       basicModuleEnabled && setSelectedSubOption('filter8')
                     }
                   >
-                    <span>필터 8개</span>
+                    <span>{t('checkout.addon.filter8')}</span>
                     <span>₩10,000,000</span>
                   </AddOnSubCard>
                   <AddOnSubCard
@@ -665,7 +680,7 @@ export default function CheckoutPage() {
                       basicModuleEnabled && setSelectedSubOption('filter12')
                     }
                   >
-                    <span>필터 12개</span>
+                    <span>{t('checkout.addon.filter12')}</span>
                     <span>₩15,000,000</span>
                   </AddOnSubCard>
                 </AddOnSubGrid>
@@ -673,7 +688,7 @@ export default function CheckoutPage() {
             </AddOnGroup>
 
             <AddOnGroup>
-              <AddOnSubTitle>기타 모듈</AddOnSubTitle>
+              <AddOnSubTitle>{t('checkout.addon.others')}</AddOnSubTitle>
               <AddOnItemList>
                 <AddOnItem
                   $isSelected={ragSystemEnabled}
@@ -684,7 +699,7 @@ export default function CheckoutPage() {
                     state={ragSystemEnabled ? 'checked' : 'unchecked'}
                     onChange={(checked) => setRagSystemEnabled(checked)}
                   />
-                  <span>RAG 시스템</span>
+                  <span>{t('checkout.addon.rag')}</span>
                   <span>₩10,000,000</span>
                 </AddOnItem>
                 <AddOnItem
@@ -696,7 +711,7 @@ export default function CheckoutPage() {
                     state={graphRagEnabled ? 'checked' : 'unchecked'}
                     onChange={(checked) => setGraphRagEnabled(checked)}
                   />
-                  <span>최신 기술 Graph RAG 적용</span>
+                  <span>{t('checkout.addon.graphRag')}</span>
                   <span>₩38,000,000</span>
                 </AddOnItem>
                 <AddOnItem
@@ -710,7 +725,7 @@ export default function CheckoutPage() {
                     state={documentSecurityEnabled ? 'checked' : 'unchecked'}
                     onChange={(checked) => setDocumentSecurityEnabled(checked)}
                   />
-                  <span>문서보안등급별 접근 제어</span>
+                  <span>{t('checkout.addon.docSec')}</span>
                   <span>₩5,000,000</span>
                 </AddOnItem>
                 <AddOnItem
@@ -722,7 +737,7 @@ export default function CheckoutPage() {
                     state={aiAnswerEnabled ? 'checked' : 'unchecked'}
                     onChange={(checked) => setAiAnswerEnabled(checked)}
                   />
-                  <span>문맥 기반 AI 답변 적용</span>
+                  <span>{t('checkout.addon.aiAnswer')}</span>
                   <span>₩5,000,000</span>
                 </AddOnItem>
               </AddOnItemList>
@@ -731,12 +746,12 @@ export default function CheckoutPage() {
 
           {/* 반복 비용 */}
           <Section>
-            <SectionTitle>반복 비용 (Add-on)</SectionTitle>
-            <AddOnDescription>추가 토큰 팩</AddOnDescription>
+            <SectionTitle>{t('checkout.repeat.title')}</SectionTitle>
+            <AddOnDescription>{t('checkout.repeat.desc')}</AddOnDescription>
             <RepeatCostCard>
               <RepeatCostLeft>
                 <RepeatCostPrice>₩13,000</RepeatCostPrice>
-                <RepeatCostUnit>10만 토큰/월 당</RepeatCostUnit>
+                <RepeatCostUnit>{t('checkout.repeat.unit')}</RepeatCostUnit>
               </RepeatCostLeft>
               <CounterContainer>
                 <CounterButton
@@ -762,20 +777,12 @@ export default function CheckoutPage() {
           <TokenInfoSection>
             <TokenInfoHeader>
               <InfoIcon />
-              <TokenInfoTitle>Token/모델 비용 고지</TokenInfoTitle>
+              <TokenInfoTitle>{t('checkout.tokenInfo.title')}</TokenInfoTitle>
             </TokenInfoHeader>
             <TokenInfoList>
-              <TokenInfoItem>
-                • Seat(Base): 플랜별 토큰 Cap 포함. Cap 내 사용은 추가 과금
-                없음.
-              </TokenInfoItem>
-              <TokenInfoItem>
-                • Cap 초과 정책: 차단 또는 추가 구매는 별도 정책으로 안내.
-              </TokenInfoItem>
-              <TokenInfoItem>
-                • Seat(Base): 플랜별 토큰 Cap 포함. Cap 내 사용은 추가 과금
-                없음.
-              </TokenInfoItem>
+              <TokenInfoItem>{t('checkout.tokenInfo.b1')}</TokenInfoItem>
+              <TokenInfoItem>{t('checkout.tokenInfo.b2')}</TokenInfoItem>
+              <TokenInfoItem>{t('checkout.tokenInfo.b3')}</TokenInfoItem>
             </TokenInfoList>
           </TokenInfoSection>
         </LeftSection>
@@ -783,53 +790,62 @@ export default function CheckoutPage() {
         <RightSection>
           <SummaryCard>
             <TopSection>
-              <SummaryTitle>요약</SummaryTitle>
+              <SummaryTitle>{t('checkout.summary.title')}</SummaryTitle>
 
               <SummaryItem>
-                <SummaryLabel>선택 사양 합계</SummaryLabel>
+                <SummaryLabel>
+                  {t('checkout.summary.selectedSpec')}
+                </SummaryLabel>
                 <SummaryDetails>
                   <SummaryDetail>
-                    선택된 플랜: {currentPlan.name} (₩
+                    {t('checkout.summary.selectedPlan')}: {currentPlan.name} (₩
                     {currentPlan.price.toLocaleString()}/Seat · Cap{' '}
                     {tokenUsage.toLocaleString()})
                   </SummaryDetail>
-                  <SummaryDetail>사용 인원: {userCount}</SummaryDetail>
                   <SummaryDetail>
-                    계약 기간: {contractPeriod}개월 (기간 할인{' '}
+                    {t('checkout.summary.users')}: {userCount}
+                  </SummaryDetail>
+                  <SummaryDetail>
+                    {t('checkout.summary.contract')}: {contractPeriod}
+                    {t('checkout.contract.monthsSuffix')} (
+                    {t('checkout.summary.discount')}{' '}
                     {contractDiscounts[
                       contractPeriod as keyof typeof contractDiscounts
                     ] || 0}
                     %)
                   </SummaryDetail>
                   <SummaryDetail>
-                    선결제: {prepayEnabled ? '예(추가 0.2%)' : '아니오'}
+                    {t('checkout.summary.prepay')}:{' '}
+                    {prepayEnabled
+                      ? t('checkout.summary.yesWith')
+                      : t('checkout.summary.no')}
                   </SummaryDetail>
                   <SummaryDetail>
-                    정형 민감 키워드 구축:{' '}
+                    {t('checkout.summary.security')}:{' '}
                     {securityGuideCount === -1
-                      ? '선택 안함'
+                      ? t('checkout.summary.none')
                       : `${securityGuideCount}개`}
                   </SummaryDetail>
                   <SummaryDetail>
-                    중앙 관리자 콘솔 Admin 구축:{' '}
+                    {t('checkout.summary.admin')}:{' '}
                     {policyGuideCount === -1
-                      ? '선택 안함'
+                      ? t('checkout.summary.none')
                       : policyGuideCount === 0
-                        ? '100-200'
+                        ? t('checkout.addon.range100_200')
                         : policyGuideCount === 200
-                          ? '200-500'
-                          : '500+'}
+                          ? t('checkout.addon.range200_500')
+                          : t('checkout.addon.range500p')}
                   </SummaryDetail>
                   <SummaryDetail>
-                    비정형 민감정보 조건 모듈:{' '}
+                    {t('checkout.summary.module')}:{' '}
                     {unstructuredModuleEnabled
-                      ? '기본 모듈 (선택안함)'
-                      : '기본 모듈 (선택안함)'}
+                      ? t('checkout.addon.basic')
+                      : t('checkout.addon.basic')}
                   </SummaryDetail>
                   <SummaryDetail
                     style={{ display: 'flex', alignItems: 'flex-start' }}
                   >
-                    <span>기타모듈</span>
+                    <span>{t('checkout.summary.others')}</span>
                     <div
                       style={{
                         width: '1px',
@@ -839,10 +855,10 @@ export default function CheckoutPage() {
                       }}
                     />
                     {[
-                      ragSystemEnabled && 'RAG 시스템',
-                      graphRagEnabled && '최신 기술 Graph RAG 적용',
-                      documentSecurityEnabled && '문서보안등급별 접근 제어',
-                      aiAnswerEnabled && '문맥 기반 AI 답변 적용',
+                      ragSystemEnabled && t('checkout.addon.rag'),
+                      graphRagEnabled && t('checkout.addon.graphRag'),
+                      documentSecurityEnabled && t('checkout.addon.docSec'),
+                      aiAnswerEnabled && t('checkout.addon.aiAnswer'),
                     ].filter(Boolean).length > 0 ? (
                       <div style={{ flex: 1 }}>
                         {ragSystemEnabled && (
@@ -853,7 +869,7 @@ export default function CheckoutPage() {
                               marginBottom: '4px',
                             }}
                           >
-                            RAG 시스템
+                            {t('checkout.addon.rag')}
                           </div>
                         )}
                         {graphRagEnabled && (
@@ -864,7 +880,7 @@ export default function CheckoutPage() {
                               marginBottom: '4px',
                             }}
                           >
-                            최신 기술 Graph RAG 적용
+                            {t('checkout.addon.graphRag')}
                           </div>
                         )}
                         {documentSecurityEnabled && (
@@ -875,7 +891,7 @@ export default function CheckoutPage() {
                               marginBottom: '4px',
                             }}
                           >
-                            문서보안등급별 접근 제어
+                            {t('checkout.addon.docSec')}
                           </div>
                         )}
                         {aiAnswerEnabled && (
@@ -886,51 +902,52 @@ export default function CheckoutPage() {
                               marginBottom: '4px',
                             }}
                           >
-                            문맥 기반 AI 답변 적용
+                            {t('checkout.addon.aiAnswer')}
                           </div>
                         )}
                       </div>
                     ) : (
-                      <span>선택 안함</span>
+                      <span>{t('checkout.summary.none')}</span>
                     )}
                   </SummaryDetail>
                   <SummaryDetail>
-                    추가 토큰 팩: {tokenPackCount} × ₩13,000/월
+                    {t('checkout.summary.extraTokens')}: {tokenPackCount} ×
+                    ₩13,000/월
                   </SummaryDetail>
                   <SummaryDetail>
-                    VAT 포함: {vatEnabled ? 'OFF' : 'OFF'}
+                    {t('checkout.summary.vatOn')}: {vatEnabled ? 'OFF' : 'OFF'}
                   </SummaryDetail>
                 </SummaryDetails>
               </SummaryItem>
               <Divider />
               <PriceBreakdownSection>
                 <PriceBreakdownItem>
-                  <span>월 반복 비용</span>
+                  <span>{t('checkout.summary.monthly')}</span>
                   <span>₩{Math.round(monthlyTotal).toLocaleString()}</span>
                 </PriceBreakdownItem>
                 <PriceBreakdownItem>
-                  <span>1회성 구축비</span>
+                  <span>{t('checkout.summary.oneTime')}</span>
                   <span>₩{Math.round(addOnTotal).toLocaleString()}</span>
                 </PriceBreakdownItem>
                 <PriceBreakdownItem>
-                  <span>첫 청구 예상 비용(월과금)</span>
+                  <span>{t('checkout.summary.firstBill')}</span>
                   <span>₩{Math.round(finalTotal).toLocaleString()}</span>
                 </PriceBreakdownItem>
               </PriceBreakdownSection>
               <Divider />
               <TotalSection>
-                <TotalLabel>총 계약 금액</TotalLabel>
+                <TotalLabel>{t('checkout.summary.total')}</TotalLabel>
                 <TotalPrice>
                   ₩{Math.round(finalTotal).toLocaleString()}
                 </TotalPrice>
               </TotalSection>
               <TaxDetailsSection>
                 <TaxDetailItem>
-                  <span>선결제 적용 (추가 0.2%)</span>
+                  <span>{t('checkout.summary.prepayApply')}</span>
                   <span>₩{Math.round(prepayDiscount).toLocaleString()}</span>
                 </TaxDetailItem>
                 <TaxDetailItem>
-                  <span>VAT 포함</span>
+                  <span>{t('checkout.summary.vatIncl')}</span>
                   <span>₩{Math.round(finalTotal).toLocaleString()}</span>
                 </TaxDetailItem>
               </TaxDetailsSection>
@@ -944,9 +961,9 @@ export default function CheckoutPage() {
                     state={vatEnabled ? 'checked' : 'unchecked'}
                     onChange={(checked) => setVatEnabled(checked)}
                   />
-                  <span>세금/VAT 포함</span>
+                  <span>{t('checkout.vat.toggle')}</span>
                 </VatToggle>
-                <VatRate>VAT 10%</VatRate>
+                <VatRate>{t('checkout.vat.rate')}</VatRate>
               </VatToggleWrapper>
 
               <ButtonGroup>
@@ -955,21 +972,21 @@ export default function CheckoutPage() {
                   size='large'
                   onClick={handleCheckout}
                 >
-                  구매하기
+                  {t('checkout.buttons.buy')}
                 </SolidButton>
                 <SolidButton
                   variant='secondary'
                   size='large'
                   onClick={() => alert('문의하기')}
                 >
-                  문의하기
+                  {t('checkout.buttons.contact')}
                 </SolidButton>
                 <SolidButton
                   variant='secondary'
                   size='large'
                   onClick={() => alert('PDF 다운로드')}
                 >
-                  <span>↓</span> PDF 다운로드
+                  <span>↓</span> {t('checkout.buttons.pdf')}
                 </SolidButton>
               </ButtonGroup>
             </BottomSection>

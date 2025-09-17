@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { IconButton } from '@cubig/design-system';
 import { color, radius, typography, textColor } from '@cubig/design-system';
@@ -17,44 +18,46 @@ interface CarouselSectionProps {
   slides?: SlideData[];
 }
 
-const defaultSlides: SlideData[] = [
+const defaultSlidesKo: SlideData[] = [
   {
     image: '/images/background_01.png',
     video: '/images/background_01.mp4',
     content: '/images/Content_1.svg',
-    title: '실시간 프롬프트 필터링',
-    description:
-      '프롬프트 입력 시 이름, 연락처, 계좌번호 등 민감정보를 즉시 감지하고 자동 가명화하여 유출을 방지합니다. 사용자가 인식하지 못하는 사이에 모든 개인정보가 안전하게 보호됩니다.',
+    title: '',
+    description: '',
   },
   {
     image: '/images/background_03.png',
     video: '/images/background_03.mp4',
     content: '/images/Content_2.svg',
-    title: '문서 내 민감정보 탐지',
-    description:
-      '업로드/첨부되는 각종 문서에서도 민감정보를 실시간으로 탐지하여 자동 가명화 또는 마스킹 처리합니다. AI가 대량의 문서 속 숨겨진 개인정보까지 놓치지 않고 안전하게 관리합니다.',
+    title: '',
+    description: '',
   },
   {
     image: '/images/background_02.png',
     video: '/images/background_02.mp4',
     content: '/images/Content_3.svg',
-    title: '문맥 기반 정보 탐지',
-    description:
-      '단어 단위가 아닌, 문맥적 의미까지 AI가 이해하여 지능적으로 탐지합니다. 개인정보뿐만 아니라, 회사별/산업별 중요정보까지 보호할 수 있습니다.',
+    title: '',
+    description: '',
   },
   {
     image: '/images/background_03.png',
     video: '/images/background_03.mp4',
     content: '/images/Content_4.svg',
-    title: 'ON-PREMISE 독립 운영',
-    description:
-      '외부 클라우드 없이 사내망 내에서 완전한 독립 설치가 가능하며, 더욱 더 안전한 이용이 가능합니다.  기업의 보안 정책에 완벽하게 부합하는 솔루션입니다.',
+    title: '',
+    description: '',
   },
 ];
 
-export default function CarouselSection({
-  slides = defaultSlides,
-}: CarouselSectionProps) {
+export default function CarouselSection({ slides }: CarouselSectionProps) {
+  const { t, i18n } = useTranslation('common');
+  // 언어별 기본 슬라이드 준비 (간단히 common에 키 추가하기보다 현재 텍스트 사용)
+  const defaultSlides = defaultSlidesKo.map((s, idx) => ({
+    ...s,
+    title: t(`carousel.slides.${idx}.title`),
+    description: t(`carousel.slides.${idx}.description`),
+  }));
+  const finalSlides = (slides ?? defaultSlides) as SlideData[];
   const [currentSlide, setCurrentSlide] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -96,7 +99,7 @@ export default function CarouselSection({
 
   const handlePreviousSlide = () => {
     setCurrentSlide((prev) => {
-      const nextIndex = prev === 0 ? slides.length - 1 : prev - 1;
+      const nextIndex = prev === 0 ? finalSlides.length - 1 : prev - 1;
       const prevVideo = videoRefs.current[nextIndex];
       if (prevVideo) {
         try {
@@ -112,7 +115,7 @@ export default function CarouselSection({
 
   const handleNextSlide = (reset = true) => {
     setCurrentSlide((prev) => {
-      const nextIndex = prev === slides.length - 1 ? 0 : prev + 1;
+      const nextIndex = prev === finalSlides.length - 1 ? 0 : prev + 1;
       const nextVideo = videoRefs.current[nextIndex];
       if (nextVideo) {
         try {
@@ -159,7 +162,7 @@ export default function CarouselSection({
   return (
     <CarouselContainer>
       <SvgWrapper>
-        {slides.map((slide, index) => (
+        {finalSlides.map((slide, index) => (
           <Slide key={index} $active={index === currentSlide}>
             {slide.video ? (
               <BackgroundVideo

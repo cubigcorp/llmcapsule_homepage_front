@@ -1,17 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { spacing, TextButton, SolidButton } from '@cubig/design-system';
+import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 import { authService } from '@/services/auth';
 import { isDevStage } from '@/utils/env';
 import type { UserInfo } from '@/utils/api';
 import ArrowDownIcon from '@/assets/icons/icon_arrow-down.svg';
 export default function Header() {
   const pathname = usePathname();
+  const { t } = useTranslation('common');
   const [isAuthPage, setIsAuthPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,7 +55,7 @@ export default function Header() {
       if (loggedIn) {
         try {
           const response = await authService.getMyInfo();
-          setUserInfo(response.data);
+          setUserInfo(response.data || null);
         } catch (error) {
           console.error('사용자 정보 조회 실패:', error);
           // 토큰이 유효하지 않은 경우 로그아웃 처리
@@ -120,11 +123,12 @@ export default function Header() {
           </Leading>
 
           <ButtonGroup>
+            <LanguageSwitcher />
             {isLoggedIn ? (
               <>
                 <Link href='/contact'>
                   <SolidButton variant='primary' size='medium'>
-                    문의하기
+                    {t('header.contact')}
                   </SolidButton>
                 </Link>
                 <Link href='/mypage'>
@@ -144,13 +148,13 @@ export default function Header() {
                 {isDevStage && (
                   <Link href='/login'>
                     <TextButton variant='primary' size='medium'>
-                      로그인
+                      {t('header.login')}
                     </TextButton>
                   </Link>
                 )}
                 <Link href='/contact'>
                   <SolidButton variant='primary' size='medium'>
-                    문의하기
+                    {t('header.contact')}
                   </SolidButton>
                 </Link>
               </>

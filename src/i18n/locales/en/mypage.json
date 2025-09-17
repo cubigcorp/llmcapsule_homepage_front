@@ -1,0 +1,182 @@
+{
+  "title": "My Page",
+  "subtitle": "Easily check your account info and subscription status.",
+  "stats": {
+    "usingPlan": "Active Plans",
+    "activeSerial": "Activated Serials",
+    "nextPayment": "Next Payment Date"
+  },
+  "plan": {
+    "title": "Active Plan",
+    "number": "Plan Number",
+    "manage": "Manage Plan",
+    "receipt": "View Receipt",
+    "nextPayment": "Next Payment Date"
+  },
+  "empty": {
+    "title": "No active plan.",
+    "desc": "Choose a plan and get started.",
+    "cta": "Find the right plan"
+  },
+  "support": {
+    "title": "Support",
+    "guide": "Product Guide",
+    "guideDesc": "Learn how to use LLM Capsule with the product guide.",
+    "contact": "Contact Us",
+    "contactDesc": "If you have questions or need help, contact us anytime."
+  },
+  "account": {
+    "edit": "Edit Profile",
+    "contact": "Contact",
+    "org": "Company/Organization",
+    "user": "User"
+  },
+  "lnb": {
+    "title": "My Page",
+    "bottom": {
+      "contact": "Contact Us",
+      "logout": "Logout"
+    },
+    "groups": {
+      "account": "Account",
+      "payment": "Payment",
+      "resources": "Resources"
+    },
+    "items": {
+      "home": "Home",
+      "profile": "Edit Profile",
+      "checkout": "Plan Management",
+      "download": "App Download"
+    }
+  },
+  "profile": {
+    "title": "Edit Profile",
+    "subtitle": "Manage your account settings like contact and preferences.",
+    "sectionUser": "User Information",
+    "fields": {
+      "name": "Name",
+      "phone": "Contact",
+      "org": "Company/Organization"
+    },
+    "edit": "Edit",
+    "sectionAccount": "Account Management",
+    "changePassword": "Change Password",
+    "changePasswordDesc": "You can update your current password to a new one.",
+    "deleteAccount": "Delete Account",
+    "deleteAccountDesc": "Permanently delete your LLM Capsule account.",
+    "deleteAccountBtn": "Delete Account",
+    "loading": "Loading..."
+  },
+  "checkout": {
+    "title": "Estimator",
+    "subtitle": "Easily calculate and compare plans for your business.",
+    "planSelect": "Select Plan",
+    "tokenBased": "Token based",
+    "planGuide": "Use the slider to set monthly estimated token usage.",
+    "selectedPlan": "Selected Plan",
+    "planNameSuffix": " Plan",
+    "tokenUsage": "Token Usage",
+    "tokenUnit": "tokens",
+    "breakdown": {
+      "title": "Token Breakdown",
+      "ratio": "Input/Output 6:4",
+      "total": "Total",
+      "input": "Input",
+      "output": "Output"
+    },
+    "convert": {
+      "title": "Character/Page Conversion",
+      "assumption": "Assumption",
+      "ko": "Korean",
+      "en": "English",
+      "charUnit": "chars",
+      "pageUnit": "pages",
+      "estimate": "Estimated",
+      "note": "Assumption: KO 1 token≈1.6 chars, EN 1 token≈4.5 chars, A4 1 page≈2,200 chars (KO) / 3,600 chars (EN)"
+    },
+    "users": {
+      "title": "Users",
+      "label": "Number of users",
+      "step": "+50"
+    },
+    "contract": {
+      "title": "Contract Period",
+      "desc": "Period discounts may vary by policy.",
+      "monthsSuffix": "mo",
+      "discount": "Discount",
+      "prepay": "Prepay",
+      "lumpSum": "Lump sum",
+      "pct": "0.2%",
+      "prepayDesc": "Period discounts may vary by policy."
+    },
+    "addon": {
+      "title": "Add-on (one-time)",
+      "desc": "No period/prepayment discounts apply.",
+      "security": "Structured sensitive keyword setup",
+      "none": "None",
+      "count5": "5 items",
+      "count8": "8 items",
+      "count12": "12 items",
+      "admin": "Admin Console Setup",
+      "adminNote": "Recommended price at optimal size: ₩25,000,000",
+      "range100_200": "100 - 200",
+      "range200_500": "200 - 500",
+      "range500p": "500+",
+      "module": "Unstructured sensitive info module",
+      "basic": "Basic module",
+      "noneShort": "None",
+      "filter5": "5 filters",
+      "filter8": "8 filters",
+      "filter12": "12 filters",
+      "others": "Other modules",
+      "rag": "RAG System",
+      "graphRag": "Graph RAG (latest)",
+      "docSec": "Document security access control",
+      "aiAnswer": "Context-based AI answer"
+    },
+    "repeat": {
+      "title": "Recurring Cost (Add-on)",
+      "desc": "Extra token pack",
+      "unit": "per 100k tokens / month"
+    },
+    "tokenInfo": {
+      "title": "Token/Model Cost Notice",
+      "b1": "• Seat(Base): Includes plan token Cap. No extra charge within Cap.",
+      "b2": "• Over-Cap policy: Block or purchase more.",
+      "b3": "• Seat(Base): Includes plan token Cap. No extra charge within Cap."
+    },
+    "summary": {
+      "title": "Summary",
+      "selectedSpec": "Selected options total",
+      "selectedPlan": "Selected Plan",
+      "users": "Users",
+      "contract": "Contract",
+      "discount": "Discount",
+      "prepay": "Prepay",
+      "yesWith": "Yes (extra 0.2%)",
+      "no": "No",
+      "security": "Structured keywords setup",
+      "admin": "Admin Console setup",
+      "module": "Unstructured module",
+      "others": "Others",
+      "none": "None",
+      "extraTokens": "Extra token pack",
+      "vatOn": "VAT included",
+      "monthly": "Monthly recurring cost",
+      "oneTime": "One-time build cost",
+      "firstBill": "First bill estimate (monthly)",
+      "total": "Total contract amount",
+      "prepayApply": "Prepay applied (extra 0.2%)",
+      "vatIncl": "VAT included"
+    },
+    "buttons": {
+      "buy": "Purchase",
+      "contact": "Contact Us",
+      "pdf": "Download PDF"
+    },
+    "vat": {
+      "toggle": "Include VAT",
+      "rate": "VAT 10%"
+    }
+  }
+}

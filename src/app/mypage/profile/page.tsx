@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import {
   TextButton,
@@ -17,6 +18,7 @@ import type { UserInfo } from '@/utils/api';
 
 export default function ProfilePage() {
   const router = useRouter();
+  const { t } = useTranslation('mypage');
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -47,29 +49,27 @@ export default function ProfilePage() {
   };
 
   if (loading) {
-    return <LoadingContainer>로딩 중...</LoadingContainer>;
+    return <LoadingContainer>{t('profile.loading')}</LoadingContainer>;
   }
 
   return (
     <Container>
       <FormContainer>
         <Header>
-          <Title>회원정보 수정</Title>
-          <Subtitle>
-            연락처, 기본 설정 등 내 계정 정보를 관리할 수 있습니다.
-          </Subtitle>
+          <Title>{t('profile.title')}</Title>
+          <Subtitle>{t('profile.subtitle')}</Subtitle>
         </Header>
 
         <Content>
           <Section>
-            <SectionTitle>회원 정보</SectionTitle>
+            <SectionTitle>{t('profile.sectionUser')}</SectionTitle>
 
             <UserInfoContainer>
               <InfoField>
                 <InfoContent>
                   <InfoLabelRow>
-                    <InfoLabel>이름</InfoLabel>
-                    <EditButton size='small'>수정</EditButton>
+                    <InfoLabel>{t('profile.fields.name')}</InfoLabel>
+                    <EditButton size='small'>{t('profile.edit')}</EditButton>
                   </InfoLabelRow>
                   <InfoValue>
                     {userInfo?.last_name && userInfo?.first_name
@@ -84,8 +84,8 @@ export default function ProfilePage() {
               <InfoField>
                 <InfoContent>
                   <InfoLabelRow>
-                    <InfoLabel>연락처</InfoLabel>
-                    <EditButton size='small'>수정</EditButton>
+                    <InfoLabel>{t('profile.fields.phone')}</InfoLabel>
+                    <EditButton size='small'>{t('profile.edit')}</EditButton>
                   </InfoLabelRow>
                   <InfoValue>{userInfo?.phone || '01012345678'}</InfoValue>
                 </InfoContent>
@@ -96,8 +96,8 @@ export default function ProfilePage() {
               <InfoField>
                 <InfoContent>
                   <InfoLabelRow>
-                    <InfoLabel>회사/소속기관명</InfoLabel>
-                    <EditButton size='small'>수정</EditButton>
+                    <InfoLabel>{t('profile.fields.org')}</InfoLabel>
+                    <EditButton size='small'>{t('profile.edit')}</EditButton>
                   </InfoLabelRow>
                   <InfoValue>{userInfo?.organization_name || '큐빅'}</InfoValue>
                 </InfoContent>
@@ -106,22 +106,20 @@ export default function ProfilePage() {
           </Section>
 
           <Section>
-            <SectionTitle>계정 관리</SectionTitle>
+            <SectionTitle>{t('profile.sectionAccount')}</SectionTitle>
 
             <AccountContainer>
               <InfoField>
                 <InfoContent>
-                  <InfoLabel>비밀번호 변경</InfoLabel>
-                  <InfoValue>
-                    현재 비밀번호를 새 비밀번호로 업데이트할 수 있습니다.
-                  </InfoValue>
+                  <InfoLabel>{t('profile.changePassword')}</InfoLabel>
+                  <InfoValue>{t('profile.changePasswordDesc')}</InfoValue>
                 </InfoContent>
                 <SolidButton
                   variant='secondary'
                   size='small'
                   onClick={handlePasswordChange}
                 >
-                  변경
+                  {t('profile.edit')}
                 </SolidButton>
               </InfoField>
 
@@ -129,17 +127,15 @@ export default function ProfilePage() {
 
               <InfoField>
                 <InfoContent>
-                  <InfoLabel>회원 탈퇴</InfoLabel>
-                  <InfoValue>
-                    LLM Capsule 계정을 영구적으로 삭제합니다.
-                  </InfoValue>
+                  <InfoLabel>{t('profile.deleteAccount')}</InfoLabel>
+                  <InfoValue>{t('profile.deleteAccountDesc')}</InfoValue>
                 </InfoContent>
                 <SolidButton
                   variant='secondary'
                   size='small'
                   onClick={handleDeleteAccount}
                 >
-                  회원 탈퇴
+                  {t('profile.deleteAccountBtn')}
                 </SolidButton>
               </InfoField>
             </AccountContainer>

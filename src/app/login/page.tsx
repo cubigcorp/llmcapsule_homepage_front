@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useGoogleLogin } from '@react-oauth/google';
 import styled from 'styled-components';
 import Link from 'next/link';
@@ -22,6 +23,7 @@ interface GoogleTokenResponse {
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useTranslation('auth');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -68,10 +70,10 @@ export default function LoginPage() {
         router.push('/mypage');
       } else {
         // 로그인 실패 시 에러 메시지 표시
-        setPasswordError('이메일 또는 비밀번호가 일치하지 않습니다.');
+        setPasswordError(t('login.error.invalid'));
       }
     } catch {
-      setPasswordError('이메일 또는 비밀번호가 일치하지 않습니다.');
+      setPasswordError(t('login.error.invalid'));
     }
   };
 
@@ -118,15 +120,15 @@ export default function LoginPage() {
             });
             window.location.href = `/signup/verify?${params.toString()}`;
           } else {
-            alert('구글 이메일 인증에 실패했습니다.');
+            alert(t('signup.google.verifyFail'));
           }
         }
       } catch {
-        alert('구글 로그인 중 오류가 발생했습니다.');
+        alert(t('login.error.google'));
       }
     },
     onError: () => {
-      alert('구글 로그인에 실패했습니다.');
+      alert(t('login.error.googleFail'));
     },
   });
 
@@ -155,16 +157,16 @@ export default function LoginPage() {
         </LogoWrapper>
         <LoginLeft>
           <LoginForm>
-            <LoginTitle>로그인</LoginTitle>
+            <LoginTitle>{t('login.title')}</LoginTitle>
 
             <FormField>
               <TextField
-                label='이메일'
+                label={t('login.email')}
                 labelType='required'
                 size='large'
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                placeholder='email@example.com'
+                placeholder={t('login.placeholder.email')}
                 description={emailError}
                 status={emailError ? 'negative' : 'default'}
               />
@@ -172,13 +174,13 @@ export default function LoginPage() {
 
             <FormField>
               <TextField
-                label='비밀번호'
+                label={t('login.password')}
                 labelType='required'
                 size='large'
                 type='password'
                 value={formData.password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
-                placeholder='비밀번호를 입력해주세요.'
+                placeholder={t('login.placeholder.password')}
                 description={passwordError}
                 status={passwordError ? 'negative' : 'default'}
               />
@@ -189,13 +191,13 @@ export default function LoginPage() {
               onClick={handleLogin}
               disabled={!isLoginButtonEnabled()}
             >
-              로그인
+              {t('login.button.login')}
             </LoginButton>
 
             <HelperText>
               <Link href='/reset-password'>
                 <TextButton variant='primary' size='small'>
-                  비밀번호 찾기
+                  {t('login.helper.forgot')}
                 </TextButton>
               </Link>
             </HelperText>
@@ -210,14 +212,14 @@ export default function LoginPage() {
               leadingIcon={GoogleIcon}
               onClick={handleGoogleLogin}
             >
-              구글 계정으로 로그인
+              {t('login.button.google')}
             </GoogleButton>
 
             <SignupText>
-              처음 방문하시나요?{' '}
+              {t('login.helper.signupPrompt')}{' '}
               <Link href='/signup'>
                 <TextButton variant='secondary' size='small'>
-                  회원가입
+                  {t('login.helper.signup')}
                 </TextButton>
               </Link>
             </SignupText>
