@@ -177,6 +177,25 @@
     "vat": {
       "toggle": "세금/VAT 포함",
       "rate": "VAT 10%"
+    },
+    "success": {
+      "title": "결제가 완료되었습니다.",
+      "orderNumber": "주문번호",
+      "plan": "플랜:",
+      "quantity": "수량:",
+      "period": "기간:",
+      "prepay": "선결제:",
+      "extraTokens": "추가 토큰 팩:",
+      "vatIncluded": "VAT 포함:",
+      "monthlyFee": "월 반복 비용",
+      "oneTimeFee": "1회성 구축비",
+      "firstBill": "첫 청구 예상 비용(월과금)",
+      "total": "Total",
+      "prepayApply": "선결제 적용 (추가 2%)",
+      "vatFinal": "VAT 포함",
+      "notice": "LLM Capsule B2B 제품은 조직도 및 서버, DB 구축 등의 작업이 필요해 평균 2-3개월 정도의 도입기간이 소요됩니다.\n결제 완료시 3영업일 이내로 연락드리도록 하겠습니다. 연락받으실 이메일, 번호를 확인해주세요.",
+      "downloadPdf": "PDF 다운로드",
+      "managePlan": "플랜관리"
     }
   },
   "download": {

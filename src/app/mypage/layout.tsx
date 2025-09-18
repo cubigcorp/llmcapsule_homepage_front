@@ -39,7 +39,7 @@ export default function MyPageLayout({
       return;
     }
 
-    setIsAuthenticated(true);
+    setIsAuthenticated(false);
   }, [router]);
 
   const handleLogout = async () => {
@@ -67,7 +67,7 @@ export default function MyPageLayout({
   };
 
   const handlePlanManagementClick = () => {
-    console.log('플랜 관리 클릭');
+    router.push('/checkout');
   };
 
   const handleAppDownloadClick = () => {
@@ -120,7 +120,7 @@ export default function MyPageLayout({
               value={t('lnb.items.checkout')}
               onClick={handlePlanManagementClick}
               leadingIcon={WalletIcon}
-              selected={pathname === '/mypage/checkout'}
+              selected={pathname === '/checkout'}
             />
           </LNBItemGroup>
           <LNBItemGroup title={t('lnb.groups.resources')}>
