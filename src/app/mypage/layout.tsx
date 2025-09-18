@@ -39,7 +39,7 @@ export default function MyPageLayout({
       return;
     }
 
-    setIsAuthenticated(false);
+    setIsAuthenticated(true);
   }, [router]);
 
   const handleLogout = async () => {
