@@ -16,7 +16,7 @@ export type { SupportedLanguage };
 export const defaultLanguage: SupportedLanguage = 'ko';
 
 // 클라이언트에서만 i18n 초기화 (핫리로드/중복 방지)
-if (typeof window !== 'undefined' && !i18n.isInitialized) {
+if (!i18n.isInitialized) {
   i18n
     .use(LanguageDetector)
     .use(initReactI18next)
@@ -38,6 +38,8 @@ if (typeof window !== 'undefined' && !i18n.isInitialized) {
         bindI18n: 'languageChanged',
         bindI18nStore: 'added removed',
       },
+      // Hydration 문제 해결을 위한 설정
+      lng: defaultLanguage, // 초기 언어를 명시적으로 설정
       debug: false,
     });
 }

@@ -56,9 +56,16 @@
     "fields": {
       "name": "Name",
       "phone": "Contact",
-      "org": "Company/Organization"
+      "org": "Company/Organization",
+      "lastName": "Last Name",
+      "firstName": "First Name",
+      "lastNamePlaceholder": "Enter your last name",
+      "firstNamePlaceholder": "Enter your first name"
     },
     "edit": "Edit",
+    "editName": "Edit Name",
+    "cancel": "Cancel",
+    "save": "Save",
     "sectionAccount": "Account Management",
     "changePassword": "Change Password",
     "changePasswordDesc": "You can update your current password to a new one.",

@@ -8,10 +8,12 @@ import {
   TextButton,
   SolidButton,
   Divider,
+  TextField,
   color,
   textColor,
   borderColor,
   typography,
+  Modal,
 } from '@cubig/design-system';
 import { authService } from '@/services/auth';
 import type { UserInfo } from '@/utils/api';
@@ -21,6 +23,11 @@ export default function ProfilePage() {
   const { t } = useTranslation('mypage');
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isNameModalOpen, setIsNameModalOpen] = useState(false);
+  const [nameForm, setNameForm] = useState({
+    lastName: '',
+    firstName: '',
+  });
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -37,6 +44,41 @@ export default function ProfilePage() {
 
     fetchUserInfo();
   }, []);
+
+  const handleNameEdit = () => {
+    // 현재 이름으로 폼 초기화
+    setNameForm({
+      lastName: userInfo?.last_name || '',
+      firstName: userInfo?.first_name || '',
+    });
+    setIsNameModalOpen(true);
+  };
+
+  const handleNameSave = async () => {
+    try {
+      // TODO: 이름 수정 API 호출
+      console.log('Saving name:', nameForm);
+
+      // 임시로 로컬 상태 업데이트
+      setUserInfo((prev) =>
+        prev
+          ? {
+              ...prev,
+              last_name: nameForm.lastName,
+              first_name: nameForm.firstName,
+            }
+          : null
+      );
+
+      setIsNameModalOpen(false);
+    } catch (error) {
+      console.error('Failed to save name:', error);
+    }
+  };
+
+  const handleNameCancel = () => {
+    setIsNameModalOpen(false);
+  };
 
   const handlePasswordChange = () => {
     // TODO: 비밀번호 변경 로직
@@ -69,7 +111,9 @@ export default function ProfilePage() {
                 <InfoContent>
                   <InfoLabelRow>
                     <InfoLabel>{t('profile.fields.name')}</InfoLabel>
-                    <EditButton size='small'>{t('profile.edit')}</EditButton>
+                    <EditButton size='small' onClick={handleNameEdit}>
+                      {t('profile.edit')}
+                    </EditButton>
                   </InfoLabelRow>
                   <InfoValue>
                     {userInfo?.last_name && userInfo?.first_name
@@ -142,6 +186,48 @@ export default function ProfilePage() {
           </Section>
         </Content>
       </FormContainer>
+
+      {/* 이름 수정 Modal */}
+      <Modal
+        open={isNameModalOpen}
+        onClose={handleNameCancel}
+        title={t('profile.editName')}
+        size='small'
+        actions={
+          <ModalActions>
+            <SolidButton variant='secondary' onClick={handleNameCancel}>
+              {t('profile.cancel')}
+            </SolidButton>
+            <SolidButton variant='primary' onClick={handleNameSave}>
+              {t('profile.save')}
+            </SolidButton>
+          </ModalActions>
+        }
+      >
+        <ModalContent>
+          <NameFieldsContainer>
+            <TextField
+              label={t('profile.fields.lastName')}
+              value={nameForm.lastName}
+              onChange={(e) =>
+                setNameForm((prev) => ({ ...prev, lastName: e.target.value }))
+              }
+              placeholder={t('profile.fields.lastNamePlaceholder')}
+            />
+            <TextField
+              label={t('profile.fields.firstName')}
+              value={nameForm.firstName}
+              onChange={(e) =>
+                setNameForm((prev) => ({
+                  ...prev,
+                  firstName: e.target.value,
+                }))
+              }
+              placeholder={t('profile.fields.firstNamePlaceholder')}
+            />
+          </NameFieldsContainer>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 }
@@ -248,4 +334,21 @@ const LoadingContainer = styled.div`
   height: 400px;
   ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const NameFieldsContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const ModalActions = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 8px;
+  justify-content: flex-end;
 `;

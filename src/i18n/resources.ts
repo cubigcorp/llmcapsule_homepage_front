@@ -1,5 +1,3 @@
-'use client';
-
 // 번역 리소스를 정적으로 import (Next.js App Router, client-only)
 import koCommon from './locales/ko/common.json';
 import enCommon from './locales/en/common.json';
