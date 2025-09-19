@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import Image from 'next/image';
 import {
   TextButton,
   SolidButton,
   Divider,
   TextField,
+  Dropdown,
   color,
   textColor,
   borderColor,
@@ -17,6 +19,7 @@ import {
 } from '@cubig/design-system';
 import { authService } from '@/services/auth';
 import type { UserInfo } from '@/utils/api';
+import { countries } from '@/utils/countries';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -32,6 +35,25 @@ export default function ProfilePage() {
     lastName: '',
     firstName: '',
   });
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [contactForm, setContactForm] = useState({
+    country: '',
+    contactNumber: '',
+  });
+  const [contactErrors, setContactErrors] = useState({
+    country: '',
+    contactNumber: '',
+  });
+  const [isVerificationSent, setIsVerificationSent] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [verificationError, setVerificationError] = useState('');
+  const [isVerificationCompleted, setIsVerificationCompleted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(120);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<{
+    value: string;
+    label: string;
+  } | null>(null);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -140,6 +162,154 @@ export default function ProfilePage() {
     console.log('Change password');
   };
 
+  const handleContactEdit = () => {
+    setContactForm({
+      country: '',
+      contactNumber: '',
+    });
+    setContactErrors({
+      country: '',
+      contactNumber: '',
+    });
+    setIsVerificationSent(false);
+    setVerificationCode('');
+    setVerificationError('');
+    setIsVerificationCompleted(false);
+    setIsTimerRunning(false);
+    setSelectedCountry(null);
+    setIsContactModalOpen(true);
+  };
+
+  const handleContactCancel = () => {
+    setIsContactModalOpen(false);
+  };
+
+  const handleContactInputChange = (field: string, value: string) => {
+    setContactForm((prev) => ({ ...prev, [field]: value }));
+
+    if (field === 'contactNumber') {
+      const numericValue = value.replace(/[^0-9]/g, '');
+      setContactForm((prev) => ({ ...prev, contactNumber: numericValue }));
+    }
+  };
+
+  const handleCountryChange = (value: string) => {
+    setContactForm((prev) => ({ ...prev, country: value }));
+    const country = countries.find((c) => c.value === value);
+    if (country) {
+      setSelectedCountry(country);
+      setContactErrors((prev) => ({ ...prev, country: '' }));
+    } else {
+      setSelectedCountry(null);
+    }
+  };
+
+  const extractCountryCode = (countryValue: string): string => {
+    const match = countryValue.match(/\+(\d+)/);
+    return match ? match[1] : '';
+  };
+
+  const startTimer = () => {
+    setTimeLeft(120);
+    setIsTimerRunning(true);
+    setVerificationError('');
+  };
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isTimerRunning && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            setIsTimerRunning(false);
+            setVerificationError(
+              '인증 시간이 만료되었습니다. 다시 시도해 주세요.'
+            );
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isTimerRunning, timeLeft]);
+
+  const handleRequestVerification = async () => {
+    if (!contactForm.contactNumber.trim()) {
+      setContactErrors((prev) => ({
+        ...prev,
+        contactNumber: '휴대폰 번호를 입력해주세요.',
+      }));
+      return;
+    }
+    if (!selectedCountry) {
+      setContactErrors((prev) => ({
+        ...prev,
+        country: '국가를 선택해주세요.',
+      }));
+      return;
+    }
+
+    setContactErrors({
+      country: '',
+      contactNumber: '',
+    });
+
+    setIsVerificationSent(true);
+    startTimer();
+  };
+
+  const handleVerifyCode = async () => {
+    if (!verificationCode) {
+      setVerificationError('인증번호를 입력해 주세요.');
+      return;
+    }
+
+    setVerificationError('');
+
+    if (verificationCode === '1234') {
+      setIsVerificationCompleted(true);
+      setIsTimerRunning(false);
+      setVerificationError('');
+    } else {
+      setVerificationError('인증번호가 일치하지 않습니다.');
+    }
+  };
+
+  const handleResendCode = async () => {
+    startTimer();
+  };
+
+  const handleContactChange = async () => {
+    if (!contactForm.contactNumber.trim()) {
+      setContactErrors((prev) => ({
+        ...prev,
+        contactNumber: '휴대폰 번호를 입력해주세요.',
+      }));
+      return;
+    }
+    if (!selectedCountry) {
+      setContactErrors((prev) => ({
+        ...prev,
+        country: '국가를 선택해주세요.',
+      }));
+      return;
+    }
+    if (!isVerificationCompleted) {
+      setVerificationError('인증을 완료해주세요.');
+      return;
+    }
+
+    console.log('Contact changed successfully');
+    setIsContactModalOpen(false);
+  };
+
   const handleDeleteAccount = () => {
     console.log('Delete account');
   };
@@ -183,7 +353,9 @@ export default function ProfilePage() {
                 <InfoContent>
                   <InfoLabelRow>
                     <InfoLabel>{t('profile.fields.phone')}</InfoLabel>
-                    <EditButton size='small'>{t('profile.edit')}</EditButton>
+                    <EditButton size='small' onClick={handleContactEdit}>
+                      {t('profile.edit')}
+                    </EditButton>
                   </InfoLabelRow>
                   <InfoValue>{userInfo?.phone || '01012345678'}</InfoValue>
                 </InfoContent>
@@ -245,7 +417,7 @@ export default function ProfilePage() {
       <Modal
         open={isNameModalOpen}
         onClose={handleNameCancel}
-        title={t('profile.editName')}
+        title={t('profile.changeName')}
         size='small'
         actions={
           <ModalActions>
@@ -286,6 +458,120 @@ export default function ProfilePage() {
               status={nameErrors.firstName ? 'negative' : 'default'}
             />
           </NameFieldsContainer>
+        </ModalContent>
+      </Modal>
+
+      {/* 연락처 변경 Modal */}
+      <Modal
+        open={isContactModalOpen}
+        onClose={handleContactCancel}
+        title={t('profile.changeContact')}
+        size='small'
+        actions={
+          <ModalActions>
+            <SolidButton variant='secondary' onClick={handleContactCancel}>
+              {t('profile.cancel')}
+            </SolidButton>
+            {!isVerificationSent ? (
+              <SolidButton
+                variant='primary'
+                onClick={handleRequestVerification}
+                disabled={
+                  !contactForm.country || !contactForm.contactNumber.trim()
+                }
+              >
+                {t('profile.requestVerification')}
+              </SolidButton>
+            ) : (
+              <SolidButton
+                variant='primary'
+                onClick={handleContactChange}
+                disabled={!isVerificationCompleted}
+              >
+                {t('profile.change')}
+              </SolidButton>
+            )}
+          </ModalActions>
+        }
+      >
+        <ModalContent>
+          <ContactFieldsContainer>
+            <Dropdown
+              type='combobox'
+              label={t('profile.country')}
+              size='large'
+              value={contactForm.country}
+              onChange={handleCountryChange}
+              options={countries}
+              description={contactErrors.country}
+              status={contactErrors.country ? 'negative' : 'default'}
+            />
+            <TextField
+              label={t('profile.contactNumber')}
+              size='large'
+              value={contactForm.contactNumber}
+              onChange={(e) =>
+                handleContactInputChange('contactNumber', e.target.value)
+              }
+              placeholder='휴대폰 번호를 입력해 주세요.'
+              description={contactErrors.contactNumber}
+              status={contactErrors.contactNumber ? 'negative' : 'default'}
+              inputMode='numeric'
+              pattern='[0-9]*'
+            />
+          </ContactFieldsContainer>
+
+          {isVerificationSent && !isVerificationCompleted && (
+            <VerificationSection>
+              <VerificationRow>
+                <VerificationInputContainer>
+                  <TextField
+                    size='large'
+                    value={verificationCode}
+                    onChange={(e) => {
+                      setVerificationCode(e.target.value);
+                      if (verificationError) {
+                        setVerificationError('');
+                      }
+                    }}
+                    placeholder={t('profile.verificationCode')}
+                    description={verificationError}
+                    status={verificationError ? 'negative' : 'default'}
+                  />
+                  <VerificationActions>
+                    <ResendButton onClick={handleResendCode}>
+                      {t('profile.resendCode')}
+                    </ResendButton>
+                    {isTimerRunning && (
+                      <TimerContainer>
+                        <TimerText>
+                          <Image
+                            src={'/icons/Icon_history.svg'}
+                            alt='Timer'
+                            width={16}
+                            height={16}
+                          />
+                          <TimeText>{formatTime(timeLeft)}</TimeText>
+                          <RemainingText>
+                            {' '}
+                            {t('profile.timeRemaining')}
+                          </RemainingText>
+                        </TimerText>
+                      </TimerContainer>
+                    )}
+                  </VerificationActions>
+                </VerificationInputContainer>
+                <VerifyButton
+                  variant='secondary'
+                  size='large'
+                  onClick={handleVerifyCode}
+                  disabled={isVerificationCompleted}
+                >
+                  {t('profile.verify')}
+                </VerifyButton>
+              </VerificationRow>
+            </VerificationSection>
+          )}
         </ModalContent>
       </Modal>
     </Container>
@@ -411,4 +697,80 @@ const ModalActions = styled.div`
   width: 100%;
   gap: 8px;
   justify-content: flex-end;
+`;
+
+const ContactFieldsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const VerificationSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const VerificationRow = styled.div`
+  display: flex;
+  margin-top: 12px;
+  gap: 8px;
+  align-items: flex-start;
+`;
+
+const VerificationInputContainer = styled.div`
+  flex: 1;
+`;
+
+const VerificationActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+`;
+
+const ResendButton = styled.button`
+  background: none;
+  border: none;
+  color: ${textColor.light['fg-neutral-primary']};
+  text-decoration: underline;
+  cursor: pointer;
+  ${typography('ko', 'body2', 'medium')}
+
+  &:disabled {
+    color: ${textColor.light['fg-neutral-disable']};
+    cursor: not-allowed;
+    text-decoration: none;
+  }
+
+  &:hover:not(:disabled) {
+    color: ${textColor.light['fg-neutral-strong']};
+  }
+`;
+
+const TimerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+const TimerText = styled.span`
+  ${typography('ko', 'caption2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+const TimeText = styled.span`
+  ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const RemainingText = styled.span`
+  ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const VerifyButton = styled(SolidButton)`
+  width: 95px;
 `;
