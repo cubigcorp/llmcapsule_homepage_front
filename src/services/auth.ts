@@ -14,6 +14,7 @@ import type {
   UserInfo,
   PasswordResetRequestRequest,
   PasswordResetConfirmRequest,
+  UpdateUserRequest,
 } from '@/utils/api';
 
 /**
@@ -134,5 +135,12 @@ export const authService = {
    */
   async confirmPasswordReset(data: PasswordResetConfirmRequest) {
     return apiClient.post(API_ENDPOINTS.PASSWORD_RESET.CONFIRM, data);
+  },
+
+  /**
+   * 사용자 정보 업데이트
+   */
+  async updateUserInfo(data: UpdateUserRequest) {
+    return apiClient.patch(API_ENDPOINTS.USERS.ME, data);
   },
 };

@@ -151,6 +151,15 @@ export interface UserInfo {
   created_at: string;
 }
 
+export interface UpdateField {
+  field: string;
+  value: string;
+}
+
+export interface UpdateUserRequest {
+  update_fields: UpdateField[];
+}
+
 /**
  * 기본 API 클라이언트
  */

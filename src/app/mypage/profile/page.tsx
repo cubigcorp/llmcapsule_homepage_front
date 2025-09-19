@@ -28,6 +28,10 @@ export default function ProfilePage() {
     lastName: '',
     firstName: '',
   });
+  const [nameErrors, setNameErrors] = useState({
+    lastName: '',
+    firstName: '',
+  });
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -46,20 +50,52 @@ export default function ProfilePage() {
   }, []);
 
   const handleNameEdit = () => {
-    // 현재 이름으로 폼 초기화
     setNameForm({
       lastName: userInfo?.last_name || '',
       firstName: userInfo?.first_name || '',
+    });
+    setNameErrors({
+      lastName: '',
+      firstName: '',
     });
     setIsNameModalOpen(true);
   };
 
   const handleNameSave = async () => {
-    try {
-      // TODO: 이름 수정 API 호출
-      console.log('Saving name:', nameForm);
+    // 에러 초기화
+    setNameErrors({
+      lastName: '',
+      firstName: '',
+    });
 
-      // 임시로 로컬 상태 업데이트
+    if (!nameForm.lastName.trim()) {
+      setNameErrors((prev) => ({ ...prev, lastName: '성을 입력해 주세요.' }));
+      return;
+    }
+    if (!nameForm.firstName.trim()) {
+      setNameErrors((prev) => ({
+        ...prev,
+        firstName: '이름을 입력해 주세요.',
+      }));
+      return;
+    }
+
+    try {
+      const updateData = {
+        update_fields: [
+          {
+            field: 'last_name',
+            value: nameForm.lastName,
+          },
+          {
+            field: 'first_name',
+            value: nameForm.firstName,
+          },
+        ],
+      };
+
+      await authService.updateUserInfo(updateData);
+
       setUserInfo((prev) =>
         prev
           ? {
@@ -71,6 +107,7 @@ export default function ProfilePage() {
       );
 
       setIsNameModalOpen(false);
+      console.log('Name updated successfully');
     } catch (error) {
       console.error('Failed to save name:', error);
     }
@@ -80,13 +117,30 @@ export default function ProfilePage() {
     setIsNameModalOpen(false);
   };
 
+  const handleFirstNameBlur = () => {
+    if (!nameForm.firstName.trim()) {
+      setNameErrors((prev) => ({
+        ...prev,
+        firstName: '이름을 입력해 주세요.',
+      }));
+    } else {
+      setNameErrors((prev) => ({ ...prev, firstName: '' }));
+    }
+  };
+
+  const handleLastNameBlur = () => {
+    if (!nameForm.lastName.trim()) {
+      setNameErrors((prev) => ({ ...prev, lastName: '성을 입력해 주세요.' }));
+    } else {
+      setNameErrors((prev) => ({ ...prev, lastName: '' }));
+    }
+  };
+
   const handlePasswordChange = () => {
-    // TODO: 비밀번호 변경 로직
     console.log('Change password');
   };
 
   const handleDeleteAccount = () => {
-    // TODO: 회원 탈퇴 로직
     console.log('Delete account');
   };
 
@@ -212,7 +266,10 @@ export default function ProfilePage() {
               onChange={(e) =>
                 setNameForm((prev) => ({ ...prev, lastName: e.target.value }))
               }
-              placeholder={t('profile.fields.lastNamePlaceholder')}
+              onBlur={handleLastNameBlur}
+              placeholder='예) 홍'
+              description={nameErrors.lastName}
+              status={nameErrors.lastName ? 'negative' : 'default'}
             />
             <TextField
               label={t('profile.fields.firstName')}
@@ -223,7 +280,10 @@ export default function ProfilePage() {
                   firstName: e.target.value,
                 }))
               }
-              placeholder={t('profile.fields.firstNamePlaceholder')}
+              onBlur={handleFirstNameBlur}
+              placeholder='예) 길동'
+              description={nameErrors.firstName}
+              status={nameErrors.firstName ? 'negative' : 'default'}
             />
           </NameFieldsContainer>
         </ModalContent>
