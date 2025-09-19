@@ -56,6 +56,11 @@ export default function ProfilePage() {
     value: string;
     label: string;
   } | null>(null);
+  const [isCompanyModalOpen, setIsCompanyModalOpen] = useState(false);
+  const [companyForm, setCompanyForm] = useState({
+    company: '',
+  });
+  const [companyError, setCompanyError] = useState('');
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -387,6 +392,53 @@ export default function ProfilePage() {
     }
   };
 
+  const handleCompanyEdit = () => {
+    setCompanyForm({
+      company: userInfo?.organization_name || '',
+    });
+    setCompanyError('');
+    setIsCompanyModalOpen(true);
+  };
+
+  const handleCompanyCancel = () => {
+    setIsCompanyModalOpen(false);
+  };
+
+  const handleCompanySave = async () => {
+    if (!companyForm.company.trim()) {
+      setCompanyError('회사명을 입력해 주세요.');
+      return;
+    }
+
+    try {
+      const updateData = {
+        update_fields: [
+          {
+            field: 'organization_name',
+            value: companyForm.company,
+          },
+        ],
+      };
+
+      await authService.updateUserInfo(updateData);
+
+      setUserInfo((prev) =>
+        prev
+          ? {
+              ...prev,
+              organization_name: companyForm.company,
+            }
+          : null
+      );
+
+      setIsCompanyModalOpen(false);
+      console.log('Company updated successfully');
+    } catch (error) {
+      console.error('Failed to update company:', error);
+      alert('회사명 변경에 실패했습니다. 다시 시도해 주세요.');
+    }
+  };
+
   const handleDeleteAccount = () => {
     console.log('Delete account');
   };
@@ -444,7 +496,9 @@ export default function ProfilePage() {
                 <InfoContent>
                   <InfoLabelRow>
                     <InfoLabel>{t('profile.fields.org')}</InfoLabel>
-                    <EditButton size='small'>{t('profile.edit')}</EditButton>
+                    <EditButton size='small' onClick={handleCompanyEdit}>
+                      {t('profile.edit')}
+                    </EditButton>
                   </InfoLabelRow>
                   <InfoValue>{userInfo?.organization_name || '큐빅'}</InfoValue>
                 </InfoContent>
@@ -658,6 +712,37 @@ export default function ProfilePage() {
               </VerificationRow>
             </VerificationSection>
           )}
+        </ModalContent>
+      </Modal>
+
+      {/* 회사/소속기관명 변경 Modal */}
+      <Modal
+        open={isCompanyModalOpen}
+        onClose={handleCompanyCancel}
+        title={t('profile.changeCompany')}
+        size='small'
+        actions={
+          <ModalActions>
+            <SolidButton variant='secondary' onClick={handleCompanyCancel}>
+              {t('profile.cancel')}
+            </SolidButton>
+            <SolidButton variant='primary' onClick={handleCompanySave}>
+              {t('profile.save')}
+            </SolidButton>
+          </ModalActions>
+        }
+      >
+        <ModalContent>
+          <TextField
+            label={t('profile.companyName')}
+            size='large'
+            value={companyForm.company}
+            onChange={(e) => setCompanyForm({ company: e.target.value })}
+            placeholder={t('profile.companyPlaceholder')}
+            description={companyError}
+            status={companyError ? 'negative' : 'default'}
+            maxLength={50}
+          />
         </ModalContent>
       </Modal>
     </Container>
