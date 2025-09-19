@@ -20,6 +20,8 @@ import {
 import { authService } from '@/services/auth';
 import type { UserInfo } from '@/utils/api';
 import { countries } from '@/utils/countries';
+import { otpService } from '@/services/otp';
+import { env } from '@/utils/env';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -261,8 +263,25 @@ export default function ProfilePage() {
       contactNumber: '',
     });
 
-    setIsVerificationSent(true);
-    startTimer();
+    try {
+      const response = await otpService.sendOtp(
+        {
+          phone: contactForm.contactNumber,
+          country_code: extractCountryCode(selectedCountry.value),
+          otp_type: 'phone',
+          service_name: 'cubig-auth',
+        },
+        env.OTP_API_KEY
+      );
+      if (response.success) {
+        setIsVerificationSent(true);
+        startTimer();
+      } else {
+        alert('인증번호 전송에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch {
+      alert('인증번호 전송에 실패했습니다. 다시 시도해 주세요.');
+    }
   };
 
   const handleVerifyCode = async () => {
@@ -273,17 +292,46 @@ export default function ProfilePage() {
 
     setVerificationError('');
 
-    if (verificationCode === '1234') {
-      setIsVerificationCompleted(true);
-      setIsTimerRunning(false);
-      setVerificationError('');
-    } else {
+    try {
+      const response = await otpService.verifyOtp(
+        {
+          phone: contactForm.contactNumber,
+          otp_type: 'phone',
+          otp: verificationCode,
+        },
+        env.OTP_API_KEY
+      );
+      if (response.success) {
+        setIsVerificationCompleted(true);
+        setIsTimerRunning(false);
+        setVerificationError('');
+      } else {
+        setVerificationError('인증번호가 일치하지 않습니다.');
+      }
+    } catch {
       setVerificationError('인증번호가 일치하지 않습니다.');
     }
   };
 
   const handleResendCode = async () => {
-    startTimer();
+    try {
+      const response = await otpService.sendOtp(
+        {
+          phone: contactForm.contactNumber,
+          country_code: extractCountryCode(selectedCountry!.value),
+          otp_type: 'phone',
+          service_name: 'cubig-auth',
+        },
+        env.OTP_API_KEY
+      );
+      if (response.success) {
+        startTimer();
+      } else {
+        alert('인증번호 재발송에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch {
+      alert('인증번호 재발송에 실패했습니다. 다시 시도해 주세요.');
+    }
   };
 
   const handleContactChange = async () => {
@@ -306,8 +354,37 @@ export default function ProfilePage() {
       return;
     }
 
-    console.log('Contact changed successfully');
-    setIsContactModalOpen(false);
+    try {
+      const updateData = {
+        update_fields: [
+          {
+            field: 'phone',
+            value: contactForm.contactNumber,
+          },
+          {
+            field: 'phone_country_code',
+            value: extractCountryCode(selectedCountry.value),
+          },
+        ],
+      };
+
+      await authService.updateUserInfo(updateData);
+
+      setUserInfo((prev) =>
+        prev
+          ? {
+              ...prev,
+              phone: contactForm.contactNumber,
+            }
+          : null
+      );
+
+      setIsContactModalOpen(false);
+      console.log('Contact changed successfully');
+    } catch (error) {
+      console.error('Failed to update contact:', error);
+      alert('연락처 변경에 실패했습니다. 다시 시도해 주세요.');
+    }
   };
 
   const handleDeleteAccount = () => {
@@ -514,10 +591,19 @@ export default function ProfilePage() {
                 handleContactInputChange('contactNumber', e.target.value)
               }
               placeholder='휴대폰 번호를 입력해 주세요.'
-              description={contactErrors.contactNumber}
-              status={contactErrors.contactNumber ? 'negative' : 'default'}
+              description={
+                isVerificationCompleted ? '' : contactErrors.contactNumber
+              }
+              status={
+                isVerificationCompleted
+                  ? 'positive'
+                  : contactErrors.contactNumber
+                    ? 'negative'
+                    : 'default'
+              }
               inputMode='numeric'
               pattern='[0-9]*'
+              disabled={isVerificationCompleted}
             />
           </ContactFieldsContainer>
 
