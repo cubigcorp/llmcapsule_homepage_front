@@ -510,21 +510,25 @@ export default function ProfilePage() {
             <SectionTitle>{t('profile.sectionAccount')}</SectionTitle>
 
             <AccountContainer>
-              <InfoField>
-                <InfoContent>
-                  <InfoLabel>{t('profile.changePassword')}</InfoLabel>
-                  <InfoValue>{t('profile.changePasswordDesc')}</InfoValue>
-                </InfoContent>
-                <SolidButton
-                  variant='secondary'
-                  size='small'
-                  onClick={handlePasswordChange}
-                >
-                  {t('profile.edit')}
-                </SolidButton>
-              </InfoField>
+              {!userInfo?.is_social_login && (
+                <>
+                  <InfoField>
+                    <InfoContent>
+                      <InfoLabel>{t('profile.changePassword')}</InfoLabel>
+                      <InfoValue>{t('profile.changePasswordDesc')}</InfoValue>
+                    </InfoContent>
+                    <SolidButton
+                      variant='secondary'
+                      size='small'
+                      onClick={handlePasswordChange}
+                    >
+                      {t('profile.edit')}
+                    </SolidButton>
+                  </InfoField>
 
-              <StyledDivider />
+                  <StyledDivider />
+                </>
+              )}
 
               <InfoField>
                 <InfoContent>

@@ -149,6 +149,7 @@ export interface UserInfo {
   consent_personal_info: boolean;
   consent_marketing: boolean;
   created_at: string;
+  is_social_login: boolean;
 }
 
 export interface UpdateField {
