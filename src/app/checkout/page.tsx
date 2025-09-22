@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import GlobalHeader from '@/components/layout/Header';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import Image from 'next/image';
 import {
   SolidButton,
   typography,
@@ -25,21 +26,40 @@ import IndeterminateIcon from '@/assets/icons/icon_indeterminate.svg';
 import InfoIcon from '@/assets/icons/icon_info.svg';
 import SmallInfoIcon from '@/assets/icons/icon_info_small.svg';
 import PrintIcon from '@/assets/icons/Icon_print.svg';
+import PlanBasicImage from '@/assets/images/plan_basic.png';
+import PlanPlusImage from '@/assets/images/plan_plus.png';
+import PlanProImage from '@/assets/images/plan_pro.png';
+import PlanMaxImage from '@/assets/images/plan_max.png';
 // 플랜 데이터 정의
 const plans = {
-  basic: { name: 'Basic', price: 10500, minTokens: 0, maxTokens: 119999 },
-  plus: { name: 'Plus', price: 15500, minTokens: 120000, maxTokens: 279999 },
-  pro: { name: 'Pro', price: 25500, minTokens: 280000, maxTokens: 599999 },
-  max: { name: 'Max', price: 51000, minTokens: 600000, maxTokens: 999999 },
+  basic: { name: 'Basic', price: 10500, minTokens: 0, maxTokens: 69999 },
+  plus: { name: 'Plus', price: 15500, minTokens: 70000, maxTokens: 119999 },
+  pro: { name: 'Pro', price: 25500, minTokens: 120000, maxTokens: 279999 },
+  max: { name: 'Max', price: 51000, minTokens: 280000, maxTokens: 999999 },
 };
 
 export default function CheckoutPage() {
   const { t } = useTranslation('mypage');
   const [userCount, setUserCount] = useState<number>(100);
-  const [tokenUsage, setTokenUsage] = useState<number>(280000);
+  const [tokenUsage, setTokenUsage] = useState<number>(300000);
   const [contractPeriod, setContractPeriod] = useState<number>(6);
   const [prepayEnabled, setPrepayEnabled] = useState<boolean>(false);
   const [vatEnabled, setVatEnabled] = useState<boolean>(false);
+
+  const getPlanImage = (planName: string) => {
+    switch (planName.toLowerCase()) {
+      case 'basic':
+        return PlanBasicImage;
+      case 'plus':
+        return PlanPlusImage;
+      case 'pro':
+        return PlanProImage;
+      case 'max':
+        return PlanMaxImage;
+      default:
+        return PlanBasicImage;
+    }
+  };
 
   // Add-on 상태
   const [securityGuideCount, setSecurityGuideCount] = useState<number>(-1);
@@ -170,19 +190,29 @@ export default function CheckoutPage() {
               <Divider />
               <SubSectionTitle>{t('checkout.selectedPlan')}</SubSectionTitle>
               <PlanCard>
-                <PlanName>
-                  {currentPlan.name}
-                  {t('checkout.planNameSuffix')}
-                </PlanName>
-                <PlanPrice>
-                  ₩{currentPlan.price.toLocaleString()}/Seat
-                </PlanPrice>
+                <PlanBadge>
+                  <Image
+                    src={getPlanImage(currentPlan.name)}
+                    alt={`${currentPlan.name} plan`}
+                    style={{ objectFit: 'cover' }}
+                  />
+                </PlanBadge>
+                <PlanInfo>
+                  <PlanName>
+                    {currentPlan.name}
+                    {t('checkout.planNameSuffix')}
+                  </PlanName>
+                  <PlanPrice>
+                    ₩{currentPlan.price.toLocaleString()}/Seat
+                  </PlanPrice>
+                </PlanInfo>
               </PlanCard>
 
               <TokenUsageRow>
                 <TokenUsageTitle>{t('checkout.tokenUsage')}</TokenUsageTitle>
                 <TokenInputRight>
                   <TextField
+                    size='small'
                     style={{
                       width: '116px',
                     }}
@@ -218,32 +248,33 @@ export default function CheckoutPage() {
                   />
                 </SliderTrack>
                 <SliderLabels>
-                  <SliderLabel style={{ left: '11.67%' }}>
-                    <span>70,000</span>
+                  <SliderLabelLeft>
+                    <span>0</span>
                     <Badge size='small' type='solid' variant='primary'>
                       Basic
                     </Badge>
-                  </SliderLabel>
-                  <SliderLabel style={{ left: '20%' }}>
-                    <span>120,000</span>
+                  </SliderLabelLeft>
+                  <SliderLabel70k>
+                    <span>70,000</span>
                     <Badge size='small' type='solid' variant='primary'>
                       Plus
                     </Badge>
-                  </SliderLabel>
-                  <SliderLabel style={{ left: '46.67%' }}>
-                    <span>280,000</span>
+                  </SliderLabel70k>
+                  <SliderLabel120k>
+                    <span>120,000</span>
                     <Badge size='small' type='solid' variant='primary'>
                       Pro
                     </Badge>
-                  </SliderLabel>
-                  <SliderLabel
-                    style={{ left: '100%', transform: 'translateX(-100%)' }}
-                  >
-                    <span>600,000</span>
+                  </SliderLabel120k>
+                  <SliderLabel280k>
+                    <span>280,000</span>
                     <Badge size='small' type='strong' variant='primary'>
                       Max
                     </Badge>
-                  </SliderLabel>
+                  </SliderLabel280k>
+                  <SliderLabelRight>
+                    <span>600,000</span>
+                  </SliderLabelRight>
                 </SliderLabels>
               </SliderContainer>
 
@@ -1002,6 +1033,16 @@ export default function CheckoutPage() {
                 </ButtonGroup>
               </BottomSection>
             </SummaryCard>
+
+            <B2BInfoCard>
+              <B2BInfoIcon>
+                <InfoIcon />
+              </B2BInfoIcon>
+              <B2BInfoContent>
+                <B2BInfoText>{t('checkout.b2bInfo.text1')}</B2BInfoText>
+                <B2BInfoText>{t('checkout.b2bInfo.text2')}</B2BInfoText>
+              </B2BInfoContent>
+            </B2BInfoCard>
           </RightSection>
         </MainContent>
       </Container>
@@ -1065,29 +1106,39 @@ const PlanDescription = styled.p`
 `;
 
 const PlanCard = styled.div`
+  border: 1px solid ${borderColor.light['color-border-primary']};
   border-radius: 12px;
-  background: linear-gradient(
-    91deg,
-    #131218 1.14%,
-    #626479 65.49%,
-    #a0a5cf 129.85%
-  );
-  color: white;
-  padding: 24px;
-  border-radius: 12px;
+  background: white;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+`;
+
+const PlanBadge = styled.div`
+  width: 80px;
+  height: 56px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+`;
+
+const PlanInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 4px;
+  flex: 1;
 `;
 
 const PlanName = styled.span`
   ${typography('ko', 'body3', 'medium')}
+  color: ${textColor.light['fg-neutral-primary']};
 `;
 
 const PlanPrice = styled.span`
   ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.dark['fg-neutral-primary']};
+  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const SubSectionTitle = styled.h4`
@@ -1123,14 +1174,35 @@ const SliderTrack = styled.div`
     left: 0;
     right: 0;
     height: 8px;
-    background: repeating-linear-gradient(
+    background: linear-gradient(
       to right,
-      transparent 0,
+      #e6e7e9 0%,
+      #e6e7e9 1px,
+      transparent 1px,
       transparent calc(100% / 6 - 1px),
       #e6e7e9 calc(100% / 6 - 1px),
-      #d1d5db calc(100% / 6)
+      #e6e7e9 calc(100% / 6),
+      transparent calc(100% / 6),
+      transparent calc(200% / 6 - 1px),
+      #e6e7e9 calc(200% / 6 - 1px),
+      #e6e7e9 calc(200% / 6),
+      transparent calc(200% / 6),
+      transparent calc(300% / 6 - 1px),
+      #e6e7e9 calc(300% / 6 - 1px),
+      #e6e7e9 calc(300% / 6),
+      transparent calc(300% / 6),
+      transparent calc(400% / 6 - 1px),
+      #e6e7e9 calc(400% / 6 - 1px),
+      #e6e7e9 calc(400% / 6),
+      transparent calc(400% / 6),
+      transparent calc(500% / 6 - 1px),
+      #e6e7e9 calc(500% / 6 - 1px),
+      #e6e7e9 calc(500% / 6),
+      transparent calc(500% / 6),
+      transparent calc(100% - 1px),
+      #e6e7e9 calc(100% - 1px),
+      #e6e7e9 100%
     );
-    border-radius: 9999px;
     pointer-events: none;
   }
 
@@ -1199,10 +1271,42 @@ const SliderLabel = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  span {
+  > span {
     ${typography('ko', 'caption2', 'regular')}
     color: ${textColor.light['fg-neutral-alternative']};
   }
+`;
+
+const SliderLabelLeft = styled(SliderLabel)`
+  left: 0%;
+  transform: translateX(0%);
+  text-align: left;
+  align-items: flex-start;
+`;
+
+const SliderLabelCenter = styled(SliderLabel)`
+  transform: translateX(-50%);
+  text-align: center;
+  align-items: center;
+`;
+
+const SliderLabelRight = styled(SliderLabel)`
+  left: 100%;
+  transform: translateX(-100%);
+  text-align: right;
+  align-items: flex-end;
+`;
+
+const SliderLabel70k = styled(SliderLabelCenter)`
+  left: 11.67%;
+`;
+
+const SliderLabel120k = styled(SliderLabelCenter)`
+  left: 20%;
+`;
+
+const SliderLabel280k = styled(SliderLabelCenter)`
+  left: 46.67%;
 `;
 
 const TokenUsageTitle = styled.h4`
@@ -1423,7 +1527,7 @@ const PeriodOption = styled.div<{ $isSelected: boolean }>`
 
 const PrepaySection = styled.div`
   padding: 16px;
-  background: #f8f9fa;
+  background: ${color.blue['50']};
   border-radius: 8px;
   margin-top: 20px;
 `;
@@ -1716,6 +1820,7 @@ const TokenInfoList = styled.div`
 
 const TokenInfoItem = styled.div`
   ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const RightSection = styled.div`
@@ -2011,5 +2116,36 @@ const A4NumberText = styled.span`
 
 const A4UnitText = styled.span`
   ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const B2BInfoCard = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background-color: ${color.gray['50']};
+  margin-top: 20px;
+`;
+
+const B2BInfoIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${textColor.light['fg-neutral-alternative']};
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+`;
+
+const B2BInfoContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const B2BInfoText = styled.div`
+  ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
 `;

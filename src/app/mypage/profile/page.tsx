@@ -16,6 +16,7 @@ import {
   borderColor,
   typography,
   Modal,
+  Checkbox,
 } from '@cubig/design-system';
 import { authService } from '@/services/auth';
 import type { UserInfo } from '@/utils/api';
@@ -165,8 +166,99 @@ export default function ProfilePage() {
     }
   };
 
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [passwordErrors, setPasswordErrors] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+
   const handlePasswordChange = () => {
-    console.log('Change password');
+    setIsPasswordModalOpen(true);
+  };
+
+  const handlePasswordCancel = () => {
+    setIsPasswordModalOpen(false);
+    setPasswordForm({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
+    setPasswordErrors({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
+  };
+
+  const handlePasswordSave = () => {
+    console.log('Password change API call - not implemented yet');
+    setIsPasswordModalOpen(false);
+  };
+
+  const handlePasswordInputChange = (field: string, value: string) => {
+    setPasswordForm((prev) => ({ ...prev, [field]: value }));
+    setPasswordErrors((prev) => ({ ...prev, [field]: '' }));
+  };
+
+  const handleCurrentPasswordBlur = () => {
+    if (!passwordForm.currentPassword.trim()) {
+      setPasswordErrors((prev) => ({
+        ...prev,
+        currentPassword: '현재 비밀번호를 입력해 주세요.',
+      }));
+    } else {
+      setPasswordErrors((prev) => ({ ...prev, currentPassword: '' }));
+    }
+  };
+
+  const handleNewPasswordBlur = () => {
+    if (!passwordForm.newPassword.trim()) {
+      setPasswordErrors((prev) => ({
+        ...prev,
+        newPassword: '새 비밀번호를 입력해 주세요.',
+      }));
+    } else if (
+      passwordForm.newPassword.length < 8 ||
+      passwordForm.newPassword.length > 20
+    ) {
+      setPasswordErrors((prev) => ({
+        ...prev,
+        newPassword: '비밀번호는 8~20자로 입력해 주세요.',
+      }));
+    } else if (
+      !/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/.test(
+        passwordForm.newPassword
+      )
+    ) {
+      setPasswordErrors((prev) => ({
+        ...prev,
+        newPassword: '영문, 숫자, 특수문자를 포함해 주세요.',
+      }));
+    } else {
+      setPasswordErrors((prev) => ({ ...prev, newPassword: '' }));
+    }
+  };
+
+  const handleConfirmPasswordBlur = () => {
+    if (!passwordForm.confirmPassword.trim()) {
+      setPasswordErrors((prev) => ({
+        ...prev,
+        confirmPassword: '비밀번호 확인을 입력해 주세요.',
+      }));
+    } else if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      setPasswordErrors((prev) => ({
+        ...prev,
+        confirmPassword: '비밀번호가 일치하지 않습니다.',
+      }));
+    } else {
+      setPasswordErrors((prev) => ({ ...prev, confirmPassword: '' }));
+    }
   };
 
   const handleContactEdit = () => {
@@ -439,8 +531,25 @@ export default function ProfilePage() {
     }
   };
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteAgreed, setIsDeleteAgreed] = useState(false);
+
   const handleDeleteAccount = () => {
-    console.log('Delete account');
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+    setIsDeleteAgreed(false);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (!isDeleteAgreed) {
+      return;
+    }
+    console.log('Delete account API call - not implemented yet');
+    setIsDeleteModalOpen(false);
+    setIsDeleteAgreed(false);
   };
 
   if (loading) {
@@ -749,6 +858,102 @@ export default function ProfilePage() {
           />
         </ModalContent>
       </Modal>
+
+      {/* 비밀번호 변경 Modal */}
+      <Modal
+        open={isPasswordModalOpen}
+        onClose={handlePasswordCancel}
+        title={t('profile.changePassword')}
+        size='small'
+        actions={
+          <ModalActions>
+            <SolidButton variant='secondary' onClick={handlePasswordCancel}>
+              {t('profile.cancel')}
+            </SolidButton>
+            <SolidButton variant='primary' onClick={handlePasswordSave}>
+              {t('profile.save')}
+            </SolidButton>
+          </ModalActions>
+        }
+      >
+        <ModalContent>
+          <TextField
+            label={t('profile.currentPassword')}
+            size='large'
+            type='password'
+            value={passwordForm.currentPassword}
+            onChange={(e) =>
+              handlePasswordInputChange('currentPassword', e.target.value)
+            }
+            placeholder={t('profile.currentPasswordPlaceholder')}
+            description={passwordErrors.currentPassword}
+            status={passwordErrors.currentPassword ? 'negative' : 'default'}
+            onBlur={handleCurrentPasswordBlur}
+          />
+          <TextField
+            label={t('profile.newPassword')}
+            size='large'
+            type='password'
+            value={passwordForm.newPassword}
+            onChange={(e) =>
+              handlePasswordInputChange('newPassword', e.target.value)
+            }
+            placeholder={t('profile.newPasswordPlaceholder')}
+            description={passwordErrors.newPassword}
+            status={passwordErrors.newPassword ? 'negative' : 'default'}
+            onBlur={handleNewPasswordBlur}
+          />
+          <TextField
+            label={t('profile.confirmPassword')}
+            size='large'
+            type='password'
+            value={passwordForm.confirmPassword}
+            onChange={(e) =>
+              handlePasswordInputChange('confirmPassword', e.target.value)
+            }
+            placeholder={t('profile.confirmPasswordPlaceholder')}
+            description={passwordErrors.confirmPassword}
+            status={passwordErrors.confirmPassword ? 'negative' : 'default'}
+            onBlur={handleConfirmPasswordBlur}
+          />
+        </ModalContent>
+      </Modal>
+
+      {/* 회원 탈퇴 Modal */}
+      <Modal
+        open={isDeleteModalOpen}
+        onClose={handleDeleteCancel}
+        title={t('profile.deleteAccountTitle')}
+        size='small'
+        actions={
+          <ModalActions>
+            <SolidButton variant='secondary' onClick={handleDeleteCancel}>
+              {t('profile.cancel')}
+            </SolidButton>
+            <SolidButton
+              variant='negative'
+              onClick={handleDeleteConfirm}
+              disabled={!isDeleteAgreed}
+            >
+              {t('profile.deleteAccountBtn')}
+            </SolidButton>
+          </ModalActions>
+        }
+      >
+        <ModalContent>
+          <DeleteWarningText>
+            {t('profile.deleteAccountWarning')}
+          </DeleteWarningText>
+          <CheckboxContainer>
+            <Checkbox
+              variant='primary'
+              state={isDeleteAgreed ? 'checked' : 'unchecked'}
+              onChange={(checked) => setIsDeleteAgreed(checked)}
+            />
+            <CheckboxLabel>{t('profile.deleteAccountAgreement')}</CheckboxLabel>
+          </CheckboxContainer>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 }
@@ -860,6 +1065,7 @@ const LoadingContainer = styled.div`
 const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 12px;
 `;
 
 const NameFieldsContainer = styled.div`
@@ -948,4 +1154,24 @@ const RemainingText = styled.span`
 
 const VerifyButton = styled(SolidButton)`
   width: 95px;
+`;
+
+const DeleteWarningText = styled.div`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid ${borderColor.light['color-border-primary']};
+  border-radius: 8px;
+  background-color: ${color.gray['50']};
+`;
+
+const CheckboxLabel = styled.span`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-primary']};
 `;
