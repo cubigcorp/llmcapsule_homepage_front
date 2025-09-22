@@ -105,7 +105,6 @@ const SignupForm = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  height: 100%;
 `;
 
 const SuccessIcon = styled.div`
