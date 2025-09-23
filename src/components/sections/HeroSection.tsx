@@ -89,8 +89,11 @@ const HeroContainer = styled.section`
   background:
     url('/images/bg-line.svg'),
     linear-gradient(180deg, #fbfbfb 12.18%, #f0f0f2 100%);
-  background-repeat: repeat;
-  background-size: auto;
+  background-repeat: no-repeat, no-repeat;
+  background-size: auto, cover;
+  background-position:
+    center top,
+    center;
 `;
 
 const HeroWrapper = styled.div`
