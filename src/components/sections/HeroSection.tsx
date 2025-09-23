@@ -32,26 +32,11 @@ export default function HeroSection() {
               variant='primary'
               size='large'
               onClick={() => {
-                window.open('/contact', '_self');
-              }}
-            >
-              Contact Us
-            </SolidButton>
-            <OutlineButton
-              variant='secondary'
-              size='large'
-              onClick={() => {
-                const demoSection = document.getElementById('demo-section');
-                if (demoSection) {
-                  demoSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start',
-                  });
-                }
+                window.open('/checkout', '_self');
               }}
             >
               Get Started
-            </OutlineButton>
+            </SolidButton>
             <OutlineButton
               variant='secondary'
               size='large'

@@ -111,7 +111,7 @@ export default function Header() {
             </LogoWrapper>
             <Menu>
               <TextButton variant='secondary' size='medium'>
-                {t('header.position')}
+                {t('header.about')}
               </TextButton>
               <TextButton variant='secondary' size='medium'>
                 {t('header.demo')}
