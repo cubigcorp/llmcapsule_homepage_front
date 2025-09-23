@@ -1014,7 +1014,7 @@ export default function CheckoutPage() {
 }
 
 const Container = styled.div`
-  padding: 80px 0 94px 0;
+  padding: 72px 0 94px 0;
 `;
 
 const Header = styled.div`
@@ -1663,7 +1663,7 @@ const TokenInfoItem = styled.div`
 
 const RightSection = styled.div`
   position: sticky;
-  top: 80px;
+  top: 72px;
   padding: 0 32px 0 16px;
   height: fit-content;
 `;

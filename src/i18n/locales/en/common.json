@@ -5,7 +5,12 @@
   },
   "header": {
     "contact": "Contact",
-    "login": "Login"
+    "login": "Login",
+    "position": "About",
+    "demo": "Live Demo",
+    "performance": "Performance",
+    "pricing": "Pricing",
+    "faq": "FAQ"
   },
   "carousel": {
     "slides": [

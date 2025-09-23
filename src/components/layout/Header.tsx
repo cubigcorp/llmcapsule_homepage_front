@@ -5,12 +5,17 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
-import { spacing, TextButton, SolidButton } from '@cubig/design-system';
+import {
+  spacing,
+  TextButton,
+  SolidButton,
+  OutlineButton,
+  borderColor,
+} from '@cubig/design-system';
 import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 import { authService } from '@/services/auth';
-import { isDevStage } from '@/utils/env';
 import type { UserInfo } from '@/utils/api';
+import LogoIcon from '@/assets/icons/Logo.svg';
 import ArrowDownIcon from '@/assets/icons/icon_arrow-down.svg';
 export default function Header() {
   const pathname = usePathname();
@@ -101,25 +106,26 @@ export default function Header() {
           <Leading>
             <LogoWrapper>
               <Link href='/'>
-                <Image
-                  src={'/icons/Logo.svg'}
-                  alt='Logo'
-                  width={32}
-                  height={32}
-                />
+                <LogoIcon />
               </Link>
             </LogoWrapper>
-            {/* <Menu>
-              <TextButton variant='primary' size='medium'>
-                제품소개
+            <Menu>
+              <TextButton variant='secondary' size='medium'>
+                {t('header.position')}
               </TextButton>
-              <TextButton variant='primary' size='medium'>
-                구매
+              <TextButton variant='secondary' size='medium'>
+                {t('header.demo')}
               </TextButton>
-              <TextButton variant='primary' size='medium'>
-                회사소개
+              <TextButton variant='secondary' size='medium'>
+                {t('header.performance')}
               </TextButton>
-            </Menu> */}
+              <TextButton variant='secondary' size='medium'>
+                {t('header.pricing')}
+              </TextButton>
+              <TextButton variant='secondary' size='medium'>
+                {t('header.faq')}
+              </TextButton>
+            </Menu>
           </Leading>
 
           <ButtonGroup>
@@ -145,13 +151,11 @@ export default function Header() {
               </>
             ) : (
               <>
-                {isDevStage && (
-                  <Link href='/login'>
-                    <TextButton variant='primary' size='medium'>
-                      {t('header.login')}
-                    </TextButton>
-                  </Link>
-                )}
+                <Link href='/login'>
+                  <OutlineButton variant='secondary' size='medium'>
+                    {t('header.login')}
+                  </OutlineButton>
+                </Link>
                 <Link href='/contact'>
                   <SolidButton variant='primary' size='medium'>
                     {t('header.contact')}
@@ -173,15 +177,15 @@ const HeaderContainer = styled.header`
   right: 0;
   z-index: 50;
   background: white;
-  height: 80px;
+  height: 72px;
   display: flex;
   justify-content: center;
+  border-bottom: 1px solid ${borderColor.light['color-border-primary']};
 `;
 
 const HeaderWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
-  padding: 0 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -194,7 +198,7 @@ const HeaderWrapper = styled.div`
   }
 
   @media (max-width: 1440px) {
-    padding: 0 24px;
+    padding: ${spacing.gap['gap-4']};
   }
 
   @media (max-width: 768px) {
@@ -208,7 +212,6 @@ const HeaderWrapper = styled.div`
 
 const GNB = styled.div`
   display: flex;
-  padding: ${spacing.gap['gap-1']} ${spacing.gap['gap-1']};
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
@@ -228,5 +231,11 @@ const ButtonGroup = styled.div`
 const Leading = styled.div`
   display: flex;
   align-items: center;
-  gap: 64px;
+  gap: ${spacing.gap['gap-6']};
+`;
+
+const Menu = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${spacing.gap['gap-3']};
 `;

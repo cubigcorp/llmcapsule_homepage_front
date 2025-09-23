@@ -59,8 +59,8 @@ body {
 
 /* 헤더 높이 보정 */
 .pt-header {
-  padding-top: 5rem;
-  /* 80px - 헤더 높이 보정 */
+  padding-top: 4.5rem;
+  /* 72px - 헤더 높이 보정 */
 }
 
 /* 텍스트 크기 - 1440px 기준 */
@@ -92,8 +92,8 @@ body {
   }
 
   .text-hero {
-    font-size: 5rem;
-    /* 80px */
+    font-size: 4.5rem;
+    /* 72px */
   }
 
   .text-section-title {
