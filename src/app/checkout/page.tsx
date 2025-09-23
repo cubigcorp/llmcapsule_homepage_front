@@ -24,8 +24,9 @@ import AddIcon from '@/assets/icons/icon_add.svg';
 import SmallAddIcon from '@/assets/icons/icon_add_small.svg';
 import IndeterminateIcon from '@/assets/icons/icon_indeterminate.svg';
 import InfoIcon from '@/assets/icons/icon_info.svg';
-import SmallInfoIcon from '@/assets/icons/icon_info_small.svg';
+import InfoSmallIcon from '@/assets/icons/icon_info_small.svg';
 import PrintIcon from '@/assets/icons/Icon_print.svg';
+import IconData from '@/assets/icons/icon_data.svg';
 import PlanBasicImage from '@/assets/images/plan_basic.png';
 import PlanPlusImage from '@/assets/images/plan_plus.png';
 import PlanProImage from '@/assets/images/plan_pro.png';
@@ -39,7 +40,7 @@ const plans = {
 };
 
 export default function CheckoutPage() {
-  const { t } = useTranslation('mypage');
+  const { t } = useTranslation('checkout');
   const [userCount, setUserCount] = useState<number>(100);
   const [tokenUsage, setTokenUsage] = useState<number>(300000);
   const [contractPeriod, setContractPeriod] = useState<number>(6);
@@ -172,8 +173,8 @@ export default function CheckoutPage() {
       <GlobalHeader />
       <Container>
         <Header>
-          <Title>{t('checkout.title')}</Title>
-          <Subtitle>{t('checkout.subtitle')}</Subtitle>
+          <Title>{t('title')}</Title>
+          <Subtitle>{t('subtitle')}</Subtitle>
         </Header>
 
         <MainContent>
@@ -181,14 +182,14 @@ export default function CheckoutPage() {
             {/* 플랜 선택 */}
             <Section>
               <SectionHeader>
-                <SectionTitle>{t('checkout.planSelect')}</SectionTitle>
+                <SectionTitle>{t('planSelect')}</SectionTitle>
                 <Badge type='solid' variant='info'>
-                  {t('checkout.tokenBased')}
+                  {t('tokenBased')}
                 </Badge>
               </SectionHeader>
-              <PlanDescription>{t('checkout.planGuide')}</PlanDescription>
+              <PlanDescription>{t('planGuide')}</PlanDescription>
               <Divider />
-              <SubSectionTitle>{t('checkout.selectedPlan')}</SubSectionTitle>
+              <SubSectionTitle>{t('selectedPlan')}</SubSectionTitle>
               <PlanCard>
                 <PlanBadge>
                   <Image
@@ -200,7 +201,7 @@ export default function CheckoutPage() {
                 <PlanInfo>
                   <PlanName>
                     {currentPlan.name}
-                    {t('checkout.planNameSuffix')}
+                    {t('planNameSuffix')}
                   </PlanName>
                   <PlanPrice>
                     ₩{currentPlan.price.toLocaleString()}/Seat
@@ -209,7 +210,7 @@ export default function CheckoutPage() {
               </PlanCard>
 
               <TokenUsageRow>
-                <TokenUsageTitle>{t('checkout.tokenUsage')}</TokenUsageTitle>
+                <TokenUsageTitle>{t('tokenUsage')}</TokenUsageTitle>
                 <TokenInputRight>
                   <TextField
                     size='small'
@@ -228,7 +229,7 @@ export default function CheckoutPage() {
                     }}
                     placeholder='280000'
                   />
-                  <span>{t('checkout.tokenUnit')}</span>
+                  <span>{t('tokenUnit')}</span>
                 </TokenInputRight>
               </TokenUsageRow>
 
@@ -280,228 +281,186 @@ export default function CheckoutPage() {
 
               <TokenBreakdownSection>
                 <TokenBreakdownGrid>
-                  <TokenBreakdownCard>
-                    <TokenBreakdownHeader>
-                      <TokenBreakdownTitle>
-                        {t('checkout.breakdown.title')}
-                      </TokenBreakdownTitle>
-                      <Badge size='small' type='solid' variant='secondary'>
-                        {t('checkout.breakdown.ratio')}
-                      </Badge>
-                    </TokenBreakdownHeader>
-                    <TokenBreakdownContentNoPadding>
-                      <TokenBreakdownHorizontal>
-                        <TokenBreakdownTotalSection>
-                          <TokenBreakdownTotal>
-                            <TokenBreakdownTotalLabel>
-                              {t('checkout.breakdown.total')}
-                            </TokenBreakdownTotalLabel>
-                            <TokenBreakdownTotalValue>
-                              {tokenUsage.toLocaleString()}{' '}
-                              <span
-                                style={{
-                                  color:
-                                    textColor.light['fg-neutral-alternative'],
-                                }}
-                              >
-                                T
+                  <TokenBreakdownLeft>
+                    <TokenCard>
+                      <TokenHeader>
+                        <TokenTitle>{t('breakdown.title')}</TokenTitle>
+                        <Badge size='small' type='solid' variant='secondary'>
+                          {t('breakdown.ratio')}
+                        </Badge>
+                      </TokenHeader>
+                      <TokenContent>
+                        <TokenLeft>
+                          <TokenIcon>
+                            <IconData />
+                          </TokenIcon>
+                          <TokenLabel>토큰</TokenLabel>
+                        </TokenLeft>
+                        <TokenRight>
+                          <TokenTotal>
+                            {tokenUsage.toLocaleString()}
+                            <TokenUnit>T</TokenUnit>
+                          </TokenTotal>
+                          <TokenDivider />
+                          <TokenBreakdown>
+                            <TokenBreakdownItem>
+                              <span>{t('breakdown.input')}</span>
+                              <span>
+                                {Math.round(tokenUsage * 0.6).toLocaleString()}
+                                <BreakdownUnit>T</BreakdownUnit>
                               </span>
-                            </TokenBreakdownTotalValue>
-                          </TokenBreakdownTotal>
-                        </TokenBreakdownTotalSection>
-                        <TokenBreakdownVerticalDivider />
-                        <TokenBreakdownItems>
-                          <TokenBreakdownItem>
-                            <TokenBreakdownLabel>
-                              {t('checkout.breakdown.input')}
-                            </TokenBreakdownLabel>
-                            <TokenBreakdownValue>
-                              {Math.round(tokenUsage * 0.6).toLocaleString()}
-                            </TokenBreakdownValue>
-                          </TokenBreakdownItem>
-                          <TokenBreakdownItem>
-                            <TokenBreakdownLabel>
-                              {t('checkout.breakdown.output')}
-                            </TokenBreakdownLabel>
-                            <TokenBreakdownValue>
-                              {Math.round(tokenUsage * 0.4).toLocaleString()}
-                            </TokenBreakdownValue>
-                          </TokenBreakdownItem>
-                        </TokenBreakdownItems>
-                      </TokenBreakdownHorizontal>
-                    </TokenBreakdownContentNoPadding>
-                  </TokenBreakdownCard>
-                  <TokenBreakdownCard>
-                    <TokenBreakdownHeader>
-                      <TokenBreakdownTitle>
-                        {t('checkout.convert.title')}
-                      </TokenBreakdownTitle>
-                      <Badge size='small' type='solid' variant='secondary'>
-                        {t('checkout.convert.assumption')}
-                      </Badge>
-                    </TokenBreakdownHeader>
-                    <TokenBreakdownContent>
-                      <LanguageBoxContainer>
-                        <LanguageBox>
-                          <LanguageLabel>
+                            </TokenBreakdownItem>
+                            <TokenBreakdownItem>
+                              <span>{t('breakdown.output')}</span>
+                              <span>
+                                {Math.round(tokenUsage * 0.4).toLocaleString()}
+                                <BreakdownUnit>T</BreakdownUnit>
+                              </span>
+                            </TokenBreakdownItem>
+                          </TokenBreakdown>
+                        </TokenRight>
+                      </TokenContent>
+                    </TokenCard>
+
+                    <TokenCard>
+                      <TokenHeader>
+                        <TokenTitle>페이지 환산</TokenTitle>
+                      </TokenHeader>
+                      <PageContentWrapper>
+                        <PageTokenContent>
+                          <TokenLeft>
+                            <A4Icon>
+                              <PrintIcon />
+                            </A4Icon>
+                            <TokenLabel>A4</TokenLabel>
+                          </TokenLeft>
+                          <TokenRight>
+                            <TokenTotal>
+                              {Math.ceil(Math.round(tokenUsage * 1.6) / 2200) +
+                                Math.ceil(Math.round(tokenUsage * 4.5) / 3800)}
+                              <TokenUnit>장</TokenUnit>
+                            </TokenTotal>
+                            <TokenDivider />
+                            <TokenBreakdown>
+                              <TokenBreakdownItem>
+                                <span>{t('convert.ko')}</span>
+                                <span>
+                                  {Math.ceil(
+                                    Math.round(tokenUsage * 1.6) / 2200
+                                  )}
+                                  <BreakdownUnit>장</BreakdownUnit>
+                                </span>
+                              </TokenBreakdownItem>
+                              <TokenBreakdownItem>
+                                <span>{t('convert.en')}</span>
+                                <span>
+                                  {Math.ceil(
+                                    Math.round(tokenUsage * 4.5) / 3800
+                                  )}
+                                  <BreakdownUnit>장</BreakdownUnit>
+                                </span>
+                              </TokenBreakdownItem>
+                            </TokenBreakdown>
+                          </TokenRight>
+                        </PageTokenContent>
+                        <PageAssumptionNote>
+                          <InfoSmallIcon />
+                          <span>{t('assumptions.pageConversion')}</span>
+                        </PageAssumptionNote>
+                      </PageContentWrapper>
+                    </TokenCard>
+                  </TokenBreakdownLeft>
+
+                  <TokenBreakdownRight>
+                    <TokenCard>
+                      <TokenHeader>
+                        <TokenTitle>문자 환산</TokenTitle>
+                      </TokenHeader>
+                      <LanguageContent>
+                        <LanguageCard>
+                          <TokenLeft>
                             <LanguageIcon>Kr</LanguageIcon>
-                            <span>{t('checkout.convert.ko')}</span>
-                          </LanguageLabel>
-                          <LanguageContent>
-                            <LanguageTotal>
-                              {Math.round(tokenUsage * 1.6).toLocaleString()}{' '}
-                              <span
-                                style={{
-                                  color:
-                                    textColor.light['fg-neutral-alternative'],
-                                }}
-                              >
-                                {t('checkout.convert.charUnit')}
-                              </span>
-                            </LanguageTotal>
-                            <Divider style={{ margin: '8px 0' }} />
-                            <LanguageBreakdown>
-                              <LanguageItem>
-                                <span>{t('checkout.breakdown.input')}</span>
+                            <TokenLabel>{t('convert.ko')}</TokenLabel>
+                          </TokenLeft>
+                          <TokenRight>
+                            <TokenTotal>
+                              {Math.round(tokenUsage * 1.6).toLocaleString()}
+                              <TokenUnit>{t('convert.charUnit')}</TokenUnit>
+                            </TokenTotal>
+                            <TokenDivider />
+                            <TokenBreakdown>
+                              <TokenBreakdownItem>
+                                <span>{t('breakdown.input')}</span>
                                 <span>
                                   {Math.round(
                                     tokenUsage * 0.6 * 1.6
                                   ).toLocaleString()}
+                                  <BreakdownUnit>자</BreakdownUnit>
                                 </span>
-                              </LanguageItem>
-                              <LanguageItem>
-                                <span>{t('checkout.breakdown.output')}</span>
+                              </TokenBreakdownItem>
+                              <TokenBreakdownItem>
+                                <span>{t('breakdown.output')}</span>
                                 <span>
                                   {Math.round(
                                     tokenUsage * 0.4 * 1.6
                                   ).toLocaleString()}
+                                  <BreakdownUnit>자</BreakdownUnit>
                                 </span>
-                              </LanguageItem>
-                            </LanguageBreakdown>
-                          </LanguageContent>
-                        </LanguageBox>
+                              </TokenBreakdownItem>
+                            </TokenBreakdown>
+                          </TokenRight>
+                        </LanguageCard>
 
-                        <LanguageBox>
-                          <LanguageLabel>
+                        <LanguageCard>
+                          <TokenLeft>
                             <LanguageIcon>En</LanguageIcon>
-                            <span>{t('checkout.convert.en')}</span>
-                          </LanguageLabel>
-                          <LanguageContent>
-                            <LanguageTotal>
-                              {Math.round(tokenUsage * 4.5).toLocaleString()}{' '}
-                              <span
-                                style={{
-                                  color:
-                                    textColor.light['fg-neutral-alternative'],
-                                }}
-                              >
-                                {t('checkout.convert.charUnit')}
-                              </span>
-                            </LanguageTotal>
-                            <Divider style={{ margin: '8px 0' }} />
-                            <LanguageBreakdown>
-                              <LanguageItem>
-                                <span>{t('checkout.breakdown.input')}</span>
+                            <TokenLabel>{t('convert.en')}</TokenLabel>
+                          </TokenLeft>
+                          <TokenRight>
+                            <TokenTotal>
+                              {Math.round(tokenUsage * 4.5).toLocaleString()}
+                              <TokenUnit>{t('convert.charUnit')}</TokenUnit>
+                            </TokenTotal>
+                            <TokenDivider />
+                            <TokenBreakdown>
+                              <TokenBreakdownItem>
+                                <span>{t('breakdown.input')}</span>
                                 <span>
                                   {Math.round(
                                     tokenUsage * 0.6 * 4.5
                                   ).toLocaleString()}
+                                  <BreakdownUnit>자</BreakdownUnit>
                                 </span>
-                              </LanguageItem>
-                              <LanguageItem>
-                                <span>{t('checkout.breakdown.output')}</span>
+                              </TokenBreakdownItem>
+                              <TokenBreakdownItem>
+                                <span>{t('breakdown.output')}</span>
                                 <span>
                                   {Math.round(
                                     tokenUsage * 0.4 * 4.5
                                   ).toLocaleString()}
+                                  <BreakdownUnit>자</BreakdownUnit>
                                 </span>
-                              </LanguageItem>
-                            </LanguageBreakdown>
-                          </LanguageContent>
-                        </LanguageBox>
-
-                        <A4BoxWithBorder>
-                          <A4LeftSection>
-                            <LanguageIcon>
-                              <PrintIcon />
-                            </LanguageIcon>
-                            <span>A4</span>
-                          </A4LeftSection>
-                          <A4Grid>
-                            <A4Cell>
-                              <A4CellLabel>
-                                {t('checkout.convert.ko')}
-                              </A4CellLabel>
-                            </A4Cell>
-                            <A4Cell>
-                              <A4CellValue>
-                                <A4NumberWithUnit>
-                                  <A4NumberText>
-                                    {Math.ceil(
-                                      Math.round(tokenUsage * 1.6) / 2200
-                                    ).toLocaleString()}
-                                  </A4NumberText>
-                                  <A4UnitText>
-                                    {t('checkout.convert.pageUnit')}
-                                  </A4UnitText>
-                                </A4NumberWithUnit>
-                                <Badge
-                                  size='small'
-                                  type='outline'
-                                  variant='secondary'
-                                >
-                                  {t('checkout.convert.estimate')}
-                                </Badge>
-                              </A4CellValue>
-                            </A4Cell>
-                            <A4Cell>
-                              <A4CellLabel>
-                                {t('checkout.convert.en')}
-                              </A4CellLabel>
-                            </A4Cell>
-                            <A4Cell>
-                              <A4CellValue>
-                                <A4NumberWithUnit>
-                                  <A4NumberText>
-                                    {Math.ceil(
-                                      Math.round(tokenUsage * 4.5) / 3800
-                                    ).toLocaleString()}
-                                  </A4NumberText>
-                                  <A4UnitText>
-                                    {t('checkout.convert.pageUnit')}
-                                  </A4UnitText>
-                                </A4NumberWithUnit>
-                                <Badge
-                                  size='small'
-                                  type='outline'
-                                  variant='secondary'
-                                >
-                                  {t('checkout.convert.estimate')}
-                                </Badge>
-                              </A4CellValue>
-                            </A4Cell>
-                          </A4Grid>
-                        </A4BoxWithBorder>
-                      </LanguageBoxContainer>
-
-                      <TokenNote>
-                        <SmallInfoIcon />
-                        <TokenNoteContent>
-                          {t('checkout.convert.note')}
-                        </TokenNoteContent>
-                      </TokenNote>
-                    </TokenBreakdownContent>
-                  </TokenBreakdownCard>
+                              </TokenBreakdownItem>
+                            </TokenBreakdown>
+                          </TokenRight>
+                        </LanguageCard>
+                        <PageAssumptionNote>
+                          <InfoSmallIcon />
+                          <span>{t('assumptions.characterConversion')}</span>
+                        </PageAssumptionNote>
+                      </LanguageContent>
+                    </TokenCard>
+                  </TokenBreakdownRight>
                 </TokenBreakdownGrid>
               </TokenBreakdownSection>
             </Section>
 
             {/* 사용자 수 */}
             <Section>
-              <SectionTitle>{t('checkout.users.title')}</SectionTitle>
+              <SectionTitle>{t('users.title')}</SectionTitle>
               <UserInputSection>
                 <TextField
-                  label={t('checkout.users.label')}
+                  label={t('users.label')}
                   size='large'
                   value={userCount.toString()}
                   onChange={(e) => handleUserCountChange(e.target.value)}
@@ -512,14 +471,14 @@ export default function CheckoutPage() {
                     leadingIcon={<RemoveIcon />}
                     onClick={() => setUserCount(Math.max(100, userCount - 50))}
                   >
-                    {t('checkout.users.step')}
+                    {t('users.step')}
                   </Chip>
                   <Chip
                     size='x-small'
                     leadingIcon={<SmallAddIcon />}
                     onClick={() => setUserCount(userCount + 50)}
                   >
-                    {t('checkout.users.step')}
+                    {t('users.step')}
                   </Chip>
                 </UserCountControls>
               </UserInputSection>
@@ -527,10 +486,8 @@ export default function CheckoutPage() {
 
             {/* 계약 기간 */}
             <Section>
-              <SectionTitle>{t('checkout.contract.title')}</SectionTitle>
-              <PeriodDescription>
-                {t('checkout.contract.desc')}
-              </PeriodDescription>
+              <SectionTitle>{t('contract.title')}</SectionTitle>
+              <PeriodDescription>{t('contract.desc')}</PeriodDescription>
               <PeriodOptions>
                 {[
                   { months: 1, discount: 0 },
@@ -546,7 +503,7 @@ export default function CheckoutPage() {
                   >
                     <span>
                       {option.months}
-                      {t('checkout.contract.monthsSuffix')}
+                      {t('contract.monthsSuffix')}
                     </span>
                     <Badge
                       size='small'
@@ -568,18 +525,18 @@ export default function CheckoutPage() {
                   />
                   <PrepayContent>
                     <PrepayTop>
-                      <span>{t('checkout.contract.prepay')}</span>
+                      <span>{t('contract.prepay')}</span>
                       <PrepayBadges>
                         <Badge size='small' type='strong' variant='info'>
-                          {t('checkout.contract.lumpSum')}
+                          {t('contract.lumpSum')}
                         </Badge>
                         <Badge size='small' type='outline' variant='info'>
-                          {t('checkout.contract.pct')}
+                          {t('contract.pct')}
                         </Badge>
                       </PrepayBadges>
                     </PrepayTop>
                     <PrepayDescription>
-                      {t('checkout.contract.prepayDesc')}
+                      {t('contract.prepayDesc')}
                     </PrepayDescription>
                   </PrepayContent>
                 </PrepayToggle>
@@ -588,80 +545,80 @@ export default function CheckoutPage() {
 
             {/* Add-on */}
             <Section>
-              <SectionTitle>{t('checkout.addon.title')}</SectionTitle>
-              <AddOnDescription>{t('checkout.addon.desc')}</AddOnDescription>
+              <SectionTitle>{t('addon.title')}</SectionTitle>
+              <AddOnDescription>{t('addon.desc')}</AddOnDescription>
 
               <AddOnGroup>
-                <AddOnSubTitle>{t('checkout.addon.security')}</AddOnSubTitle>
+                <AddOnSubTitle>{t('addon.security')}</AddOnSubTitle>
                 <AddOnOptions>
                   <AddOnOption
                     $isSelected={securityGuideCount === -1}
                     onClick={() => setSecurityGuideCount(-1)}
                   >
-                    <span>{t('checkout.addon.none')}</span>
+                    <span>{t('addon.none')}</span>
                     <span>₩0</span>
                   </AddOnOption>
                   <AddOnOption
                     $isSelected={securityGuideCount === 5}
                     onClick={() => setSecurityGuideCount(5)}
                   >
-                    <span>{t('checkout.addon.count5')}</span>
+                    <span>{t('addon.count5')}</span>
                     <span>₩12,000,000</span>
                   </AddOnOption>
                   <AddOnOption
                     $isSelected={securityGuideCount === 8}
                     onClick={() => setSecurityGuideCount(8)}
                   >
-                    <span>{t('checkout.addon.count8')}</span>
+                    <span>{t('addon.count8')}</span>
                     <span>₩15,000,000</span>
                   </AddOnOption>
                   <AddOnOption
                     $isSelected={securityGuideCount === 12}
                     onClick={() => setSecurityGuideCount(12)}
                   >
-                    <span>{t('checkout.addon.count12')}</span>
+                    <span>{t('addon.count12')}</span>
                     <span>₩18,000,000</span>
                   </AddOnOption>
                 </AddOnOptions>
               </AddOnGroup>
 
               <AddOnGroup>
-                <AddOnSubTitle>{t('checkout.addon.admin')}</AddOnSubTitle>
-                <AddOnNote>{t('checkout.addon.adminNote')}</AddOnNote>
+                <AddOnSubTitle>{t('addon.admin')}</AddOnSubTitle>
+                <AddOnNote>{t('addon.adminNote')}</AddOnNote>
                 <AddOnOptions>
                   <AddOnOption
                     $isSelected={policyGuideCount === -1}
                     onClick={() => setPolicyGuideCount(-1)}
                   >
-                    <span>{t('checkout.addon.none')}</span>
+                    <span>{t('addon.none')}</span>
                     <span>₩0</span>
                   </AddOnOption>
                   <AddOnOption
                     $isSelected={policyGuideCount === 0}
                     onClick={() => setPolicyGuideCount(0)}
                   >
-                    <span>{t('checkout.addon.range100_200')}</span>
+                    <span>{t('addon.range100_200')}</span>
                     <span>₩25,000,000</span>
                   </AddOnOption>
                   <AddOnOption
                     $isSelected={policyGuideCount === 200}
                     onClick={() => setPolicyGuideCount(200)}
                   >
-                    <span>{t('checkout.addon.range200_500')}</span>
+                    <span>{t('addon.range200_500')}</span>
                     <span>₩15,000,000</span>
                   </AddOnOption>
                   <AddOnOption
                     $isSelected={policyGuideCount === 500}
                     onClick={() => setPolicyGuideCount(500)}
                   >
-                    <span>{t('checkout.addon.range500p')}</span>
+                    <span>{t('addon.range500p')}</span>
                     <span>₩0</span>
                   </AddOnOption>
                 </AddOnOptions>
               </AddOnGroup>
 
               <AddOnGroup>
-                <AddOnSubTitle>{t('checkout.addon.module')}</AddOnSubTitle>
+                <AddOnSubTitle>{t('addon.module')}</AddOnSubTitle>
                 <LargeAddOnCard $isSelected={basicModuleEnabled}>
                   <AddOnMainToggle>
                     <Checkbox
@@ -676,7 +633,7 @@ export default function CheckoutPage() {
                         }
                       }}
                     />
-                    <span>{t('checkout.addon.basic')}</span>
+                    <span>{t('addon.basic')}</span>
                     <AddOnMainPrice>₩25,000,000</AddOnMainPrice>
                   </AddOnMainToggle>
 
@@ -688,7 +645,7 @@ export default function CheckoutPage() {
                         basicModuleEnabled && setSelectedSubOption('none')
                       }
                     >
-                      <span>{t('checkout.addon.noneShort')}</span>
+                      <span>{t('addon.noneShort')}</span>
                       <span>₩0</span>
                     </AddOnSubCard>
                     <AddOnSubCard
@@ -698,7 +655,7 @@ export default function CheckoutPage() {
                         basicModuleEnabled && setSelectedSubOption('filter5')
                       }
                     >
-                      <span>{t('checkout.addon.filter5')}</span>
+                      <span>{t('addon.filter5')}</span>
                       <span>₩5,000,000</span>
                     </AddOnSubCard>
                     <AddOnSubCard
@@ -708,7 +665,7 @@ export default function CheckoutPage() {
                         basicModuleEnabled && setSelectedSubOption('filter8')
                       }
                     >
-                      <span>{t('checkout.addon.filter8')}</span>
+                      <span>{t('addon.filter8')}</span>
                       <span>₩10,000,000</span>
                     </AddOnSubCard>
                     <AddOnSubCard
@@ -718,7 +675,7 @@ export default function CheckoutPage() {
                         basicModuleEnabled && setSelectedSubOption('filter12')
                       }
                     >
-                      <span>{t('checkout.addon.filter12')}</span>
+                      <span>{t('addon.filter12')}</span>
                       <span>₩15,000,000</span>
                     </AddOnSubCard>
                   </AddOnSubGrid>
@@ -726,7 +683,7 @@ export default function CheckoutPage() {
               </AddOnGroup>
 
               <AddOnGroup>
-                <AddOnSubTitle>{t('checkout.addon.others')}</AddOnSubTitle>
+                <AddOnSubTitle>{t('addon.others')}</AddOnSubTitle>
                 <AddOnItemList>
                   <AddOnItem
                     $isSelected={ragSystemEnabled}
@@ -737,7 +694,7 @@ export default function CheckoutPage() {
                       state={ragSystemEnabled ? 'checked' : 'unchecked'}
                       onChange={(checked) => setRagSystemEnabled(checked)}
                     />
-                    <span>{t('checkout.addon.rag')}</span>
+                    <span>{t('addon.rag')}</span>
                     <span>₩10,000,000</span>
                   </AddOnItem>
                   <AddOnItem
@@ -749,7 +706,7 @@ export default function CheckoutPage() {
                       state={graphRagEnabled ? 'checked' : 'unchecked'}
                       onChange={(checked) => setGraphRagEnabled(checked)}
                     />
-                    <span>{t('checkout.addon.graphRag')}</span>
+                    <span>{t('addon.graphRag')}</span>
                     <span>₩38,000,000</span>
                   </AddOnItem>
                   <AddOnItem
@@ -765,7 +722,7 @@ export default function CheckoutPage() {
                         setDocumentSecurityEnabled(checked)
                       }
                     />
-                    <span>{t('checkout.addon.docSec')}</span>
+                    <span>{t('addon.docSec')}</span>
                     <span>₩5,000,000</span>
                   </AddOnItem>
                   <AddOnItem
@@ -777,7 +734,7 @@ export default function CheckoutPage() {
                       state={aiAnswerEnabled ? 'checked' : 'unchecked'}
                       onChange={(checked) => setAiAnswerEnabled(checked)}
                     />
-                    <span>{t('checkout.addon.aiAnswer')}</span>
+                    <span>{t('addon.aiAnswer')}</span>
                     <span>₩5,000,000</span>
                   </AddOnItem>
                 </AddOnItemList>
@@ -786,12 +743,12 @@ export default function CheckoutPage() {
 
             {/* 반복 비용 */}
             <Section>
-              <SectionTitle>{t('checkout.repeat.title')}</SectionTitle>
-              <AddOnDescription>{t('checkout.repeat.desc')}</AddOnDescription>
+              <SectionTitle>{t('repeat.title')}</SectionTitle>
+              <AddOnDescription>{t('repeat.desc')}</AddOnDescription>
               <RepeatCostCard>
                 <RepeatCostLeft>
                   <RepeatCostPrice>₩13,000</RepeatCostPrice>
-                  <RepeatCostUnit>{t('checkout.repeat.unit')}</RepeatCostUnit>
+                  <RepeatCostUnit>{t('repeat.unit')}</RepeatCostUnit>
                 </RepeatCostLeft>
                 <CounterContainer>
                   <CounterButton
@@ -817,12 +774,12 @@ export default function CheckoutPage() {
             <TokenInfoSection>
               <TokenInfoHeader>
                 <InfoIcon />
-                <TokenInfoTitle>{t('checkout.tokenInfo.title')}</TokenInfoTitle>
+                <TokenInfoTitle>{t('tokenInfo.title')}</TokenInfoTitle>
               </TokenInfoHeader>
               <TokenInfoList>
-                <TokenInfoItem>{t('checkout.tokenInfo.b1')}</TokenInfoItem>
-                <TokenInfoItem>{t('checkout.tokenInfo.b2')}</TokenInfoItem>
-                <TokenInfoItem>{t('checkout.tokenInfo.b3')}</TokenInfoItem>
+                <TokenInfoItem>{t('tokenInfo.b1')}</TokenInfoItem>
+                <TokenInfoItem>{t('tokenInfo.b2')}</TokenInfoItem>
+                <TokenInfoItem>{t('tokenInfo.b3')}</TokenInfoItem>
               </TokenInfoList>
             </TokenInfoSection>
           </LeftSection>
@@ -830,63 +787,57 @@ export default function CheckoutPage() {
           <RightSection>
             <SummaryCard>
               <TopSection>
-                <SummaryTitle>{t('checkout.summary.title')}</SummaryTitle>
+                <SummaryTitle>{t('summary.title')}</SummaryTitle>
 
                 <SummaryItem>
-                  <SummaryLabel>
-                    {t('checkout.summary.selectedSpec')}
-                  </SummaryLabel>
+                  <SummaryLabel>{t('summary.selectedSpec')}</SummaryLabel>
                   <SummaryDetails>
                     <SummaryDetail>
-                      {t('checkout.summary.selectedPlan')}: {currentPlan.name}{' '}
-                      (₩
+                      {t('summary.selectedPlan')}: {currentPlan.name} (₩
                       {currentPlan.price.toLocaleString()}/Seat · Cap{' '}
                       {tokenUsage.toLocaleString()})
                     </SummaryDetail>
                     <SummaryDetail>
-                      {t('checkout.summary.users')}: {userCount}
+                      {t('summary.users')}: {userCount}
                     </SummaryDetail>
                     <SummaryDetail>
-                      {t('checkout.summary.contract')}: {contractPeriod}
-                      {t('checkout.contract.monthsSuffix')} (
-                      {t('checkout.summary.discount')}{' '}
+                      {t('summary.contract')}: {contractPeriod}
+                      {t('contract.monthsSuffix')} ({t('summary.discount')}{' '}
                       {contractDiscounts[
                         contractPeriod as keyof typeof contractDiscounts
                       ] || 0}
                       %)
                     </SummaryDetail>
                     <SummaryDetail>
-                      {t('checkout.summary.prepay')}:{' '}
-                      {prepayEnabled
-                        ? t('checkout.summary.yesWith')
-                        : t('checkout.summary.no')}
+                      {t('summary.prepay')}:{' '}
+                      {prepayEnabled ? t('summary.yesWith') : t('summary.no')}
                     </SummaryDetail>
                     <SummaryDetail>
-                      {t('checkout.summary.security')}:{' '}
+                      {t('summary.security')}:{' '}
                       {securityGuideCount === -1
-                        ? t('checkout.summary.none')
+                        ? t('summary.none')
                         : `${securityGuideCount}개`}
                     </SummaryDetail>
                     <SummaryDetail>
-                      {t('checkout.summary.admin')}:{' '}
+                      {t('summary.admin')}:{' '}
                       {policyGuideCount === -1
-                        ? t('checkout.summary.none')
+                        ? t('summary.none')
                         : policyGuideCount === 0
-                          ? t('checkout.addon.range100_200')
+                          ? t('addon.range100_200')
                           : policyGuideCount === 200
-                            ? t('checkout.addon.range200_500')
-                            : t('checkout.addon.range500p')}
+                            ? t('addon.range200_500')
+                            : t('addon.range500p')}
                     </SummaryDetail>
                     <SummaryDetail>
-                      {t('checkout.summary.module')}:{' '}
+                      {t('summary.module')}:{' '}
                       {unstructuredModuleEnabled
-                        ? t('checkout.addon.basic')
-                        : t('checkout.addon.basic')}
+                        ? t('addon.basic')
+                        : t('addon.basic')}
                     </SummaryDetail>
                     <SummaryDetail
                       style={{ display: 'flex', alignItems: 'flex-start' }}
                     >
-                      <span>{t('checkout.summary.others')}</span>
+                      <span>{t('summary.others')}</span>
                       <div
                         style={{
                           width: '1px',
@@ -896,10 +847,10 @@ export default function CheckoutPage() {
                         }}
                       />
                       {[
-                        ragSystemEnabled && t('checkout.addon.rag'),
-                        graphRagEnabled && t('checkout.addon.graphRag'),
-                        documentSecurityEnabled && t('checkout.addon.docSec'),
-                        aiAnswerEnabled && t('checkout.addon.aiAnswer'),
+                        ragSystemEnabled && t('addon.rag'),
+                        graphRagEnabled && t('addon.graphRag'),
+                        documentSecurityEnabled && t('addon.docSec'),
+                        aiAnswerEnabled && t('addon.aiAnswer'),
                       ].filter(Boolean).length > 0 ? (
                         <div style={{ flex: 1 }}>
                           {ragSystemEnabled && (
@@ -910,7 +861,7 @@ export default function CheckoutPage() {
                                 marginBottom: '4px',
                               }}
                             >
-                              {t('checkout.addon.rag')}
+                              {t('addon.rag')}
                             </div>
                           )}
                           {graphRagEnabled && (
@@ -921,7 +872,7 @@ export default function CheckoutPage() {
                                 marginBottom: '4px',
                               }}
                             >
-                              {t('checkout.addon.graphRag')}
+                              {t('addon.graphRag')}
                             </div>
                           )}
                           {documentSecurityEnabled && (
@@ -932,7 +883,7 @@ export default function CheckoutPage() {
                                 marginBottom: '4px',
                               }}
                             >
-                              {t('checkout.addon.docSec')}
+                              {t('addon.docSec')}
                             </div>
                           )}
                           {aiAnswerEnabled && (
@@ -943,53 +894,51 @@ export default function CheckoutPage() {
                                 marginBottom: '4px',
                               }}
                             >
-                              {t('checkout.addon.aiAnswer')}
+                              {t('addon.aiAnswer')}
                             </div>
                           )}
                         </div>
                       ) : (
-                        <span>{t('checkout.summary.none')}</span>
+                        <span>{t('summary.none')}</span>
                       )}
                     </SummaryDetail>
                     <SummaryDetail>
-                      {t('checkout.summary.extraTokens')}: {tokenPackCount} ×
-                      ₩13,000/월
+                      {t('summary.extraTokens')}: {tokenPackCount} × ₩13,000/월
                     </SummaryDetail>
                     <SummaryDetail>
-                      {t('checkout.summary.vatOn')}:{' '}
-                      {vatEnabled ? 'OFF' : 'OFF'}
+                      {t('summary.vatOn')}: {vatEnabled ? 'OFF' : 'OFF'}
                     </SummaryDetail>
                   </SummaryDetails>
                 </SummaryItem>
                 <Divider />
                 <PriceBreakdownSection>
                   <PriceBreakdownItem>
-                    <span>{t('checkout.summary.monthly')}</span>
+                    <span>{t('summary.monthly')}</span>
                     <span>₩{Math.round(monthlyTotal).toLocaleString()}</span>
                   </PriceBreakdownItem>
                   <PriceBreakdownItem>
-                    <span>{t('checkout.summary.oneTime')}</span>
+                    <span>{t('summary.oneTime')}</span>
                     <span>₩{Math.round(addOnTotal).toLocaleString()}</span>
                   </PriceBreakdownItem>
                   <PriceBreakdownItem>
-                    <span>{t('checkout.summary.firstBill')}</span>
+                    <span>{t('summary.firstBill')}</span>
                     <span>₩{Math.round(finalTotal).toLocaleString()}</span>
                   </PriceBreakdownItem>
                 </PriceBreakdownSection>
                 <Divider />
                 <TotalSection>
-                  <TotalLabel>{t('checkout.summary.total')}</TotalLabel>
+                  <TotalLabel>{t('summary.total')}</TotalLabel>
                   <TotalPrice>
                     ₩{Math.round(finalTotal).toLocaleString()}
                   </TotalPrice>
                 </TotalSection>
                 <TaxDetailsSection>
                   <TaxDetailItem>
-                    <span>{t('checkout.summary.prepayApply')}</span>
+                    <span>{t('summary.prepayApply')}</span>
                     <span>₩{Math.round(prepayDiscount).toLocaleString()}</span>
                   </TaxDetailItem>
                   <TaxDetailItem>
-                    <span>{t('checkout.summary.vatIncl')}</span>
+                    <span>{t('summary.vatIncl')}</span>
                     <span>₩{Math.round(finalTotal).toLocaleString()}</span>
                   </TaxDetailItem>
                 </TaxDetailsSection>
@@ -1003,9 +952,9 @@ export default function CheckoutPage() {
                       state={vatEnabled ? 'checked' : 'unchecked'}
                       onChange={(checked) => setVatEnabled(checked)}
                     />
-                    <span>{t('checkout.vat.toggle')}</span>
+                    <span>{t('vat.toggle')}</span>
                   </VatToggle>
-                  <VatRate>{t('checkout.vat.rate')}</VatRate>
+                  <VatRate>{t('vat.rate')}</VatRate>
                 </VatToggleWrapper>
 
                 <ButtonGroup>
@@ -1014,21 +963,21 @@ export default function CheckoutPage() {
                     size='large'
                     onClick={handleCheckout}
                   >
-                    {t('checkout.buttons.buy')}
+                    {t('buttons.buy')}
                   </SolidButton>
                   <SolidButton
                     variant='secondary'
                     size='large'
                     onClick={() => alert('문의하기')}
                   >
-                    {t('checkout.buttons.contact')}
+                    {t('buttons.contact')}
                   </SolidButton>
                   <SolidButton
                     variant='secondary'
                     size='large'
                     onClick={() => alert('PDF 다운로드')}
                   >
-                    <span>↓</span> {t('checkout.buttons.pdf')}
+                    <span>↓</span> {t('buttons.pdf')}
                   </SolidButton>
                 </ButtonGroup>
               </BottomSection>
@@ -1039,8 +988,8 @@ export default function CheckoutPage() {
                 <InfoIcon />
               </B2BInfoIcon>
               <B2BInfoContent>
-                <B2BInfoText>{t('checkout.b2bInfo.text1')}</B2BInfoText>
-                <B2BInfoText>{t('checkout.b2bInfo.text2')}</B2BInfoText>
+                <B2BInfoText>{t('b2bInfo.text1')}</B2BInfoText>
+                <B2BInfoText>{t('b2bInfo.text2')}</B2BInfoText>
               </B2BInfoContent>
             </B2BInfoCard>
           </RightSection>
@@ -1341,132 +1290,21 @@ const TokenBreakdownSection = styled.div`
 
 const TokenBreakdownGrid = styled.div`
   display: flex;
+  gap: 20px;
+`;
+
+const TokenBreakdownLeft = styled.div`
+  flex: 1;
+  display: flex;
   flex-direction: column;
   gap: 20px;
 `;
 
-const TokenBreakdownCard = styled.div`
-  border: 1px solid ${borderColor.light['color-border-primary']};
-  border-radius: 8px;
-  overflow: visible;
-`;
-
-const TokenBreakdownHeader = styled.div`
-  border-radius: 8px 8px 0 0;
-  border-bottom: 1px solid ${borderColor.light['color-border-primary']};
-  padding: 10px 12px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  background: ${color.gray['50']};
-`;
-
-const TokenBreakdownTitle = styled.h5`
-  ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  margin: 0;
-`;
-
-const TokenBreakdownContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 12px;
-`;
-
-const TokenBreakdownContentNoPadding = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const TokenBreakdownHorizontal = styled.div`
-  display: flex;
-  align-items: stretch;
-  height: 100%;
-`;
-
-const TokenBreakdownTotalSection = styled.div`
+const TokenBreakdownRight = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 12px;
-`;
-
-const TokenBreakdownVerticalDivider = styled.div`
-  width: 1px;
-  background-color: ${borderColor.light['color-border-primary']};
-`;
-
-const TokenBreakdownItems = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-`;
-
-const TokenBreakdownItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  border-bottom: 1px solid ${borderColor.light['color-border-primary']};
-
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-const TokenBreakdownLabel = styled.div`
-  ${typography('ko', 'caption2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-`;
-
-const TokenBreakdownValue = styled.div`
-  ${typography('ko', 'caption2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-`;
-
-const TokenBreakdownTotal = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-`;
-
-const TokenBreakdownTotalLabel = styled.div`
-  ${typography('ko', 'caption2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  margin-bottom: 4px;
-`;
-
-const TokenBreakdownTotalValue = styled.div`
-  ${typography('ko', 'body2', 'medium')}
-`;
-
-const TokenBreakdownSubItem = styled.div`
-  font-size: 11px;
-  color: ${textColor.light['fg-neutral-alternative']};
-  text-align: right;
-  margin-top: 4px;
-`;
-
-const TokenNote = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 20px;
-  background: ${color.gray['50']};
-  border-radius: 12px;
-
-  svg {
-    flex-shrink: 0;
-    width: 16px;
-    height: 16px;
-  }
-`;
-
-const TokenNoteContent = styled.span`
-  ${typography('ko', 'caption2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  flex: 1;
+  gap: 20px;
 `;
 
 const UserInputSection = styled.div`
@@ -1477,20 +1315,6 @@ const UserCountControls = styled.div`
   display: flex;
   gap: 8px;
   margin-top: 10px;
-`;
-
-const ControlButton = styled.button`
-  padding: 8px 12px;
-  border: 1px solid ${borderColor.light['color-border-primary']};
-  border-radius: 6px;
-  background: white;
-  color: ${textColor.light['fg-neutral-primary']};
-  cursor: pointer;
-  font-size: 12px;
-
-  &:hover {
-    background: #f8f9fa;
-  }
 `;
 
 const PeriodDescription = styled.p`
@@ -1962,163 +1786,6 @@ const ButtonGroup = styled.div`
   gap: 12px;
 `;
 
-const LanguageBoxContainer = styled.div`
-  display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
-`;
-
-const LanguageBox = styled.div`
-  display: flex;
-  flex: 1;
-  border: 1px solid ${borderColor.light['color-border-primary']};
-  border-radius: 12px;
-  overflow: hidden;
-  background: ${color.gray['50']};
-`;
-
-const LanguageLabel = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  gap: 6px;
-  width: 80px;
-
-  span {
-    ${typography('ko', 'caption2', 'medium')}
-    color: ${textColor.light['fg-neutral-primary']};
-  }
-`;
-
-const LanguageIcon = styled.div`
-  width: 28px;
-  height: 28px;
-  ${typography('ko', 'caption2', 'medium')}
-  background: white;
-  color: ${textColor.light['fg-neutral-alternative']};
-  border-radius: 8px;
-  border: 1px solid ${borderColor.light['color-border-primary']};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const LanguageContent = styled.div`
-  flex: 1;
-  padding: 8px 12px;
-  background: white;
-  border-radius: 0 12px 12px 0;
-  display: flex;
-  flex-direction: column;
-`;
-
-const LanguageTotal = styled.div`
-  ${typography('ko', 'body2', 'medium')}
-`;
-
-const LanguageBreakdown = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-const LanguageItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  span:first-child {
-    ${typography('ko', 'caption2', 'regular')}
-    color: ${textColor.light['fg-neutral-alternative']};
-  }
-
-  span:last-child {
-    ${typography('ko', 'caption2', 'medium')}
-    color: ${textColor.light['fg-neutral-alternative']};
-  }
-`;
-
-const A4BoxWithBorder = styled.div`
-  flex: 1;
-  display: flex;
-  border: 1px solid ${borderColor.light['color-border-primary']};
-  border-radius: 12px;
-  overflow: hidden;
-  background: ${color.gray['50']};
-`;
-
-const A4LeftSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 8px;
-  background: ${color.gray['50']};
-  border-right: 1px solid ${borderColor.light['color-border-primary']};
-  width: 80px;
-
-  span {
-    ${typography('ko', 'body2', 'medium')}
-  }
-`;
-
-const A4Grid = styled.div`
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  grid-template-rows: 1fr 1fr;
-  flex: 1;
-`;
-
-const A4Cell = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  border-right: 1px solid ${borderColor.light['color-border-primary']};
-  border-bottom: 1px solid ${borderColor.light['color-border-primary']};
-  background: ${color.gray['50']};
-
-  &:nth-child(2n) {
-    border-right: none;
-    background: white;
-    justify-content: flex-start;
-  }
-
-  &:nth-child(3),
-  &:nth-child(4) {
-    border-bottom: none;
-  }
-`;
-
-const A4CellLabel = styled.span`
-  ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-`;
-
-const A4CellValue = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`;
-
-const A4NumberWithUnit = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const A4NumberText = styled.span`
-  ${typography('ko', 'body2', 'medium')}
-  color: ${textColor.light['fg-neutral-primary']};
-`;
-
-const A4UnitText = styled.span`
-  ${typography('ko', 'body2', 'medium')}
-  color: ${textColor.light['fg-neutral-alternative']};
-`;
-
 const B2BInfoCard = styled.div`
   display: flex;
   align-items: flex-start;
@@ -2148,4 +1815,192 @@ const B2BInfoContent = styled.div`
 const B2BInfoText = styled.div`
   ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const TokenCard = styled.div`
+  border-radius: 12px;
+  overflow: hidden;
+  background: ${color.gray['50']};
+`;
+
+const TokenHeader = styled.div`
+  padding: 16px 12px 8px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;
+
+const TokenTitle = styled.h5`
+  ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-primary']};
+  margin: 0;
+`;
+
+const TokenContent = styled.div`
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 8px;
+  margin: 0 12px 16px 12px;
+`;
+
+const LanguageContent = styled.div`
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const LanguageCard = styled.div`
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 8px;
+`;
+
+const TokenLeft = styled.div`
+  display: flex;
+  width: 80px;
+  height: 89px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-right: 1px solid ${borderColor.light['color-border-primary']};
+  padding: 8px 0;
+`;
+
+const TokenIcon = styled.div`
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid ${borderColor.light['color-border-primary']};
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${typography('ko', 'caption2', 'medium')}
+  color: ${textColor.light['fg-neutral-alternative']};
+
+  svg {
+    color: ${textColor.light['fg-neutral-alternative']};
+  }
+`;
+
+const TokenLabel = styled.div`
+  ${typography('ko', 'caption2', 'regular')}
+`;
+
+const TokenRight = styled.div`
+  padding: 8px 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const TokenTotal = styled.div`
+  ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-primary']};
+  display: flex;
+  align-items: center;
+  gap: 2px;
+`;
+
+const TokenUnit = styled.span`
+  ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const TokenBreakdown = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TokenDivider = styled.div`
+  height: 1px;
+  background-color: ${borderColor.light['color-border-primary']};
+  margin: 8px 0;
+`;
+
+const TokenBreakdownItem = styled.div`
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  span:first-child {
+    ${typography('ko', 'caption2', 'regular')}
+    color: ${textColor.light['fg-neutral-alternative']};
+  }
+
+  span:last-child {
+    ${typography('ko', 'caption2', 'regular')}
+    color: ${textColor.light['fg-neutral-alternative']};
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+`;
+
+const BreakdownUnit = styled.span`
+  ${typography('ko', 'body2', 'medium')}
+  color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const LanguageIcon = styled.div`
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid ${borderColor.light['color-border-primary']};
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${typography('ko', 'caption2', 'medium')}
+  color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const A4Icon = styled.div`
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid ${borderColor.light['color-border-primary']};
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+const PageContentWrapper = styled.div`
+  padding: 0 12px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const PageTokenContent = styled.div`
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 8px;
+`;
+
+const PageAssumptionNote = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  svg {
+    color: ${textColor.light['fg-neutral-alternative']};
+  }
+
+  span {
+    ${typography('ko', 'caption2', 'regular')}
+    color: ${textColor.light['fg-neutral-alternative']};
+  }
 `;
