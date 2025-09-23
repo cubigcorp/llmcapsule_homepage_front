@@ -11,7 +11,7 @@ import Footer from '@/components/layout/Footer';
 import ScrollToTop from '@/components/common/ScrollToTop';
 export default function Home() {
   return (
-    <main className='container-1440'>
+    <main>
       <HeroSection />
       <PerformanceSection />
       <SolutionSection />

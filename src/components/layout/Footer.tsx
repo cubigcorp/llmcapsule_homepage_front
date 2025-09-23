@@ -98,17 +98,19 @@ export default function Footer() {
 const FooterContainer = styled.footer`
   width: 100%;
   background-color: ${color.gray['975']};
+  display: flex;
+  justify-content: center;
 `;
 
 const FooterWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 80px;
+  padding: 80px 80px;
 
   @media (min-width: 1920px) {
     max-width: 1920px;
-    padding: 120px;
+    padding: 120px 120px;
   }
 
   @media (max-width: 1440px) {

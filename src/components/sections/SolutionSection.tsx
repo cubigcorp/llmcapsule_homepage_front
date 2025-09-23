@@ -111,12 +111,13 @@ export default function SolutionSection() {
 const SolutionContainer = styled.section`
   width: 100%;
   display: flex;
+  justify-content: center;
 `;
 
 const SolutionWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
-  padding: 80px;
+  padding: 80px 80px;
   display: flex;
   flex-direction: column;
   gap: 22px;
@@ -124,7 +125,7 @@ const SolutionWrapper = styled.div`
 
   @media (min-width: 1920px) {
     max-width: 1920px;
-    padding: 120px;
+    padding: 120px 120px;
   }
 
   @media (max-width: 1440px) {

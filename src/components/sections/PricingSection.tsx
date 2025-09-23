@@ -114,12 +114,13 @@ export default function PricingSection() {
 const PricingContainer = styled.section`
   width: 100%;
   display: flex;
+  justify-content: center;
 `;
 
 const PricingWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
-  padding: 80px;
+  padding: 80px 80px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -127,7 +128,7 @@ const PricingWrapper = styled.div`
 
   @media (min-width: 1920px) {
     max-width: 1920px;
-    padding: 120px;
+    padding: 120px 120px;
   }
 
   @media (max-width: 1440px) {

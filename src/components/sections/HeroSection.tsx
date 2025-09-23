@@ -69,9 +69,10 @@ export default function HeroSection() {
 
 const HeroContainer = styled.section`
   width: 100%;
-  margin-top: 80px;
+  margin-top: 72px;
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const HeroWrapper = styled.div`

@@ -92,6 +92,7 @@ export default function FAQSection() {
 const FAQContainer = styled.section`
   width: 100%;
   display: flex;
+  justify-content: center;
   background-color: ${color.gray['50']};
 `;
 

@@ -63,13 +63,14 @@ export default function PartnersSection() {
 const PartnersContainer = styled.section`
   width: 100%;
   display: flex;
+  justify-content: center;
 `;
 
 const PartnersWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
   height: 320px;
-  padding: 80px;
+  padding: 80px 80px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -77,7 +78,7 @@ const PartnersWrapper = styled.div`
 
   @media (min-width: 1920px) {
     max-width: 1920px;
-    padding: 120px;
+    padding: 120px 120px;
   }
 
   @media (max-width: 1440px) {

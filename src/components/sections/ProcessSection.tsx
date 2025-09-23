@@ -41,14 +41,14 @@ const ProcessContainer = styled.section`
 const ProcessWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
-  padding: 80px 0;
+  padding: 80px 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   @media (min-width: 1920px) {
     max-width: 1920px;
-    padding: 120px 0;
+    padding: 120px 120px;
   }
 
   @media (max-width: 1440px) {

@@ -106,12 +106,13 @@ export default function PerformanceSection() {
 const PerformanceContainer = styled.section`
   width: 100%;
   display: flex;
+  justify-content: center;
 `;
 
 const PerformanceWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
-  padding: 80px;
+  padding: 80px 80px;
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -119,7 +120,7 @@ const PerformanceWrapper = styled.div`
 
   @media (min-width: 1920px) {
     max-width: 1920px;
-    padding: 120px;
+    padding: 120px 120px;
   }
 
   @media (max-width: 1440px) {

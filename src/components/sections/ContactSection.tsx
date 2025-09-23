@@ -59,6 +59,22 @@ export default function ContactSection() {
 const ContactContainer = styled.section`
   width: 100%;
   display: flex;
+  justify-content: center;
+`;
+
+const ContactWrapper = styled.div`
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+
+  @media (min-width: 1920px) {
+    max-width: 1920px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const ContactLeft = styled.div`
@@ -66,6 +82,14 @@ const ContactLeft = styled.div`
   background-color: ${color.gray['950']};
   align-items: center;
   padding: 120px 80px;
+
+  @media (min-width: 1920px) {
+    padding: 120px 120px;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 60px 24px;
+  }
 
   @media (max-width: 768px) {
     width: 100%;
@@ -87,6 +111,14 @@ const ContactRight = styled.div`
   justify-content: center;
   padding: 120px 80px;
 
+  @media (min-width: 1920px) {
+    padding: 120px 120px;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 60px 24px;
+  }
+
   @media (max-width: 768px) {
     width: 100%;
     min-height: 500px;
@@ -96,16 +128,6 @@ const ContactRight = styled.div`
   @media (max-width: 375px) {
     min-height: 400px;
     padding: 40px 16px;
-  }
-`;
-
-const ContactWrapper = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
   }
 `;
 
