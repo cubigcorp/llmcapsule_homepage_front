@@ -13,7 +13,8 @@
     "ratio": "입/출력 6:4",
     "total": "총합",
     "input": "입력",
-    "output": "출력"
+    "output": "출력",
+    "tokenLabel": "토큰"
   },
   "convert": {
     "title": "문자·페이지 환산",
@@ -22,7 +23,12 @@
     "en": "영어",
     "charUnit": "자",
     "pageUnit": "장",
-    "estimate": "예상"
+    "estimate": "예상",
+    "pageConversion": "페이지 환산",
+    "characterConversion": "문자 환산",
+    "a4Label": "A4",
+    "krLabel": "Kr",
+    "enLabel": "En"
   },
   "assumptions": {
     "pageConversion": "가정: A4 1장≈2,200자(한글)/ 3,800자(영어)",
