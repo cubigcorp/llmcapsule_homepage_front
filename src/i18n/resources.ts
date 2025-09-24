@@ -23,8 +23,8 @@ export const resources = {
   },
 } as const;
 
-export type AppNamespace = keyof (typeof resources)['ko'];
+export type AppNamespace = keyof (typeof resources)['en'];
 export const defaultNS: AppNamespace = 'common';
 
-export const supportedLanguages = ['ko', 'en'] as const;
+export const supportedLanguages = ['en', 'ko'] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];

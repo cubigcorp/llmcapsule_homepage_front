@@ -19,7 +19,8 @@ import {
   Checkbox,
 } from '@cubig/design-system';
 import { authService } from '@/services/auth';
-import type { UserInfo } from '@/utils/api';
+import type { UserInfo, ChangePasswordRequest } from '@/utils/api';
+import { apiClient, API_ENDPOINTS } from '@/utils/api';
 import { countries } from '@/utils/countries';
 import { otpService } from '@/services/otp';
 import { env } from '@/utils/env';
@@ -182,6 +183,55 @@ export default function ProfilePage() {
     setIsPasswordModalOpen(true);
   };
 
+  const handlePasswordSave = async () => {
+    try {
+      const requestData: ChangePasswordRequest = {
+        current_password: passwordForm.currentPassword,
+        new_password: passwordForm.newPassword,
+        new_password_confirm: passwordForm.confirmPassword,
+      };
+
+      const response = await apiClient.post(
+        API_ENDPOINTS.CHANGE_PASSWORD,
+        requestData
+      );
+
+      if (response.success && response.status === 204) {
+        // 성공
+        console.log('Password changed successfully');
+        setIsPasswordModalOpen(false);
+        // 폼 초기화
+        setPasswordForm({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        });
+        setPasswordErrors({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        });
+      } else if (response.status === 409) {
+        // 현재 비밀번호 불일치
+        setPasswordErrors((prev) => ({
+          ...prev,
+          currentPassword: t('validation.password.required', { ns: 'common' }),
+        }));
+      } else if (response.status === 401) {
+        // 인증 실패
+        console.error('Authentication failed');
+      } else if (response.status === 404) {
+        // 사용자 없음
+        console.error('User not found');
+      } else {
+        // 기타 에러
+        console.error('Server error:', response.error);
+      }
+    } catch (error) {
+      console.error('Password change failed:', error);
+    }
+  };
+
   const handlePasswordCancel = () => {
     setIsPasswordModalOpen(false);
     setPasswordForm({
@@ -196,21 +246,55 @@ export default function ProfilePage() {
     });
   };
 
-  const handlePasswordSave = () => {
-    console.log('Password change API call - not implemented yet');
-    setIsPasswordModalOpen(false);
+  const isPasswordFormValid = () => {
+    return (
+      passwordForm.currentPassword.trim() &&
+      passwordForm.newPassword.trim() &&
+      passwordForm.confirmPassword.trim() &&
+      !passwordErrors.currentPassword &&
+      !passwordErrors.newPassword &&
+      !passwordErrors.confirmPassword &&
+      passwordForm.newPassword === passwordForm.confirmPassword
+    );
   };
 
   const handlePasswordInputChange = (field: string, value: string) => {
     setPasswordForm((prev) => ({ ...prev, [field]: value }));
     setPasswordErrors((prev) => ({ ...prev, [field]: '' }));
+
+    // 실시간 유효성 검사
+    if (field === 'newPassword' && passwordForm.confirmPassword) {
+      if (value !== passwordForm.confirmPassword) {
+        setPasswordErrors((prev) => ({
+          ...prev,
+          confirmPassword: t('validation.confirmPassword.mismatch', {
+            ns: 'common',
+          }),
+        }));
+      } else {
+        setPasswordErrors((prev) => ({ ...prev, confirmPassword: '' }));
+      }
+    }
+
+    if (field === 'confirmPassword' && passwordForm.newPassword) {
+      if (value !== passwordForm.newPassword) {
+        setPasswordErrors((prev) => ({
+          ...prev,
+          confirmPassword: t('validation.confirmPassword.mismatch', {
+            ns: 'common',
+          }),
+        }));
+      } else {
+        setPasswordErrors((prev) => ({ ...prev, confirmPassword: '' }));
+      }
+    }
   };
 
   const handleCurrentPasswordBlur = () => {
     if (!passwordForm.currentPassword.trim()) {
       setPasswordErrors((prev) => ({
         ...prev,
-        currentPassword: '현재 비밀번호를 입력해 주세요.',
+        currentPassword: t('validation.password.required', { ns: 'common' }),
       }));
     } else {
       setPasswordErrors((prev) => ({ ...prev, currentPassword: '' }));
@@ -221,7 +305,7 @@ export default function ProfilePage() {
     if (!passwordForm.newPassword.trim()) {
       setPasswordErrors((prev) => ({
         ...prev,
-        newPassword: '새 비밀번호를 입력해 주세요.',
+        newPassword: t('validation.password.required', { ns: 'common' }),
       }));
     } else if (
       passwordForm.newPassword.length < 8 ||
@@ -229,7 +313,7 @@ export default function ProfilePage() {
     ) {
       setPasswordErrors((prev) => ({
         ...prev,
-        newPassword: '비밀번호는 8~20자로 입력해 주세요.',
+        newPassword: t('validation.password.policy', { ns: 'common' }),
       }));
     } else if (
       !/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/.test(
@@ -238,7 +322,7 @@ export default function ProfilePage() {
     ) {
       setPasswordErrors((prev) => ({
         ...prev,
-        newPassword: '영문, 숫자, 특수문자를 포함해 주세요.',
+        newPassword: t('validation.password.policy', { ns: 'common' }),
       }));
     } else {
       setPasswordErrors((prev) => ({ ...prev, newPassword: '' }));
@@ -249,12 +333,16 @@ export default function ProfilePage() {
     if (!passwordForm.confirmPassword.trim()) {
       setPasswordErrors((prev) => ({
         ...prev,
-        confirmPassword: '비밀번호 확인을 입력해 주세요.',
+        confirmPassword: t('validation.confirmPassword.required', {
+          ns: 'common',
+        }),
       }));
     } else if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       setPasswordErrors((prev) => ({
         ...prev,
-        confirmPassword: '비밀번호가 일치하지 않습니다.',
+        confirmPassword: t('validation.confirmPassword.mismatch', {
+          ns: 'common',
+        }),
       }));
     } else {
       setPasswordErrors((prev) => ({ ...prev, confirmPassword: '' }));
@@ -870,52 +958,68 @@ export default function ProfilePage() {
             <SolidButton variant='secondary' onClick={handlePasswordCancel}>
               {t('profile.cancel')}
             </SolidButton>
-            <SolidButton variant='primary' onClick={handlePasswordSave}>
+            <SolidButton
+              variant='primary'
+              onClick={handlePasswordSave}
+              disabled={!isPasswordFormValid()}
+            >
               {t('profile.save')}
             </SolidButton>
           </ModalActions>
         }
       >
         <ModalContent>
-          <TextField
-            label={t('profile.currentPassword')}
-            size='large'
-            type='password'
-            value={passwordForm.currentPassword}
-            onChange={(e) =>
-              handlePasswordInputChange('currentPassword', e.target.value)
-            }
-            placeholder={t('profile.currentPasswordPlaceholder')}
-            description={passwordErrors.currentPassword}
-            status={passwordErrors.currentPassword ? 'negative' : 'default'}
-            onBlur={handleCurrentPasswordBlur}
-          />
-          <TextField
-            label={t('profile.newPassword')}
-            size='large'
-            type='password'
-            value={passwordForm.newPassword}
-            onChange={(e) =>
-              handlePasswordInputChange('newPassword', e.target.value)
-            }
-            placeholder={t('profile.newPasswordPlaceholder')}
-            description={passwordErrors.newPassword}
-            status={passwordErrors.newPassword ? 'negative' : 'default'}
-            onBlur={handleNewPasswordBlur}
-          />
-          <TextField
-            label={t('profile.confirmPassword')}
-            size='large'
-            type='password'
-            value={passwordForm.confirmPassword}
-            onChange={(e) =>
-              handlePasswordInputChange('confirmPassword', e.target.value)
-            }
-            placeholder={t('profile.confirmPasswordPlaceholder')}
-            description={passwordErrors.confirmPassword}
-            status={passwordErrors.confirmPassword ? 'negative' : 'default'}
-            onBlur={handleConfirmPasswordBlur}
-          />
+          <div>
+            <TextField
+              label={t('profile.currentPassword')}
+              size='large'
+              type='password'
+              value={passwordForm.currentPassword}
+              onChange={(e) =>
+                handlePasswordInputChange('currentPassword', e.target.value)
+              }
+              placeholder={t('profile.currentPasswordPlaceholder')}
+              status={passwordErrors.currentPassword ? 'negative' : 'default'}
+              onBlur={handleCurrentPasswordBlur}
+            />
+            {passwordErrors.currentPassword && (
+              <ErrorMessage>{passwordErrors.currentPassword}</ErrorMessage>
+            )}
+          </div>
+          <div>
+            <TextField
+              label={t('profile.newPassword')}
+              size='large'
+              type='password'
+              value={passwordForm.newPassword}
+              onChange={(e) =>
+                handlePasswordInputChange('newPassword', e.target.value)
+              }
+              placeholder={t('profile.newPasswordPlaceholder')}
+              status={passwordErrors.newPassword ? 'negative' : 'default'}
+              onBlur={handleNewPasswordBlur}
+            />
+            {passwordErrors.newPassword && (
+              <ErrorMessage>{passwordErrors.newPassword}</ErrorMessage>
+            )}
+          </div>
+          <div>
+            <TextField
+              label={t('profile.confirmPassword')}
+              size='large'
+              type='password'
+              value={passwordForm.confirmPassword}
+              onChange={(e) =>
+                handlePasswordInputChange('confirmPassword', e.target.value)
+              }
+              placeholder={t('profile.confirmPasswordPlaceholder')}
+              status={passwordErrors.confirmPassword ? 'negative' : 'default'}
+              onBlur={handleConfirmPasswordBlur}
+            />
+            {passwordErrors.confirmPassword && (
+              <ErrorMessage>{passwordErrors.confirmPassword}</ErrorMessage>
+            )}
+          </div>
         </ModalContent>
       </Modal>
 
@@ -1174,4 +1278,10 @@ const CheckboxContainer = styled.div`
 const CheckboxLabel = styled.span`
   ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const ErrorMessage = styled.div`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${color.red['500']};
+  margin-top: 8px;
 `;

@@ -5,7 +5,12 @@
   },
   "header": {
     "contact": "문의하기",
-    "login": "로그인"
+    "login": "로그인",
+    "about": "소개",
+    "demo": "데모",
+    "performance": "퍼포먼스",
+    "pricing": "가격",
+    "faq": "FAQ"
   },
   "carousel": {
     "slides": [
@@ -26,6 +31,99 @@
         "description": "외부 클라우드 없이 사내망 내에서 완전한 독립 설치가 가능하며, 더욱 더 안전한 이용이 가능합니다.  기업의 보안 정책에 완벽하게 부합하는 솔루션입니다."
       }
     ]
+  },
+  "pricing": {
+    "title": "가격",
+    "mainTitle": "Plans",
+    "subTitle": "조직의 규모와 보안 요구사항에 맞춘 유연한 온프레미스 가격",
+    "toggle": {
+      "business": "Business",
+      "personal": "Personal"
+    },
+    "plans": {
+      "plus": {
+        "title": "Plus",
+        "subtitle": "개인정보 보호를 위한 첫 번째 단계",
+        "price": "$ 12.99 ~",
+        "period": "/ Month",
+        "button": "Buy now",
+        "tokens": "120,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.108",
+        "features": {
+          "feature1": "문서 내 개인정보 탐지",
+          "feature2": "캡슐화를 통한 보호",
+          "feature3": "개인정보를 보호하면서 Public LLM 안전하게 사용",
+          "feature4": "기본 필터링 기능",
+          "feature5": "이메일 지원"
+        }
+      },
+      "basic": {
+        "title": "Basic",
+        "price": "$ 8.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "70,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.128"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "$ 19.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "280,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.072"
+      },
+      "max": {
+        "title": "Max",
+        "price": "$ 39.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "600,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.067"
+      },
+      "custom": {
+        "title": "Custom",
+        "subtitle": "기업 요구사항에 맞춘 맞춤형 솔루션",
+        "contact": "Contact us",
+        "button": "Buy now",
+        "features": {
+          "feature1": "Standard 플랜의 모든 기능 포함",
+          "feature2": "기업용 맞춤형 민감정보 필터링",
+          "feature3": "디바이스별 토큰 사용량 확인",
+          "feature4": "온프레미스 배포 가능",
+          "feature5": "24/7 기술 지원",
+          "feature6": "전담 고객 성공 매니저"
+        }
+      }
+    }
+  },
+  "cta": {
+    "title": "AI 서비스를 위한 필수 보안 캡슐",
+    "subtitle": "정부 규정 준수와 데이터 보호부터 신뢰할 수 있고 확장 가능한 운영으로 사용자 신뢰를 구축하는 AI 서비스와 에이전트를 위한 필수 보안 계층입니다.",
+    "button": "문의하기"
+  },
+  "performance": {
+    "title": "퍼포먼스",
+    "mainTitle": "왜 우리가 다른가",
+    "subTitle": "민감정보가 보호된 후에도 응답 품질을 유지하는 정확한 탐지와 효율적인 활용.",
+    "stats": {
+      "type1Error": {
+        "title": "1종 오류 탐지 정확도",
+        "description": "캡슐화되어야 할 데이터가 그렇지 않을 때, 민감정보가 포함된 105개 문장으로 테스트합니다."
+      },
+      "type2Error": {
+        "title": "2종 오류 탐지 정확도",
+        "description": "민감하지 않은 데이터(일반 정보 등)가 잘못 캡슐화될 때, 민감하지 않은 1,402개 문장으로 테스트합니다."
+      },
+      "structuredData": {
+        "title": "정형화된 개인정보 보호",
+        "description": "100% 정형화된 개인정보 보호를 보장하여 오분류로 인한 위험을 최소화합니다."
+      },
+      "responseSimilarity": {
+        "title": "Public LLM과의 응답 유사도",
+        "description": "원본이 아닌 캡슐화된 데이터가 LLM으로 전송되어, 응답이 공개 LLM 출력과 비교됩니다."
+      }
+    }
   },
   "validation": {
     "email": {
@@ -51,5 +149,39 @@
     "generic": {
       "min2": "2자 이상 입력해 주세요."
     }
+  },
+  "faq": {
+    "title": "FAQ",
+    "mainTitle": "자주 묻는 질문",
+    "items": [
+      {
+        "question": "LLM Capsule은 어떤 기능을 제공하나요?",
+        "answer": "개인 또는 기업이나 공공기관의 민감 정보를 안전하게 보호하면서 LLM 서비스를 이용할 수 있는 프로그램입니다. ChatGPT 사용 전, 입력된 민감정보를 익명/가명화 처리하여 개인정보를 보호하고 기업 내부 정보 유출을 방지하면서 GenAI 서비스를 이용할 수 있기 때문에 안전한 방식으로 사용자의 생산성을 향상시킬 수 있습니다."
+      },
+      {
+        "question": "LLM Capsule이 탐지할 수 있는 개인정보 유형은 무엇인가요?",
+        "answer": "이름, 나이, 연도, 전화번호, 주민등록번호, 계좌번호, 신용카드번호, 법인등록번호, 이메일 주소, 금액 등 총 18종의 주요 민감정보를 자동으로 탐지 및 가명화할 수 있습니다."
+      },
+      {
+        "question": "산업별로 맞춤형 필터 확장이 가능한가요?",
+        "answer": "네, 기본 18종 외에 고객사 요청에 따라 산업별 특화 데이터셋, 도메인별 코드, 업무별 민감정보도 추가 커스터마이징이 가능합니다."
+      },
+      {
+        "question": "전자결재, 업무포털, DB와 같은 기존 시스템과 연동할 수 있나요?",
+        "answer": "네 가능합니다. On-Premise 방식으로 API, 파일 업로드, 연동 등 다양한 방식으로 도입이 가능합니다."
+      },
+      {
+        "question": "대용량 문서 처리와 실제 속도에 문제가 없나요?",
+        "answer": "수만건 대용량 문서/메모도 빠른 속도로 비식별화가 가능하며, 시스템 환경에 맞춘 최적화가 가능합니다."
+      },
+      {
+        "question": "자유로운 메모나 상담 기록 같은 비정형 텍스트도 지원하나요?",
+        "answer": "표준 양식 뿐만 아니라, 비정형 문서도 자동 탐지 및 처리할 수 있습니다."
+      },
+      {
+        "question": "비전문가도 쉽게 사용할 수 있나요?",
+        "answer": "관리자, 실무자, IT담당자 모두 쉽게 사용할 수 있는 직관적이고 편리한 UI/UX를 제공합니다."
+      }
+    ]
   }
 }

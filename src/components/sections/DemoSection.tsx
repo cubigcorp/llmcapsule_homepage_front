@@ -306,6 +306,7 @@ export default function DemoSection() {
 const DemoContainer = styled.section`
   width: 100%;
   display: flex;
+  justify-content: center;
   background-color: ${color.gray['50']};
   background-image: url('/images/Background Pattern.svg');
   background-repeat: repeat;

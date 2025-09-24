@@ -19,8 +19,8 @@ export default function Footer() {
               <LogoImage src='/icons/Logo2.svg' alt='LLM Capsule Logo' />
             </Logo>
             <BrandText>
-              <BrandTitle>Capsule Your</BrandTitle>
-              <BrandSubtitle>Sensitive Private Info</BrandSubtitle>
+              <BrandTitle>Capsule AI</BrandTitle>
+              <BrandSubtitle>for what&apos;s next</BrandSubtitle>
             </BrandText>
           </FooterLeft>
 
@@ -58,9 +58,15 @@ export default function Footer() {
         <CopyrightSection>
           <Copyright>© 2025 CUBIG Co.Ltd All rights Reserved.</Copyright>
           <SocialIcons>
-            {/* <SocialIcon>
-              <SocialIconImage src={'/icons/logo_blog.svg'} alt='Blog' />
-            </SocialIcon> */}
+            <SocialIcon>
+              <a
+                href='https://blog.naver.com/cubig_'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <SocialIconImage src={'/icons/logo_blog.svg'} alt='Blog' />
+              </a>
+            </SocialIcon>
             <SocialIcon>
               <a
                 href='https://www.instagram.com/cubig.ai_official/'
@@ -70,15 +76,15 @@ export default function Footer() {
                 <SocialIconImage src='/icons/logo_insta.svg' alt='Instagram' />
               </a>
             </SocialIcon>
-            {/* <SocialIcon>
+            <SocialIcon>
               <a
-                href='https://www.youtube.com/@azoo_ai'
+                href='https://www.youtube.com/@cubig_corps'
                 target='_blank'
                 rel='noopener noreferrer'
               >
                 <SocialIconImage src='/icons/logo_youtube.svg' alt='YouTube' />
               </a>
-            </SocialIcon> */}
+            </SocialIcon>
             <SocialIcon>
               <a
                 href='https://www.linkedin.com/company/cubig-corp/posts/?feedView=all'
@@ -98,29 +104,34 @@ export default function Footer() {
 const FooterContainer = styled.footer`
   width: 100%;
   background-color: ${color.gray['975']};
+  display: flex;
+  justify-content: center;
 `;
 
 const FooterWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 80px;
+  padding: 80px 80px;
 
   @media (min-width: 1920px) {
     max-width: 1920px;
-    padding: 120px;
   }
 
   @media (max-width: 1440px) {
-    padding: 60px 24px;
+    padding: 80px 40px;
+  }
+
+  @media (max-width: 1024px) {
+    padding: 80px 32px;
   }
 
   @media (max-width: 768px) {
-    padding: 40px 16px;
+    padding: 80px 32px;
   }
 
   @media (max-width: 375px) {
-    padding: 32px 12px;
+    padding: 80px 32px;
   }
 `;
 

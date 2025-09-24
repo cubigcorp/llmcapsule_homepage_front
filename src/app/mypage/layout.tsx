@@ -19,7 +19,7 @@ import AccountIcon from '@/assets/icons/icon_account.svg';
 import DownloadIcon from '@/assets/icons/icon_download.svg';
 import HeadphoneIcon from '@/assets/icons/icon_headphone.svg';
 import LogoutIcon from '@/assets/icons/icon_logout.svg';
-import HomeIcon from '@/assets/icons/Icon_home.svg';
+import HomeIcon from '@/assets/icons/icon_home.svg';
 import WalletIcon from '@/assets/icons/icon_wallet.svg';
 export default function MyPageLayout({
   children,
@@ -142,7 +142,7 @@ export default function MyPageLayout({
 const Container = styled.div`
   min-height: 100vh;
   display: flex;
-  padding-top: 80px;
+  padding-top: 72px;
 `;
 
 const LNBWrapper = styled.div`
@@ -150,12 +150,12 @@ const LNBWrapper = styled.div`
   flex-shrink: 0;
   background: white;
   border-right: 1px solid ${borderColor.light['color-border-primary']};
-  height: calc(100vh - 80px);
+  height: calc(100vh - 72px);
   position: sticky;
-  top: 80px;
+  top: 72px;
 `;
 
 const ContentArea = styled.div`
   flex: 1;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 72px);
 `;

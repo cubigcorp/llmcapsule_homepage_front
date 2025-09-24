@@ -294,7 +294,7 @@ export default function CheckoutPage() {
                           <TokenIcon>
                             <IconData />
                           </TokenIcon>
-                          <TokenLabel>토큰</TokenLabel>
+                          <TokenLabel>{t('breakdown.tokenLabel')}</TokenLabel>
                         </TokenLeft>
                         <TokenRight>
                           <TokenTotal>
@@ -324,7 +324,7 @@ export default function CheckoutPage() {
 
                     <TokenCard>
                       <TokenHeader>
-                        <TokenTitle>페이지 환산</TokenTitle>
+                        <TokenTitle>{t('convert.pageConversion')}</TokenTitle>
                       </TokenHeader>
                       <PageContentWrapper>
                         <PageTokenContent>
@@ -332,13 +332,13 @@ export default function CheckoutPage() {
                             <A4Icon>
                               <PrintIcon />
                             </A4Icon>
-                            <TokenLabel>A4</TokenLabel>
+                            <TokenLabel>{t('convert.a4Label')}</TokenLabel>
                           </TokenLeft>
                           <TokenRight>
                             <TokenTotal>
                               {Math.ceil(Math.round(tokenUsage * 1.6) / 2200) +
                                 Math.ceil(Math.round(tokenUsage * 4.5) / 3800)}
-                              <TokenUnit>장</TokenUnit>
+                              <TokenUnit>{t('convert.pageUnit')}</TokenUnit>
                             </TokenTotal>
                             <TokenDivider />
                             <TokenBreakdown>
@@ -348,7 +348,9 @@ export default function CheckoutPage() {
                                   {Math.ceil(
                                     Math.round(tokenUsage * 1.6) / 2200
                                   )}
-                                  <BreakdownUnit>장</BreakdownUnit>
+                                  <BreakdownUnit>
+                                    {t('convert.pageUnit')}
+                                  </BreakdownUnit>
                                 </span>
                               </TokenBreakdownItem>
                               <TokenBreakdownItem>
@@ -357,7 +359,9 @@ export default function CheckoutPage() {
                                   {Math.ceil(
                                     Math.round(tokenUsage * 4.5) / 3800
                                   )}
-                                  <BreakdownUnit>장</BreakdownUnit>
+                                  <BreakdownUnit>
+                                    {t('convert.pageUnit')}
+                                  </BreakdownUnit>
                                 </span>
                               </TokenBreakdownItem>
                             </TokenBreakdown>
@@ -374,12 +378,14 @@ export default function CheckoutPage() {
                   <TokenBreakdownRight>
                     <TokenCard>
                       <TokenHeader>
-                        <TokenTitle>문자 환산</TokenTitle>
+                        <TokenTitle>
+                          {t('convert.characterConversion')}
+                        </TokenTitle>
                       </TokenHeader>
                       <LanguageContent>
                         <LanguageCard>
                           <TokenLeft>
-                            <LanguageIcon>Kr</LanguageIcon>
+                            <LanguageIcon>{t('convert.krLabel')}</LanguageIcon>
                             <TokenLabel>{t('convert.ko')}</TokenLabel>
                           </TokenLeft>
                           <TokenRight>
@@ -395,7 +401,9 @@ export default function CheckoutPage() {
                                   {Math.round(
                                     tokenUsage * 0.6 * 1.6
                                   ).toLocaleString()}
-                                  <BreakdownUnit>자</BreakdownUnit>
+                                  <BreakdownUnit>
+                                    {t('convert.charUnit')}
+                                  </BreakdownUnit>
                                 </span>
                               </TokenBreakdownItem>
                               <TokenBreakdownItem>
@@ -404,7 +412,9 @@ export default function CheckoutPage() {
                                   {Math.round(
                                     tokenUsage * 0.4 * 1.6
                                   ).toLocaleString()}
-                                  <BreakdownUnit>자</BreakdownUnit>
+                                  <BreakdownUnit>
+                                    {t('convert.charUnit')}
+                                  </BreakdownUnit>
                                 </span>
                               </TokenBreakdownItem>
                             </TokenBreakdown>
@@ -413,7 +423,7 @@ export default function CheckoutPage() {
 
                         <LanguageCard>
                           <TokenLeft>
-                            <LanguageIcon>En</LanguageIcon>
+                            <LanguageIcon>{t('convert.enLabel')}</LanguageIcon>
                             <TokenLabel>{t('convert.en')}</TokenLabel>
                           </TokenLeft>
                           <TokenRight>
@@ -429,7 +439,9 @@ export default function CheckoutPage() {
                                   {Math.round(
                                     tokenUsage * 0.6 * 4.5
                                   ).toLocaleString()}
-                                  <BreakdownUnit>자</BreakdownUnit>
+                                  <BreakdownUnit>
+                                    {t('convert.charUnit')}
+                                  </BreakdownUnit>
                                 </span>
                               </TokenBreakdownItem>
                               <TokenBreakdownItem>
@@ -438,7 +450,9 @@ export default function CheckoutPage() {
                                   {Math.round(
                                     tokenUsage * 0.4 * 4.5
                                   ).toLocaleString()}
-                                  <BreakdownUnit>자</BreakdownUnit>
+                                  <BreakdownUnit>
+                                    {t('convert.charUnit')}
+                                  </BreakdownUnit>
                                 </span>
                               </TokenBreakdownItem>
                             </TokenBreakdown>
@@ -1000,7 +1014,7 @@ export default function CheckoutPage() {
 }
 
 const Container = styled.div`
-  padding: 80px 0 94px 0;
+  padding: 72px 0 94px 0;
 `;
 
 const Header = styled.div`
@@ -1649,7 +1663,7 @@ const TokenInfoItem = styled.div`
 
 const RightSection = styled.div`
   position: sticky;
-  top: 80px;
+  top: 72px;
   padding: 0 32px 0 16px;
   height: fit-content;
 `;

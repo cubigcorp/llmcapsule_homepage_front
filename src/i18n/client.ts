@@ -13,7 +13,7 @@ import {
 export type { SupportedLanguage };
 
 // 기본 언어
-export const defaultLanguage: SupportedLanguage = 'ko';
+export const defaultLanguage: SupportedLanguage = 'en';
 
 // 클라이언트에서만 i18n 초기화 (핫리로드/중복 방지)
 if (!i18n.isInitialized) {

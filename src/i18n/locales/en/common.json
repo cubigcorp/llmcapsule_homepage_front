@@ -5,7 +5,12 @@
   },
   "header": {
     "contact": "Contact",
-    "login": "Login"
+    "login": "Login",
+    "about": "About",
+    "demo": "Live Demo",
+    "performance": "Performance",
+    "pricing": "Pricing",
+    "faq": "FAQ"
   },
   "carousel": {
     "slides": [
@@ -26,6 +31,99 @@
         "description": "Can be fully installed within the intranet without external clouds for safer use, perfectly complying with enterprise security policies."
       }
     ]
+  },
+  "pricing": {
+    "title": "Pricing",
+    "mainTitle": "Plans",
+    "subTitle": "Flexible on-premises pricing tailored to your organization's scale and security requirements.",
+    "toggle": {
+      "business": "Business",
+      "personal": "Personal"
+    },
+    "plans": {
+      "plus": {
+        "title": "Plus",
+        "subtitle": "The first step toward protecting personal data",
+        "price": "$ 12.99 ~",
+        "period": "/ Month",
+        "button": "Buy now",
+        "tokens": "120,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.108",
+        "features": {
+          "feature1": "Detect personal data in documents",
+          "feature2": "Protection through encapsulation",
+          "feature3": "Safely use Public LLMs while keeping personal data protected",
+          "feature4": "Basic filtering features",
+          "feature5": "Email support"
+        }
+      },
+      "basic": {
+        "title": "Basic",
+        "price": "$ 8.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "70,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.128"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "$ 19.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "280,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.072"
+      },
+      "max": {
+        "title": "Max",
+        "price": "$ 39.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "600,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.067"
+      },
+      "custom": {
+        "title": "Custom",
+        "subtitle": "Tailored solutions for enterprise requirements",
+        "contact": "Contact us",
+        "button": "Buy now",
+        "features": {
+          "feature1": "Includes all Standard plan features",
+          "feature2": "Customizable sensitive data filtering for enterprises",
+          "feature3": "Per-device token usage checking",
+          "feature4": "On-premises deployment available",
+          "feature5": "24/7 technical support",
+          "feature6": "Dedicated Customer Success Manager"
+        }
+      }
+    }
+  },
+  "cta": {
+    "title": "The Essential Security Capsule for AI Services",
+    "subtitle": "The essential security layer for AI services and agents— from government compliance and data protection to trusted, scalable operations that build user confidence.",
+    "button": "Contact Us"
+  },
+  "performance": {
+    "title": "Performance",
+    "mainTitle": "Why we're different",
+    "subTitle": "Precise detection and efficient use that keep response quality intact after sensitive data is safeguarded.",
+    "stats": {
+      "type1Error": {
+        "title": "Type I Error Detection Accuracy",
+        "description": "When data that should be encapsulated is not, we test with 105 sentences containing sensitive information."
+      },
+      "type2Error": {
+        "title": "Type II Error Detection Accuracy",
+        "description": "When non-sensitive data (such as general information) is incorrectly encapsulated, we test with 1,402 non-sensitive sentences."
+      },
+      "structuredData": {
+        "title": "Structured Personal Data Protection",
+        "description": "Ensures 100% structured personal data protection, minimizing risks from misclassification."
+      },
+      "responseSimilarity": {
+        "title": "Response Similarity with Public LLMs",
+        "description": "Encapsulated data—not the original—is sent to the LLM, where responses are compared against public LLM outputs."
+      }
+    }
   },
   "validation": {
     "email": {
@@ -51,5 +149,39 @@
     "generic": {
       "min2": "Please enter at least 2 characters."
     }
+  },
+  "faq": {
+    "title": "FAQ",
+    "mainTitle": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "What features does LLM Capsule provide?",
+        "answer": "This program enables individuals, businesses, and public institutions to utilize LLM services while securely protecting sensitive information. Before using ChatGPT, it anonymizes or pseudonymizes inputted sensitive data to safeguard personal information and prevent internal corporate leaks, allowing users to access GenAI services. This enables a secure way to enhance user productivity."
+      },
+      {
+        "question": "What types of personal data can LLM Capsule detect?",
+        "answer": "It can automatically detect and pseudonymize 18 types of key sensitive information, including name, age, year, phone number, resident registration number, account number, credit card number, corporate registration number, email address, and amount."
+      },
+      {
+        "question": "Can industry-specific filters be customized and extended?",
+        "answer": "Yes, in addition to the basic 18 types, we can provide further customization based on client requests, including industry-specific specialized datasets, domain-specific code, and sensitive information tailored to specific tasks."
+      },
+      {
+        "question": "Is integration with existing systems(E-Approval System, Work Portal, DB) supported?",
+        "answer": "Yes, it is possible. Implementation is possible via various methods such as API, file upload, and integration using the On-Premise approach."
+      },
+      {
+        "question": "Does LLM Capsule handle large documents and maintain fast processing speed?",
+        "answer": "Even tens of thousands of large-volume documents/notes can be de-identified at high speed, and optimization is possible to suit the system environment."
+      },
+      {
+        "question": "Can it process unstructured text such as free-form notes or call center records?",
+        "answer": "Not only standard forms, but also non-standard documents can be automatically detected and processed."
+      },
+      {
+        "question": "Is it easy for non-experts to use?",
+        "answer": "We provide an intuitive and convenient UI/UX that is easy to use for administrators, practitioners, and IT personnel alike."
+      }
+    ]
   }
 }

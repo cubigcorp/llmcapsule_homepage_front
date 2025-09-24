@@ -13,7 +13,8 @@
     "ratio": "Input/Output 6:4",
     "total": "Total",
     "input": "Input",
-    "output": "Output"
+    "output": "Output",
+    "tokenLabel": "Token"
   },
   "convert": {
     "title": "Character/Page Conversion",
@@ -23,7 +24,12 @@
     "charUnit": "chars",
     "pageUnit": "pages",
     "estimate": "Estimated",
-    "note": "Assumption: KO 1 token≈1.6 chars, EN 1 token≈4.5 chars, A4 1 page≈2,200 chars (KO) / 3,600 chars (EN)"
+    "note": "Assumption: KO 1 token≈1.6 chars, EN 1 token≈4.5 chars, A4 1 page≈2,200 chars (KO) / 3,600 chars (EN)",
+    "pageConversion": "Page Conversion",
+    "characterConversion": "Character Conversion",
+    "a4Label": "A4",
+    "krLabel": "Kr",
+    "enLabel": "En"
   },
   "assumptions": {
     "pageConversion": "Assumption: 1 A4 page ≈ 2,200 chars (Korean) / 3,800 chars (English)",
