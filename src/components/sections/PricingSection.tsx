@@ -233,7 +233,7 @@ const PricingWrapper = styled.div`
   margin: 0 auto;
 
   @media (max-width: 1440px) {
-    padding: 60px 120px;
+    padding: 160px 40px;
   }
 
   @media (max-width: 768px) {
@@ -310,6 +310,11 @@ const PlansGrid = styled.div<{ $isPersonal: boolean }>`
   gap: 24px;
   align-items: stretch;
 
+  @media (min-width: 1440px) {
+    grid-template-columns: ${(props) =>
+      props.$isPersonal ? 'repeat(4, 1fr)' : '1fr 421px'};
+  }
+
   @media (max-width: 1200px) {
     grid-template-columns: ${(props) =>
       props.$isPersonal ? 'repeat(2, 1fr)' : 'repeat(2, 1fr)'};
@@ -348,23 +353,23 @@ const PlanTitle = styled.h4`
 const PlanSubtitle = styled.p`
   ${typography(undefined, 'body3', 'regular')}
   color: ${color.common['100']};
-  margin: 0 0 16px 0;
+  margin: 0 0 56px 0;
 `;
 
 const PlanPrice = styled.div`
-  ${typography(undefined, 'display2', 'medium')}
+  ${typography(undefined, 'display1', 'medium')}
   color: ${color.common['100']};
   margin: 0;
 `;
 
 const PlanPeriod = styled.span`
-  ${typography(undefined, 'body2', 'regular')}
-  color: ${color.common['100']};
+  ${typography(undefined, 'heading1', 'medium')}
+  color: ${textColor.dark['fg-neutral-alternative']};
 `;
 
 const PlanContact = styled.div`
-  ${typography(undefined, 'title2', 'medium')}
-  color: ${color.common['100']};
+  ${typography(undefined, 'title4', 'medium')}
+  color: ${textColor.dark['fg-neutral-strong']};
   margin: 0;
 `;
 
@@ -389,7 +394,7 @@ const FeatureItem = styled.li`
   align-items: center;
   gap: 12px;
   padding: 12px 0;
-  border-bottom: 1px solid ${textColor.light['fg-neutral-assistive']};
+  border-bottom: 1px solid ${color.gray['900']};
 
   &:last-child {
     border-bottom: none;
