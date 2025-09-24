@@ -163,8 +163,8 @@ export interface UpdateUserRequest {
 
 export interface ChangePasswordRequest {
   current_password: string;
-  old_password: string;
-  old_password_confirm: string;
+  new_password: string;
+  new_password_confirm: string;
 }
 
 /**
