@@ -69,8 +69,13 @@ export default function LoginPage() {
         // 마이페이지로 이동
         router.push('/mypage');
       } else {
-        // 로그인 실패 시 에러 메시지 표시
-        setPasswordError(t('login.error.invalid'));
+        if (response.status === 409) {
+          // 구글 계정으로 가입된 경우
+          setEmailError(t('login.error.googleAccount'));
+        } else {
+          // 일반 로그인 실패
+          setPasswordError(t('login.error.invalid'));
+        }
       }
     } catch {
       setPasswordError(t('login.error.invalid'));
@@ -118,7 +123,7 @@ export default function LoginPage() {
               google: 'true',
               email: userInfo.email,
             });
-            window.location.href = `/signup/verify?${params.toString()}`;
+            router.push(`/signup/verify?${params.toString()}`);
           } else {
             alert(t('signup.google.verifyFail'));
           }
