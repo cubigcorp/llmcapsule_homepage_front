@@ -32,6 +32,11 @@
       }
     ]
   },
+  "cta": {
+    "title": "The Essential Security Capsule for AI Services",
+    "subtitle": "The essential security layer for AI services and agents— from government compliance and data protection to trusted, scalable operations that build user confidence.",
+    "button": "Contact Us"
+  },
   "performance": {
     "title": "Performance",
     "mainTitle": "Why we're different",

@@ -1,5 +1,6 @@
 import HeroSection from '@/components/sections/HeroSection';
 import PerformanceSection from '@/components/sections/PerformanceSection';
+import CTASection from '@/components/sections/CTASection';
 import SolutionSection from '@/components/sections/SolutionSection';
 import ProcessSection from '@/components/sections/ProcessSection';
 // import PricingSection from '@/components/sections/PricingSection';
@@ -18,6 +19,7 @@ export default function Home() {
       <AboutSection />
       <DemoSection />
       <PerformanceSection />
+      <CTASection />
       <SolutionSection />
       <ProcessSection />
 
