@@ -32,14 +32,33 @@ export default function MyPageLayout({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
+    const checkAuth = async () => {
+      const accessToken = localStorage.getItem('access_token');
 
-    if (!accessToken) {
-      router.push('/login');
-      return;
-    }
+      if (!accessToken) {
+        router.push('/login');
+        return;
+      }
 
-    setIsAuthenticated(true);
+      // 토큰이 있으면 유효성 검증
+      try {
+        await authService.getMyInfo();
+        setIsAuthenticated(true);
+      } catch (error: unknown) {
+        console.error('토큰 검증 실패:', error);
+        // 401 오류인 경우 로그아웃 처리
+        if (error && typeof error === 'object' && 'response' in error) {
+          const axiosError = error as { response?: { status?: number } };
+          if (axiosError.response?.status === 401) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            router.push('/login');
+          }
+        }
+      }
+    };
+
+    checkAuth();
   }, [router]);
 
   const handleLogout = async () => {
@@ -68,10 +87,6 @@ export default function MyPageLayout({
 
   const handlePlanManagementClick = () => {
     router.push('/checkout');
-  };
-
-  const handleAppDownloadClick = () => {
-    console.log('앱 다운로드 클릭');
   };
 
   if (!isAuthenticated) {

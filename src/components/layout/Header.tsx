@@ -68,6 +68,15 @@ export default function Header() {
           localStorage.removeItem('refresh_token');
           setIsLoggedIn(false);
           setUserInfo(null);
+
+          if (
+            typeof window !== 'undefined' &&
+            !window.location.pathname.includes('/login') &&
+            !window.location.pathname.includes('/signup') &&
+            !window.location.pathname.includes('/verify')
+          ) {
+            window.location.href = '/login';
+          }
         }
       } else {
         setUserInfo(null);

@@ -25,10 +25,6 @@ import DashboardCircleIcon from '@/assets/icons/icon_dashboard_circle.svg';
 import UsageCircleIcon from '@/assets/icons/icon_usage_circle.svg';
 import CardCircleIcon from '@/assets/icons/icon_card_circle.svg';
 import CardIcon from '@/assets/icons/icon_card.svg';
-import PersonIcon from '@/assets/icons/icon_person.svg';
-import AccountIcon from '@/assets/icons/icon_account.svg';
-import MoneyIcon from '@/assets/icons/icon_money.svg';
-import PlanBasicImage from '@/assets/images/plan_basic.png';
 import PlanMaxImage from '@/assets/images/plan_max.png';
 export default function MyPage() {
   const router = useRouter();
@@ -43,14 +39,23 @@ export default function MyPage() {
         setUserInfo(response.data || null);
         // 임시로 구독 상태 설정 (나중에 API에서 받아올 수 있음)
         setHasSubscription(true); // 구독이 없는 상태로 기본 설정하여 빈 상태 화면 테스트
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('사용자 정보 조회 실패:', error);
         setUserInfo(null);
+
+        if (error && typeof error === 'object' && 'response' in error) {
+          const axiosError = error as { response?: { status?: number } };
+          if (axiosError.response?.status === 401) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            router.push('/login');
+          }
+        }
       }
     };
 
     fetchUserInfo();
-  }, []);
+  }, [router]);
 
   return (
     <Container>
@@ -474,14 +479,6 @@ const PlanDate = styled.div`
   span:last-child {
     color: ${textColor.light['fg-neutral-primary']};
   }
-`;
-
-const PlanDateIcon = styled.div`
-  width: 16px;
-  height: 16px;
-  background: ${color.gray['400']};
-  border-radius: 2px;
-  flex-shrink: 0;
 `;
 
 const PlanActions = styled.div`
