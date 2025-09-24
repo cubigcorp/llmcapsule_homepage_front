@@ -32,6 +32,29 @@
       }
     ]
   },
+  "performance": {
+    "title": "Performance",
+    "mainTitle": "Why we're different",
+    "subTitle": "Precise detection and efficient use that keep response quality intact after sensitive data is safeguarded.",
+    "stats": {
+      "type1Error": {
+        "title": "Type I Error Detection Accuracy",
+        "description": "When data that should be encapsulated is not, we test with 105 sentences containing sensitive information."
+      },
+      "type2Error": {
+        "title": "Type II Error Detection Accuracy",
+        "description": "When non-sensitive data (such as general information) is incorrectly encapsulated, we test with 1,402 non-sensitive sentences."
+      },
+      "structuredData": {
+        "title": "Structured Personal Data Protection",
+        "description": "Ensures 100% structured personal data protection, minimizing risks from misclassification."
+      },
+      "responseSimilarity": {
+        "title": "Response Similarity with Public LLMs",
+        "description": "Encapsulated data—not the original—is sent to the LLM, where responses are compared against public LLM outputs."
+      }
+    }
+  },
   "validation": {
     "email": {
       "required": "Please enter your email.",

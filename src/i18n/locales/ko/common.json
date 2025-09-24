@@ -32,6 +32,29 @@
       }
     ]
   },
+  "performance": {
+    "title": "퍼포먼스",
+    "mainTitle": "왜 우리가 다른가",
+    "subTitle": "민감정보가 보호된 후에도 응답 품질을 유지하는 정확한 탐지와 효율적인 활용.",
+    "stats": {
+      "type1Error": {
+        "title": "1종 오류 탐지 정확도",
+        "description": "캡슐화되어야 할 데이터가 그렇지 않을 때, 민감정보가 포함된 105개 문장으로 테스트합니다."
+      },
+      "type2Error": {
+        "title": "2종 오류 탐지 정확도",
+        "description": "민감하지 않은 데이터(일반 정보 등)가 잘못 캡슐화될 때, 민감하지 않은 1,402개 문장으로 테스트합니다."
+      },
+      "structuredData": {
+        "title": "정형화된 개인정보 보호",
+        "description": "100% 정형화된 개인정보 보호를 보장하여 오분류로 인한 위험을 최소화합니다."
+      },
+      "responseSimilarity": {
+        "title": "Public LLM과의 응답 유사도",
+        "description": "원본이 아닌 캡슐화된 데이터가 LLM으로 전송되어, 응답이 공개 LLM 출력과 비교됩니다."
+      }
+    }
+  },
   "validation": {
     "email": {
       "required": "이메일을 입력해 주세요.",
