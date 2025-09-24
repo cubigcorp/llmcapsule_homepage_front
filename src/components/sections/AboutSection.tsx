@@ -2,12 +2,25 @@
 
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-import { color, textColor, typography } from '@cubig/design-system';
+import {
+  borderColor,
+  color,
+  layerColor,
+  textColor,
+  typography,
+} from '@cubig/design-system';
 
 const AboutSection = () => {
   const [activeSection, setActiveSection] = useState(0);
-  const [activeFeature, setActiveFeature] = useState(0);
+  const [activeFeatures, setActiveFeatures] = useState([0, 0, 0]);
+
   const sectionRefs = [
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+  ];
+
+  const headerRefs = [
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
@@ -15,10 +28,23 @@ const AboutSection = () => {
 
   const scrollToSection = (index: number) => {
     setActiveSection(index);
-    setActiveFeature(0); // 섹션 변경 시 첫 번째 기능으로 리셋
-    sectionRefs[index].current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
+    const element = headerRefs[index].current;
+    if (element) {
+      const headerHeight = 72; // 헤더 높이
+      const elementPosition = element.offsetTop - headerHeight;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const handleFeatureClick = (sectionIndex: number, featureIndex: number) => {
+    setActiveSection(sectionIndex);
+    setActiveFeatures((prev) => {
+      const newFeatures = [...prev];
+      newFeatures[sectionIndex] = featureIndex;
+      return newFeatures;
     });
   };
 
@@ -79,7 +105,6 @@ const AboutSection = () => {
 
         <ContentSection>
           <LeftSidebar>
-            <CoreFeaturesTitle>Core Features</CoreFeaturesTitle>
             <CoreFeaturesList>
               <CoreFeatureItem
                 $isActive={activeSection === 0}
@@ -105,38 +130,81 @@ const AboutSection = () => {
           <MainContent>
             {sections.map((section, index) => (
               <SectionContent key={section.id} ref={sectionRefs[index]}>
-                <SectionHeader>
-                  <SectionTitle>{section.title}</SectionTitle>
-                  <SectionSubtitle>{section.subtitle}</SectionSubtitle>
+                <SectionHeader ref={headerRefs[index]}>
+                  <SectionNumber>
+                    {String(index + 1).padStart(2, '0')}.
+                  </SectionNumber>
+                  <SectionTextContent>
+                    <SectionTitle>{section.title.split('. ')[1]}</SectionTitle>
+                    <SectionSubtitle>{section.subtitle}</SectionSubtitle>
+                  </SectionTextContent>
                 </SectionHeader>
 
                 <ContentArea>
-                  <LeftContent>
-                    <ContentTitle>{section.mainTitle}</ContentTitle>
-                    <ContentDescription>
-                      {section.description}
-                    </ContentDescription>
-
-                    <ImagePlaceholder>
-                      <PlaceholderText>
-                        Image Area {index + 1} - Feature {activeFeature + 1}
-                      </PlaceholderText>
-                    </ImagePlaceholder>
-                  </LeftContent>
+                  <ImageArea>
+                    <ImageContainer>
+                      <ImageContentWrapper>
+                        <ImageHeader>
+                          <ImageTitle>
+                            {section.features[activeFeatures[index]]}
+                          </ImageTitle>
+                          <ImageSubtitle>
+                            {index === 0 &&
+                              activeFeatures[index] === 0 &&
+                              'A four-step framework of detection, protection, utilization, and recovery.'}
+                            {index === 0 &&
+                              activeFeatures[index] === 1 &&
+                              'Customizable data protection policies tailored to your business needs.'}
+                            {index === 0 &&
+                              activeFeatures[index] === 2 &&
+                              'Flexible de-identification methods for sensitive information.'}
+                            {index === 1 &&
+                              activeFeatures[index] === 0 &&
+                              'ChatGPT, Claude, Gemini — your choice, with efficiency and security.'}
+                            {index === 1 &&
+                              activeFeatures[index] === 1 &&
+                              'Large-scale document processing & ontology management capabilities.'}
+                            {index === 1 &&
+                              activeFeatures[index] === 2 &&
+                              'RAG & graph RAG support for advanced AI applications.'}
+                            {index === 2 &&
+                              activeFeatures[index] === 0 &&
+                              'Beyond keywords, precision designed for enterprise data protection.'}
+                            {index === 2 &&
+                              activeFeatures[index] === 1 &&
+                              'Advanced protection against prompt injection and jailbreak attacks.'}
+                            {index === 2 &&
+                              activeFeatures[index] === 2 &&
+                              'Compliance with global security standards and regulations.'}
+                            {index === 2 &&
+                              activeFeatures[index] === 3 &&
+                              'Admin-centric user management for enterprise control.'}
+                            {index === 2 &&
+                              activeFeatures[index] === 4 &&
+                              'On-premises deployment support for maximum security.'}
+                          </ImageSubtitle>
+                        </ImageHeader>
+                        <ImageContent>
+                          <ImagePlaceholder>
+                            <PlaceholderText>
+                              Image Area {index + 1} - Feature{' '}
+                              {activeFeatures[index] + 1}
+                            </PlaceholderText>
+                          </ImagePlaceholder>
+                        </ImageContent>
+                      </ImageContentWrapper>
+                    </ImageContainer>
+                  </ImageArea>
 
                   <RightSidebar>
                     <FeaturesList>
                       {section.features.map((feature, featureIndex) => (
                         <FeatureItem
                           key={featureIndex}
-                          $isActive={
-                            activeSection === index &&
-                            activeFeature === featureIndex
+                          $isActive={activeFeatures[index] === featureIndex}
+                          onClick={() =>
+                            handleFeatureClick(index, featureIndex)
                           }
-                          onClick={() => {
-                            setActiveSection(index);
-                            setActiveFeature(featureIndex);
-                          }}
                         >
                           {feature}
                         </FeatureItem>
@@ -157,7 +225,7 @@ export default AboutSection;
 
 const AboutContainer = styled.section`
   width: 100%;
-  background-color: ${color.gray['975']};
+  background-color: ${textColor.light['fg-neutral-primary']};
   display: flex;
   justify-content: center;
 `;
@@ -173,7 +241,7 @@ const AboutWrapper = styled.div`
   }
 
   @media (max-width: 1440px) {
-    padding: 80px 40px;
+    padding: 160px 40px;
   }
 
   @media (max-width: 1024px) {
@@ -190,24 +258,24 @@ const AboutWrapper = styled.div`
 `;
 
 const HeaderSection = styled.div`
-  text-align: center;
-  margin-bottom: 80px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid ${borderColor.dark['color-border-primary']};
 `;
 
 const MainTitle = styled.h1`
-  ${typography('en', 'display2', 'bold')}
-  color: ${textColor.light['fg-neutral-primary']};
-  margin-bottom: 16px;
+  ${typography(undefined, 'display1', 'medium')}
+  color: ${textColor.dark['fg-neutral-strong']};
+  margin-bottom: 12px;
 `;
 
 const SubTitle = styled.p`
-  ${typography('en', 'title1', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
+  ${typography(undefined, 'heading2', 'regular')}
+  color: ${textColor.dark['fg-neutral-primary']};
 `;
 
 const ContentSection = styled.div`
   display: flex;
-  gap: 40px;
+  padding-top: 56px;
   align-items: flex-start;
 `;
 
@@ -216,35 +284,37 @@ const LeftSidebar = styled.div`
   flex-shrink: 0;
 `;
 
-const CoreFeaturesTitle = styled.h3`
-  ${typography('en', 'body1', 'medium')}
-  color: ${textColor.light['fg-neutral-primary']};
-  margin-bottom: 16px;
-`;
-
 const CoreFeaturesList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 `;
 
 const CoreFeatureItem = styled.li<{ $isActive: boolean }>`
-  ${typography('en', 'body2', 'regular')}
+  ${typography(undefined, 'body3', 'semibold')}
   color: ${(props) =>
-    props.$isActive
-      ? textColor.light['fg-neutral-primary']
-      : textColor.light['fg-neutral-alternative']};
-  margin-bottom: 8px;
+    props.$isActive ? '#8B5CF6' : textColor.dark['fg-neutral-primary']};
   cursor: pointer;
   transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
   &:hover {
-    color: ${textColor.light['fg-neutral-primary']};
+    color: #8b5cf6;
   }
 
   &::before {
-    content: '•';
-    margin-right: 8px;
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: ${(props) =>
+      props.$isActive ? '#8B5CF6' : 'transparent'};
+    flex-shrink: 0;
   }
 `;
 
@@ -255,57 +325,96 @@ const MainContent = styled.div`
   gap: 80px;
 `;
 
-const SectionContent = styled.div`
-  background-color: ${color.gray['950']};
-  border-radius: 12px;
-  padding: 40px;
-`;
+const SectionContent = styled.div``;
 
 const SectionHeader = styled.div`
-  margin-bottom: 40px;
+  display: flex;
+  gap: 4px;
+`;
+
+const SectionNumber = styled.div`
+  font-size: 24px;
+  line-height: 34px;
+  font-weight: 400;
+  font-family: geist;
+  color: ${textColor.dark['fg-neutral-strong']};
+  flex-shrink: 0;
+`;
+
+const SectionTextContent = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const SectionTitle = styled.h2`
-  ${typography('en', 'heading1', 'medium')}
-  color: ${textColor.light['fg-neutral-primary']};
-  margin-bottom: 8px;
+  ${typography(undefined, 'title1', 'medium')}
+  color: ${textColor.dark['fg-neutral-primary']};
 `;
 
 const SectionSubtitle = styled.p`
-  ${typography('en', 'body1', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
+  ${typography(undefined, 'body3', 'regular')}
+  color: ${textColor.dark['fg-neutral-alternative']};
 `;
 
 const ContentArea = styled.div`
   display: flex;
-  gap: 40px;
+  gap: 16px;
+  margin-top: 24px;
 `;
 
-const LeftContent = styled.div`
+const ImageArea = styled.div`
   flex: 1;
 `;
 
-const ContentTitle = styled.h3`
-  ${typography('en', 'heading2', 'medium')}
-  color: ${textColor.light['fg-neutral-primary']};
-  margin-bottom: 16px;
+const ImageContainer = styled.div`
+  background-color: ${layerColor.dark['bg-layer-default']};
+  padding: 64px 64px 80px 64px;
+  height: 720px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-const ContentDescription = styled.p`
-  ${typography('en', 'body1', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  margin-bottom: 32px;
+const ImageContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+`;
+
+const ImageHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+`;
+
+const ImageTitle = styled.h3`
+  ${typography(undefined, 'title1', 'medium')}
+  color: ${textColor.dark['fg-neutral-primary']};
+`;
+
+const ImageSubtitle = styled.p`
+  ${typography(undefined, 'body3', 'regular')}
+  color: ${textColor.dark['fg-neutral-alternative']};
+`;
+
+const ImageContent = styled.div`
+  width: 640px;
+  height: 405px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ImagePlaceholder = styled.div`
   width: 100%;
-  height: 300px;
+  height: 100%;
   background-color: ${color.gray['900']};
-  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid ${color.gray['800']};
 `;
 
 const PlaceholderText = styled.span`
@@ -314,7 +423,7 @@ const PlaceholderText = styled.span`
 `;
 
 const RightSidebar = styled.div`
-  width: 300px;
+  width: 240px;
   flex-shrink: 0;
 `;
 
@@ -325,42 +434,22 @@ const FeaturesList = styled.ul`
 `;
 
 const FeatureItem = styled.li<{ $isActive: boolean }>`
-  ${typography('en', 'body2', 'regular')}
+  ${typography(undefined, 'heading1', 'medium')}
   color: ${(props) =>
     props.$isActive
-      ? textColor.light['fg-neutral-primary']
-      : textColor.light['fg-neutral-alternative']};
+      ? textColor.dark['fg-neutral-primary']
+      : textColor.dark['fg-neutral-assistive']};
   background-color: ${(props) =>
-    props.$isActive ? color.gray['900'] : color.gray['950']};
-  border: 1px solid
-    ${(props) =>
-      props.$isActive
-        ? textColor.light['fg-neutral-primary']
-        : color.gray['800']};
-  border-radius: 8px;
+    props.$isActive
+      ? layerColor.dark['bg-layer-default']
+      : layerColor.dark['bg-layer-fill']};
   padding: 16px;
   margin-bottom: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
-  position: relative;
 
   &:hover {
-    background-color: ${color.gray['900']};
-    border-color: ${textColor.light['fg-neutral-primary']};
-    color: ${textColor.light['fg-neutral-primary']};
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 16px;
-    top: 20px;
-    width: 4px;
-    height: 4px;
-    background-color: ${(props) =>
-      props.$isActive
-        ? textColor.light['fg-neutral-primary']
-        : textColor.light['fg-neutral-alternative']};
-    border-radius: 50%;
+    background-color: ${layerColor.dark['bg-layer-default']};
+    color: ${textColor.dark['fg-neutral-primary']};
   }
 `;
