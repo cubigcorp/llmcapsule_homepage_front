@@ -131,83 +131,119 @@ export default function PricingSection() {
               ) : (
                 <>
                   <PlanCard>
-                    <PlanHeader>
-                      <PlanTitle>{t('pricing.plans.basic.title')}</PlanTitle>
-                      <PlanPrice>{t('pricing.plans.basic.price')}</PlanPrice>
-                      <PlanPeriod>{t('pricing.plans.basic.period')}</PlanPeriod>
-                    </PlanHeader>
-                    <PlanBody>
-                      <TokenInfo>
-                        <TokenItem>
-                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
-                          {t('pricing.plans.basic.tokens')}
-                        </TokenItem>
-                        <TokenCost>
-                          {t('pricing.plans.basic.costPerToken')}
-                        </TokenCost>
-                      </TokenInfo>
-                    </PlanBody>
-                    <PlanButton>{t('pricing.plans.basic.button')}</PlanButton>
+                    <PersonalPlanHeader>
+                      <PersonalPlanTitle>
+                        {t('pricing.plans.basic.title')}
+                      </PersonalPlanTitle>
+                      <PersonalPlanPrice>
+                        {t('pricing.plans.basic.price')}
+                      </PersonalPlanPrice>
+                      <PersonalPlanPeriod>
+                        {t('pricing.plans.basic.period')}
+                      </PersonalPlanPeriod>
+                    </PersonalPlanHeader>
+                    <PersonalPlanBody>
+                      <TokenInfoBlock>
+                        <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                        <TokenContent>
+                          <TokenText>
+                            {t('pricing.plans.basic.tokens')}
+                          </TokenText>
+                          <TokenCostText>
+                            {t('pricing.plans.basic.costPerToken')}
+                          </TokenCostText>
+                        </TokenContent>
+                      </TokenInfoBlock>
+                      <PlanButton variant='primary' size='large'>
+                        {t('pricing.plans.basic.button')}
+                      </PlanButton>
+                    </PersonalPlanBody>
                   </PlanCard>
 
                   <PlanCard>
-                    <PlanHeader>
-                      <PlanTitle>{t('pricing.plans.plus.title')}</PlanTitle>
-                      <PlanPrice>{t('pricing.plans.plus.price')}</PlanPrice>
-                      <PlanPeriod>{t('pricing.plans.plus.period')}</PlanPeriod>
-                    </PlanHeader>
-                    <PlanBody>
-                      <TokenInfo>
-                        <TokenItem>
-                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
-                          {t('pricing.plans.plus.tokens')}
-                        </TokenItem>
-                        <TokenCost>
-                          {t('pricing.plans.plus.costPerToken')}
-                        </TokenCost>
-                      </TokenInfo>
-                    </PlanBody>
-                    <PlanButton>{t('pricing.plans.plus.button')}</PlanButton>
+                    <PersonalPlanHeader>
+                      <PersonalPlanTitle>
+                        {t('pricing.plans.plus.title')}
+                      </PersonalPlanTitle>
+                      <PersonalPlanPrice>
+                        {t('pricing.plans.plus.price')}
+                      </PersonalPlanPrice>
+                      <PersonalPlanPeriod>
+                        {t('pricing.plans.plus.period')}
+                      </PersonalPlanPeriod>
+                    </PersonalPlanHeader>
+                    <PersonalPlanBody>
+                      <TokenInfoBlock>
+                        <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                        <TokenContent>
+                          <TokenText>
+                            {t('pricing.plans.plus.tokens')}
+                          </TokenText>
+                          <TokenCostText>
+                            {t('pricing.plans.plus.costPerToken')}
+                          </TokenCostText>
+                        </TokenContent>
+                      </TokenInfoBlock>
+                      <PlanButton variant='primary' size='large'>
+                        {t('pricing.plans.plus.button')}
+                      </PlanButton>
+                    </PersonalPlanBody>
                   </PlanCard>
 
                   <PlanCard>
-                    <PlanHeader>
-                      <PlanTitle>{t('pricing.plans.pro.title')}</PlanTitle>
-                      <PlanPrice>{t('pricing.plans.pro.price')}</PlanPrice>
-                      <PlanPeriod>{t('pricing.plans.pro.period')}</PlanPeriod>
-                    </PlanHeader>
-                    <PlanBody>
-                      <TokenInfo>
-                        <TokenItem>
-                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
-                          {t('pricing.plans.pro.tokens')}
-                        </TokenItem>
-                        <TokenCost>
-                          {t('pricing.plans.pro.costPerToken')}
-                        </TokenCost>
-                      </TokenInfo>
-                    </PlanBody>
-                    <PlanButton>{t('pricing.plans.pro.button')}</PlanButton>
+                    <PersonalPlanHeader>
+                      <PersonalPlanTitle>
+                        {t('pricing.plans.pro.title')}
+                      </PersonalPlanTitle>
+                      <PersonalPlanPrice>
+                        {t('pricing.plans.pro.price')}
+                      </PersonalPlanPrice>
+                      <PersonalPlanPeriod>
+                        {t('pricing.plans.pro.period')}
+                      </PersonalPlanPeriod>
+                    </PersonalPlanHeader>
+                    <PersonalPlanBody>
+                      <TokenInfoBlock>
+                        <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                        <TokenContent>
+                          <TokenText>{t('pricing.plans.pro.tokens')}</TokenText>
+                          <TokenCostText>
+                            {t('pricing.plans.pro.costPerToken')}
+                          </TokenCostText>
+                        </TokenContent>
+                      </TokenInfoBlock>
+                      <PlanButton variant='primary' size='large'>
+                        {t('pricing.plans.pro.button')}
+                      </PlanButton>
+                    </PersonalPlanBody>
                   </PlanCard>
 
                   <PlanCard>
-                    <PlanHeader>
-                      <PlanTitle>{t('pricing.plans.max.title')}</PlanTitle>
-                      <PlanPrice>{t('pricing.plans.max.price')}</PlanPrice>
-                      <PlanPeriod>{t('pricing.plans.max.period')}</PlanPeriod>
-                    </PlanHeader>
-                    <PlanBody>
-                      <TokenInfo>
-                        <TokenItem>
-                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
-                          {t('pricing.plans.max.tokens')}
-                        </TokenItem>
-                        <TokenCost>
-                          {t('pricing.plans.max.costPerToken')}
-                        </TokenCost>
-                      </TokenInfo>
-                    </PlanBody>
-                    <PlanButton>{t('pricing.plans.max.button')}</PlanButton>
+                    <PersonalPlanHeader>
+                      <PersonalPlanTitle>
+                        {t('pricing.plans.max.title')}
+                      </PersonalPlanTitle>
+                      <PersonalPlanPrice>
+                        {t('pricing.plans.max.price')}
+                      </PersonalPlanPrice>
+                      <PersonalPlanPeriod>
+                        {t('pricing.plans.max.period')}
+                      </PersonalPlanPeriod>
+                    </PersonalPlanHeader>
+                    <PersonalPlanBody>
+                      <TokenInfoBlock>
+                        <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                        <TokenContent>
+                          <TokenText>{t('pricing.plans.max.tokens')}</TokenText>
+                          <TokenCostText>
+                            {t('pricing.plans.max.costPerToken')}
+                          </TokenCostText>
+                        </TokenContent>
+                      </TokenInfoBlock>
+                      <PlanButton variant='primary' size='large'>
+                        {t('pricing.plans.max.button')}
+                      </PlanButton>
+                    </PersonalPlanBody>
                   </PlanCard>
                 </>
               )}
@@ -307,7 +343,7 @@ const PlansGrid = styled.div<{ $isPersonal: boolean }>`
   display: grid;
   grid-template-columns: ${(props) =>
     props.$isPersonal ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)'};
-  gap: 24px;
+  gap: ${(props) => (props.$isPersonal ? '16px' : '24px')};
   align-items: stretch;
 
   @media (min-width: 1440px) {
@@ -344,6 +380,14 @@ const PlanHeader = styled.div<{ $custom?: boolean }>`
   justify-content: space-between;
 `;
 
+const PersonalPlanHeader = styled.div`
+  padding: 32px;
+  background-color: ${color.gray['900']};
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`;
+
 const PlanTitle = styled.h4`
   ${typography(undefined, 'title3', 'medium')}
   color: ${color.common['100']};
@@ -367,6 +411,48 @@ const PlanPeriod = styled.span`
   color: ${textColor.dark['fg-neutral-alternative']};
 `;
 
+const PersonalPlanTitle = styled.h4`
+  ${typography(undefined, 'title1', 'medium')}
+  color: ${textColor.dark['fg-neutral-strong']};
+  margin: 0 0 40px 0;
+`;
+
+const PersonalPlanPrice = styled.div`
+  ${typography(undefined, 'title3', 'medium')}
+  color: ${textColor.dark['fg-neutral-strong']};
+  margin: 0;
+`;
+
+const PersonalPlanPeriod = styled.span`
+  ${typography(undefined, 'heading1', 'medium')}
+  color: ${textColor.dark['fg-neutral-alternative']};
+`;
+
+const TokenInfoBlock = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid ${color.gray['900']};
+`;
+
+const TokenContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+`;
+
+const TokenText = styled.div`
+  ${typography(undefined, 'body3', 'medium')}
+  color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const TokenCostText = styled.div`
+  ${typography(undefined, 'body3', 'medium')}
+  color: ${textColor.dark['fg-neutral-alternative']};
+`;
+
 const PlanContact = styled.div`
   ${typography(undefined, 'title4', 'medium')}
   color: ${textColor.dark['fg-neutral-strong']};
@@ -380,6 +466,15 @@ const PlanBody = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+const PersonalPlanBody = styled.div`
+  padding: 24px;
+  background-color: ${color.common['100']};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 112px;
 `;
 
 const FeatureList = styled.ul`
@@ -402,26 +497,6 @@ const FeatureItem = styled.li`
 
   ${typography(undefined, 'body3', 'regular')}
   color: ${textColor.light['fg-neutral-primary']};
-`;
-
-const TokenInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const TokenItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  ${typography(undefined, 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-primary']};
-`;
-
-const TokenCost = styled.div`
-  ${typography(undefined, 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  margin-left: 28px;
 `;
 
 const CheckIcon = styled.img`

@@ -59,27 +59,30 @@
       },
       "basic": {
         "title": "Basic",
+        "subtitle": "개인 사용자를 위한 시작 플랜",
         "price": "$ 8.99",
         "period": " / Seat per month",
         "button": "Buy now",
         "tokens": "70,000 Token",
-        "costPerToken": "Cost per 1,000 Tokens: $0.128"
+        "costPerToken": "($0.128 per 1,000 Tokens)"
       },
       "pro": {
         "title": "Pro",
+        "subtitle": "고급 사용자를 위한 프로 플랜",
         "price": "$ 19.99",
         "period": " / Seat per month",
         "button": "Buy now",
         "tokens": "280,000 Token",
-        "costPerToken": "Cost per 1,000 Tokens: $0.072"
+        "costPerToken": "($0.072 per 1,000 Tokens)"
       },
       "max": {
         "title": "Max",
+        "subtitle": "대용량 사용자를 위한 최대 플랜",
         "price": "$ 39.99",
         "period": " / Seat per month",
         "button": "Buy now",
         "tokens": "600,000 Token",
-        "costPerToken": "Cost per 1,000 Tokens: $0.067"
+        "costPerToken": "($0.067 per 1,000 Tokens)"
       },
       "custom": {
         "title": "Custom",

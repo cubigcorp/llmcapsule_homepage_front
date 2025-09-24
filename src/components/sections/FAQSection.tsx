@@ -79,19 +79,19 @@ const FAQWrapper = styled.div`
 
   @media (min-width: 1920px) {
     max-width: 1920px;
-    padding: 80px 320px;
+    padding: 80px 240px;
   }
 
   @media (max-width: 1440px) {
-    padding: 80px 120px;
+    padding: 80px 40px;
   }
 
   @media (max-width: 1024px) {
-    padding: 60px 80px;
+    padding: 80px 32px 160px 32px;
   }
 
   @media (max-width: 768px) {
-    padding: 60px 24px;
+    padding: 60px 33px 120px 33px;
   }
 
   @media (max-width: 375px) {

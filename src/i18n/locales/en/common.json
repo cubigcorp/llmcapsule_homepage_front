@@ -44,11 +44,11 @@
       "plus": {
         "title": "Plus",
         "subtitle": "The first step toward protecting personal data",
-        "price": "$ 12.99 ~",
-        "period": "/ Month",
+        "price": "₩ 15,500~",
+        "period": " / Month",
         "button": "Buy now",
         "tokens": "120,000 Token",
-        "costPerToken": "Cost per 1,000 Tokens: $0.108",
+        "costPerToken": "($0.108 per 1,000 Tokens)",
         "features": {
           "feature1": "Detect personal data in documents",
           "feature2": "Protection through encapsulation",
@@ -59,27 +59,30 @@
       },
       "basic": {
         "title": "Basic",
+        "subtitle": "Perfect for individuals getting started",
         "price": "$ 8.99",
         "period": " / Seat per month",
         "button": "Buy now",
         "tokens": "70,000 Token",
-        "costPerToken": "Cost per 1,000 Tokens: $0.128"
+        "costPerToken": "($0.128 per 1,000 Tokens)"
       },
       "pro": {
         "title": "Pro",
+        "subtitle": "Advanced features for power users",
         "price": "$ 19.99",
         "period": " / Seat per month",
         "button": "Buy now",
         "tokens": "280,000 Token",
-        "costPerToken": "Cost per 1,000 Tokens: $0.072"
+        "costPerToken": "($0.072 per 1,000 Tokens)"
       },
       "max": {
         "title": "Max",
+        "subtitle": "Maximum capacity for heavy usage",
         "price": "$ 39.99",
         "period": " / Seat per month",
         "button": "Buy now",
         "tokens": "600,000 Token",
-        "costPerToken": "Cost per 1,000 Tokens: $0.067"
+        "costPerToken": "($0.067 per 1,000 Tokens)"
       },
       "custom": {
         "title": "Custom",
