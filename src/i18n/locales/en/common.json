@@ -149,5 +149,39 @@
     "generic": {
       "min2": "Please enter at least 2 characters."
     }
+  },
+  "faq": {
+    "title": "FAQ",
+    "mainTitle": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "What features does LLM Capsule provide?",
+        "answer": "This program enables individuals, businesses, and public institutions to utilize LLM services while securely protecting sensitive information. Before using ChatGPT, it anonymizes or pseudonymizes inputted sensitive data to safeguard personal information and prevent internal corporate leaks, allowing users to access GenAI services. This enables a secure way to enhance user productivity."
+      },
+      {
+        "question": "What types of personal data can LLM Capsule detect?",
+        "answer": "It can automatically detect and pseudonymize 18 types of key sensitive information, including name, age, year, phone number, resident registration number, account number, credit card number, corporate registration number, email address, and amount."
+      },
+      {
+        "question": "Can industry-specific filters be customized and extended?",
+        "answer": "Yes, in addition to the basic 18 types, we can provide further customization based on client requests, including industry-specific specialized datasets, domain-specific code, and sensitive information tailored to specific tasks."
+      },
+      {
+        "question": "Is integration with existing systems(E-Approval System, Work Portal, DB) supported?",
+        "answer": "Yes, it is possible. Implementation is possible via various methods such as API, file upload, and integration using the On-Premise approach."
+      },
+      {
+        "question": "Does LLM Capsule handle large documents and maintain fast processing speed?",
+        "answer": "Even tens of thousands of large-volume documents/notes can be de-identified at high speed, and optimization is possible to suit the system environment."
+      },
+      {
+        "question": "Can it process unstructured text such as free-form notes or call center records?",
+        "answer": "Not only standard forms, but also non-standard documents can be automatically detected and processed."
+      },
+      {
+        "question": "Is it easy for non-experts to use?",
+        "answer": "We provide an intuitive and convenient UI/UX that is easy to use for administrators, practitioners, and IT personnel alike."
+      }
+    ]
   }
 }

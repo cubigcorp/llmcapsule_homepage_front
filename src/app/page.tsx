@@ -1,8 +1,6 @@
 import HeroSection from '@/components/sections/HeroSection';
 import PerformanceSection from '@/components/sections/PerformanceSection';
 import CTASection from '@/components/sections/CTASection';
-import SolutionSection from '@/components/sections/SolutionSection';
-import ProcessSection from '@/components/sections/ProcessSection';
 import PricingSection from '@/components/sections/PricingSection';
 import PartnersSection from '@/components/sections/PartnersSection';
 import AboutSection from '@/components/sections/AboutSection';
@@ -21,8 +19,6 @@ export default function Home() {
       <PerformanceSection />
       <CTASection />
       <PricingSection />
-      <SolutionSection />
-      <ProcessSection />
 
       <FAQSection />
       <ContactSection />
