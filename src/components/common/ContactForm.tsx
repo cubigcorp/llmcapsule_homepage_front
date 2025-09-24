@@ -56,7 +56,7 @@ export default function ContactFormComponent({
     { label: t('contact.options.quote'), value: 'quote' },
     { label: t('contact.options.technical'), value: 'technical' },
     { label: t('contact.options.other'), value: 'other' },
-  ] as const;
+  ];
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
