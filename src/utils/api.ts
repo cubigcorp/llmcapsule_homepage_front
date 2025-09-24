@@ -161,6 +161,12 @@ export interface UpdateUserRequest {
   update_fields: UpdateField[];
 }
 
+export interface ChangePasswordRequest {
+  current_password: string;
+  old_password: string;
+  old_password_confirm: string;
+}
+
 /**
  * 기본 API 클라이언트
  */
@@ -427,4 +433,6 @@ export const API_ENDPOINTS = {
     REQUEST: '/password-reset/request',
     CONFIRM: '/password-reset/confirm',
   },
+  // 비밀번호 변경
+  CHANGE_PASSWORD: '/users/me/change-password',
 } as const;
