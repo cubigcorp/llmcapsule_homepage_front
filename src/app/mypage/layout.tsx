@@ -19,7 +19,7 @@ import AccountIcon from '@/assets/icons/icon_account.svg';
 import DownloadIcon from '@/assets/icons/icon_download.svg';
 import HeadphoneIcon from '@/assets/icons/icon_headphone.svg';
 import LogoutIcon from '@/assets/icons/icon_logout.svg';
-import HomeIcon from '@/assets/icons/Icon_home.svg';
+import HomeIcon from '@/assets/icons/icon_home.svg';
 import WalletIcon from '@/assets/icons/icon_wallet.svg';
 export default function MyPageLayout({
   children,
