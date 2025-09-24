@@ -336,7 +336,7 @@ const SectionNumber = styled.div`
   font-size: 24px;
   line-height: 34px;
   font-weight: 400;
-  font-family: geist;
+  font-family: 'Geist Mono', sans-serif;
   color: ${textColor.dark['fg-neutral-strong']};
   flex-shrink: 0;
 `;
