@@ -32,6 +32,71 @@
       }
     ]
   },
+  "pricing": {
+    "title": "Pricing",
+    "mainTitle": "Plans",
+    "subTitle": "Flexible on-premises pricing tailored to your organization's scale and security requirements.",
+    "toggle": {
+      "business": "Business",
+      "personal": "Personal"
+    },
+    "plans": {
+      "plus": {
+        "title": "Plus",
+        "subtitle": "The first step toward protecting personal data",
+        "price": "$ 12.99 ~",
+        "period": "/ Month",
+        "button": "Buy now",
+        "tokens": "120,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.108",
+        "features": {
+          "feature1": "Detect personal data in documents",
+          "feature2": "Protection through encapsulation",
+          "feature3": "Safely use Public LLMs while keeping personal data protected",
+          "feature4": "Basic filtering features",
+          "feature5": "Email support"
+        }
+      },
+      "basic": {
+        "title": "Basic",
+        "price": "$ 8.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "70,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.128"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "$ 19.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "280,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.072"
+      },
+      "max": {
+        "title": "Max",
+        "price": "$ 39.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "600,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.067"
+      },
+      "custom": {
+        "title": "Custom",
+        "subtitle": "Tailored solutions for enterprise requirements",
+        "contact": "Contact us",
+        "button": "Buy now",
+        "features": {
+          "feature1": "Includes all Standard plan features",
+          "feature2": "Customizable sensitive data filtering for enterprises",
+          "feature3": "Per-device token usage checking",
+          "feature4": "On-premises deployment available",
+          "feature5": "24/7 technical support",
+          "feature6": "Dedicated Customer Success Manager"
+        }
+      }
+    }
+  },
   "cta": {
     "title": "The Essential Security Capsule for AI Services",
     "subtitle": "The essential security layer for AI services and agents— from government compliance and data protection to trusted, scalable operations that build user confidence.",

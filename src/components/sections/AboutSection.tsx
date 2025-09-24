@@ -146,7 +146,39 @@ const AboutSection = () => {
                       <ImageContentWrapper>
                         <ImageHeader>
                           <ImageTitle>
-                            {section.features[activeFeatures[index]]}
+                            {index === 0 &&
+                              activeFeatures[index] === 0 &&
+                              'Complete protection of sensitive data in AI usage'}
+                            {index === 0 &&
+                              activeFeatures[index] === 1 &&
+                              'Customizable Data Protection'}
+                            {index === 0 &&
+                              activeFeatures[index] === 2 &&
+                              'Flexible De-identification Methods'}
+                            {index === 1 &&
+                              activeFeatures[index] === 0 &&
+                              'Seamless public LLM integration'}
+                            {index === 1 &&
+                              activeFeatures[index] === 1 &&
+                              'Large-Scale Document Processing & Ontology Management'}
+                            {index === 1 &&
+                              activeFeatures[index] === 2 &&
+                              'RAG & Graph RAG Support'}
+                            {index === 2 &&
+                              activeFeatures[index] === 0 &&
+                              'Context-Aware AI Detection'}
+                            {index === 2 &&
+                              activeFeatures[index] === 1 &&
+                              'Defense Against Prompt Injection & Jailbreak Attacks'}
+                            {index === 2 &&
+                              activeFeatures[index] === 2 &&
+                              'Compliance with Global Security Standards'}
+                            {index === 2 &&
+                              activeFeatures[index] === 3 &&
+                              'Admin-Centric User Management'}
+                            {index === 2 &&
+                              activeFeatures[index] === 4 &&
+                              'On-Premises Deployment Support'}
                           </ImageTitle>
                           <ImageSubtitle>
                             {index === 0 &&
@@ -154,43 +186,41 @@ const AboutSection = () => {
                               'A four-step framework of detection, protection, utilization, and recovery.'}
                             {index === 0 &&
                               activeFeatures[index] === 1 &&
-                              'Customizable data protection policies tailored to your business needs.'}
+                              'Tailored to corporate policies and environments.'}
                             {index === 0 &&
                               activeFeatures[index] === 2 &&
-                              'Flexible de-identification methods for sensitive information.'}
+                              'Optimized protection strategies for every situation.'}
                             {index === 1 &&
                               activeFeatures[index] === 0 &&
-                              'ChatGPT, Claude, Gemini — your choice, with efficiency and security.'}
+                              'ChatGPT, Claude, Gemini—your choice, with efficiency and security.'}
                             {index === 1 &&
                               activeFeatures[index] === 1 &&
-                              'Large-scale document processing & ontology management capabilities.'}
+                              'Turn enterprise data into structured, valuable assets.'}
                             {index === 1 &&
                               activeFeatures[index] === 2 &&
-                              'RAG & graph RAG support for advanced AI applications.'}
+                              'Use real-time data and knowledge graphs for accurate, trusted answers.'}
                             {index === 2 &&
                               activeFeatures[index] === 0 &&
                               'Beyond keywords, precision designed for enterprise data protection.'}
                             {index === 2 &&
                               activeFeatures[index] === 1 &&
-                              'Advanced protection against prompt injection and jailbreak attacks.'}
+                              'Safeguards that ensure stable AI operations.'}
                             {index === 2 &&
                               activeFeatures[index] === 2 &&
-                              'Compliance with global security standards and regulations.'}
+                              'Trusted AI that meets domestic and international regulations.'}
                             {index === 2 &&
                               activeFeatures[index] === 3 &&
-                              'Admin-centric user management for enterprise control.'}
+                              'Simplified administration for enterprise efficiency.'}
                             {index === 2 &&
                               activeFeatures[index] === 4 &&
-                              'On-premises deployment support for maximum security.'}
+                              'Secure operation of sensitive data and workloads on dedicated infrastructure.'}
                           </ImageSubtitle>
                         </ImageHeader>
                         <ImageContent>
-                          <ImagePlaceholder>
-                            <PlaceholderText>
-                              Image Area {index + 1} - Feature{' '}
-                              {activeFeatures[index] + 1}
-                            </PlaceholderText>
-                          </ImagePlaceholder>
+                          <FeatureImage
+                            src={`/images/area_${index + 1}_feature_${activeFeatures[index] + 1}.png`}
+                            alt={`Area ${index + 1} Feature ${activeFeatures[index] + 1}`}
+                          />
                         </ImageContent>
                       </ImageContentWrapper>
                     </ImageContainer>
@@ -408,18 +438,10 @@ const ImageContent = styled.div`
   justify-content: center;
 `;
 
-const ImagePlaceholder = styled.div`
+const FeatureImage = styled.img`
   width: 100%;
   height: 100%;
-  background-color: ${color.gray['900']};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const PlaceholderText = styled.span`
-  ${typography('en', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
+  object-fit: contain;
 `;
 
 const RightSidebar = styled.div`

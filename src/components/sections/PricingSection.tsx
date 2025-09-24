@@ -4,108 +4,216 @@ import styled from 'styled-components';
 import {
   typography,
   textColor,
-  radius,
   color,
   SolidButton,
 } from '@cubig/design-system';
-
-interface FeatureProps {
-  children: React.ReactNode;
-}
-
-function Feature({ children }: FeatureProps) {
-  return (
-    <FeatureItem>
-      <img src={'/icons/Check.svg'} alt='check' />
-      {children}
-    </FeatureItem>
-  );
-}
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 
 export default function PricingSection() {
+  const { t } = useTranslation('common');
+  const [selectedPlan, setSelectedPlan] = useState<'business' | 'personal'>(
+    'business'
+  );
+
   return (
     <PricingContainer>
       <PricingWrapper>
-        <SectionTitle>Pricing</SectionTitle>
-        <PricingTitle>
-          모든 사람을 위한 GPT 보안 솔루션, <br />
-          합리적인 비용으로 시작하세요
-        </PricingTitle>
-        <PricingDescription>
-          LLM Capsule은 팀 규모와 목적에 맞는 유연한 라이선스와 On-premise 설치
-          옵션을 제공합니다. <br />
-          필요한 기능만 선택하여 합리적인 가격으로 LLM Capsule을 도입하세요.
-        </PricingDescription>
-        <PricingCardsContainer>
-          <PricingCard>
-            <CardHeader style={{ backgroundColor: color.gray['925'] }}>
-              <CardTitle>Standard</CardTitle>
-              <CardSubtitle>
-                개인정보 보호를 위한 첫 번째 기본 단계
-              </CardSubtitle>
-              <CardSectionTitle>| 개인을 위한 요금제</CardSectionTitle>
-            </CardHeader>
-            <CardBody>
-              <FeatureList>
-                <Feature>문서 내 개인정보 탐지</Feature>
-                <Feature>캡슐화를 통한 보호</Feature>
-                <Feature>
-                  개인정보를 보호함과 동시에 Public LLM 사용까지 한번에 포함
-                </Feature>
-                <Feature>기본 필터링 기능</Feature>
-                <Feature>이메일 지원</Feature>
-              </FeatureList>
-              <SolidButton variant='primary' size='large' state='default'>
-                지금 구매
-              </SolidButton>
-            </CardBody>
-          </PricingCard>
+        <PricingContent>
+          <LeftSection>
+            <SectionTitle>{t('pricing.title')}</SectionTitle>
+          </LeftSection>
+          <RightSection>
+            <MainTitle>{t('pricing.mainTitle')}</MainTitle>
+            <SubTitle>{t('pricing.subTitle')}</SubTitle>
 
-          <PricingCard>
-            <CardHeader style={{ backgroundColor: color.gray['975'] }}>
-              <CardTitle>Enterprise</CardTitle>
-              <CardSubtitle>기업 요구 사항을 반영한 맞춤형 솔루션</CardSubtitle>
-              <CardSectionTitle>| 기업을 위한 요금제</CardSectionTitle>
-            </CardHeader>
-            <CardBody>
-              <FeatureList>
-                <Feature>STANDARD 요금제 기능 포함</Feature>
-                <Feature>기업별 맞춤 민감정보 필터링 가능</Feature>
-                <Feature>PC별 토큰 수 제한 기능 제공</Feature>
-                <Feature>On-Premise 설치 가능</Feature>
-                <Feature>24/7 기술 지원</Feature>
-                <Feature>전담 고객 성공 매니저</Feature>
-              </FeatureList>
-              <SolidButton variant='primary' size='large' state='default'>
-                지금 구매
-              </SolidButton>
-            </CardBody>
-          </PricingCard>
+            <PlanToggle>
+              <ToggleButton
+                variant={selectedPlan === 'business' ? 'primary' : 'secondary'}
+                size='large'
+                onClick={() => setSelectedPlan('business')}
+              >
+                {t('pricing.toggle.business')}
+              </ToggleButton>
+              <ToggleButton
+                variant={selectedPlan === 'personal' ? 'primary' : 'secondary'}
+                size='large'
+                onClick={() => setSelectedPlan('personal')}
+              >
+                {t('pricing.toggle.personal')}
+              </ToggleButton>
+            </PlanToggle>
 
-          <PricingCard>
-            <CardHeader style={{ backgroundColor: color.gray['950'] }}>
-              <CardTitle>
-                Enterprise
-                <ProTag>Pro</ProTag>
-              </CardTitle>
-              <CardSubtitle>토큰 사용량 구간에 따른 정액 요금제</CardSubtitle>
-              <CardSectionTitle>| 기업을 위한 요금제</CardSectionTitle>
-            </CardHeader>
-            <CardBody>
-              <FeatureList>
-                <Feature>Enterprise 요금제 기능 포함</Feature>
-                <Feature>무제한 사용자</Feature>
-                <Feature>고급 분석 및 리포팅</Feature>
-                <Feature>API 액세스</Feature>
-                <Feature>커스텀 통합 지원</Feature>
-                <Feature>SLA 보장</Feature>
-              </FeatureList>
-              <SolidButton variant='primary' size='large' state='default'>
-                지금 구매
-              </SolidButton>
-            </CardBody>
-          </PricingCard>
-        </PricingCardsContainer>
+            <PlansGrid $isPersonal={selectedPlan === 'personal'}>
+              {selectedPlan === 'business' ? (
+                <>
+                  <PlanCard>
+                    <PlanHeader>
+                      <PlanTitle>{t('pricing.plans.plus.title')}</PlanTitle>
+                      <PlanSubtitle>
+                        {t('pricing.plans.plus.subtitle')}
+                      </PlanSubtitle>
+                      <PlanPrice>{t('pricing.plans.plus.price')}</PlanPrice>
+                      <PlanPeriod>{t('pricing.plans.plus.period')}</PlanPeriod>
+                    </PlanHeader>
+                    <PlanBody>
+                      <FeatureList>
+                        <FeatureItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.plus.features.feature1')}
+                        </FeatureItem>
+                        <FeatureItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.plus.features.feature2')}
+                        </FeatureItem>
+                        <FeatureItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.plus.features.feature3')}
+                        </FeatureItem>
+                        <FeatureItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.plus.features.feature4')}
+                        </FeatureItem>
+                        <FeatureItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.plus.features.feature5')}
+                        </FeatureItem>
+                      </FeatureList>
+                      <PlanButton variant='primary' size='large'>
+                        {t('pricing.plans.plus.button')}
+                      </PlanButton>
+                    </PlanBody>
+                  </PlanCard>
+
+                  <PlanCard>
+                    <PlanHeader $custom>
+                      <PlanTitle>{t('pricing.plans.custom.title')}</PlanTitle>
+                      <PlanSubtitle>
+                        {t('pricing.plans.custom.subtitle')}
+                      </PlanSubtitle>
+                      <PlanContact>
+                        {t('pricing.plans.custom.contact')}
+                      </PlanContact>
+                    </PlanHeader>
+                    <PlanBody>
+                      <FeatureList>
+                        <FeatureItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.custom.features.feature1')}
+                        </FeatureItem>
+                        <FeatureItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.custom.features.feature2')}
+                        </FeatureItem>
+                        <FeatureItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.custom.features.feature3')}
+                        </FeatureItem>
+                        <FeatureItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.custom.features.feature4')}
+                        </FeatureItem>
+                        <FeatureItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.custom.features.feature5')}
+                        </FeatureItem>
+                        <FeatureItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.custom.features.feature6')}
+                        </FeatureItem>
+                      </FeatureList>
+                      <PlanButton variant='primary' size='large'>
+                        {t('pricing.plans.custom.button')}
+                      </PlanButton>
+                    </PlanBody>
+                  </PlanCard>
+                </>
+              ) : (
+                <>
+                  <PlanCard>
+                    <PlanHeader>
+                      <PlanTitle>{t('pricing.plans.basic.title')}</PlanTitle>
+                      <PlanPrice>{t('pricing.plans.basic.price')}</PlanPrice>
+                      <PlanPeriod>{t('pricing.plans.basic.period')}</PlanPeriod>
+                    </PlanHeader>
+                    <PlanBody>
+                      <TokenInfo>
+                        <TokenItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.basic.tokens')}
+                        </TokenItem>
+                        <TokenCost>
+                          {t('pricing.plans.basic.costPerToken')}
+                        </TokenCost>
+                      </TokenInfo>
+                    </PlanBody>
+                    <PlanButton>{t('pricing.plans.basic.button')}</PlanButton>
+                  </PlanCard>
+
+                  <PlanCard>
+                    <PlanHeader>
+                      <PlanTitle>{t('pricing.plans.plus.title')}</PlanTitle>
+                      <PlanPrice>{t('pricing.plans.plus.price')}</PlanPrice>
+                      <PlanPeriod>{t('pricing.plans.plus.period')}</PlanPeriod>
+                    </PlanHeader>
+                    <PlanBody>
+                      <TokenInfo>
+                        <TokenItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.plus.tokens')}
+                        </TokenItem>
+                        <TokenCost>
+                          {t('pricing.plans.plus.costPerToken')}
+                        </TokenCost>
+                      </TokenInfo>
+                    </PlanBody>
+                    <PlanButton>{t('pricing.plans.plus.button')}</PlanButton>
+                  </PlanCard>
+
+                  <PlanCard>
+                    <PlanHeader>
+                      <PlanTitle>{t('pricing.plans.pro.title')}</PlanTitle>
+                      <PlanPrice>{t('pricing.plans.pro.price')}</PlanPrice>
+                      <PlanPeriod>{t('pricing.plans.pro.period')}</PlanPeriod>
+                    </PlanHeader>
+                    <PlanBody>
+                      <TokenInfo>
+                        <TokenItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.pro.tokens')}
+                        </TokenItem>
+                        <TokenCost>
+                          {t('pricing.plans.pro.costPerToken')}
+                        </TokenCost>
+                      </TokenInfo>
+                    </PlanBody>
+                    <PlanButton>{t('pricing.plans.pro.button')}</PlanButton>
+                  </PlanCard>
+
+                  <PlanCard>
+                    <PlanHeader>
+                      <PlanTitle>{t('pricing.plans.max.title')}</PlanTitle>
+                      <PlanPrice>{t('pricing.plans.max.price')}</PlanPrice>
+                      <PlanPeriod>{t('pricing.plans.max.period')}</PlanPeriod>
+                    </PlanHeader>
+                    <PlanBody>
+                      <TokenInfo>
+                        <TokenItem>
+                          <CheckIcon src={'/icons/Check.svg'} alt='check' />
+                          {t('pricing.plans.max.tokens')}
+                        </TokenItem>
+                        <TokenCost>
+                          {t('pricing.plans.max.costPerToken')}
+                        </TokenCost>
+                      </TokenInfo>
+                    </PlanBody>
+                    <PlanButton>{t('pricing.plans.max.button')}</PlanButton>
+                  </PlanCard>
+                </>
+              )}
+            </PlansGrid>
+          </RightSection>
+        </PricingContent>
       </PricingWrapper>
     </PricingContainer>
   );
@@ -115,191 +223,208 @@ const PricingContainer = styled.section`
   width: 100%;
   display: flex;
   justify-content: center;
+  background-color: ${color.gray['50']};
 `;
 
 const PricingWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
-  padding: 80px 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  padding: 80px 240px;
   margin: 0 auto;
-
-  @media (min-width: 1920px) {
-    max-width: 1920px;
-    padding: 120px 120px;
-  }
 
   @media (max-width: 1440px) {
-    padding: 60px 24px;
+    padding: 60px 120px;
   }
 
   @media (max-width: 768px) {
-    padding: 40px 16px;
-    gap: 16px;
+    padding: 40px 24px;
   }
 
   @media (max-width: 375px) {
-    padding: 32px 12px;
-    gap: 12px;
+    padding: 32px 16px;
   }
 `;
 
-const SectionTitle = styled.h2`
-  width: fit-content;
-  ${typography('ko', 'body3', 'medium')}
-  color: ${textColor.light['fg-neutral-strong']};
-  border: 1px solid ${textColor.light['fg-neutral-primary']};
-  padding: 2px 8px;
-  border-radius: ${radius['rounded-1.5']};
-  margin: 0 auto;
-`;
-
-const PricingTitle = styled.h2`
-  ${typography('ko', 'title4', 'semibold')}
-
-  text-align: center;
-`;
-
-const PricingDescription = styled.p`
-  ${typography('ko', 'heading1', 'medium')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto 60px auto;
-
-  @media (max-width: 768px) {
-    margin-bottom: 40px;
-  }
-
-  @media (max-width: 375px) {
-    margin-bottom: 32px;
-  }
-`;
-
-const PricingCardsContainer = styled.div`
+const PricingContent = styled.div`
   display: flex;
-  gap: 8px;
-  justify-content: center;
+
+  align-items: flex-start;
 
   @media (max-width: 768px) {
     flex-direction: column;
-    align-items: center;
+    gap: 40px;
+  }
+`;
+
+const LeftSection = styled.div`
+  flex: 0 0 auto;
+  min-width: 200px;
+
+  @media (max-width: 768px) {
+    min-width: auto;
+  }
+`;
+
+const RightSection = styled.div`
+  flex: 1;
+`;
+
+const SectionTitle = styled.h2`
+  ${typography(undefined, 'body3', 'semibold')}
+  color: ${textColor.light['fg-neutral-strong']};
+  margin-top: 16px;
+`;
+
+const MainTitle = styled.h3`
+  ${typography(undefined, 'display1', 'medium')}
+  color: ${textColor.light['fg-neutral-strong']};
+  margin: 0 0 12px 0;
+`;
+
+const SubTitle = styled.p`
+  ${typography(undefined, 'heading2', 'regular')}
+  color: ${textColor.light['fg-neutral-primary']};
+  margin: 0 0 40px 0;
+`;
+
+const PlanToggle = styled.div`
+  border-radius: 16px;
+  border: 2px solid #fff;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  padding: 8px;
+  width: 232px;
+  gap: 12px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+`;
+
+const ToggleButton = styled(SolidButton)``;
+
+const PlansGrid = styled.div<{ $isPersonal: boolean }>`
+  display: grid;
+  grid-template-columns: ${(props) =>
+    props.$isPersonal ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)'};
+  gap: 24px;
+  align-items: stretch;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: ${(props) =>
+      props.$isPersonal ? 'repeat(2, 1fr)' : 'repeat(2, 1fr)'};
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
     gap: 16px;
   }
 `;
 
-const PricingCard = styled.div`
-  width: 421px;
+const PlanCard = styled.div`
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    max-width: 421px;
-  }
+  background-color: ${color.common['100']};
 `;
 
-const CardHeader = styled.div`
-  background-color: #374151;
-  padding: 40px;
-  text-align: left;
+const PlanHeader = styled.div<{ $custom?: boolean }>`
   height: 280px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-
-  @media (max-width: 768px) {
-    padding: 24px;
-    height: auto;
-    min-height: 200px;
-  }
-
-  @media (max-width: 375px) {
-    padding: 20px;
-    min-height: 180px;
-  }
-`;
-
-const CardTitle = styled.h3`
-  ${typography('ko', 'title3', 'medium')}
-  color: #fff;
-  margin-bottom: 8px;
-  margin-top: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
-const ProTag = styled.span`
-  ${typography('ko', 'body3', 'medium')}
-
-  color: #fff;
-  padding: 2px 8px;
-  border-radius: ${radius['rounded-1.5']};
-  border: 1px solid #fff;
-`;
-
-const CardSubtitle = styled.p`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.dark['fg-neutral-primary']};
-  margin-bottom: 40px;
-`;
-
-const CardBody = styled.div`
-  background-color: #fff;
   padding: 40px;
+  background-color: ${(props) =>
+    props.$custom ? color.gray['900'] : color.gray['975']};
+  color: ${color.common['100']};
   display: flex;
   flex-direction: column;
-  height: 440px;
-
-  > button {
-    margin-top: auto;
-  }
-  background-color: ${color.gray['50']};
-
-  @media (max-width: 768px) {
-    padding: 24px;
-    height: auto;
-    min-height: 400px;
-  }
-
-  @media (max-width: 375px) {
-    padding: 20px;
-    min-height: 350px;
-  }
+  justify-content: space-between;
 `;
 
-const CardSectionTitle = styled.h4`
-  ${typography('ko', 'body2', 'medium')}
-  color: ${textColor.dark['fg-neutral-strong']};
+const PlanTitle = styled.h4`
+  ${typography(undefined, 'title3', 'medium')}
+  color: ${color.common['100']};
+  margin: 0 0 8px 0;
+`;
+
+const PlanSubtitle = styled.p`
+  ${typography(undefined, 'body3', 'regular')}
+  color: ${color.common['100']};
+  margin: 0 0 16px 0;
+`;
+
+const PlanPrice = styled.div`
+  ${typography(undefined, 'display2', 'medium')}
+  color: ${color.common['100']};
   margin: 0;
-  margin-top: auto;
+`;
+
+const PlanPeriod = styled.span`
+  ${typography(undefined, 'body2', 'regular')}
+  color: ${color.common['100']};
+`;
+
+const PlanContact = styled.div`
+  ${typography(undefined, 'title2', 'medium')}
+  color: ${color.common['100']};
+  margin: 0;
+`;
+
+const PlanBody = styled.div`
+  height: 464px;
+  padding: 40px;
+  background-color: ${color.common['100']};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const FeatureList = styled.ul`
   list-style: none;
   padding: 0;
+  margin: 0;
   flex: 1;
 `;
 
 const FeatureItem = styled.li`
-  ${typography('ko', 'body3', 'regular')}
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid ${textColor.light['fg-neutral-assistive']};
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  ${typography(undefined, 'body3', 'regular')}
+  color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const TokenInfo = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 8px;
-  border-bottom: 1px solid ${color.gray['990']};
-  padding-bottom: 8px;
-  padding-top: 16px;
+`;
 
-  &:first-child {
-    padding-top: 0;
-  }
+const TokenItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  ${typography(undefined, 'body3', 'regular')}
+  color: ${textColor.light['fg-neutral-primary']};
+`;
 
-  img {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
+const TokenCost = styled.div`
+  ${typography(undefined, 'body3', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+  margin-left: 28px;
+`;
+
+const CheckIcon = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+
+const PlanButton = styled(SolidButton)`
+  width: 100%;
+  margin-top: auto;
 `;

@@ -3,7 +3,7 @@ import PerformanceSection from '@/components/sections/PerformanceSection';
 import CTASection from '@/components/sections/CTASection';
 import SolutionSection from '@/components/sections/SolutionSection';
 import ProcessSection from '@/components/sections/ProcessSection';
-// import PricingSection from '@/components/sections/PricingSection';
+import PricingSection from '@/components/sections/PricingSection';
 import PartnersSection from '@/components/sections/PartnersSection';
 import AboutSection from '@/components/sections/AboutSection';
 import FAQSection from '@/components/sections/FAQSection';
@@ -20,10 +20,10 @@ export default function Home() {
       <DemoSection />
       <PerformanceSection />
       <CTASection />
+      <PricingSection />
       <SolutionSection />
       <ProcessSection />
 
-      {/* <PricingSection /> */}
       <FAQSection />
       <ContactSection />
       <Footer />

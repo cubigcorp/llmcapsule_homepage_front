@@ -32,6 +32,71 @@
       }
     ]
   },
+  "pricing": {
+    "title": "가격",
+    "mainTitle": "Plans",
+    "subTitle": "조직의 규모와 보안 요구사항에 맞춘 유연한 온프레미스 가격",
+    "toggle": {
+      "business": "Business",
+      "personal": "Personal"
+    },
+    "plans": {
+      "plus": {
+        "title": "Plus",
+        "subtitle": "개인정보 보호를 위한 첫 번째 단계",
+        "price": "$ 12.99 ~",
+        "period": "/ Month",
+        "button": "Buy now",
+        "tokens": "120,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.108",
+        "features": {
+          "feature1": "문서 내 개인정보 탐지",
+          "feature2": "캡슐화를 통한 보호",
+          "feature3": "개인정보를 보호하면서 Public LLM 안전하게 사용",
+          "feature4": "기본 필터링 기능",
+          "feature5": "이메일 지원"
+        }
+      },
+      "basic": {
+        "title": "Basic",
+        "price": "$ 8.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "70,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.128"
+      },
+      "pro": {
+        "title": "Pro",
+        "price": "$ 19.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "280,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.072"
+      },
+      "max": {
+        "title": "Max",
+        "price": "$ 39.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "600,000 Token",
+        "costPerToken": "Cost per 1,000 Tokens: $0.067"
+      },
+      "custom": {
+        "title": "Custom",
+        "subtitle": "기업 요구사항에 맞춘 맞춤형 솔루션",
+        "contact": "Contact us",
+        "button": "Buy now",
+        "features": {
+          "feature1": "Standard 플랜의 모든 기능 포함",
+          "feature2": "기업용 맞춤형 민감정보 필터링",
+          "feature3": "디바이스별 토큰 사용량 확인",
+          "feature4": "온프레미스 배포 가능",
+          "feature5": "24/7 기술 지원",
+          "feature6": "전담 고객 성공 매니저"
+        }
+      }
+    }
+  },
   "cta": {
     "title": "AI 서비스를 위한 필수 보안 캡슐",
     "subtitle": "정부 규정 준수와 데이터 보호부터 신뢰할 수 있고 확장 가능한 운영으로 사용자 신뢰를 구축하는 AI 서비스와 에이전트를 위한 필수 보안 계층입니다.",
