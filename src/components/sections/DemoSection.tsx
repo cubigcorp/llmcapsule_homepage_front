@@ -199,6 +199,6 @@ const DemoImage = styled.div`
   height: 685px;
   background-image: url('/images/demo-browser_desktop.png');
   background-size: contain;
-
   background-repeat: no-repeat;
+  background-position: bottom;
 `;
