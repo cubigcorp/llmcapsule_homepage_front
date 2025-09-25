@@ -32,6 +32,7 @@ import { typography, textColor, borderColor } from '@cubig/design-system';
 import CarouselSection from '@/components/common/CarouselSection';
 import SignupLoading from '@/components/common/SignupLoading';
 import EmailVerificationSection from '@/components/common/EmailVerificationSection';
+import EmailConflictModal from '@/components/common/EmailConflictModal';
 import GoogleIcon from '@/assets/icons/Google.svg';
 import {
   validateEmail,
@@ -59,6 +60,9 @@ function SignupPageContent() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [isEmailConflictModalOpen, setIsEmailConflictModalOpen] =
+    useState(false);
+  const [conflictEmail, setConflictEmail] = useState('');
   const [isEmailVerification, setIsEmailVerification] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
@@ -108,6 +112,18 @@ function SignupPageContent() {
     setConfirmPasswordError(result.message);
   };
 
+  const handleEmailConflictModalClose = () => {
+    setIsEmailConflictModalOpen(false);
+    setConflictEmail('');
+  };
+
+  const handleEmailConflictModalConfirm = () => {
+    setIsEmailConflictModalOpen(false);
+    setConflictEmail('');
+    // 로그인 페이지로 이동
+    window.location.href = '/login';
+  };
+
   const handleGoogleSignup = async () => {
     try {
       // Google Identity Services 초기화
@@ -125,20 +141,37 @@ function SignupPageContent() {
                 );
                 const userInfo = await userInfoResponse.json();
 
+                // 이메일 중복 확인
+                try {
+                  const checkEmailResponse = await authService.checkEmail(
+                    userInfo.email
+                  );
+
+                  if (checkEmailResponse.success && checkEmailResponse.data) {
+                    const { is_available } = checkEmailResponse.data;
+
+                    if (!is_available) {
+                      // 이미 가입된 계정인 경우 모달 표시
+                      setConflictEmail(userInfo.email);
+                      setIsEmailConflictModalOpen(true);
+                      return;
+                    }
+                  }
+                } catch (error) {
+                  console.log(
+                    'Check email API failed, proceeding with Google signup:',
+                    error
+                  );
+                  // API 호출 실패 시에도 계속 진행
+                }
+
                 // 구글 이메일 인증 API 호출
                 const verifyResponse = await authService.verifyEmailGoogle({
                   access_token: response.access_token,
                 });
 
                 if (verifyResponse.success) {
-                  const params = new URLSearchParams({
-                    google: 'true',
-                    email: userInfo.email,
-                    firstName: userInfo.given_name,
-                    lastName: userInfo.family_name,
-                    sub: userInfo.id,
-                  });
-                  window.location.href = `/signup/verify?${params.toString()}`;
+                  window.location.href = `/signup/verify?token=${response.access_token}&google=true`;
                 } else {
                   alert('구글 이메일 인증에 실패했습니다.');
                 }
@@ -368,6 +401,13 @@ function SignupPageContent() {
           <CarouselSection />
         </SignupRight>
       </SignupWrapper>
+
+      {/* 이메일 중복 확인 모달 */}
+      <EmailConflictModal
+        isOpen={isEmailConflictModalOpen}
+        onClose={handleEmailConflictModalClose}
+        onConfirm={handleEmailConflictModalConfirm}
+      />
     </SignupContainer>
   );
 }
