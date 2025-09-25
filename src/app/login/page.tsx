@@ -110,13 +110,7 @@ export default function LoginPage() {
         } else {
           // 409 에러인 경우 이미 이메일로 가입된 계정
           if (loginResponse.status === 409) {
-            // Google API로 사용자 정보 가져오기
-            const userInfoResponse = await fetch(
-              `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokenResponse.access_token}`
-            );
-            const userInfo = await userInfoResponse.json();
-
-            setConflictEmail(userInfo.email);
+            setConflictEmail(''); // 이메일 주소는 모달에서 표시하지 않음
             setIsEmailConflictModalOpen(true);
             return;
           }
