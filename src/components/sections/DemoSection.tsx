@@ -196,8 +196,8 @@ const DemoButton = styled(SolidButton)<{ $active?: boolean }>`
 const DemoImage = styled.div`
   width: 100%;
   max-width: 1032px;
-  height: 685px;
-  background-image: url('/images/demo-browser_desktop.png');
+  height: 650px;
+  background-image: url('/images/demo-browser.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;
