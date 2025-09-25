@@ -186,5 +186,10 @@
         "answer": "We provide an intuitive and convenient UI/UX that is easy to use for administrators, practitioners, and IT personnel alike."
       }
     ]
+  },
+  "demo": {
+    "title": "Demo",
+    "mainTitle": "Try our web demo",
+    "subtitle": "Experience the full journey — from context detection to LLM utilization to data recovery."
   }
 }
