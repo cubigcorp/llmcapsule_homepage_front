@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import {
   typography,
   textColor,
@@ -532,40 +532,6 @@ const DocumentText = styled.div`
   color: ${textColor.light['fg-neutral-primary']};
 `;
 
-const StepDocumentHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid #e9ecef;
-`;
-
-const StepDocumentContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 12px 24px;
-  max-height: 216px;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #e5e7eb;
-    border-radius: 3px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #d1d5db;
-  }
-`;
-
 const SimulationStatus = styled.div<{ $isRestart?: boolean }>`
   display: flex;
   justify-content: ${(props) => (props.$isRestart ? 'center' : 'flex-end')};
@@ -718,22 +684,57 @@ const RunSimulationButton = styled.button`
   align-items: center;
   gap: 8px;
   padding: 10px 22px;
-  background:
-    linear-gradient(#000, #000) padding-box,
-    linear-gradient(90deg, #ff32d3 0%, #263fff 100%) border-box;
-  border: 2px solid transparent;
+  position: relative;
   border-radius: 99px;
+  background: #000;
+  color: #fff;
   cursor: pointer;
   transition: all 0.2s ease;
   ${typography(undefined, 'body3', 'semibold')}
-  color: #ffffff;
   margin-left: auto;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px; /* 보더 두께 */
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      #263fff 0%,
+      #ff32d3 30%,
+      white 65%,
+      #263fff 100%
+    );
+    background-size: 200% 100%;
+    animation: moveGradient 3s linear infinite;
+
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0) border-box;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+
+    padding: 2px;
+    pointer-events: none;
+    z-index: -1;
+  }
 
   &:hover {
-    background:
-      linear-gradient(#333, #333) padding-box,
-      linear-gradient(90deg, #ff32d3 0%, #263fff 100%) border-box;
+    background: #333;
     transform: translateY(-1px);
+  }
+
+  @keyframes moveGradient {
+    0% {
+      background-position: 0% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
   }
 `;
 
