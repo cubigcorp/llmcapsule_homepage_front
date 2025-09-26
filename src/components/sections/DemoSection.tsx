@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import {
   typography,
   textColor,
@@ -202,10 +202,9 @@ export default function DemoSection() {
                       {/* 1단계: Safely capsuling 타이핑 */}
                       {currentStep >= 1 && (
                         <SimulationStatus>
-                          <StatusMessage>
+                          <StatusMessage $isTyping={currentStep === 1}>
                             {currentStep === 1
-                              ? typingText ||
-                                'Safely capsuling the original document'
+                              ? typingText
                               : 'Safely capsuling the original document'}
                             {currentStep === 1 ? showDots : ''}
                           </StatusMessage>
@@ -284,10 +283,9 @@ export default function DemoSection() {
                       {/* 3단계: Send capsuled data 타이핑 */}
                       {currentStep >= 3 && (
                         <SimulationStatus>
-                          <StatusMessage>
+                          <StatusMessage $isTyping={currentStep === 3}>
                             {currentStep === 3
-                              ? typingText ||
-                                'Send capsuled data and prompts to the LLM.'
+                              ? typingText
                               : 'Send capsuled data and prompts to the LLM.'}
                           </StatusMessage>
                         </SimulationStatus>
@@ -296,10 +294,9 @@ export default function DemoSection() {
                       {/* 4단계: 사용자 프롬프트 타이핑 */}
                       {currentStep >= 4 && (
                         <SimulationStatus>
-                          <StatusMessage>
+                          <StatusMessage $isTyping={currentStep === 4}>
                             {currentStep === 4
-                              ? typingText ||
-                                'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.'
+                              ? typingText
                               : 'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.'}
                           </StatusMessage>
                         </SimulationStatus>
@@ -691,7 +688,7 @@ const SimulationStatus = styled.div<{ $isRestart?: boolean }>`
   width: 864px;
 `;
 
-const StatusMessage = styled.div`
+const StatusMessage = styled.div<{ $isTyping?: boolean }>`
   border-radius: 20px;
   padding: 16px 24px;
   max-width: 720px;
@@ -702,10 +699,10 @@ const StatusMessage = styled.div`
   box-shadow: 0 0 96.88px 0 rgba(89, 89, 255, 0.07);
   position: relative;
 
-  /* 타이핑 커서 효과 */
+  /* 타이핑 커서 효과 - 타이핑 중일 때만 */
   &::after {
-    content: '|';
-    animation: blink 1s infinite;
+    content: ${(props) => (props.$isTyping ? '|' : '')};
+    animation: ${(props) => (props.$isTyping ? 'blink 1s infinite' : 'none')};
     margin-left: 2px;
   }
 
