@@ -62,6 +62,8 @@ export default function DemoSection() {
   const [typingText, setTypingText] = useState('');
   const [showDots, setShowDots] = useState('');
   const [selectedAction, setSelectedAction] = useState(0);
+  const [llmAnswerTyping, setLlmAnswerTyping] = useState('');
+  const [decryptTyping, setDecryptTyping] = useState('');
   const [demoData, setDemoData] = useState({
     original: '',
     capsuledHide: '',
@@ -163,31 +165,44 @@ export default function DemoSection() {
           // 3단계: Original Document와 Capsuled Data 노출
           setCurrentStep(2);
           setTimeout(() => {
-            // 4단계: "Send capsuled data and prompts to the LLM." 타이핑
-            setCurrentStep(3);
-            typeText(t('demo.statusMessages.sending'), () => {
-              // 5단계: 사용자 프롬프트 타이핑
-              setTimeout(() => {
-                setCurrentStep(4);
-                typeText(
-                  demoData.question ||
-                    'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.',
-                  () => {
-                    // 6단계: LLM Answer와 Decrypt 노출
-                    setTimeout(() => {
-                      setCurrentStep(5);
+            scrollToBottom();
+            setTimeout(() => {
+              // 4단계: "Send capsuled data and prompts to the LLM." 타이핑
+              setCurrentStep(3);
+              typeText(t('demo.statusMessages.sending'), () => {
+                // 5단계: 사용자 프롬프트 타이핑
+                setTimeout(() => {
+                  setCurrentStep(4);
+                  typeText(
+                    demoData.question ||
+                      'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.',
+                    () => {
+                      // 6단계: LLM Answer와 Decrypt 노출
                       setTimeout(() => {
-                        // 7단계: 양 영역에서 텍스트 타이핑
+                        setCurrentStep(5);
                         setTimeout(() => {
-                          setCurrentStep(6);
-                        }, 1000);
-                      }, 100);
-                    }, 1000);
-                  }
-                );
-              }, 1000);
-            });
-          }, 3000);
+                          scrollToBottom();
+                          setTimeout(() => {
+                            // 7단계: 양 영역에서 텍스트 타이핑
+                            setCurrentStep(6);
+                            const llmAnswerText =
+                              selectedAction === 0
+                                ? demoData.answerHide
+                                : demoData.answerChange;
+                            const decryptText = demoData.answerUncapsuled;
+
+                            // 동시에 타이핑 시작
+                            typeLlmAnswer(llmAnswerText);
+                            typeDecrypt(decryptText);
+                          }, 300);
+                        }, 100);
+                      }, 1000);
+                    }
+                  );
+                }, 1000);
+              });
+            }, 300);
+          }, 1500);
         });
       });
     }, 500);
@@ -204,7 +219,7 @@ export default function DemoSection() {
         clearInterval(interval);
         onComplete?.();
       }
-    }, 50);
+    }, 30);
   };
 
   const animateDots = (onComplete?: () => void) => {
@@ -222,10 +237,48 @@ export default function DemoSection() {
     }, 250);
   };
 
+  const typeLlmAnswer = (text: string, onComplete?: () => void) => {
+    setLlmAnswerTyping('');
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index < text.length) {
+        setLlmAnswerTyping(text.slice(0, index + 1));
+        index++;
+        // 10글자마다 스크롤 업데이트
+        if (index % 10 === 0) {
+          scrollToBottom();
+        }
+      } else {
+        clearInterval(interval);
+        scrollToBottom();
+        onComplete?.();
+      }
+    }, 20);
+  };
+
+  const typeDecrypt = (text: string, onComplete?: () => void) => {
+    setDecryptTyping('');
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index < text.length) {
+        setDecryptTyping(text.slice(0, index + 1));
+        index++;
+        // 10글자마다 스크롤 업데이트
+        if (index % 10 === 0) {
+          scrollToBottom();
+        }
+      } else {
+        clearInterval(interval);
+        scrollToBottom();
+        onComplete?.();
+      }
+    }, 20);
+  };
+
   const scrollToBottom = () => {
     if (chatAreaRef.current) {
       chatAreaRef.current.scrollTo({
-        top: chatAreaRef.current.scrollHeight,
+        top: chatAreaRef.current.scrollHeight + 100,
         behavior: 'smooth',
       });
     }
@@ -259,6 +312,8 @@ export default function DemoSection() {
     setCurrentStep(0);
     setTypingText('');
     setShowDots('');
+    setLlmAnswerTyping('');
+    setDecryptTyping('');
     // 스크롤을 맨 위로 올리기
     if (chatAreaRef.current) {
       chatAreaRef.current.scrollTop = 0;
@@ -388,9 +443,11 @@ export default function DemoSection() {
                                   <DocumentText>
                                     {currentStep >= 6 ? (
                                       <>
-                                        {selectedAction === 0
-                                          ? formatText(demoData.answerHide)
-                                          : formatText(demoData.answerChange)}
+                                        {llmAnswerTyping
+                                          ? formatText(llmAnswerTyping)
+                                          : selectedAction === 0
+                                            ? formatText(demoData.answerHide)
+                                            : formatText(demoData.answerChange)}
                                       </>
                                     ) : (
                                       ''
@@ -409,7 +466,11 @@ export default function DemoSection() {
                                   <DocumentText>
                                     {currentStep >= 6 ? (
                                       <>
-                                        {formatText(demoData.answerUncapsuled)}
+                                        {decryptTyping
+                                          ? formatText(decryptTyping)
+                                          : formatText(
+                                              demoData.answerUncapsuled
+                                            )}
                                       </>
                                     ) : (
                                       ''
@@ -700,7 +761,7 @@ const ChatArea = styled.div<{ $isSimulating?: boolean }>`
   overflow-y: auto;
 
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 2px;
   }
 
   &::-webkit-scrollbar-track {
@@ -708,12 +769,12 @@ const ChatArea = styled.div<{ $isSimulating?: boolean }>`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #e5e7eb;
-    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 1px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #d1d5db;
+    background: rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -764,7 +825,7 @@ const DocumentContent = styled.div`
   overflow-y: auto;
 
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 2px;
   }
 
   &::-webkit-scrollbar-track {
@@ -772,12 +833,12 @@ const DocumentContent = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #e5e7eb;
-    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 1px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #d1d5db;
+    background: rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -1119,7 +1180,7 @@ const LeftDocumentContent = styled.div`
   overflow-y: auto;
 
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 2px;
   }
 
   &::-webkit-scrollbar-track {
@@ -1127,12 +1188,12 @@ const LeftDocumentContent = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #e5e7eb;
-    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 1px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #d1d5db;
+    background: rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -1172,7 +1233,7 @@ const RightDocumentContent = styled.div`
   overflow-y: auto;
 
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 2px;
   }
 
   &::-webkit-scrollbar-track {
@@ -1180,11 +1241,11 @@ const RightDocumentContent = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #e5e7eb;
-    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 1px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #d1d5db;
+    background: rgba(0, 0, 0, 0.2);
   }
 `;
