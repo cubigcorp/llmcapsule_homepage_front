@@ -60,12 +60,93 @@ export default function DemoSection() {
   const [simulationStep, setSimulationStep] = useState(0); // 0: 초기, 1: 캡슐화, 2: LLM 결과
   const [currentStep, setCurrentStep] = useState(0); // 세부 단계 관리
   const [typingText, setTypingText] = useState('');
-  const [llmAnswer, setLlmAnswer] = useState('');
   const [showDots, setShowDots] = useState('');
   const [selectedAction, setSelectedAction] = useState(0);
+  const [demoData, setDemoData] = useState({
+    original: '',
+    capsuledHide: '',
+    capsuledChange: '',
+    question: '',
+    answerHide: '',
+    answerChange: '',
+    answerUncapsuled: '',
+  });
   const chatAreaRef = useRef<HTMLDivElement>(null);
-  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const dotsIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const formatText = (text: string) => {
+    return text.split('\n').map((line, index) => (
+      <span key={index}>
+        {line}
+        {index < text.split('\n').length - 1 && <br />}
+      </span>
+    ));
+  };
+
+  const handleButtonClick = (buttonId: string) => {
+    setActiveButton(buttonId);
+    if (buttonId === 'Government') {
+      setDemoData({
+        original: t('demo.data.Government.original'),
+        capsuledHide: t('demo.data.Government.capsuledHide'),
+        capsuledChange: t('demo.data.Government.capsuledChange'),
+        question: t('demo.data.Government.question'),
+        answerHide: t('demo.data.Government.answerHide'),
+        answerChange: t('demo.data.Government.answerChange'),
+        answerUncapsuled: t('demo.data.Government.answerUncapsuled'),
+      });
+    } else if (buttonId === 'Financial') {
+      setDemoData({
+        original: t('demo.data.Financial.original'),
+        capsuledHide: t('demo.data.Financial.capsuledHide'),
+        capsuledChange: t('demo.data.Financial.capsuledChange'),
+        question: t('demo.data.Financial.question'),
+        answerHide: t('demo.data.Financial.answerHide'),
+        answerChange: t('demo.data.Financial.answerChange'),
+        answerUncapsuled: t('demo.data.Financial.answerUncapsuled'),
+      });
+    } else if (buttonId === 'Education') {
+      setDemoData({
+        original: t('demo.data.Education.original'),
+        capsuledHide: t('demo.data.Education.capsuledHide'),
+        capsuledChange: t('demo.data.Education.capsuledChange'),
+        question: t('demo.data.Education.question'),
+        answerHide: t('demo.data.Education.answerHide'),
+        answerChange: t('demo.data.Education.answerChange'),
+        answerUncapsuled: t('demo.data.Education.answerUncapsuled'),
+      });
+    } else if (buttonId === 'Manufacturing') {
+      setDemoData({
+        original: t('demo.data.Manufacturing.original'),
+        capsuledHide: t('demo.data.Manufacturing.capsuledHide'),
+        capsuledChange: t('demo.data.Manufacturing.capsuledChange'),
+        question: t('demo.data.Manufacturing.question'),
+        answerHide: t('demo.data.Manufacturing.answerHide'),
+        answerChange: t('demo.data.Manufacturing.answerChange'),
+        answerUncapsuled: t('demo.data.Manufacturing.answerUncapsuled'),
+      });
+    } else if (buttonId === 'Healthcare') {
+      setDemoData({
+        original: t('demo.data.Healthcare.original'),
+        capsuledHide: t('demo.data.Healthcare.capsuledHide'),
+        capsuledChange: t('demo.data.Healthcare.capsuledChange'),
+        question: t('demo.data.Healthcare.question'),
+        answerHide: t('demo.data.Healthcare.answerHide'),
+        answerChange: t('demo.data.Healthcare.answerChange'),
+        answerUncapsuled: t('demo.data.Healthcare.answerUncapsuled'),
+      });
+    } else if (buttonId === 'F&B') {
+      setDemoData({
+        original: t('demo.data.F&B.original'),
+        capsuledHide: t('demo.data.F&B.capsuledHide'),
+        capsuledChange: t('demo.data.F&B.capsuledChange'),
+        question: t('demo.data.F&B.question'),
+        answerHide: t('demo.data.F&B.answerHide'),
+        answerChange: t('demo.data.F&B.answerChange'),
+        answerUncapsuled: t('demo.data.F&B.answerUncapsuled'),
+      });
+    }
+    // 다른 버튼들도 나중에 추가
+  };
 
   const handleRunSimulation = () => {
     setSimulationStep(1);
@@ -76,7 +157,7 @@ export default function DemoSection() {
   const startSimulationSequence = () => {
     // 1단계: "Safely capsuling the original document" 타이핑
     setTimeout(() => {
-      typeText('Safely capsuling the original document', () => {
+      typeText(t('demo.statusMessages.capsuling'), () => {
         // 2단계: "..." 애니메이션 (2초, 2번 반복)
         animateDots(() => {
           // 3단계: Original Document와 Capsuled Data 노출
@@ -84,12 +165,13 @@ export default function DemoSection() {
           setTimeout(() => {
             // 4단계: "Send capsuled data and prompts to the LLM." 타이핑
             setCurrentStep(3);
-            typeText('Send capsuled data and prompts to the LLM.', () => {
+            typeText(t('demo.statusMessages.sending'), () => {
               // 5단계: 사용자 프롬프트 타이핑
               setTimeout(() => {
                 setCurrentStep(4);
                 typeText(
-                  'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.',
+                  demoData.question ||
+                    'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.',
                   () => {
                     // 6단계: LLM Answer와 Decrypt 노출
                     setTimeout(() => {
@@ -159,6 +241,19 @@ export default function DemoSection() {
     }
   }, [currentStep, simulationStep]);
 
+  useEffect(() => {
+    // 초기 로드 시 Government 데이터 설정
+    setDemoData({
+      original: t('demo.data.Government.original'),
+      capsuledHide: t('demo.data.Government.capsuledHide'),
+      capsuledChange: t('demo.data.Government.capsuledChange'),
+      question: t('demo.data.Government.question'),
+      answerHide: t('demo.data.Government.answerHide'),
+      answerChange: t('demo.data.Government.answerChange'),
+      answerUncapsuled: t('demo.data.Government.answerUncapsuled'),
+    });
+  }, [t]);
+
   const handleRestart = () => {
     setSimulationStep(0);
     setCurrentStep(0);
@@ -188,11 +283,11 @@ export default function DemoSection() {
                     key={category.id}
                     variant='secondary'
                     size='large'
-                    $active={activeButton === category.id}
-                    onClick={() => setActiveButton(category.id)}
+                    state={activeButton === category.id ? 'focused' : 'default'}
+                    onClick={() => handleButtonClick(category.id)}
                     leadingIcon={category.icon}
                   >
-                    {category.text}
+                    {t(`demo.categories.${category.id}`)}
                   </DemoButton>
                 ))}
               </ButtonGroup>
@@ -209,7 +304,7 @@ export default function DemoSection() {
                           <StatusMessage $isTyping={currentStep === 1}>
                             {currentStep === 1
                               ? typingText
-                              : 'Safely capsuling the original document'}
+                              : t('demo.statusMessages.capsuling')}
                             {currentStep === 1 ? showDots : ''}
                           </StatusMessage>
                         </SimulationStatus>
@@ -225,24 +320,7 @@ export default function DemoSection() {
                               </LeftDocumentHeader>
                               <LeftDocumentContent>
                                 <DocumentText>
-                                  Kim Cheol-su,
-                                  <br />
-                                  • Contact: 010-1234-5678,
-                                  <br />
-                                  • Resident Registration Number:
-                                  123456-1234567,
-                                  <br />• Email: chulsoo.kim@cubig.ai
-                                  <br />
-                                  <br />
-                                  Came this morning to file a civil petition
-                                  regarding building permits. They didn&apos;t
-                                  ask for the address or additional information.
-                                  During the consultation, the staff member also
-                                  provided guidance over the phone. When
-                                  verifying my identity, they personally
-                                  confirmed the last digits of my resident
-                                  registration number. The inquiry was about the
-                                  permit application process an...
+                                  {formatText(demoData.original)}
                                 </DocumentText>
                               </LeftDocumentContent>
                             </LeftDocument>
@@ -253,24 +331,9 @@ export default function DemoSection() {
                               </RightDocumentHeader>
                               <RightDocumentContent>
                                 <DocumentText>
-                                  Kim Cheol-su,
-                                  <br />
-                                  • Contact: 010-1234-5678,
-                                  <br />
-                                  • Resident Registration Number:
-                                  123456-1234567,
-                                  <br />• Email: chulsoo.kim@cubig.ai
-                                  <br />
-                                  <br />
-                                  Came this morning to file a civil petition
-                                  regarding building permits. They didn&apos;t
-                                  ask for the address or additional information.
-                                  During the consultation, the staff member also
-                                  provided guidance over the phone. When
-                                  verifying my identity, they personally
-                                  confirmed the last digits of my resident
-                                  registration number. The inquiry was about the
-                                  permit application process an...
+                                  {selectedAction === 0
+                                    ? formatText(demoData.capsuledHide)
+                                    : formatText(demoData.capsuledChange)}
                                 </DocumentText>
                               </RightDocumentContent>
                             </RightDocument>
@@ -284,7 +347,7 @@ export default function DemoSection() {
                           <StatusMessage $isTyping={currentStep === 3}>
                             {currentStep === 3
                               ? typingText
-                              : 'Send capsuled data and prompts to the LLM.'}
+                              : t('demo.statusMessages.sending')}
                           </StatusMessage>
                         </SimulationStatus>
                       )}
@@ -295,7 +358,9 @@ export default function DemoSection() {
                           <StatusMessage $isTyping={currentStep === 4}>
                             {currentStep === 4
                               ? typingText
-                              : 'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.'}
+                              : demoData.question
+                                ? formatText(demoData.question)
+                                : 'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.'}
                           </StatusMessage>
                         </SimulationStatus>
                       )}
@@ -312,26 +377,9 @@ export default function DemoSection() {
                                 <DocumentText>
                                   {currentStep >= 6 ? (
                                     <>
-                                      Kim Cheol-su,
-                                      <br />
-                                      Contact: 010-1234-5678,
-                                      <br />
-                                      Resident Registration Number:
-                                      123456-1234567,
-                                      <br />
-                                      Email: chulsoo.kim@cubig.ai
-                                      <br />
-                                      <br />
-                                      Came this morning to file a civil petition
-                                      regarding building permits. They
-                                      didn&apos;t ask for the address or
-                                      additional information During the
-                                      consultation, the staff member also
-                                      provided guidance over the phone. When
-                                      verifying my identity, they personally
-                                      confirmed the last digits of my resident
-                                      registration number. The inquiry was about
-                                      the permit application process an...
+                                      {selectedAction === 0
+                                        ? formatText(demoData.answerHide)
+                                        : formatText(demoData.answerChange)}
                                     </>
                                   ) : (
                                     ''
@@ -349,28 +397,7 @@ export default function DemoSection() {
                               <RightDocumentContent>
                                 <DocumentText>
                                   {currentStep >= 6 ? (
-                                    <>
-                                      Kim Cheol-su,
-                                      <br />
-                                      Contact: 010-1234-5678,
-                                      <br />
-                                      Resident Registration Number:
-                                      123456-1234567,
-                                      <br />
-                                      Email: chulsoo.kim@cubig.ai
-                                      <br />
-                                      <br />
-                                      Came this morning to file a civil petition
-                                      regarding building permits. They
-                                      didn&apos;t ask for the address or
-                                      additional information During the
-                                      consultation, the staff member also
-                                      provided guidance over the phone. When
-                                      verifying my identity, they personally
-                                      confirmed the last digits of my resident
-                                      registration number. The inquiry was about
-                                      the permit application process an...
-                                    </>
+                                    <>{formatText(demoData.answerUncapsuled)}</>
                                   ) : (
                                     ''
                                   )}
@@ -401,23 +428,7 @@ export default function DemoSection() {
                         <DocumentContentWrapper>
                           <DocumentContent>
                             <DocumentText>
-                              Kim Cheol-su,
-                              <br />
-                              • Contact: 010-1234-5678,
-                              <br />
-                              • Resident Registration Number: 123456-1234567,
-                              <br />• Email: chulsoo.kim@cubig.ai
-                              <br />
-                              <br />
-                              Came this morning to file a civil petition
-                              regarding building permits. They didn&apos;t ask
-                              for the address or additional information. During
-                              the consultation, the staff member also provided
-                              guidance over the phone. When verifying my
-                              identity, they personally confirmed the last
-                              digits of my resident registration number. The
-                              inquiry was about the permit application process
-                              an...
+                              {formatText(demoData.original)}
                             </DocumentText>
                           </DocumentContent>
                         </DocumentContentWrapper>
@@ -425,10 +436,7 @@ export default function DemoSection() {
 
                       <SimulationCard>
                         <SimulationPrompt>
-                          Please convert the personal information in this
-                          document (name, resident registration number, contact
-                          information) into a summary form for civil petition
-                          submission.
+                          {formatText(demoData.question)}
                         </SimulationPrompt>
                         <ActionButtonGroup>
                           <SegmentedControl
@@ -599,7 +607,7 @@ const ButtonGroup = styled.div`
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
 `;
 
-const DemoButton = styled(SolidButton)<{ $active?: boolean }>`
+const DemoButton = styled(SolidButton)`
   transition: all 0.2s ease;
 `;
 
