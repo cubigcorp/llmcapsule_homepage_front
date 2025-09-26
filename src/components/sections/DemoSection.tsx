@@ -761,20 +761,56 @@ const RestartButton = styled.button`
   display: flex;
   align-items: center;
   padding: 10px 22px;
-  background:
-    linear-gradient(#000, #000) padding-box,
-    linear-gradient(90deg, #ff32d3 0%, #263fff 100%) border-box;
-  border: 2px solid transparent;
+  position: relative;
   border-radius: 99px;
+  background: #000;
+  color: #fff;
   cursor: pointer;
   transition: all 0.2s ease;
   ${typography(undefined, 'body3', 'semibold')}
-  color: #ffffff;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px; /* 보더 두께 */
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      #263fff 0%,
+      #ff32d3 30%,
+      white 65%,
+      #263fff 100%
+    );
+    background-size: 200% 100%;
+    animation: moveGradient 3s linear infinite;
+
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0) border-box;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+
+    padding: 2px;
+    pointer-events: none;
+    z-index: -1;
+  }
+
   &:hover {
-    background:
-      linear-gradient(#333, #333) padding-box,
-      linear-gradient(90deg, #ff32d3 0%, #263fff 100%) border-box;
+    background: #333;
     transform: translateY(-1px);
+  }
+
+  @keyframes moveGradient {
+    0% {
+      background-position: 0% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
   }
 `;
 
@@ -869,10 +905,10 @@ const RunSimulationButton = styled.button`
   &::before {
     content: '';
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px; /* 보더 두께 */
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px; /* 보더 두께 */
     border-radius: inherit;
     background: linear-gradient(
       90deg,
