@@ -55,14 +55,111 @@ export default function DemoSection() {
   const { t } = useTranslation('common');
   const [activeButton, setActiveButton] = useState('Government');
   const [simulationStep, setSimulationStep] = useState(0); // 0: 초기, 1: 캡슐화, 2: LLM 결과
+  const [currentStep, setCurrentStep] = useState(0); // 세부 단계 관리
+  const [typingText, setTypingText] = useState('');
+  const [showDots, setShowDots] = useState('');
   const chatAreaRef = useRef<HTMLDivElement>(null);
+  const leftScrollRef = useRef<HTMLDivElement>(null);
+  const rightScrollRef = useRef<HTMLDivElement>(null);
 
   const handleRunSimulation = () => {
     setSimulationStep(1);
+    setCurrentStep(1);
+    startSimulationSequence();
+  };
+
+  const startSimulationSequence = () => {
+    // 1단계: "Safely capsuling the original document" 타이핑
+    setTimeout(() => {
+      typeText('Safely capsuling the original document', () => {
+        // 2단계: "..." 애니메이션 (2초, 2번 반복)
+        animateDots(() => {
+          // 3단계: Original Document와 Capsuled Data 노출
+          setCurrentStep(2);
+          setTimeout(() => {
+            // 4단계: "Send capsuled data and prompts to the LLM." 타이핑
+            setCurrentStep(3);
+            typeText('Send capsuled data and prompts to the LLM.', () => {
+              // 5단계: 사용자 프롬프트 타이핑
+              setTimeout(() => {
+                setCurrentStep(4);
+                typeText(
+                  'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.',
+                  () => {
+                    // 6단계: LLM Answer와 Decrypt 노출
+                    setTimeout(() => {
+                      setCurrentStep(5);
+                      // 7단계: 양 영역에서 텍스트 타이핑
+                      setTimeout(() => {
+                        setCurrentStep(6);
+                      }, 1000);
+                    }, 1000);
+                  }
+                );
+              }, 1000);
+            });
+          }, 3000);
+        });
+      });
+    }, 500);
+  };
+
+  const typeText = (text: string, onComplete?: () => void) => {
+    setTypingText('');
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index < text.length) {
+        setTypingText(text.slice(0, index + 1));
+        index++;
+      } else {
+        clearInterval(interval);
+        onComplete?.();
+      }
+    }, 50);
+  };
+
+  const animateDots = (onComplete?: () => void) => {
+    let count = 0;
+    const interval = setInterval(() => {
+      const dots = '.'.repeat((count % 4) + 1);
+      setShowDots(dots);
+      count++;
+      if (count >= 8) {
+        // 2초 * 4번 = 8번
+        clearInterval(interval);
+        setShowDots('');
+        onComplete?.();
+      }
+    }, 250);
+  };
+
+  const handleScrollSync = (
+    sourceRef: HTMLDivElement,
+    targetRef: HTMLDivElement
+  ) => {
+    if (sourceRef && targetRef) {
+      const scrollTop = sourceRef.scrollTop;
+      targetRef.scrollTop = scrollTop;
+    }
+  };
+
+  const handleLeftScroll = () => {
+    if (leftScrollRef.current && rightScrollRef.current) {
+      handleScrollSync(leftScrollRef.current, rightScrollRef.current);
+    }
+  };
+
+  const handleRightScroll = () => {
+    if (leftScrollRef.current && rightScrollRef.current) {
+      handleScrollSync(rightScrollRef.current, leftScrollRef.current);
+    }
   };
 
   const handleRestart = () => {
     setSimulationStep(0);
+    setCurrentStep(0);
+    setTypingText('');
+    setShowDots('');
     // 스크롤을 맨 위로 올리기
     if (chatAreaRef.current) {
       chatAreaRef.current.scrollTop = 0;
@@ -102,151 +199,207 @@ export default function DemoSection() {
                 >
                   {simulationStep === 1 && (
                     <>
-                      <SimulationStatus>
-                        <StatusMessage>
-                          Safely capsuling the original document....
-                        </StatusMessage>
-                      </SimulationStatus>
+                      {/* 1단계: Safely capsuling 타이핑 */}
+                      {currentStep >= 1 && (
+                        <SimulationStatus>
+                          <StatusMessage>
+                            {currentStep === 1
+                              ? typingText ||
+                                'Safely capsuling the original document'
+                              : 'Safely capsuling the original document'}
+                            {currentStep === 1 ? showDots : ''}
+                          </StatusMessage>
+                        </SimulationStatus>
+                      )}
 
-                      <SimulationContainer>
-                        <StepDocumentWrapper>
-                          <LeftDocument>
-                            <LeftDocumentHeader>
-                              <DocumentTitle>Original Document</DocumentTitle>
-                            </LeftDocumentHeader>
-                            <LeftDocumentContent>
-                              <DocumentText>
-                                Kim Cheol-su,
-                                <br />
-                                • Contact: 010-1234-5678,
-                                <br />
-                                • Resident Registration Number: 123456-1234567,
-                                <br />• Email: chulsoo.kim@cubig.ai
-                                <br />
-                                <br />
-                                Came this morning to file a civil petition
-                                regarding building permits. They didn&apos;t ask
-                                for the address or additional information.
-                                During the consultation, the staff member also
-                                provided guidance over the phone. When verifying
-                                my identity, they personally confirmed the last
-                                digits of my resident registration number. The
-                                inquiry was about the permit application process
-                                an...
-                              </DocumentText>
-                            </LeftDocumentContent>
-                          </LeftDocument>
+                      {/* 2단계: Original Document와 Capsuled Data 노출 */}
+                      {currentStep >= 2 && (
+                        <SimulationContainer>
+                          <StepDocumentWrapper>
+                            <LeftDocument>
+                              <LeftDocumentHeader>
+                                <DocumentTitle>Original Document</DocumentTitle>
+                              </LeftDocumentHeader>
+                              <LeftDocumentContent
+                                ref={leftScrollRef}
+                                onScroll={handleLeftScroll}
+                              >
+                                <DocumentText>
+                                  Kim Cheol-su,
+                                  <br />
+                                  • Contact: 010-1234-5678,
+                                  <br />
+                                  • Resident Registration Number:
+                                  123456-1234567,
+                                  <br />• Email: chulsoo.kim@cubig.ai
+                                  <br />
+                                  <br />
+                                  Came this morning to file a civil petition
+                                  regarding building permits. They didn&apos;t
+                                  ask for the address or additional information.
+                                  During the consultation, the staff member also
+                                  provided guidance over the phone. When
+                                  verifying my identity, they personally
+                                  confirmed the last digits of my resident
+                                  registration number. The inquiry was about the
+                                  permit application process an...
+                                </DocumentText>
+                              </LeftDocumentContent>
+                            </LeftDocument>
 
-                          <RightDocument>
-                            <RightDocumentHeader>
-                              <DocumentTitle>Capsuled Data</DocumentTitle>
-                            </RightDocumentHeader>
-                            <RightDocumentContent>
-                              <DocumentText>
-                                Kim Cheol-su,
-                                <br />
-                                • Contact: 010-1234-5678,
-                                <br />
-                                • Resident Registration Number: 123456-1234567,
-                                <br />• Email: chulsoo.kim@cubig.ai
-                                <br />
-                                <br />
-                                Came this morning to file a civil petition
-                                regarding building permits. They didn&apos;t ask
-                                for the address or additional information.
-                                During the consultation, the staff member also
-                                provided guidance over the phone. When verifying
-                                my identity, they personally confirmed the last
-                                digits of my resident registration number. The
-                                inquiry was about the permit application process
-                                an...
-                              </DocumentText>
-                            </RightDocumentContent>
-                          </RightDocument>
-                        </StepDocumentWrapper>
-                      </SimulationContainer>
+                            <RightDocument>
+                              <RightDocumentHeader>
+                                <DocumentTitle>Capsuled Data</DocumentTitle>
+                              </RightDocumentHeader>
+                              <RightDocumentContent
+                                ref={rightScrollRef}
+                                onScroll={handleRightScroll}
+                              >
+                                <DocumentText>
+                                  Kim Cheol-su,
+                                  <br />
+                                  • Contact: 010-1234-5678,
+                                  <br />
+                                  • Resident Registration Number:
+                                  123456-1234567,
+                                  <br />• Email: chulsoo.kim@cubig.ai
+                                  <br />
+                                  <br />
+                                  Came this morning to file a civil petition
+                                  regarding building permits. They didn&apos;t
+                                  ask for the address or additional information.
+                                  During the consultation, the staff member also
+                                  provided guidance over the phone. When
+                                  verifying my identity, they personally
+                                  confirmed the last digits of my resident
+                                  registration number. The inquiry was about the
+                                  permit application process an...
+                                </DocumentText>
+                              </RightDocumentContent>
+                            </RightDocument>
+                          </StepDocumentWrapper>
+                        </SimulationContainer>
+                      )}
 
-                      <SimulationStatus>
-                        <StatusMessage>
-                          Send capsuled data and prompts to the LLM.
-                        </StatusMessage>
-                      </SimulationStatus>
+                      {/* 3단계: Send capsuled data 타이핑 */}
+                      {currentStep >= 3 && (
+                        <SimulationStatus>
+                          <StatusMessage>
+                            {currentStep === 3
+                              ? typingText ||
+                                'Send capsuled data and prompts to the LLM.'
+                              : 'Send capsuled data and prompts to the LLM.'}
+                          </StatusMessage>
+                        </SimulationStatus>
+                      )}
 
-                      <SimulationStatus>
-                        <StatusMessage>
-                          Please convert the personal information in this
-                          document (name, resident registration number, contact
-                          information) into a summary form for civil petition
-                          submission.
-                        </StatusMessage>
-                      </SimulationStatus>
+                      {/* 4단계: 사용자 프롬프트 타이핑 */}
+                      {currentStep >= 4 && (
+                        <SimulationStatus>
+                          <StatusMessage>
+                            {currentStep === 4
+                              ? typingText ||
+                                'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.'
+                              : 'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.'}
+                          </StatusMessage>
+                        </SimulationStatus>
+                      )}
 
-                      <SimulationContainer>
-                        <StepDocumentWrapper>
-                          <LeftDocument>
-                            <LeftDocumentHeader>
-                              <DocumentTitle>LLM Answer</DocumentTitle>
-                            </LeftDocumentHeader>
+                      {/* 5단계: LLM Answer와 Decrypt 노출 */}
+                      {currentStep >= 5 && (
+                        <SimulationContainer>
+                          <StepDocumentWrapper>
+                            <LeftDocument>
+                              <LeftDocumentHeader>
+                                <DocumentTitle>LLM Answer</DocumentTitle>
+                              </LeftDocumentHeader>
+                              <LeftDocumentContent
+                                ref={leftScrollRef}
+                                onScroll={handleLeftScroll}
+                              >
+                                <DocumentText>
+                                  {currentStep >= 6 ? (
+                                    <>
+                                      Kim Cheol-su,
+                                      <br />
+                                      Contact: 010-1234-5678,
+                                      <br />
+                                      Resident Registration Number:
+                                      123456-1234567,
+                                      <br />
+                                      Email: chulsoo.kim@cubig.ai
+                                      <br />
+                                      <br />
+                                      Came this morning to file a civil petition
+                                      regarding building permits. They
+                                      didn&apos;t ask for the address or
+                                      additional information During the
+                                      consultation, the staff member also
+                                      provided guidance over the phone. When
+                                      verifying my identity, they personally
+                                      confirmed the last digits of my resident
+                                      registration number. The inquiry was about
+                                      the permit application process an...
+                                    </>
+                                  ) : (
+                                    ''
+                                  )}
+                                </DocumentText>
+                              </LeftDocumentContent>
+                            </LeftDocument>
 
-                            <LeftDocumentContent>
-                              <DocumentText>
-                                Kim Cheol-su,
-                                <br />
-                                Contact: 010-1234-5678,
-                                <br />
-                                Resident Registration Number: 123456-1234567,
-                                <br />
-                                Email: chulsoo.kim@cubig.ai
-                                <br />
-                                <br />
-                                Came this morning to file a civil petition
-                                regarding building permits. They didn&apos;t ask
-                                for the address or additional information During
-                                the consultation, the staff member also provided
-                                guidance over the phone. When verifying my
-                                identity, they personally confirmed the last
-                                digits of my resident registration number. The
-                                inquiry was about the permit application process
-                                an...
-                              </DocumentText>
-                            </LeftDocumentContent>
-                          </LeftDocument>
+                            <RightDocument>
+                              <RightDocumentHeader>
+                                <DocumentTitle>
+                                  Decrypt / Uncapsule
+                                </DocumentTitle>
+                              </RightDocumentHeader>
+                              <RightDocumentContent
+                                ref={rightScrollRef}
+                                onScroll={handleRightScroll}
+                              >
+                                <DocumentText>
+                                  {currentStep >= 6 ? (
+                                    <>
+                                      Kim Cheol-su,
+                                      <br />
+                                      Contact: 010-1234-5678,
+                                      <br />
+                                      Resident Registration Number:
+                                      123456-1234567,
+                                      <br />
+                                      Email: chulsoo.kim@cubig.ai
+                                      <br />
+                                      <br />
+                                      Came this morning to file a civil petition
+                                      regarding building permits. They
+                                      didn&apos;t ask for the address or
+                                      additional information During the
+                                      consultation, the staff member also
+                                      provided guidance over the phone. When
+                                      verifying my identity, they personally
+                                      confirmed the last digits of my resident
+                                      registration number. The inquiry was about
+                                      the permit application process an...
+                                    </>
+                                  ) : (
+                                    ''
+                                  )}
+                                </DocumentText>
+                              </RightDocumentContent>
+                            </RightDocument>
+                          </StepDocumentWrapper>
+                        </SimulationContainer>
+                      )}
 
-                          <RightDocument>
-                            <RightDocumentHeader>
-                              <DocumentTitle>Decrypt / Uncapsule</DocumentTitle>
-                            </RightDocumentHeader>
-                            <RightDocumentContent>
-                              <DocumentText>
-                                Kim Cheol-su,
-                                <br />
-                                Contact: 010-1234-5678,
-                                <br />
-                                Resident Registration Number: 123456-1234567,
-                                <br />
-                                Email: chulsoo.kim@cubig.ai
-                                <br />
-                                <br />
-                                Came this morning to file a civil petition
-                                regarding building permits. They didn&apos;t ask
-                                for the address or additional information During
-                                the consultation, the staff member also provided
-                                guidance over the phone. When verifying my
-                                identity, they personally confirmed the last
-                                digits of my resident registration number. The
-                                inquiry was about the permit application process
-                                an...
-                              </DocumentText>
-                            </RightDocumentContent>
-                          </RightDocument>
-                        </StepDocumentWrapper>
-                      </SimulationContainer>
-
-                      <SimulationStatus $isRestart={true}>
-                        <RestartButton onClick={handleRestart}>
-                          Restart
-                        </RestartButton>
-                      </SimulationStatus>
+                      {/* Restart 버튼 */}
+                      {currentStep >= 6 && (
+                        <SimulationStatus $isRestart={true}>
+                          <RestartButton onClick={handleRestart}>
+                            Restart
+                          </RestartButton>
+                        </SimulationStatus>
+                      )}
                     </>
                   )}
 
@@ -547,6 +700,25 @@ const StatusMessage = styled.div`
   border: 1px solid #fff;
   background: #fff;
   box-shadow: 0 0 96.88px 0 rgba(89, 89, 255, 0.07);
+  position: relative;
+
+  /* 타이핑 커서 효과 */
+  &::after {
+    content: '|';
+    animation: blink 1s infinite;
+    margin-left: 2px;
+  }
+
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
+    }
+  }
 `;
 
 const StepDocumentWrapper = styled.div`
