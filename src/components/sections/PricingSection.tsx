@@ -8,13 +8,19 @@ import {
   SolidButton,
 } from '@cubig/design-system';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function PricingSection() {
   const { t } = useTranslation('common');
+  const router = useRouter();
   const [selectedPlan, setSelectedPlan] = useState<'business' | 'personal'>(
     'business'
   );
+
+  const handleBuyNow = () => {
+    router.push('/checkout');
+  };
 
   return (
     <PricingContainer id='pricing-section'>
@@ -79,7 +85,11 @@ export default function PricingSection() {
                           {t('pricing.plans.plus.features.feature5')}
                         </FeatureItem>
                       </FeatureList>
-                      <PlanButton variant='primary' size='large'>
+                      <PlanButton
+                        variant='primary'
+                        size='large'
+                        onClick={handleBuyNow}
+                      >
                         {t('pricing.plans.plus.button')}
                       </PlanButton>
                     </PlanBody>
@@ -122,7 +132,11 @@ export default function PricingSection() {
                           {t('pricing.plans.custom.features.feature6')}
                         </FeatureItem>
                       </FeatureList>
-                      <PlanButton variant='primary' size='large'>
+                      <PlanButton
+                        variant='primary'
+                        size='large'
+                        onClick={handleBuyNow}
+                      >
                         {t('pricing.plans.custom.button')}
                       </PlanButton>
                     </PlanBody>
@@ -154,7 +168,11 @@ export default function PricingSection() {
                           </TokenCostText>
                         </TokenContent>
                       </TokenInfoBlock>
-                      <PlanButton variant='primary' size='large'>
+                      <PlanButton
+                        variant='primary'
+                        size='large'
+                        onClick={handleBuyNow}
+                      >
                         {t('pricing.plans.basic.button')}
                       </PlanButton>
                     </PersonalPlanBody>
@@ -184,7 +202,11 @@ export default function PricingSection() {
                           </TokenCostText>
                         </TokenContent>
                       </TokenInfoBlock>
-                      <PlanButton variant='primary' size='large'>
+                      <PlanButton
+                        variant='primary'
+                        size='large'
+                        onClick={handleBuyNow}
+                      >
                         {t('pricing.plans.plus.button')}
                       </PlanButton>
                     </PersonalPlanBody>
@@ -212,7 +234,11 @@ export default function PricingSection() {
                           </TokenCostText>
                         </TokenContent>
                       </TokenInfoBlock>
-                      <PlanButton variant='primary' size='large'>
+                      <PlanButton
+                        variant='primary'
+                        size='large'
+                        onClick={handleBuyNow}
+                      >
                         {t('pricing.plans.pro.button')}
                       </PlanButton>
                     </PersonalPlanBody>
@@ -240,7 +266,11 @@ export default function PricingSection() {
                           </TokenCostText>
                         </TokenContent>
                       </TokenInfoBlock>
-                      <PlanButton variant='primary' size='large'>
+                      <PlanButton
+                        variant='primary'
+                        size='large'
+                        onClick={handleBuyNow}
+                      >
                         {t('pricing.plans.max.button')}
                       </PlanButton>
                     </PersonalPlanBody>
