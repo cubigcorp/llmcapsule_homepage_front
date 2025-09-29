@@ -17,6 +17,8 @@ import {
 } from '@cubig/design-system';
 import DataIcon from '@/assets/icons/icon_data.svg';
 import HistoryIcon from '@/assets/icons/icon_history.svg';
+import UpgradeModal from './UpgradeModal';
+import CancelModal from './CancelModal';
 import ChevronLeftIcon from '@/assets/icons/icon_chevron_left.svg';
 import ChevronRightIcon from '@/assets/icons/icon_chevron_right.svg';
 import { llmService } from '@/services/llm';
@@ -45,6 +47,8 @@ export default function PlansPage() {
   >('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [cancelOpen, setCancelOpen] = useState(false);
 
   useEffect(() => {
     const run = async () => {
@@ -163,10 +167,18 @@ export default function PlansPage() {
           </SelectorRow>
 
           <ActionBar>
-            <SolidButton variant='primary' size='medium'>
+            <SolidButton
+              variant='primary'
+              size='medium'
+              onClick={() => setUpgradeOpen(true)}
+            >
               업그레이드
             </SolidButton>
-            <SolidButton variant='secondary' size='medium'>
+            <SolidButton
+              variant='secondary'
+              size='medium'
+              onClick={() => setCancelOpen(true)}
+            >
               구독취소
             </SolidButton>
           </ActionBar>
@@ -363,6 +375,25 @@ export default function PlansPage() {
           )}
         </>
       )}
+      <UpgradeModal
+        open={upgradeOpen}
+        currentPlanName={
+          (currentBundle?.plan?.name as 'BASIC' | 'PLUS' | 'PRO' | 'MAX') ||
+          'BASIC'
+        }
+        onClose={() => setUpgradeOpen(false)}
+        onUpgrade={() => setUpgradeOpen(false)}
+      />
+      <CancelModal
+        open={cancelOpen}
+        onClose={() => setCancelOpen(false)}
+        planName={currentBundle?.plan?.name}
+        planNumber={selectedBundleId}
+        nextBillingDate={currentBundle?.next_billing_date || ''}
+        onConfirm={() => {
+          setCancelOpen(false);
+        }}
+      />
     </Container>
   );
 }
@@ -559,12 +590,6 @@ const SerialTable = styled.table`
     border-bottom: 1px solid ${color.gray['200']};
     ${typography('ko', 'body2', 'medium')}
   }
-`;
-
-const HistoryPlaceholder = styled.div`
-  ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-primary']};
-  padding: 16px 0;
 `;
 
 const PaginationContainer = styled.div`
