@@ -15,7 +15,12 @@ import {
   Selector,
 } from '@cubig/design-system';
 import { authService } from '@/services/auth';
-import type { UserInfo } from '@/utils/api';
+import { llmService } from '@/services/llm';
+import type {
+  UserInfo,
+  MyPageHomeResponse,
+  UserBundlesResponse,
+} from '@/utils/api';
 import DataIcon from '@/assets/icons/icon_data.svg';
 import ArrowRightIcon from '@/assets/icons/icon_arrow_forward.svg';
 import PlanTrialImage from '@/assets/images/plan_trial.png';
@@ -30,18 +35,35 @@ export default function MyPage() {
   const router = useRouter();
   const { t } = useTranslation('mypage');
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [hasSubscription, setHasSubscription] = useState(false); // 임시로 구독 상태 관리
+  const [myPageData, setMyPageData] = useState<MyPageHomeResponse | null>(null);
+  const [userBundles, setUserBundles] = useState<UserBundlesResponse | null>(
+    null
+  );
+  const [hasSubscription, setHasSubscription] = useState(false);
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
+    const fetchData = async () => {
       try {
-        const response = await authService.getMyInfo();
-        setUserInfo(response.data || null);
-        // 임시로 구독 상태 설정 (나중에 API에서 받아올 수 있음)
-        setHasSubscription(true); // 구독이 없는 상태로 기본 설정하여 빈 상태 화면 테스트
+        // 기본 사용자 정보 조회 (기존 API)
+        const userResponse = await authService.getMyInfo();
+        setUserInfo(userResponse.data || null);
+
+        // LLM API에서 데이터 조회
+        const [myPageResponse, bundlesResponse] = await Promise.all([
+          llmService.getMyStatic(),
+          llmService.getMyPlans(),
+        ]);
+
+        setMyPageData(myPageResponse.data || null);
+        setUserBundles(bundlesResponse.data || null);
+
+        // 구독 상태 설정 (번들이 있으면 구독 중)
+        setHasSubscription((bundlesResponse.data?.bundles?.length || 0) > 0);
       } catch (error: unknown) {
-        console.error('사용자 정보 조회 실패:', error);
+        console.error('데이터 조회 실패:', error);
         setUserInfo(null);
+        setMyPageData(null);
+        setUserBundles(null);
 
         if (error && typeof error === 'object' && 'response' in error) {
           const axiosError = error as { response?: { status?: number } };
@@ -54,7 +76,7 @@ export default function MyPage() {
       }
     };
 
-    fetchUserInfo();
+    fetchData();
   }, [router]);
 
   return (
