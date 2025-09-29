@@ -19,6 +19,7 @@ import {
   Checkbox,
 } from '@cubig/design-system';
 import { authService } from '@/services/auth';
+import { llmService } from '@/services/llm';
 import type { UserInfo, ChangePasswordRequest } from '@/utils/api';
 import { apiClient, API_ENDPOINTS } from '@/utils/api';
 import { countries } from '@/utils/countries';
@@ -631,13 +632,26 @@ export default function ProfilePage() {
     setIsDeleteAgreed(false);
   };
 
-  const handleDeleteConfirm = () => {
-    if (!isDeleteAgreed) {
+  const handleDeleteConfirm = async () => {
+    if (!isDeleteAgreed || !userInfo) {
       return;
     }
-    console.log('Delete account API call - not implemented yet');
-    setIsDeleteModalOpen(false);
-    setIsDeleteAgreed(false);
+
+    try {
+      await llmService.deleteUser(userInfo.id, userInfo.email);
+
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+
+      router.push('/login');
+    } catch (error) {
+      console.error('계정 삭제 실패:', error);
+
+      alert('계정 삭제에 실패했습니다. 다시 시도해 주세요.');
+    } finally {
+      setIsDeleteModalOpen(false);
+      setIsDeleteAgreed(false);
+    }
   };
 
   if (loading) {

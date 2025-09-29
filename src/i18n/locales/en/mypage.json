@@ -92,6 +92,9 @@
     "deleteAccount": "Delete Account",
     "deleteAccountDesc": "Permanently delete your LLM Capsule account.",
     "deleteAccountBtn": "Delete Account",
+    "deleteAccountTitle": "Account Deletion Notice",
+    "deleteAccountWarning": "When you delete your account, all data will be permanently deleted along with your account and cannot be recovered.",
+    "deleteAccountAgreement": "I have read and agree to all the above notices.",
     "loading": "Loading..."
   },
   "checkout": {
