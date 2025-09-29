@@ -728,7 +728,8 @@ const ChatArea = styled.div<{ $isSimulating?: boolean }>`
   gap: ${(props) => (props.$isSimulating ? '24px' : '43px')};
   align-items: center;
   padding: 20px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 
   &::-webkit-scrollbar {
     width: 2px;
@@ -1166,7 +1167,8 @@ const LeftDocumentContent = styled.div`
   box-shadow: 0 0 96.88px 0 rgba(89, 89, 255, 0.24);
   padding: 12px;
   max-height: 216px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 
   &::-webkit-scrollbar {
     width: 2px;
@@ -1216,10 +1218,10 @@ const RightDocumentContent = styled.div`
     rgba(255, 255, 255, 0.5) 63.2%
   );
   box-shadow: 0 0 96.88px 0 rgba(89, 89, 255, 0.24);
-
   padding: 12px;
   max-height: 216px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 
   &::-webkit-scrollbar {
     width: 2px;
