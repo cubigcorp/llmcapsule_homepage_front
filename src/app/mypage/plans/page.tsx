@@ -15,6 +15,8 @@ import {
   IconButton,
   TextButton,
 } from '@cubig/design-system';
+import DataIcon from '@/assets/icons/icon_data.svg';
+import HistoryIcon from '@/assets/icons/icon_history.svg';
 import ChevronLeftIcon from '@/assets/icons/icon_chevron_left.svg';
 import ChevronRightIcon from '@/assets/icons/icon_chevron_right.svg';
 import { llmService } from '@/services/llm';
@@ -125,13 +127,17 @@ export default function PlansPage() {
         </TabButton>
       </Tabs>
 
-      {!hasPlan ? (
+      {activeTab === 'overview' && !hasPlan ? (
         <EmptyState>
-          <EmptyIcon>💳</EmptyIcon>
-          <EmptyTitle>구독 중인 플랜이 없습니다.</EmptyTitle>
-          <EmptyDesc>원하는 플랜을 선택하고 서비스를 시작해 보세요.</EmptyDesc>
+          <IconButton type='outline' icon={DataIcon} />
+          <EmptyTexts>
+            <EmptyTitle>구독 중인 플랜이 없습니다.</EmptyTitle>
+            <EmptyDesc>
+              원하는 플랜을 선택하고 서비스를 시작해 보세요.
+            </EmptyDesc>
+          </EmptyTexts>
           <SolidButton
-            variant='secondary'
+            variant='primary'
             size='small'
             onClick={() => router.push('/#pricing-section')}
           >
@@ -299,7 +305,63 @@ export default function PlansPage() {
           )}
         </>
       ) : (
-        <HistoryPlaceholder>구독 내역</HistoryPlaceholder>
+        <>
+          {bundles && bundles.length > 0 ? (
+            <SerialTable>
+              <thead>
+                <tr>
+                  <th>플랜명</th>
+                  <th>시리얼 수</th>
+                  <th>최초 결제일</th>
+                  <th>만료 예정일</th>
+                  <th>구독 상태</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bundles.map((b) => (
+                  <tr key={b.id}>
+                    <td>{b.plan?.name || '-'}</td>
+                    <td>{b.serials?.length ?? 0}</td>
+                    <td>{b.created_at ? formatDate(b.created_at) : '-'}</td>
+                    <td>
+                      {b.next_billing_date
+                        ? formatDate(b.next_billing_date)
+                        : '-'}
+                    </td>
+                    <td>
+                      <Badge
+                        type='solid'
+                        variant={
+                          b.status === 'ACTIVE' ? 'positive' : 'secondary'
+                        }
+                        size='small'
+                      >
+                        {b.status === 'ACTIVE' ? '이용중' : '만료'}
+                      </Badge>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </SerialTable>
+          ) : (
+            <EmptyState>
+              <IconButton type='outline' icon={HistoryIcon} />
+              <EmptyTexts>
+                <EmptyTitle>구독 내역이 없습니다.</EmptyTitle>
+                <EmptyDesc>
+                  원하는 플랜을 선택하고 서비스를 시작해 보세요.
+                </EmptyDesc>
+              </EmptyTexts>
+              <SolidButton
+                variant='primary'
+                size='small'
+                onClick={() => router.push('/#pricing-section')}
+              >
+                나에게 맞는 플랜 찾기
+              </SolidButton>
+            </EmptyState>
+          )}
+        </>
       )}
     </Container>
   );
@@ -355,18 +417,8 @@ const EmptyState = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 20px;
   text-align: center;
-`;
-
-const EmptyIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  background: ${color.gray['100']};
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const EmptyTitle = styled.h3`
@@ -375,10 +427,17 @@ const EmptyTitle = styled.h3`
   margin: 0;
 `;
 
+const EmptyTexts = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+`;
+
 const EmptyDesc = styled.p`
   ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
-  margin: 0 0 8px 0;
+  margin: 0;
 `;
 
 const SelectorRow = styled.div`
