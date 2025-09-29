@@ -59,8 +59,6 @@ export default function DemoSection() {
   const [activeButton, setActiveButton] = useState('Government');
   const [simulationStep, setSimulationStep] = useState(0); // 0: 초기, 1: 캡슐화, 2: LLM 결과
   const [currentStep, setCurrentStep] = useState(0); // 세부 단계 관리
-  const [typingText, setTypingText] = useState('');
-  const [showDots, setShowDots] = useState('');
   const [showSpinner, setShowSpinner] = useState(false);
   const [selectedAction, setSelectedAction] = useState(0);
   const [llmAnswerTyping, setLlmAnswerTyping] = useState('');
@@ -285,8 +283,6 @@ export default function DemoSection() {
   const handleRestart = () => {
     setSimulationStep(0);
     setCurrentStep(0);
-    setTypingText('');
-    setShowDots('');
     setShowSpinner(false);
     setLlmAnswerTyping('');
     setDecryptTyping('');
@@ -359,9 +355,11 @@ export default function DemoSection() {
                                   </DocumentTitle>
                                 </LeftDocumentHeader>
                                 <LeftDocumentContent>
-                                  <DocumentText>
-                                    {formatText(demoData.original)}
-                                  </DocumentText>
+                                  <LeftDocumentScrollContainer>
+                                    <DocumentText>
+                                      {formatText(demoData.original)}
+                                    </DocumentText>
+                                  </LeftDocumentScrollContainer>
                                 </LeftDocumentContent>
                               </LeftDocument>
 
@@ -370,11 +368,13 @@ export default function DemoSection() {
                                   <DocumentTitle>Capsuled Data</DocumentTitle>
                                 </RightDocumentHeader>
                                 <RightDocumentContent>
-                                  <DocumentText>
-                                    {selectedAction === 0
-                                      ? formatText(demoData.capsuledHide)
-                                      : formatText(demoData.capsuledChange)}
-                                  </DocumentText>
+                                  <RightDocumentScrollContainer>
+                                    <DocumentText>
+                                      {selectedAction === 0
+                                        ? formatText(demoData.capsuledHide)
+                                        : formatText(demoData.capsuledChange)}
+                                    </DocumentText>
+                                  </RightDocumentScrollContainer>
                                 </RightDocumentContent>
                               </RightDocument>
                             </StepDocumentWrapper>
@@ -410,19 +410,23 @@ export default function DemoSection() {
                                   <DocumentTitle>LLM Answer</DocumentTitle>
                                 </LeftDocumentHeader>
                                 <LeftDocumentContent>
-                                  <DocumentText>
-                                    {currentStep >= 6 ? (
-                                      <>
-                                        {llmAnswerTyping
-                                          ? formatText(llmAnswerTyping)
-                                          : selectedAction === 0
-                                            ? formatText(demoData.answerHide)
-                                            : formatText(demoData.answerChange)}
-                                      </>
-                                    ) : (
-                                      ''
-                                    )}
-                                  </DocumentText>
+                                  <LeftDocumentScrollContainer>
+                                    <DocumentText>
+                                      {currentStep >= 6 ? (
+                                        <>
+                                          {llmAnswerTyping
+                                            ? formatText(llmAnswerTyping)
+                                            : selectedAction === 0
+                                              ? formatText(demoData.answerHide)
+                                              : formatText(
+                                                  demoData.answerChange
+                                                )}
+                                        </>
+                                      ) : (
+                                        ''
+                                      )}
+                                    </DocumentText>
+                                  </LeftDocumentScrollContainer>
                                 </LeftDocumentContent>
                               </LeftDocument>
 
@@ -433,19 +437,21 @@ export default function DemoSection() {
                                   </DocumentTitle>
                                 </RightDocumentHeader>
                                 <RightDocumentContent>
-                                  <DocumentText>
-                                    {currentStep >= 6 ? (
-                                      <>
-                                        {decryptTyping
-                                          ? formatText(decryptTyping)
-                                          : formatText(
-                                              demoData.answerUncapsuled
-                                            )}
-                                      </>
-                                    ) : (
-                                      ''
-                                    )}
-                                  </DocumentText>
+                                  <RightDocumentScrollContainer>
+                                    <DocumentText>
+                                      {currentStep >= 6 ? (
+                                        <>
+                                          {decryptTyping
+                                            ? formatText(decryptTyping)
+                                            : formatText(
+                                                demoData.answerUncapsuled
+                                              )}
+                                        </>
+                                      ) : (
+                                        ''
+                                      )}
+                                    </DocumentText>
+                                  </RightDocumentScrollContainer>
                                 </RightDocumentContent>
                               </RightDocument>
                             </StepDocumentWrapper>
@@ -471,9 +477,11 @@ export default function DemoSection() {
                           </DocumentHeader>
                           <DocumentContentWrapper>
                             <DocumentContent>
-                              <DocumentText>
-                                {formatText(demoData.original)}
-                              </DocumentText>
+                              <DocumentScrollContainer>
+                                <DocumentText>
+                                  {formatText(demoData.original)}
+                                </DocumentText>
+                              </DocumentScrollContainer>
                             </DocumentContent>
                           </DocumentContentWrapper>
                         </OriginalDocument>
@@ -793,7 +801,12 @@ const DocumentContent = styled.div`
   border-radius: 8px;
   padding: 12px;
   max-height: 216px;
+  overflow: hidden;
+`;
+
+const DocumentScrollContainer = styled.div`
   overflow-y: auto;
+  max-height: 100%;
 
   &::-webkit-scrollbar {
     width: 2px;
@@ -1165,13 +1178,19 @@ const LeftDocumentContent = styled.div`
     rgba(255, 255, 255, 0.25) 63.2%
   );
   box-shadow: 0 0 96.88px 0 rgba(89, 89, 255, 0.24);
-  padding: 12px;
+  padding: 0;
   max-height: 216px;
-  overflow-y: scroll;
-  scrollbar-gutter: stable;
+  overflow: hidden;
+  position: relative;
+`;
+
+const LeftDocumentScrollContainer = styled.div`
+  overflow-y: auto;
+  max-height: 204px;
+  padding: 12px 8px 12px 12px;
 
   &::-webkit-scrollbar {
-    width: 2px;
+    width: 3px;
   }
 
   &::-webkit-scrollbar-track {
@@ -1179,12 +1198,12 @@ const LeftDocumentContent = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 1px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.25);
   }
 `;
 
@@ -1218,13 +1237,19 @@ const RightDocumentContent = styled.div`
     rgba(255, 255, 255, 0.5) 63.2%
   );
   box-shadow: 0 0 96.88px 0 rgba(89, 89, 255, 0.24);
-  padding: 12px;
+  padding: 0;
   max-height: 216px;
-  overflow-y: scroll;
-  scrollbar-gutter: stable;
+  overflow: hidden;
+  position: relative;
+`;
+
+const RightDocumentScrollContainer = styled.div`
+  overflow-y: auto;
+  max-height: 204px;
+  padding: 12px 8px 12px 12px;
 
   &::-webkit-scrollbar {
-    width: 2px;
+    width: 3px;
   }
 
   &::-webkit-scrollbar-track {
@@ -1232,11 +1257,11 @@ const RightDocumentContent = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 1px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.25);
   }
 `;
