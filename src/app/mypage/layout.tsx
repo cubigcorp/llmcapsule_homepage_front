@@ -86,7 +86,7 @@ export default function MyPageLayout({
   };
 
   const handlePlanManagementClick = () => {
-    router.push('/checkout');
+    router.push('/mypage/plans');
   };
 
   if (!isAuthenticated) {
@@ -135,7 +135,7 @@ export default function MyPageLayout({
               value={t('lnb.items.checkout')}
               onClick={handlePlanManagementClick}
               leadingIcon={WalletIcon}
-              selected={pathname === '/checkout'}
+              selected={pathname === '/mypage/plans'}
             />
           </LNBItemGroup>
           <LNBItemGroup title={t('lnb.groups.resources')}>

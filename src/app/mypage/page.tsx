@@ -60,10 +60,17 @@ export default function MyPage() {
         ]);
 
         setMyPageData(myPageResponse.data || null);
-        const bundles = bundlesResponse.data?.bundles || null;
+
+        const dataAny = bundlesResponse.data as unknown as
+          | { bundles?: UserBundleResponse[] }
+          | UserBundleResponse[]
+          | null;
+        const bundles = Array.isArray(dataAny)
+          ? (dataAny as UserBundleResponse[])
+          : dataAny?.bundles || [];
         setUserBundles(bundles);
 
-        const hasBundles = !!(bundles && bundles.length > 0);
+        const hasBundles = bundles.length > 0;
         setHasSubscription(hasBundles);
         if (hasBundles) {
           setSelectedBundleId(String(bundles[0].id));
