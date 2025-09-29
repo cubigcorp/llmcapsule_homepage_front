@@ -67,12 +67,8 @@ const PerformanceContainer = styled.section`
 const PerformanceWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
-  padding: 80px 240px;
+  padding: 80px 40px;
   margin: 0 auto;
-
-  @media (max-width: 1440px) {
-    padding: 80px 40px;
-  }
 
   @media (max-width: 768px) {
     padding: 40px 24px;
@@ -97,6 +93,10 @@ const PerformanceContent = styled.div`
 const LeftSection = styled.div`
   flex: 0 0 auto;
   min-width: 200px;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
 
   @media (max-width: 768px) {
     min-width: auto;

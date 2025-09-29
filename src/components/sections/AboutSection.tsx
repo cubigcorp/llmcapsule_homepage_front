@@ -264,18 +264,10 @@ const AboutWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 80px 80px;
-
-  @media (min-width: 1920px) {
-    max-width: 1920px;
-  }
-
-  @media (max-width: 1440px) {
-    padding: 160px 40px;
-  }
+  padding: 160px 40px;
 
   @media (max-width: 1024px) {
-    padding: 80px 32px;
+    padding: 80px 24px;
   }
 
   @media (max-width: 768px) {
@@ -312,6 +304,10 @@ const ContentSection = styled.div`
 const LeftSidebar = styled.div`
   width: 200px;
   flex-shrink: 0;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 const CoreFeaturesList = styled.ul`

@@ -70,21 +70,11 @@ const FAQContainer = styled.section`
 `;
 
 const FAQWrapper = styled.div`
-  width: 100%;
   max-width: 1440px;
-  padding: 80px 240px;
+  padding: 80px 40px 160px 40px;
   display: flex;
   justify-content: center;
   margin: 0 auto;
-
-  @media (min-width: 1920px) {
-    max-width: 1920px;
-    padding: 80px 240px;
-  }
-
-  @media (max-width: 1440px) {
-    padding: 80px 40px;
-  }
 
   @media (max-width: 1024px) {
     padding: 80px 32px 160px 32px;
@@ -95,7 +85,7 @@ const FAQWrapper = styled.div`
   }
 
   @media (max-width: 375px) {
-    padding: 40px 16px;
+    padding: 40px 16px 80px 16px;
   }
 `;
 
@@ -115,7 +105,7 @@ const LeftSection = styled.div`
   width: 240px;
 
   @media (max-width: 1024px) {
-    width: 100%;
+    display: none;
   }
 `;
 

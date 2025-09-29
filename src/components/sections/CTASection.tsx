@@ -29,11 +29,11 @@ const CTAContainer = styled.section`
 const CTAWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
-  padding: 80px 280px 158px 280px;
+  padding: 80px 40px 16px 40px;
   margin: 0 auto;
 
   @media (max-width: 1440px) {
-    padding: 60px 24px 120px;
+    padding: 80px 40px 16px 40px;
   }
 
   @media (max-width: 768px) {
