@@ -19,7 +19,7 @@ import { llmService } from '@/services/llm';
 import type {
   UserInfo,
   MyPageHomeResponse,
-  UserBundlesResponse,
+  UserBundleResponse,
 } from '@/utils/api';
 import { formatDateShort } from '@/utils/date';
 import DataIcon from '@/assets/icons/icon_data.svg';
@@ -31,15 +31,19 @@ import DashboardCircleIcon from '@/assets/icons/icon_dashboard_circle.svg';
 import UsageCircleIcon from '@/assets/icons/icon_usage_circle.svg';
 import CardCircleIcon from '@/assets/icons/icon_card_circle.svg';
 import CardIcon from '@/assets/icons/icon_card.svg';
+import PlanBasicImage from '@/assets/images/plan_basic.png';
+import PlanPlusImage from '@/assets/images/plan_plus.png';
+import PlanProImage from '@/assets/images/plan_pro.png';
 import PlanMaxImage from '@/assets/images/plan_max.png';
 export default function MyPage() {
   const router = useRouter();
   const { t } = useTranslation('mypage');
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [myPageData, setMyPageData] = useState<MyPageHomeResponse | null>(null);
-  const [userBundles, setUserBundles] = useState<UserBundlesResponse | null>(
+  const [userBundles, setUserBundles] = useState<UserBundleResponse[] | null>(
     null
   );
+  const [selectedBundleId, setSelectedBundleId] = useState<string>('');
   const [hasSubscription, setHasSubscription] = useState(false);
 
   useEffect(() => {
@@ -52,19 +56,24 @@ export default function MyPage() {
         // LLM API에서 데이터 조회
         const [myPageResponse, bundlesResponse] = await Promise.all([
           llmService.getMyStatic(),
-          llmService.getMyPlans(),
+          llmService.getMyBundles(),
         ]);
 
         setMyPageData(myPageResponse.data || null);
-        setUserBundles(bundlesResponse.data || null);
+        const bundles = bundlesResponse.data?.bundles || null;
+        setUserBundles(bundles);
 
-        // 구독 상태 설정 (번들이 있으면 구독 중)
-        setHasSubscription((bundlesResponse.data?.bundles?.length || 0) > 0);
+        const hasBundles = !!(bundles && bundles.length > 0);
+        setHasSubscription(hasBundles);
+        if (hasBundles) {
+          setSelectedBundleId(String(bundles[0].id));
+        }
       } catch (error: unknown) {
         console.error('데이터 조회 실패:', error);
         setUserInfo(null);
         setMyPageData(null);
         setUserBundles(null);
+        setSelectedBundleId('');
 
         if (error && typeof error === 'object' && 'response' in error) {
           const axiosError = error as { response?: { status?: number } };
@@ -121,12 +130,14 @@ export default function MyPage() {
                 <PlanSelectorWrapper>
                   <PlanLabel>{t('plan.number')}</PlanLabel>
                   <Selector
-                    value='Plan-01'
-                    onChange={() => {}}
-                    options={[
-                      { value: 'Plan-01', label: 'Plan-01' },
-                      { value: 'Plan-02', label: 'Plan-02' },
-                    ]}
+                    value={selectedBundleId}
+                    onChange={(value) => setSelectedBundleId(value)}
+                    options={
+                      userBundles?.map((b) => ({
+                        value: String(b.id),
+                        label: String(b.id),
+                      })) || []
+                    }
                   />
                 </PlanSelectorWrapper>
 
@@ -134,18 +145,47 @@ export default function MyPage() {
                   <PlanCardHeader>
                     <PlanCard>
                       <PlanImageContainer>
-                        <img src={PlanMaxImage.src} alt='MAX Plan' />
+                        <img
+                          src={(() => {
+                            const bundle = userBundles?.find(
+                              (b) => String(b.id) === selectedBundleId
+                            );
+                            const name = bundle?.plan?.name || '';
+                            if (name === 'BASIC') return PlanBasicImage.src;
+                            if (name === 'PLUS') return PlanPlusImage.src;
+                            if (name === 'PRO') return PlanProImage.src;
+                            if (name === 'MAX') return PlanMaxImage.src;
+                            return PlanBasicImage.src;
+                          })()}
+                          alt='Plan Image'
+                        />
                       </PlanImageContainer>
                       <PlanInfo>
-                        <PlanName>MAX</PlanName>
-                        <PlanTokens>600,000/tokens</PlanTokens>
+                        <PlanName>
+                          {userBundles?.find(
+                            (b) => String(b.id) === selectedBundleId
+                          )?.plan?.name || '-'}
+                        </PlanName>
+                        <PlanTokens>
+                          {(userBundles
+                            ?.find((b) => String(b.id) === selectedBundleId)
+                            ?.plan?.monthly_token_limit?.toLocaleString() ||
+                            0) + '/tokens'}
+                        </PlanTokens>
                       </PlanInfo>
                     </PlanCard>
                   </PlanCardHeader>
                   <PlanDate>
                     <CardIcon />
                     <span>{t('plan.nextPayment')}</span>
-                    <span>2025. 09. 16</span>
+                    <span>
+                      {(() => {
+                        const date = userBundles?.find(
+                          (b) => String(b.id) === selectedBundleId
+                        )?.next_billing_date;
+                        return date ? formatDateShort(date) : '-';
+                      })()}
+                    </span>
                   </PlanDate>
                 </PlanCardContainer>
 

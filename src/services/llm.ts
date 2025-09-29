@@ -36,7 +36,7 @@ class LlmService {
   }
 
   async getMyBundles() {
-    return await llmApiClient.get<Bundle[]>(
+    return await llmApiClient.get<UserBundlesResponse>(
       LLM_API_ENDPOINTS.MYPAGE.HOME_BUNDLES
     );
   }
