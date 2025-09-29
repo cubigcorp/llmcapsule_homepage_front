@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import {
   typography,
   textColor,
@@ -61,6 +61,7 @@ export default function DemoSection() {
   const [currentStep, setCurrentStep] = useState(0); // 세부 단계 관리
   const [typingText, setTypingText] = useState('');
   const [showDots, setShowDots] = useState('');
+  const [showSpinner, setShowSpinner] = useState(false);
   const [selectedAction, setSelectedAction] = useState(0);
   const [llmAnswerTyping, setLlmAnswerTyping] = useState('');
   const [decryptTyping, setDecryptTyping] = useState('');
@@ -157,73 +158,61 @@ export default function DemoSection() {
   };
 
   const startSimulationSequence = () => {
-    // 1단계: "Safely capsuling the original document" 표시
     setTimeout(() => {
-      setTypingText(t('demo.statusMessages.capsuling'));
-      // 2단계: Original Document와 Capsuled Data 노출
+      setCurrentStep(1);
+      scrollToBottom();
+      // 스피너 표시 (4초)
       setTimeout(() => {
-        setCurrentStep(2);
+        setShowSpinner(true);
         setTimeout(() => {
-          // 3단계: "Send capsuled data and prompts to the LLM." 표시
-          setCurrentStep(3);
-          setTypingText(t('demo.statusMessages.sending'));
-          // 4단계: 사용자 프롬프트 표시
+          setShowSpinner(false);
+          setCurrentStep(2);
           setTimeout(() => {
-            setCurrentStep(4);
-            setTypingText(
-              demoData.question ||
-                'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.'
-            );
-            // 5단계: LLM Answer와 Decrypt 노출
+            scrollToBottom();
             setTimeout(() => {
-              setCurrentStep(5);
+              setCurrentStep(3);
+              scrollToBottom();
               setTimeout(() => {
-                // 6단계: 양 영역에서 텍스트 표시
-                setCurrentStep(6);
-                const llmAnswerText =
-                  selectedAction === 0
-                    ? demoData.answerHide
-                    : demoData.answerChange;
-                const decryptText = demoData.answerUncapsuled;
+                setCurrentStep(4);
+                scrollToBottom();
+                setTimeout(() => {
+                  setCurrentStep(5);
+                  setTimeout(() => {
+                    scrollToBottom();
+                    setTimeout(() => {
+                      setCurrentStep(6);
+                      const llmAnswerText =
+                        selectedAction === 0
+                          ? demoData.answerHide
+                          : demoData.answerChange;
+                      const decryptText = demoData.answerUncapsuled;
 
-                // 즉시 표시
-                setLlmAnswerTyping(llmAnswerText);
-                setDecryptTyping(decryptText);
-              }, 300);
-            }, 1000);
-          }, 1000);
-        }, 1500);
+                      let llmDone = false;
+                      let decryptDone = false;
+
+                      const checkCompletion = () => {
+                        if (llmDone && decryptDone) {
+                          setCurrentStep(7);
+                        }
+                      };
+
+                      typeLlmAnswer(llmAnswerText, () => {
+                        llmDone = true;
+                        checkCompletion();
+                      });
+                      typeDecrypt(decryptText, () => {
+                        decryptDone = true;
+                        checkCompletion();
+                      });
+                    }, 300);
+                  }, 500);
+                }, 800);
+              }, 800);
+            }, 300);
+          }, 1500);
+        }, 3000);
       }, 500);
     }, 500);
-  };
-
-  const typeText = (text: string, onComplete?: () => void) => {
-    setTypingText('');
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < text.length) {
-        setTypingText(text.slice(0, index + 1));
-        index++;
-      } else {
-        clearInterval(interval);
-        onComplete?.();
-      }
-    }, 30);
-  };
-
-  const animateDots = (onComplete?: () => void) => {
-    let count = 0;
-    const interval = setInterval(() => {
-      const dots = '.'.repeat((count % 4) + 1);
-      setShowDots(dots);
-      count++;
-      if (count >= 8) {
-        // 2초 * 4번 = 8번
-        clearInterval(interval);
-        setShowDots('');
-        onComplete?.();
-      }
-    }, 250);
   };
 
   const typeLlmAnswer = (text: string, onComplete?: () => void) => {
@@ -233,7 +222,6 @@ export default function DemoSection() {
       if (index < text.length) {
         setLlmAnswerTyping(text.slice(0, index + 1));
         index++;
-        // 10글자마다 스크롤 업데이트
         if (index % 10 === 0) {
           scrollToBottom();
         }
@@ -252,7 +240,6 @@ export default function DemoSection() {
       if (index < text.length) {
         setDecryptTyping(text.slice(0, index + 1));
         index++;
-        // 10글자마다 스크롤 업데이트
         if (index % 10 === 0) {
           scrollToBottom();
         }
@@ -274,11 +261,10 @@ export default function DemoSection() {
   };
 
   useEffect(() => {
-    if (simulationStep > 0 && currentStep >= 1) {
-      // Auto scroll for each step when content appears
+    if (simulationStep > 0) {
       const timer = setTimeout(() => {
         scrollToBottom();
-      }, 200);
+      }, 100);
       return () => clearTimeout(timer);
     }
   }, [currentStep, simulationStep]);
@@ -301,9 +287,10 @@ export default function DemoSection() {
     setCurrentStep(0);
     setTypingText('');
     setShowDots('');
+    setShowSpinner(false);
     setLlmAnswerTyping('');
     setDecryptTyping('');
-    // 스크롤을 맨 위로 올리기
+
     if (chatAreaRef.current) {
       chatAreaRef.current.scrollTop = 0;
     }
@@ -354,8 +341,9 @@ export default function DemoSection() {
                         {/* 1단계: Safely capsuling 타이핑 */}
                         {currentStep >= 1 && (
                           <SimulationStatus>
-                            <StatusMessage>
+                            <StatusMessage $isTyping={false}>
                               {t('demo.statusMessages.capsuling')}
+                              {showSpinner && <LoadingSpinner />}
                             </StatusMessage>
                           </SimulationStatus>
                         )}
@@ -396,7 +384,7 @@ export default function DemoSection() {
                         {/* 3단계: Send capsuled data 타이핑 */}
                         {currentStep >= 3 && (
                           <SimulationStatus>
-                            <StatusMessage>
+                            <StatusMessage $isTyping={false}>
                               {t('demo.statusMessages.sending')}
                             </StatusMessage>
                           </SimulationStatus>
@@ -405,7 +393,7 @@ export default function DemoSection() {
                         {/* 4단계: 사용자 프롬프트 타이핑 */}
                         {currentStep >= 4 && (
                           <SimulationStatus>
-                            <StatusMessage>
+                            <StatusMessage $isTyping={false}>
                               {demoData.question
                                 ? formatText(demoData.question)
                                 : 'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.'}
@@ -414,7 +402,7 @@ export default function DemoSection() {
                         )}
 
                         {/* 5단계: LLM Answer와 Decrypt 노출 */}
-                        {currentStep >= 5 && (
+                        {currentStep >= 6 && (
                           <SimulationContainer>
                             <StepDocumentWrapper>
                               <LeftDocument>
@@ -425,9 +413,11 @@ export default function DemoSection() {
                                   <DocumentText>
                                     {currentStep >= 6 ? (
                                       <>
-                                        {selectedAction === 0
-                                          ? formatText(demoData.answerHide)
-                                          : formatText(demoData.answerChange)}
+                                        {llmAnswerTyping
+                                          ? formatText(llmAnswerTyping)
+                                          : selectedAction === 0
+                                            ? formatText(demoData.answerHide)
+                                            : formatText(demoData.answerChange)}
                                       </>
                                     ) : (
                                       ''
@@ -446,7 +436,11 @@ export default function DemoSection() {
                                   <DocumentText>
                                     {currentStep >= 6 ? (
                                       <>
-                                        {formatText(demoData.answerUncapsuled)}
+                                        {decryptTyping
+                                          ? formatText(decryptTyping)
+                                          : formatText(
+                                              demoData.answerUncapsuled
+                                            )}
                                       </>
                                     ) : (
                                       ''
@@ -459,7 +453,7 @@ export default function DemoSection() {
                         )}
 
                         {/* Restart 버튼 */}
-                        {currentStep >= 6 && (
+                        {currentStep === 7 && (
                           <SimulationStatus $isRestart={true}>
                             <RestartButton onClick={handleRestart}>
                               Restart
@@ -734,8 +728,7 @@ const ChatArea = styled.div<{ $isSimulating?: boolean }>`
   gap: ${(props) => (props.$isSimulating ? '24px' : '43px')};
   align-items: center;
   padding: 20px;
-  overflow-y: scroll;
-  scrollbar-gutter: stable;
+  overflow-y: auto;
 
   &::-webkit-scrollbar {
     width: 2px;
@@ -830,7 +823,7 @@ const SimulationStatus = styled.div<{ $isRestart?: boolean }>`
   width: 864px;
 `;
 
-const StatusMessage = styled.div`
+const StatusMessage = styled.div<{ $isTyping?: boolean }>`
   border-radius: 20px;
   padding: 16px 24px;
   max-width: 720px;
@@ -841,6 +834,23 @@ const StatusMessage = styled.div`
   box-shadow: 0 0 96.88px 0 rgba(89, 89, 255, 0.07);
   position: relative;
   animation: fadeInUp 0.5s ease-out;
+
+  &::after {
+    content: ${(props) => (props.$isTyping ? '|' : '')};
+    animation: ${(props) => (props.$isTyping ? 'blink 1s infinite' : 'none')};
+    margin-left: 2px;
+  }
+
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
+    }
+  }
 
   @keyframes fadeInUp {
     from {
@@ -1108,6 +1118,26 @@ const RunSimulationButton = styled.button`
 
 const ButtonIcon = styled.span`
   font-size: 16px;
+`;
+
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const LoadingSpinner = styled.span`
+  margin-left: 8px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid ${borderColor.light['color-border-focused']};
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: ${spin} 0.8s linear infinite;
+  display: inline-block;
 `;
 
 const LeftDocumentHeader = styled.div`

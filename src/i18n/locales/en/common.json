@@ -192,7 +192,7 @@
     "mainTitle": "Try our web demo",
     "subtitle": "Experience the full journey — from context detection to LLM utilization to data recovery.",
     "statusMessages": {
-      "capsuling": "Safely capsuling the original document...",
+      "capsuling": "Safely capsuling the original document",
       "sending": "Send capsuled data and prompts to the LLM."
     },
     "categories": {
