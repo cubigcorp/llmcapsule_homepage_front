@@ -21,6 +21,7 @@ import type {
   MyPageHomeResponse,
   UserBundlesResponse,
 } from '@/utils/api';
+import { formatDateShort } from '@/utils/date';
 import DataIcon from '@/assets/icons/icon_data.svg';
 import ArrowRightIcon from '@/assets/icons/icon_arrow_forward.svg';
 import PlanTrialImage from '@/assets/images/plan_trial.png';
@@ -94,19 +95,23 @@ export default function MyPage() {
                 <StatCard>
                   <DashboardCircleIcon />
                   <StatLabel>{t('stats.usingPlan')}</StatLabel>
-                  <StatValue>3</StatValue>
+                  <StatValue>{myPageData?.active_plan_count || 0}</StatValue>
                 </StatCard>
                 <StatDivider />
                 <StatCard>
                   <UsageCircleIcon />
                   <StatLabel>{t('stats.activeSerial')}</StatLabel>
-                  <StatValue>120</StatValue>
+                  <StatValue>{myPageData?.active_serial_count || 0}</StatValue>
                 </StatCard>
                 <StatDivider />
                 <StatCard>
                   <CardCircleIcon />
                   <StatLabel>{t('stats.nextPayment')}</StatLabel>
-                  <StatValue>25.09.18</StatValue>
+                  <StatValue>
+                    {myPageData?.earliest_expiry_date
+                      ? formatDateShort(myPageData.earliest_expiry_date)
+                      : '-'}
+                  </StatValue>
                 </StatCard>
               </StatsGrid>
 
