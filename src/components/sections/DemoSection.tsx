@@ -85,6 +85,12 @@ export default function DemoSection() {
 
   const handleButtonClick = (buttonId: string) => {
     setActiveButton(buttonId);
+
+    setSimulationStep(0);
+    setCurrentStep(0);
+    setShowSpinner(false);
+    setLlmAnswerTyping('');
+    setDecryptTyping('');
     if (buttonId === 'Government') {
       setDemoData({
         original: t('demo.data.Government.original'),
