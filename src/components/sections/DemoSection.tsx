@@ -157,54 +157,43 @@ export default function DemoSection() {
   };
 
   const startSimulationSequence = () => {
-    // 1단계: "Safely capsuling the original document" 타이핑
+    // 1단계: "Safely capsuling the original document" 표시
     setTimeout(() => {
-      typeText(t('demo.statusMessages.capsuling'), () => {
-        // 2단계: "..." 애니메이션 (2초, 2번 반복)
-        animateDots(() => {
-          // 3단계: Original Document와 Capsuled Data 노출
-          setCurrentStep(2);
+      setTypingText(t('demo.statusMessages.capsuling'));
+      // 2단계: Original Document와 Capsuled Data 노출
+      setTimeout(() => {
+        setCurrentStep(2);
+        setTimeout(() => {
+          // 3단계: "Send capsuled data and prompts to the LLM." 표시
+          setCurrentStep(3);
+          setTypingText(t('demo.statusMessages.sending'));
+          // 4단계: 사용자 프롬프트 표시
           setTimeout(() => {
-            scrollToBottom();
+            setCurrentStep(4);
+            setTypingText(
+              demoData.question ||
+                'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.'
+            );
+            // 5단계: LLM Answer와 Decrypt 노출
             setTimeout(() => {
-              // 4단계: "Send capsuled data and prompts to the LLM." 타이핑
-              setCurrentStep(3);
-              typeText(t('demo.statusMessages.sending'), () => {
-                // 5단계: 사용자 프롬프트 타이핑
-                setTimeout(() => {
-                  setCurrentStep(4);
-                  typeText(
-                    demoData.question ||
-                      'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.',
-                    () => {
-                      // 6단계: LLM Answer와 Decrypt 노출
-                      setTimeout(() => {
-                        setCurrentStep(5);
-                        setTimeout(() => {
-                          scrollToBottom();
-                          setTimeout(() => {
-                            // 7단계: 양 영역에서 텍스트 타이핑
-                            setCurrentStep(6);
-                            const llmAnswerText =
-                              selectedAction === 0
-                                ? demoData.answerHide
-                                : demoData.answerChange;
-                            const decryptText = demoData.answerUncapsuled;
+              setCurrentStep(5);
+              setTimeout(() => {
+                // 6단계: 양 영역에서 텍스트 표시
+                setCurrentStep(6);
+                const llmAnswerText =
+                  selectedAction === 0
+                    ? demoData.answerHide
+                    : demoData.answerChange;
+                const decryptText = demoData.answerUncapsuled;
 
-                            // 동시에 타이핑 시작
-                            typeLlmAnswer(llmAnswerText);
-                            typeDecrypt(decryptText);
-                          }, 300);
-                        }, 100);
-                      }, 1000);
-                    }
-                  );
-                }, 1000);
-              });
-            }, 300);
-          }, 1500);
-        });
-      });
+                // 즉시 표시
+                setLlmAnswerTyping(llmAnswerText);
+                setDecryptTyping(decryptText);
+              }, 300);
+            }, 1000);
+          }, 1000);
+        }, 1500);
+      }, 500);
     }, 500);
   };
 
@@ -278,18 +267,18 @@ export default function DemoSection() {
   const scrollToBottom = () => {
     if (chatAreaRef.current) {
       chatAreaRef.current.scrollTo({
-        top: chatAreaRef.current.scrollHeight + 100,
+        top: chatAreaRef.current.scrollHeight,
         behavior: 'smooth',
       });
     }
   };
 
   useEffect(() => {
-    if (simulationStep > 0) {
-      // A small delay to ensure the DOM is updated before scrolling
+    if (simulationStep > 0 && currentStep >= 1) {
+      // Auto scroll for each step when content appears
       const timer = setTimeout(() => {
         scrollToBottom();
-      }, 100);
+      }, 200);
       return () => clearTimeout(timer);
     }
   }, [currentStep, simulationStep]);
@@ -365,11 +354,8 @@ export default function DemoSection() {
                         {/* 1단계: Safely capsuling 타이핑 */}
                         {currentStep >= 1 && (
                           <SimulationStatus>
-                            <StatusMessage $isTyping={currentStep === 1}>
-                              {currentStep === 1
-                                ? typingText
-                                : t('demo.statusMessages.capsuling')}
-                              {currentStep === 1 ? showDots : ''}
+                            <StatusMessage>
+                              {t('demo.statusMessages.capsuling')}
                             </StatusMessage>
                           </SimulationStatus>
                         )}
@@ -410,10 +396,8 @@ export default function DemoSection() {
                         {/* 3단계: Send capsuled data 타이핑 */}
                         {currentStep >= 3 && (
                           <SimulationStatus>
-                            <StatusMessage $isTyping={currentStep === 3}>
-                              {currentStep === 3
-                                ? typingText
-                                : t('demo.statusMessages.sending')}
+                            <StatusMessage>
+                              {t('demo.statusMessages.sending')}
                             </StatusMessage>
                           </SimulationStatus>
                         )}
@@ -421,12 +405,10 @@ export default function DemoSection() {
                         {/* 4단계: 사용자 프롬프트 타이핑 */}
                         {currentStep >= 4 && (
                           <SimulationStatus>
-                            <StatusMessage $isTyping={currentStep === 4}>
-                              {currentStep === 4
-                                ? typingText
-                                : demoData.question
-                                  ? formatText(demoData.question)
-                                  : 'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.'}
+                            <StatusMessage>
+                              {demoData.question
+                                ? formatText(demoData.question)
+                                : 'Please convert the personal information in this document (name, resident registration number, contact information) into a summary form for civil petition submission.'}
                             </StatusMessage>
                           </SimulationStatus>
                         )}
@@ -443,11 +425,9 @@ export default function DemoSection() {
                                   <DocumentText>
                                     {currentStep >= 6 ? (
                                       <>
-                                        {llmAnswerTyping
-                                          ? formatText(llmAnswerTyping)
-                                          : selectedAction === 0
-                                            ? formatText(demoData.answerHide)
-                                            : formatText(demoData.answerChange)}
+                                        {selectedAction === 0
+                                          ? formatText(demoData.answerHide)
+                                          : formatText(demoData.answerChange)}
                                       </>
                                     ) : (
                                       ''
@@ -466,11 +446,7 @@ export default function DemoSection() {
                                   <DocumentText>
                                     {currentStep >= 6 ? (
                                       <>
-                                        {decryptTyping
-                                          ? formatText(decryptTyping)
-                                          : formatText(
-                                              demoData.answerUncapsuled
-                                            )}
+                                        {formatText(demoData.answerUncapsuled)}
                                       </>
                                     ) : (
                                       ''
@@ -758,7 +734,8 @@ const ChatArea = styled.div<{ $isSimulating?: boolean }>`
   gap: ${(props) => (props.$isSimulating ? '24px' : '43px')};
   align-items: center;
   padding: 20px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 
   &::-webkit-scrollbar {
     width: 2px;
@@ -853,7 +830,7 @@ const SimulationStatus = styled.div<{ $isRestart?: boolean }>`
   width: 864px;
 `;
 
-const StatusMessage = styled.div<{ $isTyping?: boolean }>`
+const StatusMessage = styled.div`
   border-radius: 20px;
   padding: 16px 24px;
   max-width: 720px;
@@ -864,24 +841,6 @@ const StatusMessage = styled.div<{ $isTyping?: boolean }>`
   box-shadow: 0 0 96.88px 0 rgba(89, 89, 255, 0.07);
   position: relative;
   animation: fadeInUp 0.5s ease-out;
-
-  /* 타이핑 커서 효과 - 타이핑 중일 때만 */
-  &::after {
-    content: ${(props) => (props.$isTyping ? '|' : '')};
-    animation: ${(props) => (props.$isTyping ? 'blink 1s infinite' : 'none')};
-    margin-left: 2px;
-  }
-
-  @keyframes blink {
-    0%,
-    50% {
-      opacity: 1;
-    }
-    51%,
-    100% {
-      opacity: 0;
-    }
-  }
 
   @keyframes fadeInUp {
     from {
