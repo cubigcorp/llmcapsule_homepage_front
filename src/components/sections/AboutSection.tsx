@@ -94,7 +94,7 @@ const AboutSection = () => {
   ];
 
   return (
-    <AboutContainer>
+    <AboutContainer id='about-section'>
       <AboutWrapper>
         <HeaderSection>
           <MainTitle>LLM Capsule makes it possible</MainTitle>

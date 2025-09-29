@@ -25,7 +25,7 @@ export default function FAQSection() {
   }>;
 
   return (
-    <FAQContainer>
+    <FAQContainer id='faq-section'>
       <FAQWrapper>
         <FAQContent>
           <LeftSection>

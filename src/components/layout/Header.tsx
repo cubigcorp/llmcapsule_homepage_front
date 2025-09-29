@@ -25,6 +25,25 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
+  const scrollToSection = (sectionId: string) => {
+    // 홈페이지가 아닌 경우 홈으로 이동 후 스크롤
+    if (pathname !== '/') {
+      window.location.href = `/#${sectionId}`;
+      return;
+    }
+
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerHeight = 72; // 헤더 높이
+      const elementPosition = element.offsetTop - headerHeight;
+
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   useEffect(() => {
     setIsAuthPage(
       pathname === '/login' ||
@@ -119,19 +138,39 @@ export default function Header() {
               </Link>
             </LogoWrapper>
             <Menu>
-              <TextButton variant='secondary' size='medium'>
+              <TextButton
+                variant='secondary'
+                size='medium'
+                onClick={() => scrollToSection('about-section')}
+              >
                 {t('header.about')}
               </TextButton>
-              <TextButton variant='secondary' size='medium'>
+              <TextButton
+                variant='secondary'
+                size='medium'
+                onClick={() => scrollToSection('demo-section')}
+              >
                 {t('header.demo')}
               </TextButton>
-              <TextButton variant='secondary' size='medium'>
+              <TextButton
+                variant='secondary'
+                size='medium'
+                onClick={() => scrollToSection('performance-section')}
+              >
                 {t('header.performance')}
               </TextButton>
-              <TextButton variant='secondary' size='medium'>
+              <TextButton
+                variant='secondary'
+                size='medium'
+                onClick={() => scrollToSection('pricing-section')}
+              >
                 {t('header.pricing')}
               </TextButton>
-              <TextButton variant='secondary' size='medium'>
+              <TextButton
+                variant='secondary'
+                size='medium'
+                onClick={() => scrollToSection('faq-section')}
+              >
                 {t('header.faq')}
               </TextButton>
             </Menu>

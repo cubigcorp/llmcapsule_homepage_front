@@ -8,7 +8,7 @@ export default function PerformanceSection() {
   const { t } = useTranslation('common');
 
   return (
-    <PerformanceContainer>
+    <PerformanceContainer id='performance-section'>
       <PerformanceWrapper>
         <PerformanceContent>
           <LeftSection>

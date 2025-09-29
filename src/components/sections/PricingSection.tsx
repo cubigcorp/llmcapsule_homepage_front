@@ -17,7 +17,7 @@ export default function PricingSection() {
   );
 
   return (
-    <PricingContainer>
+    <PricingContainer id='pricing-section'>
       <PricingWrapper>
         <PricingContent>
           <LeftSection>
