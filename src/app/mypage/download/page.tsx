@@ -7,7 +7,6 @@ import {
   SolidButton,
   Badge,
   Divider,
-  Dropdown,
   textColor,
   borderColor,
   typography,
@@ -15,24 +14,14 @@ import {
 } from '@cubig/design-system';
 import WindowsIcon from '@/assets/icons/icon_window.svg';
 import InfoIcon from '@/assets/icons/icon_info_small.svg';
-import DownloadImage from '@/assets/images/llmcapsule_download.png';
+import DownloadImage from '@/assets/images/llmcapsule_download_1.png';
+import DownloadImage2 from '@/assets/images/llmcapsule_download_2.png';
 import DownloadIcon from '@/assets/icons/icon_download.svg';
 import { llmService } from '@/services/llm';
 
 export default function DownloadPage() {
   const { t } = useTranslation();
-  const [selectedSerial, setSelectedSerial] = useState('1234-ABCD-3212');
   const [isDownloading, setIsDownloading] = useState(false);
-
-  const serialOptions = [
-    { label: '1234-ABCD-3212', value: '1234-ABCD-3212' },
-    { label: '5678-EFGH-9012', value: '5678-EFGH-9012' },
-    { label: '3456-IJKL-7890', value: '3456-IJKL-7890' },
-  ];
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(selectedSerial).catch(() => {});
-  };
 
   const handleDownload = async () => {
     try {
@@ -50,10 +39,6 @@ export default function DownloadPage() {
     } finally {
       setIsDownloading(false);
     }
-  };
-
-  const handleSerialChange = (value: string) => {
-    setSelectedSerial(value);
   };
 
   return (
@@ -106,22 +91,12 @@ export default function DownloadPage() {
                 <StepDesc>{t('mypage:download.step1.desc')}</StepDesc>
               </StepTextArea>
               <StepActionArea>
-                <Dropdown
-                  label={t('mypage:download.dropdown.label')}
-                  size='medium'
-                  options={serialOptions}
-                  value={selectedSerial}
-                  onChange={handleSerialChange}
-                  placeholder={t('mypage:download.dropdown.placeholder')}
-                />
-
-                <CopyButton
-                  variant='secondary'
-                  size='small'
-                  onClick={handleCopy}
-                >
-                  {t('mypage:download.copySerial')}
-                </CopyButton>
+                <SerialImageWrapper $isFirstStep>
+                  <img
+                    src={DownloadImage2.src}
+                    alt='Serial preparation guide'
+                  />
+                </SerialImageWrapper>
               </StepActionArea>
             </StepContent>
 
@@ -131,7 +106,7 @@ export default function DownloadPage() {
                 <StepDesc>{t('mypage:download.step2.desc')}</StepDesc>
               </StepTextArea>
               <StepActionArea>
-                <SerialImageWrapper>
+                <SerialImageWrapper $isSecondStep>
                   <img
                     src={DownloadImage.src}
                     alt={t('mypage:download.serialImageAlt')}
@@ -292,16 +267,26 @@ const SerialLabel = styled.span`
   color: ${textColor.light['fg-neutral-alternative']};
 `;
 
-const CopyButton = styled(SolidButton)`
-  width: fit-content;
-  align-self: flex-start;
-`;
-
-const SerialImageWrapper = styled.div`
+const SerialImageWrapper = styled.div<{
+  $isFirstStep?: boolean;
+  $isSecondStep?: boolean;
+}>`
   border: 1px solid ${borderColor.light['color-border-primary']};
   border-radius: 12px;
+  background: ${color.gray['50']};
   overflow: hidden;
-  background: white;
+
+  ${(props) =>
+    props.$isFirstStep &&
+    `
+    padding: 0 60px 0 60px;
+  `}
+
+  ${(props) =>
+    props.$isSecondStep &&
+    `
+    padding: 0px 60px 20px 60px;
+  `}
 
   img {
     display: block;
