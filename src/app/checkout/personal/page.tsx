@@ -1,10 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import GlobalHeader from '@/components/layout/Header';
 import { useTranslation } from 'react-i18next';
-import { llmService } from '@/services/llm';
-import type { Plan } from '@/utils/api';
 import TokenBreakdown from '../components/common/TokenBreakdown';
 import SummaryCard from '../components/common/SummaryCard';
 import UserCountSection from '../components/common/UserCountSection';
@@ -40,7 +38,6 @@ export default function CheckoutPage() {
   const [userCount, setUserCount] = useState<number>(1);
   const [tokenUsage, setTokenUsage] = useState<number>(300000);
   const [contractPeriod, setContractPeriod] = useState<number>(6);
-  const [apiPlans, setApiPlans] = useState<Plan[]>([]);
 
   const getPlanImage = (planName: string) => {
     switch (planName.toLowerCase()) {
@@ -58,18 +55,6 @@ export default function CheckoutPage() {
   };
 
   const [tokenPackCount, setTokenPackCount] = useState<number>(0);
-
-  useEffect(() => {
-    const fetchPlans = async () => {
-      try {
-        const plansData = await llmService.getAllPlans();
-        setApiPlans(plansData.data || []);
-      } catch (error) {
-        console.error('Failed to fetch plans:', error);
-      }
-    };
-    fetchPlans();
-  }, []);
 
   const getCurrentPlan = (tokens: number) => {
     if (tokens >= plans.max.minTokens) return plans.max;
@@ -292,7 +277,6 @@ export default function CheckoutPage() {
               tokenUsage={tokenUsage}
               contractPeriod={contractPeriod}
               contractDiscounts={contractDiscounts}
-              tokenPackCount={tokenPackCount}
               yearlyTotal={yearlyTotal}
               addOnTotal={0}
               addOnPrices={{}}
@@ -391,6 +375,11 @@ const PlanBadge = styled.div`
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const PlanInfo = styled.div`

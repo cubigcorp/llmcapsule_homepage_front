@@ -19,7 +19,8 @@ export default function PricingSection() {
   );
 
   const handleBuyNow = () => {
-    router.push('/checkout');
+    if (selectedPlan === 'business') router.push('/checkout/business');
+    else router.push('/checkout/personal');
   };
 
   return (

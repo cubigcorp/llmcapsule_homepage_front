@@ -17,7 +17,6 @@ interface ContractPeriodSectionProps {
 
 export default function ContractPeriodSection({
   contractPeriod,
-  contractDiscounts,
   onContractPeriodChange,
 }: ContractPeriodSectionProps) {
   const { t } = useTranslation('checkout');

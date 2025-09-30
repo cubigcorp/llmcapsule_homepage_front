@@ -7,7 +7,6 @@ import {
   textColor,
   layerColor,
   Divider,
-  color,
 } from '@cubig/design-system';
 import { useTranslation } from 'react-i18next';
 import DownloadIcon from '@/assets/icons/icon_download.svg';
@@ -22,7 +21,6 @@ interface SummaryCardProps {
   tokenUsage: number;
   contractPeriod: number;
   contractDiscounts: Record<number, number>;
-  tokenPackCount: number;
   yearlyTotal: number;
   addOnTotal: number;
   addOnPrices: Record<string, number>;
@@ -46,7 +44,6 @@ export default function SummaryCard({
   tokenUsage,
   contractPeriod,
   contractDiscounts,
-  tokenPackCount,
   yearlyTotal,
   addOnTotal,
   addOnPrices,

@@ -272,6 +272,7 @@ export interface PurchaseRequest {
   is_prepayment: boolean;
   add_on: AddOnItem[];
   total_price: number;
+  purchase_type?: 'PERSONAL' | 'BUSINESS';
 }
 
 export type PaymentStatus =

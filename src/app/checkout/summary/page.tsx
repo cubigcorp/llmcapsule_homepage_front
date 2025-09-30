@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useSearchParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import GlobalHeader from '@/components/layout/Header';
 import {
   SolidButton,
@@ -13,6 +14,8 @@ import {
   color,
   layerColor,
 } from '@cubig/design-system';
+import { llmService } from '@/services/llm';
+import { env } from '@/utils/env';
 import PlanBasicImage from '@/assets/images/plan_basic.png';
 import PlanPlusImage from '@/assets/images/plan_plus.png';
 import PlanProImage from '@/assets/images/plan_pro.png';
@@ -37,6 +40,10 @@ function getPlanImageByName(name: string) {
 export default function CheckoutSummaryPage() {
   const params = useSearchParams();
   const router = useRouter();
+  const paypalContainerRef = useRef<HTMLDivElement | null>(null);
+  const initializedRef = useRef(false);
+  const [isPurchasing, setIsPurchasing] = useState(false);
+  const [paymentId, setPaymentId] = useState<number | null>(null);
 
   const purchaseType = params.get('purchaseType') || 'BUSINESS';
   const plan = params.get('plan') || 'Pro';
@@ -77,11 +84,165 @@ export default function CheckoutSummaryPage() {
       aiAnswerEnabled);
 
   const handleBack = () => router.back();
-  const handlePay = () => {
-    // TODO: 결제 연동
-    // 현재는 자리표시자
-    alert('결제 진행');
-  };
+
+  async function loadPayPalSdk(clientId: string) {
+    return new Promise<void>((resolve, reject) => {
+      // 이미 로드된 경우
+      if (
+        document.querySelector('script[src^="https://www.paypal.com/sdk/js"]')
+      ) {
+        resolve();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&vault=true&intent=subscription`;
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('Failed to load PayPal SDK'));
+      document.body.appendChild(script);
+    });
+  }
+
+  const handlePay = useCallback(async () => {
+    if (isPurchasing) return;
+    setIsPurchasing(true);
+
+    try {
+      // 1) 서버에 구매 생성 (paypal_plan 생성)
+      // plan_id를 이름으로 매핑
+      const allPlans = await llmService.getAllPlans();
+      const planList = (allPlans.data as { id: number; name: string }[]) || [];
+      const target = planList.find(
+        (p) => (p.name || '').toUpperCase() === (plan || '').toUpperCase()
+      );
+      const planIdForApi = target?.id;
+
+      if (!planIdForApi) {
+        alert('선택한 플랜을 찾을 수 없습니다. 다시 시도해 주세요.');
+        setIsPurchasing(false);
+        return;
+      }
+
+      const purchaseReq = {
+        plan_id: planIdForApi,
+        seat_count: users,
+        contract_month: period,
+        is_prepayment: false,
+        add_on: [] as { add_on_id: number; quantity: number }[],
+        total_price: totalAmount,
+        purchase_type: (purchaseType || 'BUSINESS') as 'BUSINESS' | 'PERSONAL',
+      };
+
+      const purchaseRes = await llmService.createPurchase(purchaseReq);
+      if (!purchaseRes.success || !purchaseRes.data) {
+        alert('결제 준비에 실패했습니다.');
+        setIsPurchasing(false);
+        return;
+      }
+
+      const paypalPlan = (
+        purchaseRes.data as { paypal_plan_id?: string; id?: number }
+      ).paypal_plan_id as string | null;
+      const returnedPaymentId = (
+        purchaseRes.data as { paypal_plan_id?: string; id?: number }
+      ).id as number | null;
+
+      const clientIdToUse = env.PAYPAL_CLIENT_ID;
+
+      if (!paypalPlan || !clientIdToUse || !returnedPaymentId) {
+        alert('결제 정보가 올바르지 않습니다. (PayPal Client ID 설정 필요)');
+        setIsPurchasing(false);
+        return;
+      }
+
+      setPaymentId(returnedPaymentId);
+
+      await loadPayPalSdk(clientIdToUse);
+
+      const winAny = window as unknown as {
+        paypal?: {
+          Buttons: (opts: {
+            style: Record<string, unknown>;
+            createSubscription: (
+              data: unknown,
+              actions: {
+                subscription: {
+                  create: (arg: { plan_id: string }) => Promise<string>;
+                };
+              }
+            ) => Promise<string>;
+            onApprove: (data: {
+              subscriptionID: string;
+            }) => Promise<void> | void;
+          }) => { render: (el: HTMLElement) => void };
+        };
+      };
+      if (winAny?.paypal && paypalContainerRef.current) {
+        // 컨테이너 초기화
+        paypalContainerRef.current.innerHTML = '';
+        winAny.paypal
+          .Buttons({
+            style: {
+              shape: 'rect',
+              color: 'gold',
+              layout: 'vertical',
+              label: 'subscribe',
+            },
+            createSubscription: function (
+              _data: unknown,
+              actions: {
+                subscription: {
+                  create: (arg: { plan_id: string }) => Promise<string>;
+                };
+              }
+            ) {
+              return actions.subscription.create({ plan_id: paypalPlan });
+            },
+            onApprove: async (data: { subscriptionID: string }) => {
+              console.log('onApprove', data);
+              try {
+                if (!paymentId) return;
+                const completeRes = await llmService.completePayment(
+                  paymentId,
+                  {
+                    subscription_id: data.subscriptionID,
+                    plan_id: paypalPlan,
+                  }
+                );
+                if (completeRes.success) {
+                  router.push('/checkout/success');
+                } else {
+                  alert('결제 완료 처리에 실패했습니다.');
+                }
+              } catch {
+                alert('결제 완료 처리 중 오류가 발생했습니다.');
+              }
+            },
+          })
+          .render(paypalContainerRef.current);
+      }
+    } catch {
+      alert('결제 준비 중 오류가 발생했습니다.');
+    } finally {
+      setIsPurchasing(false);
+    }
+  }, [
+    isPurchasing,
+    plan,
+    users,
+    period,
+    totalAmount,
+    purchaseType,
+    router,
+    paymentId,
+  ]);
+
+  // 페이지 진입 시 바로 PayPal 버튼 생성
+  useEffect(() => {
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+    void handlePay();
+  }, [handlePay]);
 
   const planImage = getPlanImageByName(plan);
 
@@ -131,7 +292,12 @@ export default function CheckoutSummaryPage() {
           <SummaryCard>
             <PlanRow>
               <PlanBadge>
-                <img src={planImage.src} alt={`${plan} plan`} />
+                <Image
+                  src={planImage}
+                  alt={`${plan} plan`}
+                  width={56}
+                  height={56}
+                />
               </PlanBadge>
               <PlanInfo>
                 <PlanName>{plan}</PlanName>
@@ -231,9 +397,7 @@ export default function CheckoutSummaryPage() {
             <BackButton variant='secondary' size='large' onClick={handleBack}>
               취소
             </BackButton>
-            <PayButton variant='primary' size='large' onClick={handlePay}>
-              결제하기
-            </PayButton>
+            <PayPalSlot ref={paypalContainerRef} />
           </Actions>
         </ContentWrapper>
       </Container>
@@ -278,7 +442,7 @@ const PlanRow = styled.div`
 
 const PlanBadge = styled.div`
   width: 80px;
-  height: 56x;
+  height: 56px;
   border-radius: 10px;
   overflow: hidden;
   img {
@@ -401,6 +565,8 @@ const BackButton = styled(SolidButton)`
   flex: 1;
 `;
 
-const PayButton = styled(SolidButton)`
+const PayPalSlot = styled.div`
   flex: 1;
+  display: flex;
+  justify-content: flex-end;
 `;

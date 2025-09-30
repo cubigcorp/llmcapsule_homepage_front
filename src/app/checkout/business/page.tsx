@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import GlobalHeader from '@/components/layout/Header';
 import { useTranslation } from 'react-i18next';
-import { llmService } from '@/services/llm';
-import type { Plan } from '@/utils/api';
 import TokenBreakdown from '../components/common/TokenBreakdown';
 import SummaryCard from '../components/common/SummaryCard';
 import UserCountSection from '../components/common/UserCountSection';
@@ -39,7 +37,6 @@ export default function CheckoutPage() {
   const [userCount, setUserCount] = useState<number>(100);
   const [tokenUsage, setTokenUsage] = useState<number>(300000);
   const [contractPeriod, setContractPeriod] = useState<number>(6);
-  const [apiPlans, setApiPlans] = useState<Plan[]>([]);
 
   const getPlanImage = (planName: string) => {
     switch (planName.toLowerCase()) {
@@ -68,18 +65,6 @@ export default function CheckoutPage() {
   const [aiAnswerEnabled, setAiAnswerEnabled] = useState<boolean>(false);
   const [tokenPackCount, setTokenPackCount] = useState<number>(0);
 
-  useEffect(() => {
-    const fetchPlans = async () => {
-      try {
-        const plansData = await llmService.getAllPlans();
-        setApiPlans(plansData.data || []);
-      } catch (error) {
-        console.error('Failed to fetch plans:', error);
-      }
-    };
-    fetchPlans();
-  }, []);
-
   const getCurrentPlan = (tokens: number) => {
     if (tokens >= plans.max.minTokens) return plans.max;
     if (tokens >= plans.pro.minTokens) return plans.pro;
@@ -90,9 +75,14 @@ export default function CheckoutPage() {
 
   // 가격 계산
   const basePrice = currentPlan.price * userCount;
-  const contractDiscounts = { 1: 0, 6: 3, 12: 5, 18: 7, 24: 10 };
-  const discountRate =
-    contractDiscounts[contractPeriod as keyof typeof contractDiscounts] || 0;
+  const contractDiscounts: Record<number, number> = {
+    1: 0,
+    6: 3,
+    12: 5,
+    18: 7,
+    24: 10,
+  };
+  const discountRate = contractDiscounts[contractPeriod] || 0;
 
   const monthlyTotal = basePrice * (1 - discountRate / 100);
   const yearlyTotal = monthlyTotal * contractPeriod;
@@ -136,13 +126,6 @@ export default function CheckoutPage() {
     (sum, price) => sum + price,
     0
   );
-
-  const handleUserCountChange = (value: string) => {
-    const count = parseInt(value) || 100;
-    if (count >= 100 && count <= 280000) {
-      setUserCount(count);
-    }
-  };
 
   // 사용자 수에 따른 중앙관리자 콘솔 자동 선택
   useEffect(() => {
@@ -579,7 +562,6 @@ export default function CheckoutPage() {
               tokenUsage={tokenUsage}
               contractPeriod={contractPeriod}
               contractDiscounts={contractDiscounts}
-              tokenPackCount={tokenPackCount}
               yearlyTotal={yearlyTotal}
               addOnTotal={addOnTotal}
               addOnPrices={addOnPrices}
@@ -683,6 +665,11 @@ const PlanBadge = styled.div`
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const PlanInfo = styled.div`
@@ -854,10 +841,6 @@ const SliderLabelRight = styled(SliderLabel)`
   transform: translateX(-100%);
   text-align: right;
   align-items: flex-end;
-`;
-
-const SliderLabel70k = styled(SliderLabelCenter)`
-  left: 11.67%;
 `;
 
 const SliderLabel120k = styled(SliderLabelCenter)`

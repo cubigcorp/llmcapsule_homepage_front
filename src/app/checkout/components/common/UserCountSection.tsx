@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { typography, textColor, TextField, Chip } from '@cubig/design-system';
+import { typography, TextField, Chip } from '@cubig/design-system';
 import { useTranslation } from 'react-i18next';
 import RemoveIcon from '@/assets/icons/icon_remove.svg';
 import SmallAddIcon from '@/assets/icons/icon_add_small.svg';
