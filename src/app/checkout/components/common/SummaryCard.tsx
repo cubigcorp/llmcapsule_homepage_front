@@ -199,7 +199,7 @@ export default function SummaryCard({
             </>
           ) : (
             <PriceBreakdownItem>
-              <span>정기 결제 비용 (합산 1)</span>
+              <span>정기 결제 비용 </span>
               <span>${Math.round(yearlyTotal).toLocaleString()}</span>
             </PriceBreakdownItem>
           )}

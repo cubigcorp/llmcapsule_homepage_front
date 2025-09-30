@@ -90,7 +90,20 @@ export default function CheckoutPage() {
   const yearlyTotal = monthlyTotal * contractPeriod;
 
   const handleCheckout = () => {
-    alert('결제 기능은 추후 구현 예정입니다.');
+    const params = new URLSearchParams({
+      purchaseType: 'PERSONAL',
+      plan: currentPlan.name,
+      price: String(currentPlan.price),
+      users: String(userCount),
+      period: String(contractPeriod),
+      discount: String(
+        contractDiscounts[contractPeriod as keyof typeof contractDiscounts] || 0
+      ),
+      monthlyTotal: String(Math.round(yearlyTotal)),
+      oneTimeTotal: '0',
+      totalAmount: String(Math.round(yearlyTotal)),
+    });
+    window.location.href = `/checkout/summary?${params.toString()}`;
   };
 
   return (

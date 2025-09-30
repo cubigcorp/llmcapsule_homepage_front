@@ -1,0 +1,406 @@
+'use client';
+
+import React from 'react';
+import styled from 'styled-components';
+import { useSearchParams, useRouter } from 'next/navigation';
+import GlobalHeader from '@/components/layout/Header';
+import {
+  SolidButton,
+  Divider,
+  typography,
+  textColor,
+  borderColor,
+  color,
+  layerColor,
+} from '@cubig/design-system';
+import PlanBasicImage from '@/assets/images/plan_basic.png';
+import PlanPlusImage from '@/assets/images/plan_plus.png';
+import PlanProImage from '@/assets/images/plan_pro.png';
+import PlanMaxImage from '@/assets/images/plan_max.png';
+import InfoIcon from '@/assets/icons/icon_info.svg';
+
+function getPlanImageByName(name: string) {
+  switch ((name || '').toLowerCase()) {
+    case 'basic':
+      return PlanBasicImage;
+    case 'plus':
+      return PlanPlusImage;
+    case 'pro':
+      return PlanProImage;
+    case 'max':
+      return PlanMaxImage;
+    default:
+      return PlanPlusImage;
+  }
+}
+
+export default function CheckoutSummaryPage() {
+  const params = useSearchParams();
+  const router = useRouter();
+
+  const purchaseType = params.get('purchaseType') || 'BUSINESS';
+  const plan = params.get('plan') || 'Pro';
+  const price = Number(params.get('price') || '19.99');
+  const cap = params.get('cap') || params.get('tokens') || '280000';
+  const users = Number(params.get('users') || '1');
+  const period = Number(params.get('period') || '12');
+  const discount = Number(params.get('discount') || '0');
+  const monthlyTotal = Number(params.get('monthlyTotal') || '0');
+  const oneTimeTotal = Number(params.get('oneTimeTotal') || '0');
+  const totalAmount = Number(
+    params.get('totalAmount') || monthlyTotal + oneTimeTotal
+  );
+
+  // Add-on selections (for business)
+  const securityGuideCount = params.get('securityGuideCount');
+  const policyGuideCount = params.get('policyGuideCount');
+  const basicModuleEnabled = params.get('basicModuleEnabled') === 'true';
+  const selectedSubOption = params.get('selectedSubOption') || '';
+  const ragSystemEnabled = params.get('ragSystemEnabled') === 'true';
+  const graphRagEnabled = params.get('graphRagEnabled') === 'true';
+  const documentSecurityEnabled =
+    params.get('documentSecurityEnabled') === 'true';
+  const aiAnswerEnabled = params.get('aiAnswerEnabled') === 'true';
+  const unstructuredModuleEnabled =
+    params.get('unstructuredModuleEnabled') === 'true';
+
+  const hasOneTimeCost =
+    purchaseType === 'BUSINESS' &&
+    (oneTimeTotal > 0 ||
+      Number(securityGuideCount) > 0 ||
+      !!policyGuideCount ||
+      basicModuleEnabled ||
+      unstructuredModuleEnabled ||
+      ragSystemEnabled ||
+      graphRagEnabled ||
+      documentSecurityEnabled ||
+      aiAnswerEnabled);
+
+  const handleBack = () => router.back();
+  const handlePay = () => {
+    // TODO: 결제 연동
+    // 현재는 자리표시자
+    alert('결제 진행');
+  };
+
+  const planImage = getPlanImageByName(plan);
+
+  // Seat Cap should display the MAX cap of the selected plan (not the chosen tokens)
+  const normalizedPlan = (plan || '').toUpperCase() as
+    | 'BASIC'
+    | 'PLUS'
+    | 'PRO'
+    | 'MAX';
+  const planCapMax = (() => {
+    if (purchaseType === 'PERSONAL') {
+      switch (normalizedPlan) {
+        case 'BASIC':
+          return 70000;
+        case 'PLUS':
+          return 120000;
+        case 'PRO':
+          return 280000;
+        case 'MAX':
+          return 600000;
+        default:
+          return Number(cap);
+      }
+    }
+    // BUSINESS
+    switch (normalizedPlan) {
+      case 'PLUS':
+        return 120000;
+      case 'PRO':
+        return 280000;
+      case 'MAX':
+        return 600000;
+      default:
+        return Number(cap);
+    }
+  })();
+
+  return (
+    <>
+      <GlobalHeader />
+      <Container>
+        <ContentWrapper>
+          <Header>
+            <Title>결제 상세</Title>
+          </Header>
+          <Divider />
+          <SummaryCard>
+            <PlanRow>
+              <PlanBadge>
+                <img src={planImage.src} alt={`${plan} plan`} />
+              </PlanBadge>
+              <PlanInfo>
+                <PlanName>{plan}</PlanName>
+                <PlanMeta>
+                  <PlanPrice>${price.toLocaleString()}/Seat</PlanPrice>
+                  <PlanDivider>·</PlanDivider>
+                  <PlanCap>Seat · Cap {planCapMax.toLocaleString()}</PlanCap>
+                </PlanMeta>
+              </PlanInfo>
+            </PlanRow>
+
+            <SectionTitle>기본 항목</SectionTitle>
+            <Bullets>
+              <li>
+                선택된 플랜: {plan} (${price.toLocaleString()}/Seat · Cap{' '}
+                {planCapMax.toLocaleString()})
+              </li>
+              <li>사용 인원: {users}</li>
+              <li>계약 기간: {period}개월</li>
+              <li>할인율: ({discount.toLocaleString()}%)</li>
+              <li style={{ color: textColor.light['fg-neutral-primary'] }}>
+                정기 결제 비용: ₩{monthlyTotal.toLocaleString()}
+              </li>
+            </Bullets>
+
+            <Divider style={{ margin: '32px 0' }} />
+
+            {hasOneTimeCost && (
+              <>
+                <SectionTitle>1회성 구축 비용</SectionTitle>
+                <Bullets>
+                  {Number(securityGuideCount) > 0 && (
+                    <li>
+                      정형 민감 조건 모듈 (1회 적용 {securityGuideCount}개)
+                    </li>
+                  )}
+                  {policyGuideCount && <li>중앙 관리자 콘솔 Admin 구축</li>}
+                  {basicModuleEnabled && (
+                    <li>
+                      민감 키워드 추가
+                      {selectedSubOption
+                        ? selectedSubOption === 'filter5'
+                          ? ' (키워드 5개)'
+                          : selectedSubOption === 'filter8'
+                            ? ' (키워드 8개)'
+                            : selectedSubOption === 'filter12'
+                              ? ' (키워드 12개)'
+                              : ''
+                        : ''}
+                    </li>
+                  )}
+                  {unstructuredModuleEnabled && (
+                    <li>비정형 민감정보 조건 모듈</li>
+                  )}
+                  {ragSystemEnabled && <li>RAG 시스템</li>}
+                  {graphRagEnabled && <li>최신 기술 Graph RAG 적용</li>}
+                  {documentSecurityEnabled && <li>문서보안등급별 접근 제어</li>}
+                  {aiAnswerEnabled && <li>문맥 기반 AI 답변 적용</li>}
+                  <li style={{ color: textColor.light['fg-neutral-primary'] }}>
+                    1회성 구축 비용: ₩{oneTimeTotal.toLocaleString()}
+                  </li>
+                </Bullets>
+              </>
+            )}
+
+            <TotalsBox>
+              <TotalsGroup>
+                <TotalsLine>
+                  <span>정기 결제 비용</span>
+                  <span>₩{monthlyTotal.toLocaleString()}</span>
+                </TotalsLine>
+                {hasOneTimeCost && (
+                  <TotalsLine>
+                    <span>1회성 구축 비용</span>
+                    <span>₩{oneTimeTotal.toLocaleString()}</span>
+                  </TotalsLine>
+                )}
+              </TotalsGroup>
+              <TotalsGrandLine>
+                <GrandLabel>총 계약 금액</GrandLabel>
+                <GrandValue>₩{totalAmount.toLocaleString()}</GrandValue>
+              </TotalsGrandLine>
+            </TotalsBox>
+
+            <Notice>
+              <InfoIcon />
+              <NoticeText>
+                LLM Capsule B2B 제품은 조직도 및 서버, DB 구축 등의 작업이
+                필요해 평균 2-3개월 정도의 도입기간이 소요됩니다.
+                <br /> 결제 완료시 3영업일 이내로 연락드리도록 하겠습니다.
+                연락받으실 이메일, 번호를 확인해주세요.
+              </NoticeText>
+            </Notice>
+          </SummaryCard>
+
+          <Actions>
+            <BackButton variant='secondary' size='large' onClick={handleBack}>
+              취소
+            </BackButton>
+            <PayButton variant='primary' size='large' onClick={handlePay}>
+              결제하기
+            </PayButton>
+          </Actions>
+        </ContentWrapper>
+      </Container>
+    </>
+  );
+}
+
+const Container = styled.div`
+  min-height: 100vh;
+  background: white;
+  padding-top: 80px;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px 24px 40px 24px;
+`;
+
+const Header = styled.div`
+  margin-bottom: 48px;
+`;
+
+const Title = styled.h1`
+  ${typography('ko', 'heading2', 'semibold')}
+  margin: 0;
+`;
+
+const SummaryCard = styled.div`
+  background: white;
+  border-radius: 0;
+  border: none;
+  padding: 8px 0 0 0;
+`;
+
+const PlanRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+`;
+
+const PlanBadge = styled.div`
+  width: 80px;
+  height: 56x;
+  border-radius: 10px;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const PlanInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const PlanName = styled.div`
+  ${typography('ko', 'title1', 'semibold')}
+`;
+
+const PlanMeta = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const PlanPrice = styled.span`
+  ${typography('ko', 'body2', 'medium')}
+`;
+
+const PlanDivider = styled.span`
+  ${typography('ko', 'body2', 'regular')}
+`;
+
+const PlanCap = styled.span`
+  ${typography('ko', 'body2', 'regular')}
+`;
+
+const SectionTitle = styled.h3`
+  ${typography('ko', 'body1', 'semibold')}
+  margin: 0 0 12px 0;
+`;
+
+const Bullets = styled.ul`
+  margin: 0 0 6px 0;
+  gap: 6px;
+  list-style: none;
+  padding-left: 0;
+  li {
+    ${typography('ko', 'body2', 'regular')}
+    color: ${textColor.light['fg-neutral-alternative']};
+    line-height: 1.6;
+    display: flex;
+    align-items: baseline;
+  }
+  li::before {
+    content: '• ';
+    margin-right: 4px;
+  }
+`;
+
+const TotalsBox = styled.div`
+  margin: 32px 0 20px 0;
+  border: 1px solid ${borderColor.light['color-border-primary']};
+  border-radius: 16px;
+  overflow: hidden;
+`;
+
+const TotalsGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background: white;
+`;
+
+const TotalsLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  ${typography('ko', 'body2', 'medium')}
+`;
+
+const TotalsGrandLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: ${layerColor.light['bg-layer-basement']};
+  border-top: 1px solid ${borderColor.light['color-border-primary']};
+`;
+
+const GrandLabel = styled.span`
+  ${typography('ko', 'heading1', 'semibold')}
+`;
+
+const GrandValue = styled.span`
+  ${typography('ko', 'heading1', 'semibold')}
+`;
+
+const Notice = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: ${color.gray['50']};
+  padding: 12px;
+  border-radius: 12px;
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const NoticeText = styled.div``;
+
+const Actions = styled.div`
+  display: flex;
+  gap: 12px;
+  margin-top: 40px;
+`;
+
+const BackButton = styled(SolidButton)`
+  flex: 1;
+`;
+
+const PayButton = styled(SolidButton)`
+  flex: 1;
+`;

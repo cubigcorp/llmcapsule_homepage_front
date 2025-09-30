@@ -158,7 +158,27 @@ export default function CheckoutPage() {
   }, [userCount]);
 
   const handleCheckout = () => {
-    alert('결제 기능은 추후 구현 예정입니다.');
+    const params = new URLSearchParams({
+      purchaseType: 'BUSINESS',
+      plan: currentPlan.name,
+      price: String(currentPlan.price),
+      users: String(userCount),
+      period: String(contractPeriod),
+      discount: String(contractDiscounts[contractPeriod] || 0),
+      monthlyTotal: String(Math.round(yearlyTotal)),
+      oneTimeTotal: String(Math.round(addOnTotal)),
+      totalAmount: String(Math.round(yearlyTotal + addOnTotal)),
+      securityGuideCount: String(securityGuideCount),
+      policyGuideCount: String(policyGuideCount),
+      basicModuleEnabled: String(basicModuleEnabled),
+      selectedSubOption,
+      ragSystemEnabled: String(ragSystemEnabled),
+      graphRagEnabled: String(graphRagEnabled),
+      documentSecurityEnabled: String(documentSecurityEnabled),
+      aiAnswerEnabled: String(aiAnswerEnabled),
+      unstructuredModuleEnabled: String(unstructuredModuleEnabled),
+    });
+    window.location.href = `/checkout/summary?${params.toString()}`;
   };
 
   return (
