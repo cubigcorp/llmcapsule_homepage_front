@@ -44,8 +44,6 @@ export default function CheckoutPage() {
 
   const getPlanImage = (planName: string) => {
     switch (planName.toLowerCase()) {
-      case 'basic':
-        return PlanBasicImage;
       case 'plus':
         return PlanPlusImage;
       case 'pro':
@@ -53,7 +51,7 @@ export default function CheckoutPage() {
       case 'max':
         return PlanMaxImage;
       default:
-        return PlanBasicImage;
+        return PlanPlusImage;
     }
   };
 
@@ -273,13 +271,11 @@ export default function CheckoutPage() {
                 <SliderLabels>
                   <SliderLabelLeft>
                     <span>0</span>
-                  </SliderLabelLeft>
-                  <SliderLabel70k>
-                    <span>70,000</span>
                     <Badge size='small' type='solid' variant='primary'>
                       Plus
                     </Badge>
-                  </SliderLabel70k>
+                  </SliderLabelLeft>
+
                   <SliderLabel120k>
                     <span>120,000</span>
                     <Badge size='small' type='solid' variant='primary'>
