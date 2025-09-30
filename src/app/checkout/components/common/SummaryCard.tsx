@@ -63,8 +63,7 @@ export default function SummaryCard({
 }: SummaryCardProps) {
   const { t } = useTranslation('checkout');
 
-  const totalAmount =
-    yearlyTotal + tokenPackCount * 13000 * contractPeriod + addOnTotal;
+  const totalAmount = yearlyTotal + addOnTotal;
 
   return (
     <SummaryCardContainer>
@@ -80,18 +79,12 @@ export default function SummaryCard({
               {tokenUsage.toLocaleString()})
             </SummaryDetail>
             <SummaryDetail>사용 인원: {userCount}</SummaryDetail>
-            <SummaryDetail>
-              추가 토큰(반복 비용): {tokenPackCount} × $13,000/월
-            </SummaryDetail>
             <SummaryDetail>계약 기간: {contractPeriod}개월</SummaryDetail>
             <SummaryDetail>
               할인율: ({contractDiscounts[contractPeriod] || 0}%)
             </SummaryDetail>
             <SummaryDetail>
-              정기 결제 비용: $
-              {Math.round(
-                yearlyTotal + tokenPackCount * 13000 * contractPeriod
-              ).toLocaleString()}
+              정기 결제 비용: ${Math.round(yearlyTotal).toLocaleString()}
             </SummaryDetail>
           </SummaryDetails>
         </SummaryItem>
