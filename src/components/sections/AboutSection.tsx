@@ -386,6 +386,9 @@ const ContentArea = styled.div`
   display: flex;
   gap: 16px;
   margin-top: 24px;
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
 `;
 
 const ImageArea = styled.div`
@@ -399,6 +402,10 @@ const ImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-width: 768px) {
+    padding: 32px 24px 40px 24px;
+    height: auto;
+  }
 `;
 
 const ImageContentWrapper = styled.div`
@@ -432,6 +439,10 @@ const ImageContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+  }
 `;
 
 const FeatureImage = styled.img`

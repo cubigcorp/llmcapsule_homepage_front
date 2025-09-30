@@ -8,7 +8,7 @@
     "login": "로그인",
     "about": "소개",
     "demo": "데모",
-    "performance": "퍼포먼스",
+    "performance": "성능",
     "pricing": "가격",
     "faq": "FAQ"
   },
@@ -106,7 +106,7 @@
     "button": "문의하기"
   },
   "performance": {
-    "title": "퍼포먼스",
+    "title": "성능",
     "mainTitle": "왜 우리가 다른가",
     "subTitle": "민감정보가 보호된 후에도 응답 품질을 유지하는 정확한 탐지와 효율적인 활용.",
     "stats": {

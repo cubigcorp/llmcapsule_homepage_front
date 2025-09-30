@@ -159,5 +159,6 @@ const StatDescription = styled.p`
   ${typography(undefined, 'body3', 'medium')}
   color: ${textColor.light['fg-neutral-alternative']};
   margin-top: 8px;
-  width: 400px;
+  max-width: 400px;
+  width: 100%;
 `;

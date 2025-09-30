@@ -92,10 +92,16 @@ const ContentArea = styled.div`
 
   flex-direction: column;
   align-items: center;
+  @media (max-width: 1024px) {
+    padding: 0 40px;
+  }
 
   @media (max-width: 768px) {
-    gap: 40px;
-    padding: 40px 0;
+    padding: 0 32px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 0 16px;
   }
 `;
 
@@ -123,13 +129,36 @@ const SubTitle = styled.p`
 const MainTitle = styled.h1`
   ${typography(undefined, 'display4', 'medium')}
   color: ${textColor.light['fg-neutral-primary']};
+  @media (max-width: 1024px) {
+    ${typography(undefined, 'display4', 'medium')}
+  }
+
+  @media (max-width: 768px) {
+    ${typography(undefined, 'display3', 'medium')}
+  }
+
+  @media (max-width: 375px) {
+    ${typography(undefined, 'title2', 'medium')}
+  }
 `;
 
 const Description = styled.p`
   ${typography(undefined, 'title1', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
-  width: 960px;
+  max-width: 960px;
+  width: 100%;
   margin-top: 16px;
+  @media (max-width: 1024px) {
+    ${typography(undefined, 'title1', 'regular')}
+  }
+
+  @media (max-width: 768px) {
+    ${typography(undefined, 'heading3', 'regular')}
+  }
+
+  @media (max-width: 375px) {
+    ${typography(undefined, 'body3', 'regular')}
+  }
 `;
 
 const ButtonGroup = styled.div`
@@ -138,10 +167,6 @@ const ButtonGroup = styled.div`
   justify-content: center;
 
   margin: 32px 0 48px 0;
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 8px;
-  }
 `;
 
 const ImageArea = styled.div`

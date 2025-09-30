@@ -117,4 +117,8 @@ const PartnerLogo = styled.img`
   flex-shrink: 0;
   height: 120px;
   margin: 0 120px 0 0px;
+  @media (max-width: 768px) {
+    height: 80px;
+    margin-right: 60px;
+  }
 `;
