@@ -72,36 +72,9 @@ export default function CheckoutPage() {
   }, []);
 
   const getCurrentPlan = (tokens: number) => {
-    if (apiPlans.length > 0) {
-      const sortedPlans = [...apiPlans]
-        .filter((plan) => plan.monthly_token_limit !== null)
-        .sort(
-          (a, b) => (a.monthly_token_limit || 0) - (b.monthly_token_limit || 0)
-        );
-
-      for (let i = sortedPlans.length - 1; i >= 0; i--) {
-        if (tokens >= (sortedPlans[i].monthly_token_limit || 0) * 0.8) {
-          return {
-            name: sortedPlans[i].name,
-            price: sortedPlans[i].price,
-            minTokens: i > 0 ? sortedPlans[i - 1].monthly_token_limit || 0 : 0,
-            maxTokens: sortedPlans[i].monthly_token_limit || 0,
-          };
-        }
-      }
-
-      return {
-        name: sortedPlans[0].name,
-        price: sortedPlans[0].price,
-        minTokens: 0,
-        maxTokens: sortedPlans[0].monthly_token_limit || 0,
-      };
-    }
-
     if (tokens >= plans.max.minTokens) return plans.max;
     if (tokens >= plans.pro.minTokens) return plans.pro;
     if (tokens >= plans.plus.minTokens) return plans.plus;
-    if (tokens >= plans.basic.minTokens) return plans.basic;
     return plans.basic;
   };
 
@@ -115,13 +88,6 @@ export default function CheckoutPage() {
 
   const monthlyTotal = basePrice * (1 - discountRate / 100);
   const yearlyTotal = monthlyTotal * contractPeriod;
-
-  const handleUserCountChange = (value: string) => {
-    const count = parseInt(value) || 100;
-    if (count >= 100 && count <= 280000) {
-      setUserCount(count);
-    }
-  };
 
   const handleCheckout = () => {
     alert('결제 기능은 추후 구현 예정입니다.');

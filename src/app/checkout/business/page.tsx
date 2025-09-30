@@ -25,7 +25,6 @@ import AddIcon from '@/assets/icons/icon_add.svg';
 import IndeterminateIcon from '@/assets/icons/icon_indeterminate.svg';
 import InfoIcon from '@/assets/icons/icon_info.svg';
 
-import PlanBasicImage from '@/assets/images/plan_basic.png';
 import PlanPlusImage from '@/assets/images/plan_plus.png';
 import PlanProImage from '@/assets/images/plan_pro.png';
 import PlanMaxImage from '@/assets/images/plan_max.png';
@@ -82,32 +81,6 @@ export default function CheckoutPage() {
   }, []);
 
   const getCurrentPlan = (tokens: number) => {
-    if (apiPlans.length > 0) {
-      const sortedPlans = [...apiPlans]
-        .filter((plan) => plan.monthly_token_limit !== null)
-        .sort(
-          (a, b) => (a.monthly_token_limit || 0) - (b.monthly_token_limit || 0)
-        );
-
-      for (let i = sortedPlans.length - 1; i >= 0; i--) {
-        if (tokens >= (sortedPlans[i].monthly_token_limit || 0) * 0.8) {
-          return {
-            name: sortedPlans[i].name,
-            price: sortedPlans[i].price,
-            minTokens: i > 0 ? sortedPlans[i - 1].monthly_token_limit || 0 : 0,
-            maxTokens: sortedPlans[i].monthly_token_limit || 0,
-          };
-        }
-      }
-
-      return {
-        name: sortedPlans[0].name,
-        price: sortedPlans[0].price,
-        minTokens: 0,
-        maxTokens: sortedPlans[0].monthly_token_limit || 0,
-      };
-    }
-
     if (tokens >= plans.max.minTokens) return plans.max;
     if (tokens >= plans.pro.minTokens) return plans.pro;
     return plans.plus;
