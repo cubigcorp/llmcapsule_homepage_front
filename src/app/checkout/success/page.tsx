@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import GlobalHeader from '@/components/layout/Header';
 import styled from 'styled-components';
@@ -42,6 +42,7 @@ function getPlanImageByName(name: string) {
 export default function CheckoutSuccessPage() {
   const { t } = useTranslation();
   const params = useSearchParams();
+  const router = useRouter();
   const plan = (params.get('plan') || 'Plus').toUpperCase();
   const purchaseType = (params.get('purchaseType') || 'BUSINESS').toUpperCase();
   const price = Number(params.get('price') || '0');
@@ -172,14 +173,20 @@ export default function CheckoutSuccessPage() {
           </SummaryCard>
 
           <ButtonSection>
-            <DownloadButton
-              variant='secondary'
+            {/**
+             * <DownloadButton
+             *   variant='secondary'
+             *   size='large'
+             *   leadingIcon={DownloadIcon}
+             * >
+             *   {t('mypage:checkout.success.downloadPdf')}
+             * </DownloadButton>
+             */}
+            <CompleteButton
+              variant='primary'
               size='large'
-              leadingIcon={DownloadIcon}
+              onClick={() => router.push('/mypage/plans')}
             >
-              {t('mypage:checkout.success.downloadPdf')}
-            </DownloadButton>
-            <CompleteButton variant='primary' size='large'>
               {t('mypage:checkout.success.managePlan')}
             </CompleteButton>
           </ButtonSection>

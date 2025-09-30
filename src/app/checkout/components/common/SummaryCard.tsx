@@ -220,14 +220,16 @@ export default function SummaryCard({
           >
             {t('buttons.contact')}
           </SolidButton>
-          <SolidButton
-            variant='secondary'
-            size='large'
-            leadingIcon={DownloadIcon}
-            onClick={() => alert('PDF 다운로드')}
-          >
-            {t('buttons.pdf')}
-          </SolidButton>
+          {/**
+           * <SolidButton
+           *   variant='secondary'
+           *   size='large'
+           *   leadingIcon={DownloadIcon}
+           *   onClick={() => alert('PDF 다운로드')}
+           * >
+           *   {t('buttons.pdf')}
+           * </SolidButton>
+           */}
         </ButtonGroup>
       </BottomSection>
     </SummaryCardContainer>

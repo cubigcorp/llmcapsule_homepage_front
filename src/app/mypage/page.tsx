@@ -44,7 +44,7 @@ export default function MyPage() {
     null
   );
   const [selectedBundleId, setSelectedBundleId] = useState<string>('');
-  const [hasSubscription, setHasSubscription] = useState(false);
+  const [hasSubscription, setHasSubscription] = useState<boolean | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -197,18 +197,24 @@ export default function MyPage() {
                 </PlanCardContainer>
 
                 <PlanActions>
-                  <SolidButton variant='secondary' size='small'>
+                  <SolidButton
+                    variant='secondary'
+                    size='small'
+                    onClick={() => router.push('/mypage/plans')}
+                  >
                     {t('plan.manage')}
                   </SolidButton>
-                  <SolidButton variant='secondary' size='small'>
-                    {t('plan.receipt')}
-                  </SolidButton>
+                  {/**
+                   * <SolidButton variant='secondary' size='small'>
+                   *   {t('plan.receipt')}
+                   * </SolidButton>
+                   */}
                 </PlanActions>
 
                 <PlanDivider />
               </PlanSection>
             </>
-          ) : (
+          ) : hasSubscription === null ? null : (
             <>
               <EmptyStateContainer>
                 <IconButton type='outline' icon={DataIcon} />
