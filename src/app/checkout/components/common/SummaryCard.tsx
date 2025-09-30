@@ -65,6 +65,22 @@ export default function SummaryCard({
 
   const totalAmount = yearlyTotal + addOnTotal;
 
+  const planKey = (currentPlan.name || '').toUpperCase();
+  const businessCapMap: Record<string, number> = {
+    PLUS: 120000,
+    PRO: 280000,
+    MAX: 600000,
+  };
+  const personalCapMap: Record<string, number> = {
+    BASIC: 70000,
+    PLUS: 120000,
+    PRO: 280000,
+    MAX: 600000,
+  };
+  const planCapMax =
+    (type === 'personal' ? personalCapMap[planKey] : businessCapMap[planKey]) ??
+    tokenUsage;
+
   return (
     <SummaryCardContainer>
       <TopSection>
@@ -76,16 +92,16 @@ export default function SummaryCard({
             <SummaryDetail>
               선택된 플랜: {currentPlan.name} ($
               {currentPlan.price.toLocaleString()}/Seat · Cap{' '}
-              {tokenUsage.toLocaleString()})
+              {planCapMax.toLocaleString()})
             </SummaryDetail>
             <SummaryDetail>사용 인원: {userCount}</SummaryDetail>
             <SummaryDetail>계약 기간: {contractPeriod}개월</SummaryDetail>
             <SummaryDetail>
               할인율: ({contractDiscounts[contractPeriod] || 0}%)
             </SummaryDetail>
-            <SummaryDetail>
+            <SummaryDetailPrimary>
               정기 결제 비용: ${Math.round(yearlyTotal).toLocaleString()}
-            </SummaryDetail>
+            </SummaryDetailPrimary>
           </SummaryDetails>
         </SummaryItem>
 
@@ -161,6 +177,9 @@ export default function SummaryCard({
                   </SummaryDetail>
                 )}
               </SummaryDetails>
+              <SummaryDetailPrimary>
+                1회성 구축 비용: ${Math.round(addOnTotal).toLocaleString()}
+              </SummaryDetailPrimary>
             </SummaryItem>
           </>
         )}
@@ -171,22 +190,17 @@ export default function SummaryCard({
             <>
               <PriceBreakdownItem>
                 <span>정기 결제 비용</span>
-                <span>
-                  $
-                  {Math.round(
-                    yearlyTotal + tokenPackCount * 13000 * contractPeriod
-                  ).toLocaleString()}
-                </span>
+                <span>${Math.round(yearlyTotal).toLocaleString()}</span>
               </PriceBreakdownItem>
               <PriceBreakdownItem>
-                <span>1회성 구축 비용</span>
+                <span>1회성 구축 비용 </span>
                 <span>${Math.round(addOnTotal).toLocaleString()}</span>
               </PriceBreakdownItem>
             </>
           ) : (
             <PriceBreakdownItem>
-              <span>정기 결제 비용</span>
-              <span>${Math.round(totalAmount).toLocaleString()}</span>
+              <span>정기 결제 비용 (합산 1)</span>
+              <span>${Math.round(yearlyTotal).toLocaleString()}</span>
             </PriceBreakdownItem>
           )}
         </PriceBreakdownSection>
@@ -265,6 +279,10 @@ const SummaryDetail = styled.div`
     content: '• ';
     margin-right: 4px;
   }
+`;
+
+const SummaryDetailPrimary = styled(SummaryDetail)`
+  color: ${textColor.light['fg-neutral-primary']};
 `;
 
 const TotalSection = styled.div`
