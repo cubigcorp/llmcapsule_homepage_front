@@ -50,24 +50,25 @@ export default function PlansPage() {
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [cancelOpen, setCancelOpen] = useState(false);
 
+  const loadPlans = async () => {
+    setLoading(true);
+    try {
+      // plans/my 사용
+      const res = await llmService.getMyPlans();
+      const data: UserBundlesResponse | null = res.data || null;
+      const list = data?.bundles ?? [];
+      setBundles(list);
+      if (list.length > 0) setSelectedBundleId(String(list[0].id));
+    } catch (e) {
+      console.error('Failed to load my plans', e);
+      setBundles(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const run = async () => {
-      setLoading(true);
-      try {
-        // plans/my 사용
-        const res = await llmService.getMyPlans();
-        const data: UserBundlesResponse | null = res.data || null;
-        const list = data?.bundles ?? [];
-        setBundles(list);
-        if (list.length > 0) setSelectedBundleId(String(list[0].id));
-      } catch (e) {
-        console.error('Failed to load my plans', e);
-        setBundles(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-    run();
+    loadPlans();
   }, []);
 
   useEffect(() => {
@@ -160,7 +161,7 @@ export default function PlansPage() {
               options={
                 bundles?.map((b) => ({
                   value: String(b.id),
-                  label: String(b.id),
+                  label: `${b.id} (${b?.purchase_type || 'PERSONAL'})`,
                 })) || []
               }
             />
@@ -381,6 +382,9 @@ export default function PlansPage() {
           (currentBundle?.plan?.name as 'BASIC' | 'PLUS' | 'PRO' | 'MAX') ||
           'BASIC'
         }
+        purchaseType={
+          currentBundle?.purchase_type === 'BUSINESS' ? 'BUSINESS' : 'PERSONAL'
+        }
         onClose={() => setUpgradeOpen(false)}
         onUpgrade={() => setUpgradeOpen(false)}
       />
@@ -390,8 +394,10 @@ export default function PlansPage() {
         planName={currentBundle?.plan?.name}
         planNumber={selectedBundleId}
         nextBillingDate={currentBundle?.next_billing_date || ''}
+        bundleId={currentBundle?.id}
         onConfirm={() => {
           setCancelOpen(false);
+          loadPlans();
         }}
       />
     </Container>

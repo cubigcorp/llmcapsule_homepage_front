@@ -238,6 +238,7 @@ export interface UserBundleResponse {
   is_prepay: boolean;
   next_billing_date: string;
   created_at: string;
+  purchase_type?: 'PERSONAL' | 'BUSINESS';
   plan: PlanInfo;
   serials: SerialInfo[];
 }

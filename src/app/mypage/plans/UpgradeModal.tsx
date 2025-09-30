@@ -8,12 +8,14 @@ import {
   textColor,
   color,
   typography,
+  borderColor,
+  Divider,
 } from '@cubig/design-system';
 import PlanBasicImage from '@/assets/images/plan_basic.png';
 import PlanPlusImage from '@/assets/images/plan_plus.png';
 import PlanProImage from '@/assets/images/plan_pro.png';
 import PlanMaxImage from '@/assets/images/plan_max.png';
-
+import CardIcon from '@/assets/icons/icon_card.svg';
 type PlanOption = {
   id: number;
   name: 'BASIC' | 'PLUS' | 'PRO' | 'MAX';
@@ -25,6 +27,7 @@ type PlanOption = {
 interface UpgradeModalProps {
   open: boolean;
   currentPlanName?: 'BASIC' | 'PLUS' | 'PRO' | 'MAX';
+  purchaseType?: 'PERSONAL' | 'BUSINESS';
   onClose: () => void;
   onUpgrade: (planId: number) => void;
 }
@@ -35,16 +38,22 @@ import type { Plan } from '@/utils/api';
 export default function UpgradeModal({
   open,
   currentPlanName,
+  purchaseType = 'PERSONAL',
   onClose,
   onUpgrade,
 }: UpgradeModalProps) {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [fetchedOptions, setFetchedOptions] = useState<PlanOption[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // fetch plans when opened (always from backend)
   useEffect(() => {
     const run = async () => {
       if (!open) return;
+
+      setLoading(true);
+      setFetchedOptions([]);
+      setSelectedId(null);
+
       try {
         const res = await llmService.getAllPlans();
 
@@ -56,10 +65,13 @@ export default function UpgradeModal({
           return (n as PlanOption['name']) || 'BASIC';
         };
 
+        const allowedPlans =
+          purchaseType === 'PERSONAL'
+            ? ['BASIC', 'PLUS', 'PRO', 'ENTERPRISE']
+            : ['PLUS', 'PRO', 'ENTERPRISE'];
+
         const normalized = plans
-          .filter((p) =>
-            ['BASIC', 'PLUS', 'PRO', 'ENTERPRISE'].includes(p.name)
-          )
+          .filter((p) => allowedPlans.includes(p.name))
           .map((p) => ({
             id: p.id,
             name: nameMap(p.name),
@@ -83,12 +95,14 @@ export default function UpgradeModal({
         }));
 
         setFetchedOptions(built);
-      } catch (_err) {
+      } catch {
         setFetchedOptions([]);
+      } finally {
+        setLoading(false);
       }
     };
     run();
-  }, [open, currentPlanName]);
+  }, [open, currentPlanName, purchaseType]);
 
   const sorted = useMemo(
     () => fetchedOptions.slice().sort((a, b) => a.price - b.price),
@@ -101,6 +115,7 @@ export default function UpgradeModal({
 
   return (
     <Modal
+      size='medium'
       open={open}
       onClose={onClose}
       title='플랜 업그레이드 '
@@ -110,6 +125,7 @@ export default function UpgradeModal({
             취소
           </SolidButton>
           <SolidButton
+            leadingIcon={CardIcon}
             variant='primary'
             disabled={selectedId == null}
             onClick={handleConfirm}
@@ -118,31 +134,36 @@ export default function UpgradeModal({
           </SolidButton>
         </FooterActions>
       }
-      size='large'
     >
       <Subtitle>플랜을 업그레이드하여 더 많은 토큰을 사용해보세요</Subtitle>
-      <Grid>
-        {sorted.map((p) => (
-          <PlanCard
-            key={p.id}
-            $selected={selectedId === p.id}
-            onClick={() => setSelectedId(p.id)}
-          >
-            <HeaderRow>
-              <Thumb src={getPlanImage(p.name)} alt={p.name} />
-              <TextCol>
-                <PlanTitle>{getPlanLabel(p.name)} 플랜</PlanTitle>
-                <PlanPrice>${p.price.toFixed(2)}/Seat</PlanPrice>
-              </TextCol>
-            </HeaderRow>
-            <Divider />
-            <TokenRow>
-              <TokenLabel>최대 토큰 수</TokenLabel>
-              <TokenValue>{p.monthlyTokenLimit.toLocaleString()}</TokenValue>
-            </TokenRow>
-          </PlanCard>
-        ))}
-      </Grid>
+      {loading ? (
+        <LoadingContainer>
+          <LoadingText>플랜 정보를 불러오는 중...</LoadingText>
+        </LoadingContainer>
+      ) : (
+        <Grid $businessLayout={purchaseType === 'BUSINESS'}>
+          {sorted.map((p) => (
+            <PlanCard
+              key={p.id}
+              $selected={selectedId === p.id}
+              onClick={() => setSelectedId(p.id)}
+            >
+              <HeaderRow>
+                <Thumb src={getPlanImage(p.name)} alt={p.name} />
+                <TextCol>
+                  <PlanTitle>{getPlanLabel(p.name)} 플랜</PlanTitle>
+                  <PlanPrice>${p.price.toFixed(2)}/Seat</PlanPrice>
+                </TextCol>
+              </HeaderRow>
+              <Divider style={{ margin: '12px 0' }} />
+              <TokenRow>
+                <TokenLabel>최대 토큰 수</TokenLabel>
+                <TokenValue>{p.monthlyTokenLimit.toLocaleString()}</TokenValue>
+              </TokenRow>
+            </PlanCard>
+          ))}
+        </Grid>
+      )}
     </Modal>
   );
 }
@@ -179,18 +200,21 @@ const Subtitle = styled.p`
   margin: 0 0 16px 0;
 `;
 
-const Grid = styled.div`
+const Grid = styled.div<{ $businessLayout: boolean }>`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: ${(p) =>
+    p.$businessLayout ? '1fr 1fr 1fr' : '1fr 1fr'};
   gap: 16px;
 `;
 
 const PlanCard = styled.div<{ $selected: boolean }>`
   border: 1px solid
     ${(p) =>
-      p.$selected ? textColor.light['fg-neutral-primary'] : color.gray['200']};
-  border-radius: 12px;
-  background: white;
+      p.$selected
+        ? borderColor.light['color-border-focused']
+        : color.gray['200']};
+  background-color: ${(p) => (p.$selected ? color.gray['50'] : 'white')};
+  border-radius: 16px;
   padding: 20px;
   cursor: pointer;
 `;
@@ -215,19 +239,14 @@ const TextCol = styled.div`
 `;
 
 const PlanTitle = styled.h4`
-  ${typography(undefined, 'body1', 'bold')}
+  ${typography(undefined, 'body3', 'medium')}
   color: ${textColor.light['fg-neutral-primary']};
   margin: 0;
 `;
 
 const PlanPrice = styled.div`
-  ${typography(undefined, 'body3', 'regular')}
+  ${typography(undefined, 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
-`;
-
-const Divider = styled.div`
-  height: 1px;
-  background: ${color.gray['200']};
 `;
 
 const TokenRow = styled.div`
@@ -238,12 +257,12 @@ const TokenRow = styled.div`
 `;
 
 const TokenLabel = styled.div`
-  ${typography(undefined, 'body3', 'medium')}
+  ${typography(undefined, 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const TokenValue = styled.div`
-  ${typography(undefined, 'title1', 'medium')}
+  ${typography(undefined, 'body2', 'medium')}
   color: ${textColor.light['fg-neutral-primary']};
 `;
 
@@ -252,4 +271,16 @@ const FooterActions = styled.div`
   gap: 8px;
   width: 100%;
   justify-content: flex-end;
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+`;
+
+const LoadingText = styled.div`
+  ${typography(undefined, 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
 `;

@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import styled from 'styled-components';
 import InfoIcon from '@/assets/icons/icon_info_small.svg';
 import { formatDate } from '@/utils/date';
+import { llmService } from '@/services/llm';
 import {
   Modal,
   SolidButton,
@@ -17,6 +19,7 @@ interface CancelModalProps {
   planName?: string;
   planNumber?: string;
   nextBillingDate?: string;
+  bundleId?: number;
 }
 
 export default function CancelModal({
@@ -26,7 +29,28 @@ export default function CancelModal({
   planName,
   planNumber,
   nextBillingDate,
+  bundleId,
 }: CancelModalProps) {
+  const [loading, setLoading] = useState(false);
+
+  const handleCancel = async () => {
+    if (!bundleId) {
+      alert('번들 ID가 없습니다.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await llmService.cancelSubscription(bundleId);
+      alert('구독이 성공적으로 취소되었습니다.');
+      onConfirm();
+    } catch (error) {
+      console.error('구독 취소 실패:', error);
+      alert('구독 취소에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Modal
       open={open}
@@ -34,11 +58,21 @@ export default function CancelModal({
       title='구독취소 안내'
       actions={
         <Actions>
-          <SolidButton variant='secondary' size='medium' onClick={onClose}>
+          <SolidButton
+            variant='secondary'
+            size='medium'
+            onClick={onClose}
+            disabled={loading}
+          >
             닫기
           </SolidButton>
-          <SolidButton variant='primary' size='medium' onClick={onConfirm}>
-            구독취소
+          <SolidButton
+            variant='primary'
+            size='medium'
+            onClick={handleCancel}
+            disabled={loading}
+          >
+            {loading ? '취소 중...' : '구독취소'}
           </SolidButton>
         </Actions>
       }
