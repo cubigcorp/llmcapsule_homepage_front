@@ -533,34 +533,37 @@ export default function CheckoutPage() {
             </Section>
 
             {/* 반복 비용 */}
-            <Section>
-              <SectionTitle>{t('repeat.title')}</SectionTitle>
-              <AddOnDescription>{t('repeat.desc')}</AddOnDescription>
-              <RepeatCostCard>
-                <RepeatCostLeft>
-                  <RepeatCostPrice>$13,000</RepeatCostPrice>
-                  <RepeatCostUnit>{t('repeat.unit')}</RepeatCostUnit>
-                </RepeatCostLeft>
-                <CounterContainer>
-                  <CounterButton
-                    onClick={() =>
-                      setTokenPackCount(Math.max(0, tokenPackCount - 1))
-                    }
-                  >
-                    <IndeterminateIcon />
-                  </CounterButton>
-                  <CounterDisplay>{tokenPackCount}</CounterDisplay>
-                  <CounterButton
-                    onClick={() =>
-                      setTokenPackCount(Math.min(userCount, tokenPackCount + 1))
-                    }
-                  >
-                    <AddIcon />
-                  </CounterButton>
-                </CounterContainer>
-              </RepeatCostCard>
-            </Section>
-
+            {false && (
+              <Section>
+                <SectionTitle>{t('repeat.title')}</SectionTitle>
+                <AddOnDescription>{t('repeat.desc')}</AddOnDescription>
+                <RepeatCostCard>
+                  <RepeatCostLeft>
+                    <RepeatCostPrice>$13,000</RepeatCostPrice>
+                    <RepeatCostUnit>{t('repeat.unit')}</RepeatCostUnit>
+                  </RepeatCostLeft>
+                  <CounterContainer>
+                    <CounterButton
+                      onClick={() =>
+                        setTokenPackCount(Math.max(0, tokenPackCount - 1))
+                      }
+                    >
+                      <IndeterminateIcon />
+                    </CounterButton>
+                    <CounterDisplay>{tokenPackCount}</CounterDisplay>
+                    <CounterButton
+                      onClick={() =>
+                        setTokenPackCount(
+                          Math.min(userCount, tokenPackCount + 1)
+                        )
+                      }
+                    >
+                      <AddIcon />
+                    </CounterButton>
+                  </CounterContainer>
+                </RepeatCostCard>
+              </Section>
+            )}
             {/* Token 정보 */}
             <TokenInfoSection>
               <TokenInfoHeader>
