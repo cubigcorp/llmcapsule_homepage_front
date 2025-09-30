@@ -801,178 +801,131 @@ export default function CheckoutPage() {
                 <SummaryTitle>{t('summary.title')}</SummaryTitle>
 
                 <SummaryItem>
-                  <SummaryLabel>{t('summary.selectedSpec')}</SummaryLabel>
+                  <SummaryLabel>기본 항목</SummaryLabel>
                   <SummaryDetails>
                     <SummaryDetail>
-                      {t('summary.selectedPlan')}: {currentPlan.name} ($
+                      선택된 플랜: {currentPlan.name} ($
                       {currentPlan.price.toLocaleString()}/Seat · Cap{' '}
                       {tokenUsage.toLocaleString()})
                     </SummaryDetail>
+                    <SummaryDetail>사용 인원: {userCount}</SummaryDetail>
                     <SummaryDetail>
-                      {t('summary.users')}: {userCount}
+                      추가 토큰(반복 비용): {tokenPackCount} × $13,000/월
                     </SummaryDetail>
                     <SummaryDetail>
-                      {t('summary.contract')}: {contractPeriod}
-                      {t('contract.monthsSuffix')} ({t('summary.discount')}{' '}
+                      계약 기간: {contractPeriod}개월
+                    </SummaryDetail>
+                    <SummaryDetail>
+                      할인율: (
                       {contractDiscounts[
                         contractPeriod as keyof typeof contractDiscounts
                       ] || 0}
                       %)
                     </SummaryDetail>
                     <SummaryDetail>
-                      {t('summary.security')}:{' '}
-                      {securityGuideCount === -1
-                        ? t('summary.none')
-                        : `${securityGuideCount}개`}
-                    </SummaryDetail>
-                    <SummaryDetail>
-                      {t('summary.admin')}:{' '}
-                      {policyGuideCount === -1
-                        ? t('summary.none')
-                        : policyGuideCount === 0
-                          ? t('addon.range100_200')
-                          : policyGuideCount === 200
-                            ? t('addon.range200_500')
-                            : t('addon.range500p')}
-                    </SummaryDetail>
-                    <SummaryDetail>
-                      {t('summary.module')}:{' '}
-                      {basicModuleEnabled
-                        ? t('addon.basic')
-                        : t('summary.none')}
-                    </SummaryDetail>
-                    <SummaryDetail
-                      style={{ display: 'flex', alignItems: 'flex-start' }}
-                    >
-                      <span>{t('summary.others')}</span>
-                      <div
-                        style={{
-                          width: '1px',
-                          backgroundColor: color.neutral[200],
-                          alignSelf: 'stretch',
-                          margin: '0 12px',
-                        }}
-                      />
-                      {[
-                        aiAnswerEnabled && t('addon.aiAnswer'),
-                        unstructuredModuleEnabled && t('addon.unstructured'),
-                        ragSystemEnabled && t('addon.rag'),
-                        graphRagEnabled && t('addon.graphRag'),
-                        documentSecurityEnabled && t('addon.docSec'),
-                      ].filter(Boolean).length > 0 ? (
-                        <div style={{ flex: 1 }}>
-                          {aiAnswerEnabled && (
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                marginBottom: '4px',
-                              }}
-                            >
-                              {t('addon.aiAnswer')}
-                            </div>
-                          )}
-                          {unstructuredModuleEnabled && (
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                marginBottom: '4px',
-                              }}
-                            >
-                              {t('addon.unstructured')}
-                            </div>
-                          )}
-                          {ragSystemEnabled && (
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                marginBottom: '4px',
-                              }}
-                            >
-                              {t('addon.rag')}
-                            </div>
-                          )}
-                          {graphRagEnabled && (
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                marginBottom: '4px',
-                              }}
-                            >
-                              {t('addon.graphRag')}
-                            </div>
-                          )}
-                          {documentSecurityEnabled && (
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                marginBottom: '4px',
-                              }}
-                            >
-                              {t('addon.docSec')}
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <span>{t('summary.none')}</span>
-                      )}
-                    </SummaryDetail>
-                    <SummaryDetail>
-                      {t('summary.extraTokens')}: {tokenPackCount} × $13,000/월
+                      정기 결제 비용: $
+                      {Math.round(
+                        yearlyTotal + tokenPackCount * 13000 * contractPeriod
+                      ).toLocaleString()}
                     </SummaryDetail>
                   </SummaryDetails>
                 </SummaryItem>
-                <Divider />
+                <Divider style={{ margin: '24px 0' }} />
+                <SummaryItem>
+                  <SummaryLabel>1회성 구축 비용</SummaryLabel>
+                  <SummaryDetails>
+                    {securityGuideCount !== -1 && (
+                      <SummaryDetail>
+                        정형 민감정보 조건 모듈: (1회 적용 {securityGuideCount}
+                        개) / ${addOnPrices.security.toLocaleString()}
+                      </SummaryDetail>
+                    )}
+                    {policyGuideCount !== -1 && (
+                      <SummaryDetail>
+                        중앙 관리자 콘솔 Admin 구축: (
+                        {policyGuideCount === 0
+                          ? '100-200'
+                          : policyGuideCount === 200
+                            ? '200-500'
+                            : '500+'}
+                        ) / ${addOnPrices.policy.toLocaleString()}
+                      </SummaryDetail>
+                    )}
+                    {basicModuleEnabled && (
+                      <SummaryDetail>
+                        민감 키워드 추가: (기본 모듈
+                        {selectedSubOption !== 'none' &&
+                        selectedSubOption !== ''
+                          ? ` + ${selectedSubOption === 'filter5' ? '키워드 5개' : selectedSubOption === 'filter8' ? '키워드 8개' : '키워드 12개'}`
+                          : ''}
+                        ) / $
+                        {(
+                          addOnPrices.basicModule + addOnPrices.subOption
+                        ).toLocaleString()}
+                      </SummaryDetail>
+                    )}
+                    {aiAnswerEnabled && (
+                      <SummaryDetail>
+                        문맥 기반 AI 답변 적용: $
+                        {addOnPrices.aiAnswer.toLocaleString()}
+                      </SummaryDetail>
+                    )}
+                    {unstructuredModuleEnabled && (
+                      <SummaryDetail>
+                        비정형 민감정보 조건 모듈: $
+                        {addOnPrices.unstructuredModule.toLocaleString()}
+                      </SummaryDetail>
+                    )}
+                    {ragSystemEnabled && (
+                      <SummaryDetail>
+                        RAG 시스템: ${addOnPrices.rag.toLocaleString()}
+                      </SummaryDetail>
+                    )}
+                    {graphRagEnabled && (
+                      <SummaryDetail>
+                        최신 기술 Graph RAG 적용: $
+                        {addOnPrices.graphRag.toLocaleString()}
+                      </SummaryDetail>
+                    )}
+                    {documentSecurityEnabled && (
+                      <SummaryDetail>
+                        문서 보안 등급 별 접근 제어: $
+                        {addOnPrices.documentSecurity.toLocaleString()}
+                      </SummaryDetail>
+                    )}
+                  </SummaryDetails>
+                </SummaryItem>
+                <Divider style={{ margin: '24px 0' }} />
                 <PriceBreakdownSection>
                   <PriceBreakdownItem>
-                    <span>{t('summary.monthly')}</span>
-                    <span>${Math.round(monthlyTotal).toLocaleString()}</span>
+                    <span>정기 결제 비용</span>
+                    <span>
+                      $
+                      {Math.round(
+                        yearlyTotal + tokenPackCount * 13000 * contractPeriod
+                      ).toLocaleString()}
+                    </span>
                   </PriceBreakdownItem>
                   <PriceBreakdownItem>
-                    <span>{t('summary.oneTime')}</span>
+                    <span>1회성 구축 비용</span>
                     <span>${Math.round(addOnTotal).toLocaleString()}</span>
                   </PriceBreakdownItem>
-                  <PriceBreakdownItem>
-                    <span>{t('summary.firstBill')}</span>
-                    <span>${Math.round(finalTotal).toLocaleString()}</span>
-                  </PriceBreakdownItem>
                 </PriceBreakdownSection>
-                <Divider />
+
                 <TotalSection>
-                  <TotalLabel>{t('summary.total')}</TotalLabel>
+                  <TotalLabel>총 계약 금액</TotalLabel>
                   <TotalPrice>
-                    ${Math.round(finalTotal).toLocaleString()}
+                    $
+                    {Math.round(
+                      yearlyTotal +
+                        tokenPackCount * 13000 * contractPeriod +
+                        addOnTotal
+                    ).toLocaleString()}
                   </TotalPrice>
                 </TotalSection>
-                <TaxDetailsSection>
-                  <TaxDetailItem>
-                    <span>{t('summary.prepayApply')}</span>
-                    <span>${Math.round(prepayDiscount).toLocaleString()}</span>
-                  </TaxDetailItem>
-                  <TaxDetailItem>
-                    <span>{t('summary.vatIncl')}</span>
-                    <span>${Math.round(finalTotal).toLocaleString()}</span>
-                  </TaxDetailItem>
-                </TaxDetailsSection>
               </TopSection>
 
               <BottomSection>
-                <VatToggleWrapper>
-                  <VatToggle>
-                    <Checkbox
-                      variant='primary'
-                      state={vatEnabled ? 'checked' : 'unchecked'}
-                      onChange={(checked) => setVatEnabled(checked)}
-                    />
-                    <span>{t('vat.toggle')}</span>
-                  </VatToggle>
-                  <VatRate>{t('vat.rate')}</VatRate>
-                </VatToggleWrapper>
-
                 <ButtonGroup>
                   <SolidButton
                     variant='primary'
@@ -1644,9 +1597,7 @@ const SummaryTitle = styled.h3`
   margin-bottom: 16px;
 `;
 
-const SummaryItem = styled.div`
-  margin-bottom: 24px;
-`;
+const SummaryItem = styled.div``;
 
 const SummaryLabel = styled.h4`
   ${typography('ko', 'body2', 'medium')}
@@ -1673,7 +1624,6 @@ const TotalSection = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 0 10px 0;
 `;
 
 const TotalLabel = styled.div`
