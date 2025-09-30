@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, Suspense } from 'react';
 import styled from 'styled-components';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -38,7 +38,7 @@ function getPlanImageByName(name: string) {
   }
 }
 
-export default function CheckoutSummaryPage() {
+function CheckoutSummaryContent() {
   const { t } = useTranslation('checkout');
   const params = useSearchParams();
   const router = useRouter();
@@ -491,6 +491,14 @@ export default function CheckoutSummaryPage() {
         </ContentWrapper>
       </Container>
     </>
+  );
+}
+
+export default function CheckoutSummaryPage() {
+  return (
+    <Suspense fallback={null}>
+      <CheckoutSummaryContent />
+    </Suspense>
   );
 }
 
