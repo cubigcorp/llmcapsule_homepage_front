@@ -104,33 +104,34 @@ export default function CheckoutPage() {
   const addOnPrices = {
     security:
       securityGuideCount === 5
-        ? 12000000
+        ? 4210
         : securityGuideCount === 8
-          ? 15000000
+          ? 8420
           : securityGuideCount === 12
-            ? 18000000
+            ? 12630
             : 0,
     policy:
       policyGuideCount === 0
-        ? 25000000
+        ? 21050
         : policyGuideCount === 200
-          ? 30000000
+          ? 12630
           : policyGuideCount === 500
-            ? 35000000
+            ? 0
             : 0,
-    basicModule: basicModuleEnabled ? 25000000 : 0,
+    basicModule: basicModuleEnabled ? 6740 : 0,
     subOption:
       selectedSubOption === 'filter5'
-        ? 5000000
+        ? 10110
         : selectedSubOption === 'filter8'
-          ? 10000000
+          ? 12630
           : selectedSubOption === 'filter12'
-            ? 15000000
+            ? 15160
             : 0,
-    rag: ragSystemEnabled ? 10000000 : 0,
-    graphRag: graphRagEnabled ? 38000000 : 0,
-    documentSecurity: documentSecurityEnabled ? 5000000 : 0,
-    aiAnswer: aiAnswerEnabled ? 5000000 : 0,
+    rag: ragSystemEnabled ? 8420 : 0,
+    graphRag: graphRagEnabled ? 31990 : 0,
+    documentSecurity: documentSecurityEnabled ? 4210 : 0,
+    aiAnswer: aiAnswerEnabled ? 4210 : 0,
+    unstructuredModule: unstructuredModuleEnabled ? 21050 : 0,
     tokenPack: tokenPackCount * 13000,
   };
 
@@ -204,7 +205,7 @@ export default function CheckoutPage() {
                     {t('planNameSuffix')}
                   </PlanName>
                   <PlanPrice>
-                    ₩{currentPlan.price.toLocaleString()}/Seat
+                    ${currentPlan.price.toLocaleString()}/Seat
                   </PlanPrice>
                 </PlanInfo>
               </PlanCard>
@@ -501,7 +502,10 @@ export default function CheckoutPage() {
             {/* 계약 기간 */}
             <Section>
               <SectionTitle>{t('contract.title')}</SectionTitle>
-              <PeriodDescription>{t('contract.desc')}</PeriodDescription>
+              <PeriodDescription>
+                {contractPeriod}개월 마다 자동 갱신되며, 기간 할인은 운영 정책에
+                따라 달라질 수 있습니다.
+              </PeriodDescription>
               <PeriodOptions>
                 {[
                   { months: 1, discount: 0 },
@@ -529,72 +533,12 @@ export default function CheckoutPage() {
                   </PeriodOption>
                 ))}
               </PeriodOptions>
-              <Divider />
-              <PrepaySection>
-                <PrepayToggle>
-                  <Checkbox
-                    variant='primary'
-                    state={prepayEnabled ? 'checked' : 'unchecked'}
-                    onChange={(checked) => setPrepayEnabled(checked)}
-                  />
-                  <PrepayContent>
-                    <PrepayTop>
-                      <span>{t('contract.prepay')}</span>
-                      <PrepayBadges>
-                        <Badge size='small' type='strong' variant='info'>
-                          {t('contract.lumpSum')}
-                        </Badge>
-                        <Badge size='small' type='outline' variant='info'>
-                          {t('contract.pct')}
-                        </Badge>
-                      </PrepayBadges>
-                    </PrepayTop>
-                    <PrepayDescription>
-                      {t('contract.prepayDesc')}
-                    </PrepayDescription>
-                  </PrepayContent>
-                </PrepayToggle>
-              </PrepaySection>
             </Section>
 
             {/* Add-on */}
             <Section>
               <SectionTitle>{t('addon.title')}</SectionTitle>
               <AddOnDescription>{t('addon.desc')}</AddOnDescription>
-
-              <AddOnGroup>
-                <AddOnSubTitle>{t('addon.security')}</AddOnSubTitle>
-                <AddOnOptions>
-                  <AddOnOption
-                    $isSelected={securityGuideCount === -1}
-                    onClick={() => setSecurityGuideCount(-1)}
-                  >
-                    <span>{t('addon.none')}</span>
-                    <span>₩0</span>
-                  </AddOnOption>
-                  <AddOnOption
-                    $isSelected={securityGuideCount === 5}
-                    onClick={() => setSecurityGuideCount(5)}
-                  >
-                    <span>{t('addon.count5')}</span>
-                    <span>₩12,000,000</span>
-                  </AddOnOption>
-                  <AddOnOption
-                    $isSelected={securityGuideCount === 8}
-                    onClick={() => setSecurityGuideCount(8)}
-                  >
-                    <span>{t('addon.count8')}</span>
-                    <span>₩15,000,000</span>
-                  </AddOnOption>
-                  <AddOnOption
-                    $isSelected={securityGuideCount === 12}
-                    onClick={() => setSecurityGuideCount(12)}
-                  >
-                    <span>{t('addon.count12')}</span>
-                    <span>₩18,000,000</span>
-                  </AddOnOption>
-                </AddOnOptions>
-              </AddOnGroup>
 
               <AddOnGroup>
                 <AddOnSubTitle>{t('addon.admin')}</AddOnSubTitle>
@@ -605,32 +549,66 @@ export default function CheckoutPage() {
                     onClick={() => setPolicyGuideCount(-1)}
                   >
                     <span>{t('addon.none')}</span>
-                    <span>₩0</span>
+                    <span>$0</span>
                   </AddOnOption>
                   <AddOnOption
                     $isSelected={policyGuideCount === 0}
                     onClick={() => setPolicyGuideCount(0)}
                   >
                     <span>{t('addon.range100_200')}</span>
-                    <span>₩25,000,000</span>
+                    <span>$21,050</span>
                   </AddOnOption>
                   <AddOnOption
                     $isSelected={policyGuideCount === 200}
                     onClick={() => setPolicyGuideCount(200)}
                   >
                     <span>{t('addon.range200_500')}</span>
-                    <span>₩15,000,000</span>
+                    <span>$12,630</span>
                   </AddOnOption>
                   <AddOnOption
                     $isSelected={policyGuideCount === 500}
                     onClick={() => setPolicyGuideCount(500)}
                   >
                     <span>{t('addon.range500p')}</span>
-                    <span>₩0</span>
+                    <span>$0</span>
                   </AddOnOption>
                 </AddOnOptions>
               </AddOnGroup>
-
+              <Divider style={{ margin: '20px 0' }} />
+              <AddOnGroup>
+                <AddOnSubTitle>{t('addon.security')}</AddOnSubTitle>
+                <AddOnOptions>
+                  <AddOnOption
+                    $isSelected={securityGuideCount === -1}
+                    onClick={() => setSecurityGuideCount(-1)}
+                  >
+                    <span>{t('addon.none')}</span>
+                    <span>$0</span>
+                  </AddOnOption>
+                  <AddOnOption
+                    $isSelected={securityGuideCount === 5}
+                    onClick={() => setSecurityGuideCount(5)}
+                  >
+                    <span>{t('addon.count5')}</span>
+                    <span>$4,210</span>
+                  </AddOnOption>
+                  <AddOnOption
+                    $isSelected={securityGuideCount === 8}
+                    onClick={() => setSecurityGuideCount(8)}
+                  >
+                    <span>{t('addon.count8')}</span>
+                    <span>$8,420</span>
+                  </AddOnOption>
+                  <AddOnOption
+                    $isSelected={securityGuideCount === 12}
+                    onClick={() => setSecurityGuideCount(12)}
+                  >
+                    <span>{t('addon.count12')}</span>
+                    <span>$12,630</span>
+                  </AddOnOption>
+                </AddOnOptions>
+              </AddOnGroup>
+              <Divider style={{ margin: '20px 0' }} />
               <AddOnGroup>
                 <AddOnSubTitle>{t('addon.module')}</AddOnSubTitle>
                 <LargeAddOnCard $isSelected={basicModuleEnabled}>
@@ -648,7 +626,7 @@ export default function CheckoutPage() {
                       }}
                     />
                     <span>{t('addon.basic')}</span>
-                    <AddOnMainPrice>₩25,000,000</AddOnMainPrice>
+                    <AddOnMainPrice>$6,740</AddOnMainPrice>
                   </AddOnMainToggle>
 
                   <AddOnSubGrid>
@@ -660,7 +638,7 @@ export default function CheckoutPage() {
                       }
                     >
                       <span>{t('addon.noneShort')}</span>
-                      <span>₩0</span>
+                      <span>$0</span>
                     </AddOnSubCard>
                     <AddOnSubCard
                       $isSelected={selectedSubOption === 'filter5'}
@@ -670,7 +648,7 @@ export default function CheckoutPage() {
                       }
                     >
                       <span>{t('addon.filter5')}</span>
-                      <span>₩5,000,000</span>
+                      <span>$10,110</span>
                     </AddOnSubCard>
                     <AddOnSubCard
                       $isSelected={selectedSubOption === 'filter8'}
@@ -680,7 +658,7 @@ export default function CheckoutPage() {
                       }
                     >
                       <span>{t('addon.filter8')}</span>
-                      <span>₩10,000,000</span>
+                      <span>$12,630</span>
                     </AddOnSubCard>
                     <AddOnSubCard
                       $isSelected={selectedSubOption === 'filter12'}
@@ -690,15 +668,46 @@ export default function CheckoutPage() {
                       }
                     >
                       <span>{t('addon.filter12')}</span>
-                      <span>₩15,000,000</span>
+                      <span>$15,160</span>
                     </AddOnSubCard>
                   </AddOnSubGrid>
                 </LargeAddOnCard>
               </AddOnGroup>
+              <Divider style={{ margin: '20px 0' }} />
 
               <AddOnGroup>
                 <AddOnSubTitle>{t('addon.others')}</AddOnSubTitle>
                 <AddOnItemList>
+                  <AddOnItem
+                    $isSelected={aiAnswerEnabled}
+                    onClick={() => setAiAnswerEnabled(!aiAnswerEnabled)}
+                  >
+                    <Checkbox
+                      variant='primary'
+                      state={aiAnswerEnabled ? 'checked' : 'unchecked'}
+                      onChange={(checked) => setAiAnswerEnabled(checked)}
+                    />
+                    <span>{t('addon.aiAnswer')}</span>
+                    <span>$4,210</span>
+                  </AddOnItem>
+                  <AddOnItem
+                    $isSelected={unstructuredModuleEnabled}
+                    onClick={() =>
+                      setUnstructuredModuleEnabled(!unstructuredModuleEnabled)
+                    }
+                  >
+                    <Checkbox
+                      variant='primary'
+                      state={
+                        unstructuredModuleEnabled ? 'checked' : 'unchecked'
+                      }
+                      onChange={(checked) =>
+                        setUnstructuredModuleEnabled(checked)
+                      }
+                    />
+                    <span>{t('addon.unstructured')}</span>
+                    <span>$21,050</span>
+                  </AddOnItem>
                   <AddOnItem
                     $isSelected={ragSystemEnabled}
                     onClick={() => setRagSystemEnabled(!ragSystemEnabled)}
@@ -709,7 +718,7 @@ export default function CheckoutPage() {
                       onChange={(checked) => setRagSystemEnabled(checked)}
                     />
                     <span>{t('addon.rag')}</span>
-                    <span>₩10,000,000</span>
+                    <span>$8,420</span>
                   </AddOnItem>
                   <AddOnItem
                     $isSelected={graphRagEnabled}
@@ -721,7 +730,7 @@ export default function CheckoutPage() {
                       onChange={(checked) => setGraphRagEnabled(checked)}
                     />
                     <span>{t('addon.graphRag')}</span>
-                    <span>₩38,000,000</span>
+                    <span>$31,990</span>
                   </AddOnItem>
                   <AddOnItem
                     $isSelected={documentSecurityEnabled}
@@ -737,19 +746,7 @@ export default function CheckoutPage() {
                       }
                     />
                     <span>{t('addon.docSec')}</span>
-                    <span>₩5,000,000</span>
-                  </AddOnItem>
-                  <AddOnItem
-                    $isSelected={aiAnswerEnabled}
-                    onClick={() => setAiAnswerEnabled(!aiAnswerEnabled)}
-                  >
-                    <Checkbox
-                      variant='primary'
-                      state={aiAnswerEnabled ? 'checked' : 'unchecked'}
-                      onChange={(checked) => setAiAnswerEnabled(checked)}
-                    />
-                    <span>{t('addon.aiAnswer')}</span>
-                    <span>₩5,000,000</span>
+                    <span>$4,210</span>
                   </AddOnItem>
                 </AddOnItemList>
               </AddOnGroup>
@@ -761,7 +758,7 @@ export default function CheckoutPage() {
               <AddOnDescription>{t('repeat.desc')}</AddOnDescription>
               <RepeatCostCard>
                 <RepeatCostLeft>
-                  <RepeatCostPrice>₩13,000</RepeatCostPrice>
+                  <RepeatCostPrice>$13,000</RepeatCostPrice>
                   <RepeatCostUnit>{t('repeat.unit')}</RepeatCostUnit>
                 </RepeatCostLeft>
                 <CounterContainer>
@@ -807,7 +804,7 @@ export default function CheckoutPage() {
                   <SummaryLabel>{t('summary.selectedSpec')}</SummaryLabel>
                   <SummaryDetails>
                     <SummaryDetail>
-                      {t('summary.selectedPlan')}: {currentPlan.name} (₩
+                      {t('summary.selectedPlan')}: {currentPlan.name} ($
                       {currentPlan.price.toLocaleString()}/Seat · Cap{' '}
                       {tokenUsage.toLocaleString()})
                     </SummaryDetail>
@@ -821,10 +818,6 @@ export default function CheckoutPage() {
                         contractPeriod as keyof typeof contractDiscounts
                       ] || 0}
                       %)
-                    </SummaryDetail>
-                    <SummaryDetail>
-                      {t('summary.prepay')}:{' '}
-                      {prepayEnabled ? t('summary.yesWith') : t('summary.no')}
                     </SummaryDetail>
                     <SummaryDetail>
                       {t('summary.security')}:{' '}
@@ -844,9 +837,9 @@ export default function CheckoutPage() {
                     </SummaryDetail>
                     <SummaryDetail>
                       {t('summary.module')}:{' '}
-                      {unstructuredModuleEnabled
+                      {basicModuleEnabled
                         ? t('addon.basic')
-                        : t('addon.basic')}
+                        : t('summary.none')}
                     </SummaryDetail>
                     <SummaryDetail
                       style={{ display: 'flex', alignItems: 'flex-start' }}
@@ -861,12 +854,35 @@ export default function CheckoutPage() {
                         }}
                       />
                       {[
+                        aiAnswerEnabled && t('addon.aiAnswer'),
+                        unstructuredModuleEnabled && t('addon.unstructured'),
                         ragSystemEnabled && t('addon.rag'),
                         graphRagEnabled && t('addon.graphRag'),
                         documentSecurityEnabled && t('addon.docSec'),
-                        aiAnswerEnabled && t('addon.aiAnswer'),
                       ].filter(Boolean).length > 0 ? (
                         <div style={{ flex: 1 }}>
+                          {aiAnswerEnabled && (
+                            <div
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                marginBottom: '4px',
+                              }}
+                            >
+                              {t('addon.aiAnswer')}
+                            </div>
+                          )}
+                          {unstructuredModuleEnabled && (
+                            <div
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                marginBottom: '4px',
+                              }}
+                            >
+                              {t('addon.unstructured')}
+                            </div>
+                          )}
                           {ragSystemEnabled && (
                             <div
                               style={{
@@ -900,27 +916,13 @@ export default function CheckoutPage() {
                               {t('addon.docSec')}
                             </div>
                           )}
-                          {aiAnswerEnabled && (
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                marginBottom: '4px',
-                              }}
-                            >
-                              {t('addon.aiAnswer')}
-                            </div>
-                          )}
                         </div>
                       ) : (
                         <span>{t('summary.none')}</span>
                       )}
                     </SummaryDetail>
                     <SummaryDetail>
-                      {t('summary.extraTokens')}: {tokenPackCount} × ₩13,000/월
-                    </SummaryDetail>
-                    <SummaryDetail>
-                      {t('summary.vatOn')}: {vatEnabled ? 'OFF' : 'OFF'}
+                      {t('summary.extraTokens')}: {tokenPackCount} × $13,000/월
                     </SummaryDetail>
                   </SummaryDetails>
                 </SummaryItem>
@@ -928,32 +930,32 @@ export default function CheckoutPage() {
                 <PriceBreakdownSection>
                   <PriceBreakdownItem>
                     <span>{t('summary.monthly')}</span>
-                    <span>₩{Math.round(monthlyTotal).toLocaleString()}</span>
+                    <span>${Math.round(monthlyTotal).toLocaleString()}</span>
                   </PriceBreakdownItem>
                   <PriceBreakdownItem>
                     <span>{t('summary.oneTime')}</span>
-                    <span>₩{Math.round(addOnTotal).toLocaleString()}</span>
+                    <span>${Math.round(addOnTotal).toLocaleString()}</span>
                   </PriceBreakdownItem>
                   <PriceBreakdownItem>
                     <span>{t('summary.firstBill')}</span>
-                    <span>₩{Math.round(finalTotal).toLocaleString()}</span>
+                    <span>${Math.round(finalTotal).toLocaleString()}</span>
                   </PriceBreakdownItem>
                 </PriceBreakdownSection>
                 <Divider />
                 <TotalSection>
                   <TotalLabel>{t('summary.total')}</TotalLabel>
                   <TotalPrice>
-                    ₩{Math.round(finalTotal).toLocaleString()}
+                    ${Math.round(finalTotal).toLocaleString()}
                   </TotalPrice>
                 </TotalSection>
                 <TaxDetailsSection>
                   <TaxDetailItem>
                     <span>{t('summary.prepayApply')}</span>
-                    <span>₩{Math.round(prepayDiscount).toLocaleString()}</span>
+                    <span>${Math.round(prepayDiscount).toLocaleString()}</span>
                   </TaxDetailItem>
                   <TaxDetailItem>
                     <span>{t('summary.vatIncl')}</span>
-                    <span>₩{Math.round(finalTotal).toLocaleString()}</span>
+                    <span>${Math.round(finalTotal).toLocaleString()}</span>
                   </TaxDetailItem>
                 </TaxDetailsSection>
               </TopSection>
@@ -1109,9 +1111,7 @@ const SubSectionTitle = styled.h4`
   margin: 24px 0 12px 0;
 `;
 
-const SliderContainer = styled.div`
-  margin-bottom: 24px;
-`;
+const SliderContainer = styled.div``;
 
 const SliderTrack = styled.div`
   margin-bottom: 16px;
@@ -1340,7 +1340,6 @@ const PeriodDescription = styled.p`
 const PeriodOptions = styled.div`
   display: flex;
   gap: 12px;
-  margin-bottom: 20px;
 `;
 
 const PeriodOption = styled.div<{ $isSelected: boolean }>`
@@ -1361,48 +1360,6 @@ const PeriodOption = styled.div<{ $isSelected: boolean }>`
   > span {
     ${typography('ko', 'body3', 'medium')}
   }
-`;
-
-const PrepaySection = styled.div`
-  padding: 16px;
-  background: ${color.blue['50']};
-  border-radius: 8px;
-  margin-top: 20px;
-`;
-
-const PrepayToggle = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-`;
-
-const PrepayContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-const PrepayTop = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  > span {
-    ${typography('ko', 'body3', 'medium')}
-    color: ${textColor.light['fg-neutral-primary']};
-  }
-`;
-
-const PrepayBadges = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`;
-
-const PrepayDescription = styled.p`
-  ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  margin: 0;
 `;
 
 const AddOnDescription = styled.p`
@@ -1582,8 +1539,6 @@ const CounterDisplay = styled.div`
 `;
 
 const AddOnGroup = styled.div`
-  margin-bottom: 24px;
-
   &:last-child {
     margin-bottom: 0;
   }
