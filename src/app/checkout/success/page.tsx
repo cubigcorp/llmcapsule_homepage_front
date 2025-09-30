@@ -1,8 +1,13 @@
 'use client';
 
 import React from 'react';
+import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 import GlobalHeader from '@/components/layout/Header';
 import styled from 'styled-components';
+import PlanBasicImage from '@/assets/images/plan_basic.png';
+import PlanPlusImage from '@/assets/images/plan_plus.png';
+import PlanProImage from '@/assets/images/plan_pro.png';
 import PlanMaxImage from '@/assets/images/plan_max.png';
 import InfoIcon from '@/assets/icons/icon_info.svg';
 import DownloadIcon from '@/assets/icons/icon_download.svg';
@@ -17,156 +22,154 @@ import {
   color,
 } from '@cubig/design-system';
 
+type CompletePayload = never; // deprecated
+
+function getPlanImageByName(name: string) {
+  switch ((name || '').toLowerCase()) {
+    case 'basic':
+      return PlanBasicImage;
+    case 'plus':
+      return PlanPlusImage;
+    case 'pro':
+      return PlanProImage;
+    case 'max':
+      return PlanMaxImage;
+    default:
+      return PlanPlusImage;
+  }
+}
+
 export default function CheckoutSuccessPage() {
   const { t } = useTranslation();
+  const params = useSearchParams();
+  const plan = (params.get('plan') || 'Plus').toUpperCase();
+  const purchaseType = (params.get('purchaseType') || 'BUSINESS').toUpperCase();
+  const price = Number(params.get('price') || '0');
+  const users = Number(params.get('users') || '0');
+  const period = Number(params.get('period') || '0');
+  const monthlyTotal = Number(params.get('monthlyTotal') || '0');
+  const oneTimeTotal = Number(params.get('oneTimeTotal') || '0');
+  const totalAmount = Number(params.get('totalAmount') || '0');
 
-  // Mock data
-  const orderData = {
-    orderNumber: 'OR4234',
-    orderDate: '2025년 9월 8일 13시 00분',
-    plan: {
-      name: 'MAX',
-      price: '₩51,000/Seat',
-      description: 'Seat • Cap 600,000',
-      details: {
-        plan: 'Max',
-        users: '200',
-        period: '12개월 (기간 할인 5%)',
-        prepay: '예(추가 2%)',
-        extraTokens: '0 • ₩13,000/월',
-        vat: 'OFF',
-      },
-    },
-    pricing: {
-      monthlyFee: '₩4,845,000',
-      oneTimeFee: '₩90,000,000',
-      firstBill: '₩94,845,000',
-      total: '₩161,674,920',
-      prepayDiscount: '₩146,977,200',
-      vatIncluded: '₩161,674,920',
-    },
-  };
+  const planImage = getPlanImageByName(plan);
+  const normalizedPlan = plan as 'BASIC' | 'PLUS' | 'PRO' | 'MAX';
+  const payment = {} as { payment_id?: number; created_at?: string };
+  const formatKoreanDateTime = (d: Date) =>
+    `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${d
+      .getHours()
+      .toString()
+      .padStart(2, '0')}시 ${d.getMinutes().toString().padStart(2, '0')}분`;
+  const orderNumber = payment?.payment_id
+    ? `OR${String(payment.payment_id).padStart(4, '0')}`
+    : `OR${new Date().getTime().toString().slice(-4)}`;
+  const orderDate = formatKoreanDateTime(
+    payment?.created_at ? new Date(payment.created_at) : new Date()
+  );
+  const planCapMax = (() => {
+    if (purchaseType === 'PERSONAL') {
+      switch (normalizedPlan) {
+        case 'BASIC':
+          return 70000;
+        case 'PLUS':
+          return 120000;
+        case 'PRO':
+          return 280000;
+        case 'MAX':
+          return 600000;
+        default:
+          return 0;
+      }
+    }
+    switch (normalizedPlan) {
+      case 'PLUS':
+        return 120000;
+      case 'PRO':
+        return 280000;
+      case 'MAX':
+        return 600000;
+      default:
+        return 0;
+    }
+  })();
 
   return (
     <>
       <GlobalHeader />
       <Container>
-        <Header>
-          <Title>{t('mypage:checkout.success.title')}</Title>
-          <OrderInfo>
-            <OrderNumber>
-              {t('mypage:checkout.success.orderNumber')} {orderData.orderNumber}
-            </OrderNumber>
-            <OrderDivider>|</OrderDivider>
-            <OrderDate>{orderData.orderDate}</OrderDate>
-          </OrderInfo>
-        </Header>
-
-        <Content>
+        <ContentWrapper>
+          <Header>
+            <Title>결제가 완료되었습니다.</Title>
+            <OrderInfo>
+              <OrderNumber>주문번호 {orderNumber}</OrderNumber>
+              <OrderDivider>|</OrderDivider>
+              <OrderDate>{orderDate}</OrderDate>
+            </OrderInfo>
+          </Header>
           <Divider />
-          <PlanSection>
-            <PlanBadge />
-            <PlanInfo>
-              <PlanName>{orderData.plan.name}</PlanName>
-              <PlanDetails>
-                <PlanPrice>{orderData.plan.price}</PlanPrice>
-                <PlanDivider>|</PlanDivider>
-                <PlanDescription>{orderData.plan.description}</PlanDescription>
-              </PlanDetails>
-            </PlanInfo>
-          </PlanSection>
+          <SummaryCard>
+            <PlanRow>
+              <PlanBadge>
+                <Image
+                  src={planImage}
+                  alt={`${plan} plan`}
+                  width={56}
+                  height={56}
+                />
+              </PlanBadge>
+              <PlanInfo>
+                <PlanName>{plan}</PlanName>
+                <PlanMeta>
+                  <PlanPrice>₩{price.toLocaleString()}/Seat</PlanPrice>
+                  <PlanDivider>·</PlanDivider>
+                  <PlanCap>Seat · Cap {planCapMax.toLocaleString()}</PlanCap>
+                </PlanMeta>
+              </PlanInfo>
+            </PlanRow>
 
-          <DetailsSection>
-            <DetailItem>
-              <DetailBullet>•</DetailBullet>
-              <DetailText>
-                {t('mypage:checkout.success.plan')}{' '}
-                {orderData.plan.details.plan}
-              </DetailText>
-            </DetailItem>
-            <DetailItem>
-              <DetailBullet>•</DetailBullet>
-              <DetailText>
-                {t('mypage:checkout.success.quantity')}{' '}
-                {orderData.plan.details.users}
-              </DetailText>
-            </DetailItem>
-            <DetailItem>
-              <DetailBullet>•</DetailBullet>
-              <DetailText>
-                {t('mypage:checkout.success.period')}{' '}
-                {orderData.plan.details.period}
-              </DetailText>
-            </DetailItem>
-            <DetailItem>
-              <DetailBullet>•</DetailBullet>
-              <DetailText>
-                {t('mypage:checkout.success.prepay')}{' '}
-                {orderData.plan.details.prepay}
-              </DetailText>
-            </DetailItem>
-            <DetailItem>
-              <DetailBullet>•</DetailBullet>
-              <DetailText>
-                {t('mypage:checkout.success.extraTokens')}{' '}
-                {orderData.plan.details.extraTokens}
-              </DetailText>
-            </DetailItem>
-            <DetailItem>
-              <DetailBullet>•</DetailBullet>
-              <DetailText>
-                {t('mypage:checkout.success.vatIncluded')}{' '}
-                {orderData.plan.details.vat}
-              </DetailText>
-            </DetailItem>
-          </DetailsSection>
+            <SectionTitle>기본 항목</SectionTitle>
+            <Bullets>
+              <li>
+                선택된 플랜: {plan} (₩{price.toLocaleString()}/Seat · Cap{' '}
+                {planCapMax.toLocaleString()})
+              </li>
+              <li>사용 인원: {users}</li>
+              <li>계약 기간: {period}개월</li>
+              <li style={{ color: textColor.light['fg-neutral-primary'] }}>
+                정기 결제 비용: ₩{monthlyTotal.toLocaleString()}
+              </li>
+            </Bullets>
 
-          <PricingContainer>
-            <PricingSection>
-              <PricingRow>
-                <PricingLabel>
-                  {t('mypage:checkout.success.monthlyFee')}
-                </PricingLabel>
-                <PricingValue>{orderData.pricing.monthlyFee}</PricingValue>
-              </PricingRow>
-              <PricingRow>
-                <PricingLabel>
-                  {t('mypage:checkout.success.oneTimeFee')}
-                </PricingLabel>
-                <PricingValue>{orderData.pricing.oneTimeFee}</PricingValue>
-              </PricingRow>
-              <PricingRow>
-                <PricingLabel>
-                  {t('mypage:checkout.success.firstBill')}
-                </PricingLabel>
-                <PricingValue>{orderData.pricing.firstBill}</PricingValue>
-              </PricingRow>
-            </PricingSection>
+            {oneTimeTotal > 0 && (
+              <>
+                <Divider style={{ margin: '32px 0' }} />
+                <SectionTitle>1회성 구축 비용</SectionTitle>
+                <Bullets>
+                  <li style={{ color: textColor.light['fg-neutral-primary'] }}>
+                    1회성 구축 비용: ₩{oneTimeTotal.toLocaleString()}
+                  </li>
+                </Bullets>
+              </>
+            )}
 
-            <TotalSection>
-              <TotalRow>
-                <TotalLabel>{t('mypage:checkout.success.total')}</TotalLabel>
-                <TotalValue>{orderData.pricing.total}</TotalValue>
-              </TotalRow>
-              <PricingRow>
-                <PricingLabel>
-                  {t('mypage:checkout.success.prepayApply')}
-                </PricingLabel>
-                <PricingValue>{orderData.pricing.prepayDiscount}</PricingValue>
-              </PricingRow>
-              <PricingRow>
-                <PricingLabel>
-                  {t('mypage:checkout.success.vatFinal')}
-                </PricingLabel>
-                <PricingValue>{orderData.pricing.vatIncluded}</PricingValue>
-              </PricingRow>
-            </TotalSection>
-          </PricingContainer>
-
-          <NoticeSection>
-            <NoticeIcon />
-            <NoticeText>{t('mypage:checkout.success.notice')}</NoticeText>
-          </NoticeSection>
+            <TotalsBox>
+              <TotalsGroup>
+                <TotalsLine>
+                  <span>정기 결제 비용</span>
+                  <span>₩{monthlyTotal.toLocaleString()}</span>
+                </TotalsLine>
+                {oneTimeTotal > 0 && (
+                  <TotalsLine>
+                    <span>1회성 구축 비용</span>
+                    <span>₩{oneTimeTotal.toLocaleString()}</span>
+                  </TotalsLine>
+                )}
+              </TotalsGroup>
+              <TotalsGrandLine>
+                <GrandLabel>총 계약 금액</GrandLabel>
+                <GrandValue>₩{totalAmount.toLocaleString()}</GrandValue>
+              </TotalsGrandLine>
+            </TotalsBox>
+          </SummaryCard>
 
           <ButtonSection>
             <DownloadButton
@@ -180,25 +183,39 @@ export default function CheckoutSuccessPage() {
               {t('mypage:checkout.success.managePlan')}
             </CompleteButton>
           </ButtonSection>
-        </Content>
+        </ContentWrapper>
       </Container>
     </>
   );
 }
 
 const Container = styled.div`
-  padding: 144px 32px 32px 32px;
+  min-height: 100vh;
+  background: white;
+  padding-top: 80px;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 1120px;
   margin: 0 auto;
+  padding: 24px 24px 40px 24px;
+`;
+
+const SummaryCard = styled.div`
+  background: white;
+  border-radius: 0;
+  border: none;
+  padding: 8px 0 0 0;
 `;
 
 const Header = styled.div`
-  margin-bottom: 60px;
+  margin-bottom: 24px;
 `;
 
 const Title = styled.h1`
-  ${typography('ko', 'title1', 'semibold')}
+  ${typography('ko', 'heading2', 'semibold')}
   color: ${textColor.light['fg-neutral-primary']};
-  margin: 0 0 12px 0;
+  margin: 0 0 8px 0;
 `;
 
 const OrderInfo = styled.div`
@@ -222,131 +239,118 @@ const OrderDate = styled.span`
   color: ${textColor.light['fg-neutral-alternative']};
 `;
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const PlanSection = styled.div`
+const PlanRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  margin-bottom: 32px;
 `;
 
 const PlanBadge = styled.div`
   width: 80px;
-  height: 60px;
-  border-radius: 8px;
-  background: url(${PlanMaxImage.src}) lightgray 50% / cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  ${typography('ko', 'body2', 'semibold')}
+  height: 56px;
+  border-radius: 10px;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const PlanInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
 `;
 
-const PlanName = styled.h2`
-  ${typography('ko', 'title2', 'semibold')}
-  color: ${textColor.light['fg-neutral-primary']};
-  margin: 0;
+const PlanName = styled.div`
+  ${typography('ko', 'title1', 'semibold')}
 `;
 
-const PlanDetails = styled.div`
+const PlanMeta = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const PlanPrice = styled.span`
-  ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
+  ${typography('ko', 'body2', 'medium')}
 `;
 
 const PlanDivider = styled.span`
   ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-assistive']};
 `;
 
-const PlanDescription = styled.span`
+const PlanCap = styled.span`
   ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
-const DetailsSection = styled.div`
-  display: flex;
-  flex-direction: column;
+const SectionTitle = styled.h3`
+  ${typography('ko', 'body1', 'semibold')}
+  margin: 0 0 12px 0;
 `;
 
-const DetailItem = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
+const Bullets = styled.ul`
+  margin: 0 0 6px 0;
+  gap: 6px;
+  list-style: none;
+  padding-left: 0;
+  li {
+    ${typography('ko', 'body2', 'regular')}
+    color: ${textColor.light['fg-neutral-alternative']};
+    line-height: 1.6;
+    display: flex;
+    align-items: baseline;
+  }
+  li::before {
+    content: '• ';
+    margin-right: 4px;
+  }
 `;
 
-const DetailBullet = styled.span`
-  ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  line-height: 1.5;
-  margin-top: 1px;
-`;
+// Duplicate tokens removed (already defined above)
 
-const DetailText = styled.span`
-  ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-  line-height: 1.5;
-`;
-
-const PricingContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const TotalsBox = styled.div`
+  margin: 32px 0 20px 0;
   border: 1px solid ${borderColor.light['color-border-primary']};
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
 `;
 
-const PricingSection = styled.div`
+const TotalsGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 20px;
+  background: white;
 `;
 
-const PricingRow = styled.div`
+const TotalsLine = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  ${typography('ko', 'body2', 'medium')}
 `;
 
-const PricingLabel = styled.span`
-  ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-strong']};
-`;
-
-const PricingValue = styled.span`
-  ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-primary']};
-`;
-
-const TotalSection = styled.div`
+const TotalsGrandLine = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
   background: ${layerColor.light['bg-layer-basement']};
   border-top: 1px solid ${borderColor.light['color-border-primary']};
 `;
 
-const TotalRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const GrandLabel = styled.span`
+  ${typography('ko', 'heading1', 'semibold')}
 `;
+
+const GrandValue = styled.span`
+  ${typography('ko', 'heading1', 'semibold')}
+`;
+
+// Duplicate blocks removed (already defined above)
 
 const TotalLabel = styled.span`
   ${typography('ko', 'heading1', 'semibold')}

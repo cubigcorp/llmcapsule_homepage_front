@@ -434,12 +434,12 @@ class ApiClient {
 
         // 요청 로깅 (개발 환경에서만)
         if (env.NODE_ENV === 'development') {
-          console.log(
-            'API Request:',
-            config.method?.toUpperCase(),
-            config.url,
-            config.data
-          );
+          // console.log(
+          //   'API Request:',
+          //   config.method?.toUpperCase(),
+          //   config.url,
+          //   config.data
+          // );
         }
         return config;
       },
@@ -453,7 +453,7 @@ class ApiClient {
       (response: AxiosResponse) => {
         // 응답 로깅 (개발 환경에서만)
         if (env.NODE_ENV === 'development') {
-          console.log('API Response:', response.status, response.data);
+          // console.log('API Response:', response.status, response.data);
         }
         return response;
       },

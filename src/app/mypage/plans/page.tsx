@@ -225,7 +225,7 @@ export default function PlansPage() {
               <InfoValue>{currentBundle?.serials?.length ?? 0}</InfoValue>
             </InfoCell>
             <InfoCell>
-              <InfoLabel>다음 결제일</InfoLabel>
+              <InfoLabel>만료일(다음 결제일)</InfoLabel>
               <InfoValue>
                 {currentBundle?.next_billing_date
                   ? formatDateShort(currentBundle.next_billing_date)
