@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import GlobalHeader from '@/components/layout/Header';
+import { useTranslation } from 'react-i18next';
 import {
   SolidButton,
   Divider,
@@ -38,6 +39,7 @@ function getPlanImageByName(name: string) {
 }
 
 export default function CheckoutSummaryPage() {
+  const { t } = useTranslation('checkout');
   const params = useSearchParams();
   const router = useRouter();
   const paypalContainerRef = useRef<HTMLDivElement | null>(null);
@@ -361,7 +363,7 @@ export default function CheckoutSummaryPage() {
       <Container>
         <ContentWrapper>
           <Header>
-            <Title>결제 상세</Title>
+            <Title>{t('checkout:summary.title')}</Title>
           </Header>
           <Divider />
           <SummaryCard>
@@ -384,17 +386,26 @@ export default function CheckoutSummaryPage() {
               </PlanInfo>
             </PlanRow>
 
-            <SectionTitle>기본 항목</SectionTitle>
+            <SectionTitle>{t('checkout:summary.selectedSpec')}</SectionTitle>
             <Bullets>
               <li>
-                선택된 플랜: {plan} (${price.toLocaleString()}/Seat · Cap{' '}
+                {t('checkout:summary.selectedPlan')}: {plan} ($
+                {price.toLocaleString()}/Seat · Cap{' '}
                 {planCapMax.toLocaleString()})
               </li>
-              <li>사용 인원: {users}</li>
-              <li>계약 기간: {period}개월</li>
-              <li>할인율: ({discount.toLocaleString()}%)</li>
+              <li>
+                {t('checkout:summary.users')}: {users}
+              </li>
+              <li>
+                {t('checkout:summary.contract')}: {period}
+                {t('checkout:contract.monthsSuffix')}
+              </li>
+              <li>
+                {t('checkout:summary.discount')}: ({discount.toLocaleString()}%)
+              </li>
               <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                정기 결제 비용: ₩{monthlyTotal.toLocaleString()}
+                {t('checkout:summary.monthly')}: ₩
+                {monthlyTotal.toLocaleString()}
               </li>
             </Bullets>
 
@@ -402,17 +413,18 @@ export default function CheckoutSummaryPage() {
 
             {hasOneTimeCost && (
               <>
-                <SectionTitle>1회성 구축 비용</SectionTitle>
+                <SectionTitle>{t('checkout:summary.oneTime')}</SectionTitle>
                 <Bullets>
                   {Number(securityGuideCount) > 0 && (
                     <li>
-                      정형 민감 조건 모듈 (1회 적용 {securityGuideCount}개)
+                      {t('checkout:summary.security')} (1회 적용{' '}
+                      {securityGuideCount}개)
                     </li>
                   )}
-                  {policyGuideCount && <li>중앙 관리자 콘솔 Admin 구축</li>}
+                  {policyGuideCount && <li>{t('checkout:summary.admin')}</li>}
                   {basicModuleEnabled && (
                     <li>
-                      민감 키워드 추가
+                      {t('checkout:summary.module')}
                       {selectedSubOption
                         ? selectedSubOption === 'filter5'
                           ? ' (키워드 5개)'
@@ -425,14 +437,17 @@ export default function CheckoutSummaryPage() {
                     </li>
                   )}
                   {unstructuredModuleEnabled && (
-                    <li>비정형 민감정보 조건 모듈</li>
+                    <li>{t('checkout:summary.unstructured')}</li>
                   )}
-                  {ragSystemEnabled && <li>RAG 시스템</li>}
-                  {graphRagEnabled && <li>최신 기술 Graph RAG 적용</li>}
-                  {documentSecurityEnabled && <li>문서보안등급별 접근 제어</li>}
-                  {aiAnswerEnabled && <li>문맥 기반 AI 답변 적용</li>}
+                  {ragSystemEnabled && <li>{t('checkout:summary.rag')}</li>}
+                  {graphRagEnabled && <li>{t('checkout:summary.graphRag')}</li>}
+                  {documentSecurityEnabled && (
+                    <li>{t('checkout:summary.docSec')}</li>
+                  )}
+                  {aiAnswerEnabled && <li>{t('checkout:summary.aiAnswer')}</li>}
                   <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                    1회성 구축 비용: ₩{oneTimeTotal.toLocaleString()}
+                    {t('checkout:summary.oneTime')}: ₩
+                    {oneTimeTotal.toLocaleString()}
                   </li>
                 </Bullets>
               </>
@@ -441,18 +456,18 @@ export default function CheckoutSummaryPage() {
             <TotalsBox>
               <TotalsGroup>
                 <TotalsLine>
-                  <span>정기 결제 비용</span>
+                  <span>{t('checkout:summary.monthly')}</span>
                   <span>₩{monthlyTotal.toLocaleString()}</span>
                 </TotalsLine>
                 {hasOneTimeCost && (
                   <TotalsLine>
-                    <span>1회성 구축 비용</span>
+                    <span>{t('checkout:summary.oneTime')}</span>
                     <span>₩{oneTimeTotal.toLocaleString()}</span>
                   </TotalsLine>
                 )}
               </TotalsGroup>
               <TotalsGrandLine>
-                <GrandLabel>총 계약 금액</GrandLabel>
+                <GrandLabel>{t('checkout:summary.total')}</GrandLabel>
                 <GrandValue>₩{totalAmount.toLocaleString()}</GrandValue>
               </TotalsGrandLine>
             </TotalsBox>
@@ -460,10 +475,9 @@ export default function CheckoutSummaryPage() {
             <Notice>
               <InfoIcon />
               <NoticeText>
-                LLM Capsule B2B 제품은 조직도 및 서버, DB 구축 등의 작업이
-                필요해 평균 2-3개월 정도의 도입기간이 소요됩니다.
-                <br /> 결제 완료시 3영업일 이내로 연락드리도록 하겠습니다.
-                연락받으실 이메일, 번호를 확인해주세요.
+                {t('checkout:b2bInfo.text1')}
+                <br />
+                {t('checkout:b2bInfo.text2')}
               </NoticeText>
             </Notice>
           </SummaryCard>

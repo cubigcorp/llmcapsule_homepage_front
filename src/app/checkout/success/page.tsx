@@ -99,12 +99,8 @@ export default function CheckoutSuccessPage() {
       <Container>
         <ContentWrapper>
           <Header>
-            <Title>결제가 완료되었습니다.</Title>
-            <OrderInfo>
-              <OrderNumber>주문번호 {orderNumber}</OrderNumber>
-              <OrderDivider>|</OrderDivider>
-              <OrderDate>{orderDate}</OrderDate>
-            </OrderInfo>
+            <Title>{t('checkout:success.title')}</Title>
+            <OrderInfo></OrderInfo>
           </Header>
           <Divider />
           <SummaryCard>
@@ -127,26 +123,34 @@ export default function CheckoutSuccessPage() {
               </PlanInfo>
             </PlanRow>
 
-            <SectionTitle>기본 항목</SectionTitle>
+            <SectionTitle>{t('checkout:summary.selectedSpec')}</SectionTitle>
             <Bullets>
               <li>
-                선택된 플랜: {plan} (₩{price.toLocaleString()}/Seat · Cap{' '}
+                {t('checkout:summary.selectedPlan')}: {plan} (₩
+                {price.toLocaleString()}/Seat · Cap{' '}
                 {planCapMax.toLocaleString()})
               </li>
-              <li>사용 인원: {users}</li>
-              <li>계약 기간: {period}개월</li>
+              <li>
+                {t('checkout:summary.users')}: {users}
+              </li>
+              <li>
+                {t('checkout:summary.contract')}: {period}
+                {t('checkout:contract.monthsSuffix')}
+              </li>
               <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                정기 결제 비용: ₩{monthlyTotal.toLocaleString()}
+                {t('checkout:summary.monthly')}: ₩
+                {monthlyTotal.toLocaleString()}
               </li>
             </Bullets>
 
             {oneTimeTotal > 0 && (
               <>
                 <Divider style={{ margin: '32px 0' }} />
-                <SectionTitle>1회성 구축 비용</SectionTitle>
+                <SectionTitle>{t('checkout:summary.oneTime')}</SectionTitle>
                 <Bullets>
                   <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                    1회성 구축 비용: ₩{oneTimeTotal.toLocaleString()}
+                    {t('checkout:summary.oneTime')}: ₩
+                    {oneTimeTotal.toLocaleString()}
                   </li>
                 </Bullets>
               </>
@@ -155,18 +159,18 @@ export default function CheckoutSuccessPage() {
             <TotalsBox>
               <TotalsGroup>
                 <TotalsLine>
-                  <span>정기 결제 비용</span>
+                  <span>{t('checkout:summary.monthly')}</span>
                   <span>₩{monthlyTotal.toLocaleString()}</span>
                 </TotalsLine>
                 {oneTimeTotal > 0 && (
                   <TotalsLine>
-                    <span>1회성 구축 비용</span>
+                    <span>{t('checkout:summary.oneTime')}</span>
                     <span>₩{oneTimeTotal.toLocaleString()}</span>
                   </TotalsLine>
                 )}
               </TotalsGroup>
               <TotalsGrandLine>
-                <GrandLabel>총 계약 금액</GrandLabel>
+                <GrandLabel>{t('checkout:summary.total')}</GrandLabel>
                 <GrandValue>₩{totalAmount.toLocaleString()}</GrandValue>
               </TotalsGrandLine>
             </TotalsBox>
@@ -229,16 +233,6 @@ const OrderInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-`;
-
-const OrderNumber = styled.span`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
-`;
-
-const OrderDivider = styled.span`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-assistive']};
 `;
 
 const OrderDate = styled.span`
