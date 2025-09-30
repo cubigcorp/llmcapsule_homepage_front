@@ -61,14 +61,13 @@ export default function UpgradeModal({
         const plans: Plan[] = res.data || [];
 
         const nameMap = (n: string): PlanOption['name'] => {
-          if (n === 'ENTERPRISE') return 'MAX';
           return (n as PlanOption['name']) || 'BASIC';
         };
 
         const allowedPlans =
           purchaseType === 'PERSONAL'
-            ? ['BASIC', 'PLUS', 'PRO', 'ENTERPRISE']
-            : ['PLUS', 'PRO', 'ENTERPRISE'];
+            ? ['BASIC', 'PLUS', 'PRO', 'MAX']
+            : ['PLUS', 'PRO', 'MAX'];
 
         const normalized = plans
           .filter((p) => allowedPlans.includes(p.name))

@@ -17,10 +17,12 @@ import WindowsIcon from '@/assets/icons/icon_window.svg';
 import InfoIcon from '@/assets/icons/icon_info_small.svg';
 import DownloadImage from '@/assets/images/llmcapsule_download.png';
 import DownloadIcon from '@/assets/icons/icon_download.svg';
+import { llmService } from '@/services/llm';
 
 export default function DownloadPage() {
   const { t } = useTranslation();
   const [selectedSerial, setSelectedSerial] = useState('1234-ABCD-3212');
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const serialOptions = [
     { label: '1234-ABCD-3212', value: '1234-ABCD-3212' },
@@ -30,6 +32,24 @@ export default function DownloadPage() {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(selectedSerial).catch(() => {});
+  };
+
+  const handleDownload = async () => {
+    try {
+      setIsDownloading(true);
+      const response = await llmService.getDownloadUrl();
+
+      if (response.data?.download_url) {
+        window.open(response.data.download_url, '_blank');
+      } else {
+        alert('다운로드 URL을 가져올 수 없습니다.');
+      }
+    } catch (error) {
+      console.error('Download failed:', error);
+      alert('다운로드에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   const handleSerialChange = (value: string) => {
@@ -61,8 +81,10 @@ export default function DownloadPage() {
             variant='primary'
             size='large'
             trailingIcon={DownloadIcon}
+            onClick={handleDownload}
+            disabled={isDownloading}
           >
-            {t('mypage:download.download')}
+            {isDownloading ? '다운로드 중...' : t('mypage:download.download')}
           </SolidButton>
         </CardBody>
       </Card>
