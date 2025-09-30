@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import GlobalHeader from '@/components/layout/Header';
 import { useTranslation } from 'react-i18next';
+import { llmService } from '@/services/llm';
 import styled from 'styled-components';
 import Image from 'next/image';
 import {
@@ -10,7 +11,6 @@ import {
   typography,
   borderColor,
   textColor,
-  Input,
   Divider,
   layerColor,
   Checkbox,
@@ -31,12 +31,11 @@ import PlanBasicImage from '@/assets/images/plan_basic.png';
 import PlanPlusImage from '@/assets/images/plan_plus.png';
 import PlanProImage from '@/assets/images/plan_pro.png';
 import PlanMaxImage from '@/assets/images/plan_max.png';
-// 플랜 데이터 정의
 const plans = {
-  basic: { name: 'Basic', price: 10500, minTokens: 0, maxTokens: 69999 },
-  plus: { name: 'Plus', price: 15500, minTokens: 70000, maxTokens: 119999 },
-  pro: { name: 'Pro', price: 25500, minTokens: 120000, maxTokens: 279999 },
-  max: { name: 'Max', price: 51000, minTokens: 280000, maxTokens: 999999 },
+  basic: { name: 'Basic', price: 8.99, minTokens: 0, maxTokens: 69999 },
+  plus: { name: 'Plus', price: 12.99, minTokens: 70000, maxTokens: 119999 },
+  pro: { name: 'Pro', price: 19.99, minTokens: 120000, maxTokens: 279999 },
+  max: { name: 'Max', price: 39.99, minTokens: 280000, maxTokens: 999999 },
 };
 
 export default function CheckoutPage() {
@@ -44,8 +43,14 @@ export default function CheckoutPage() {
   const [userCount, setUserCount] = useState<number>(100);
   const [tokenUsage, setTokenUsage] = useState<number>(300000);
   const [contractPeriod, setContractPeriod] = useState<number>(6);
-  const [prepayEnabled, setPrepayEnabled] = useState<boolean>(false);
-  const [vatEnabled, setVatEnabled] = useState<boolean>(false);
+  const [apiPlans, setApiPlans] = useState<
+    Array<{
+      id: number;
+      name: string;
+      price: string;
+      monthly_token_limit: number;
+    }>
+  >([]);
 
   const getPlanImage = (planName: string) => {
     switch (planName.toLowerCase()) {
@@ -64,24 +69,55 @@ export default function CheckoutPage() {
 
   // Add-on 상태
   const [securityGuideCount, setSecurityGuideCount] = useState<number>(-1);
-  const [adminConsoleCount, setAdminConsoleCount] = useState<number>(0);
   const [policyGuideCount, setPolicyGuideCount] = useState<number>(-1);
   const [basicModuleEnabled, setBasicModuleEnabled] = useState<boolean>(false);
   const [unstructuredModuleEnabled, setUnstructuredModuleEnabled] =
     useState<boolean>(false);
   const [selectedSubOption, setSelectedSubOption] = useState<string>('');
   const [ragSystemEnabled, setRagSystemEnabled] = useState<boolean>(false);
-  const [latestTechEnabled, setLatestTechEnabled] = useState<boolean>(false);
-  const [documentAnalysisEnabled, setDocumentAnalysisEnabled] =
-    useState<boolean>(false);
-  const [aiChatEnabled, setAiChatEnabled] = useState<boolean>(false);
   const [graphRagEnabled, setGraphRagEnabled] = useState<boolean>(false);
   const [documentSecurityEnabled, setDocumentSecurityEnabled] =
     useState<boolean>(false);
   const [aiAnswerEnabled, setAiAnswerEnabled] = useState<boolean>(false);
   const [tokenPackCount, setTokenPackCount] = useState<number>(0);
 
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const plansData = await llmService.getAllPlans();
+        setApiPlans(plansData);
+      } catch (error) {
+        console.error('Failed to fetch plans:', error);
+      }
+    };
+    fetchPlans();
+  }, []);
+
   const getCurrentPlan = (tokens: number) => {
+    if (apiPlans.length > 0) {
+      const sortedPlans = [...apiPlans].sort(
+        (a, b) => a.monthly_token_limit - b.monthly_token_limit
+      );
+
+      for (let i = sortedPlans.length - 1; i >= 0; i--) {
+        if (tokens >= sortedPlans[i].monthly_token_limit * 0.8) {
+          return {
+            name: sortedPlans[i].name,
+            price: parseFloat(sortedPlans[i].price),
+            minTokens: i > 0 ? sortedPlans[i - 1].monthly_token_limit : 0,
+            maxTokens: sortedPlans[i].monthly_token_limit,
+          };
+        }
+      }
+
+      return {
+        name: sortedPlans[0].name,
+        price: parseFloat(sortedPlans[0].price),
+        minTokens: 0,
+        maxTokens: sortedPlans[0].monthly_token_limit,
+      };
+    }
+
     if (tokens >= plans.max.minTokens) return plans.max;
     if (tokens >= plans.pro.minTokens) return plans.pro;
     if (tokens >= plans.plus.minTokens) return plans.plus;
@@ -139,11 +175,6 @@ export default function CheckoutPage() {
     (sum, price) => sum + price,
     0
   );
-  const subtotal = yearlyTotal + addOnTotal;
-  const prepayDiscount = prepayEnabled ? subtotal * 0.002 : 0;
-  const afterDiscount = subtotal - prepayDiscount;
-  const vatAmount = vatEnabled ? afterDiscount * 0.1 : 0;
-  const finalTotal = afterDiscount + vatAmount;
 
   const handleUserCountChange = (value: string) => {
     const count = parseInt(value) || 100;
@@ -1321,12 +1352,6 @@ const AddOnDescription = styled.p`
   margin: 8px 0 20px 0;
 `;
 
-const AddOnCardPrice = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${textColor.light['fg-neutral-primary']};
-`;
-
 const LargeAddOnCard = styled.div<{ $isSelected?: boolean }>`
   border: ${(props) =>
     props.$isSelected
@@ -1653,50 +1678,6 @@ const PriceBreakdownItem = styled.div`
     font-weight: 600;
     ${typography('ko', 'body3', 'medium')}
   }
-`;
-
-const TaxDetailsSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const TaxDetailItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: ${textColor.light['fg-neutral-alternative']};
-
-  span:first-child {
-    ${typography('ko', 'body2', 'regular')}
-  }
-
-  span:last-child {
-    ${typography('ko', 'body3', 'regular')}
-  }
-`;
-
-const VatToggleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-`;
-
-const VatToggle = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-
-  span {
-    ${typography('ko', 'body3', 'medium')}
-  }
-`;
-
-const VatRate = styled.span`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const ButtonGroup = styled.div`
