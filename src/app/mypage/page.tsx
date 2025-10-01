@@ -219,12 +219,32 @@ export default function MyPage() {
                 <IconButton type='outline' icon={DataIcon} />
                 <EmptyStateTitle>{t('empty.title')}</EmptyStateTitle>
                 <EmptyStateDescription>{t('empty.desc')}</EmptyStateDescription>
-                <SolidButton variant='primary' size='small'>
+                <SolidButton
+                  variant='primary'
+                  size='small'
+                  onClick={() => {
+                    const accessToken = localStorage.getItem('access_token');
+                    if (!accessToken) {
+                      router.push('/login');
+                      return;
+                    }
+                    window.location.href = '/#pricing-section';
+                  }}
+                >
                   {t('empty.cta')}
                 </SolidButton>
               </EmptyStateContainer>
 
-              <TrialCard>
+              <TrialCard
+                onClick={() => {
+                  const accessToken = localStorage.getItem('access_token');
+                  if (!accessToken) {
+                    router.push('/login');
+                    return;
+                  }
+                  window.location.href = '/#pricing-section';
+                }}
+              >
                 <TrialImageContainer>
                   <img src={PlanTrialImage.src} alt='Trial Plan' />
                 </TrialImageContainer>
