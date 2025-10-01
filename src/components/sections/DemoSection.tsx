@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import {
   typography,
   textColor,
@@ -63,6 +63,7 @@ export default function DemoSection() {
   const [selectedAction, setSelectedAction] = useState(0);
   const [llmAnswerTyping, setLlmAnswerTyping] = useState('');
   const [decryptTyping, setDecryptTyping] = useState('');
+  const [triggerAnimation, setTriggerAnimation] = useState(false);
 
   const [demoData, setDemoData] = useState({
     original: '',
@@ -92,6 +93,10 @@ export default function DemoSection() {
     setShowSpinner(false);
     setLlmAnswerTyping('');
     setDecryptTyping('');
+
+    setTriggerAnimation(false);
+    setTimeout(() => setTriggerAnimation(true), 10);
+
     if (buttonId === 'Government') {
       setDemoData({
         original: t('demo.data.Government.original'),
@@ -235,7 +240,7 @@ export default function DemoSection() {
         scrollToBottom();
         onComplete?.();
       }
-    }, 20);
+    }, 40);
   };
 
   const typeDecrypt = (text: string, onComplete?: () => void) => {
@@ -286,8 +291,6 @@ export default function DemoSection() {
       answerUncapsuled: t('demo.data.Government.answerUncapsuled'),
     });
   }, [t]);
-
-  // reverted: remove dynamic sizing
 
   const handleRestart = () => {
     setSimulationStep(0);
@@ -480,7 +483,10 @@ export default function DemoSection() {
 
                     {simulationStep === 0 && (
                       <>
-                        <OriginalDocument>
+                        <OriginalDocument
+                          $animated={triggerAnimation}
+                          $delay={0}
+                        >
                           <DocumentHeader>
                             <DocumentTitle>Original Document</DocumentTitle>
                           </DocumentHeader>
@@ -495,7 +501,10 @@ export default function DemoSection() {
                           </DocumentContentWrapper>
                         </OriginalDocument>
 
-                        <SimulationCard>
+                        <SimulationCard
+                          $animated={triggerAnimation}
+                          $delay={0.2}
+                        >
                           <SimulationPrompt>
                             {formatText(demoData.question)}
                           </SimulationPrompt>
@@ -578,6 +587,17 @@ export default function DemoSection() {
     </DemoContainer>
   );
 }
+
+const slideUpAnimation = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const DemoContainer = styled.section`
   width: 100%;
@@ -782,8 +802,8 @@ const ChatTitle = styled.h3`
 `;
 
 const ChatArea = styled.div<{ $isSimulating?: boolean }>`
-  flex: 1;
   width: 100%;
+  height: 530px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -792,8 +812,14 @@ const ChatArea = styled.div<{ $isSimulating?: boolean }>`
   padding: 20px;
   overflow-y: scroll;
   scrollbar-gutter: stable;
+
+  @media (max-width: 768px) {
+    height: 350px;
+  }
+
   @media (max-width: 375px) {
     padding: 12px;
+    height: 300px;
   }
 
   &::-webkit-scrollbar {
@@ -814,7 +840,7 @@ const ChatArea = styled.div<{ $isSimulating?: boolean }>`
   }
 `;
 
-const OriginalDocument = styled.div`
+const OriginalDocument = styled.div<{ $animated?: boolean; $delay?: number }>`
   border-radius: var(--Radius-rounded-5, 20px);
   background: linear-gradient(
     180deg,
@@ -826,6 +852,14 @@ const OriginalDocument = styled.div`
 
   width: 100%;
   max-width: 800px;
+
+  ${({ $animated = false, $delay = 0 }) =>
+    $animated &&
+    css`
+      animation: ${slideUpAnimation} 1s cubic-bezier(0.16, 1, 0.3, 1);
+      animation-delay: ${$delay}s;
+      animation-fill-mode: both;
+    `}
 `;
 
 const DocumentHeader = styled.div`
@@ -1049,7 +1083,7 @@ const RestartButton = styled.button`
   }
 `;
 
-const SimulationCard = styled.div`
+const SimulationCard = styled.div<{ $animated?: boolean; $delay?: number }>`
   --bw: 1px;
   --radius: 20px;
 
@@ -1099,6 +1133,14 @@ const SimulationCard = styled.div`
   gap: 16px;
   width: 100%;
   max-width: 640px;
+
+  ${({ $animated = false, $delay = 0 }) =>
+    $animated &&
+    css`
+      animation: ${slideUpAnimation} 1s cubic-bezier(0.16, 1, 0.3, 1);
+      animation-delay: ${$delay}s;
+      animation-fill-mode: both;
+    `}
 `;
 
 const SimulationPrompt = styled.div`
