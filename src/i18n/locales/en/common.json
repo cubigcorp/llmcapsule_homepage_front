@@ -3,6 +3,65 @@
     "korean": "Korean",
     "english": "English"
   },
+  "hero": {
+    "mainTitle": "Capsule AI for what's next",
+    "subTitle": "Secure, seamless\nfor GenAI and public LLMs",
+    "description": "LLM Capsule bridges enterprises and AI platforms securely and seamlessly, empowering innovation with trusted data protection and compliance.",
+    "getStarted": "Get Started",
+    "brochure": "Brochure"
+  },
+  "about": {
+    "mainTitle": "LLM Capsule makes it possible",
+    "subTitle": "The secure LLM gateway built by AI and data infrastructure experts.",
+    "sidebar": {
+      "dataControl": "Data Control",
+      "scalability": "Scalability",
+      "security": "Security"
+    },
+    "sections": [
+      {
+        "title": "You choose how AI works for you",
+        "subtitle": "Because AI for business should always be safe.",
+        "mainTitle": "Complete protection of sensitive data in AI usage",
+        "description": "A four-step framework of detection, protection, utilization, and recovery.",
+        "features": [
+          "Complete protection of sensitive data in AI usage",
+          "Customizable data protection",
+          "Flexible de-identification methods"
+        ]
+      },
+      {
+        "title": "AI that works at enterprise scale",
+        "subtitle": "Smarter AI, valuable data — built for enterprise scale.",
+        "mainTitle": "Seamless public LLM integration",
+        "description": "ChatGPT, Claude, Gemini — your choice, with efficiency and security.",
+        "features": [
+          "Seamless public LLM integration",
+          "Large-scale document processing & ontology management",
+          "RAG & graph RAG support"
+        ]
+      },
+      {
+        "title": "Compliance ready, threat resilient",
+        "subtitle": "Enterprise-grade AI security and management for safe, compliant, and reliable operations.",
+        "mainTitle": "Context-Aware AI Detection",
+        "description": "Beyond keywords, precision designed for enterprise data protection.",
+        "features": [
+          "Context-Aware AI Detection",
+          "Defense Against Prompt Injection & Jailbreak Attacks",
+          "Compliance with Global Security Standards",
+          "Admin-Centric User Management",
+          "On-Premises Deployment Support"
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Find the plan that fits your business",
+    "info1": "Request tailored guidance for your organization",
+    "info2": "Request detailed product information on LLM Capsule",
+    "formTitle": "Contact Us"
+  },
   "header": {
     "contact": "Contact",
     "login": "Login",

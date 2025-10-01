@@ -2,6 +2,8 @@
 
 import styled from 'styled-components';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import {
   SolidButton,
   OutlineButton,
@@ -10,32 +12,34 @@ import {
 } from '@cubig/design-system';
 
 export default function HeroSection() {
+  const router = useRouter();
+  const { t } = useTranslation('common');
+
+  const handleGetStarted = () => {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      router.push('/login');
+      return;
+    }
+    router.push('/checkout');
+  };
+
   return (
     <HeroContainer>
       <HeroWrapper>
         <ContentArea>
           <TextContent>
-            <MainTitle>Capsule AI for what&apos;s next</MainTitle>
-            <SubTitle>
-              Secure, seamless
-              <br />
-              for GenAI and public LLMs
-            </SubTitle>
-            <Description>
-              LLM Capsule bridges enterprises and AI platforms securely and
-              seamlessly, empowering innovation with trusted data protection and
-              compliance.
-            </Description>
+            <MainTitle>{t('hero.mainTitle')}</MainTitle>
+            <SubTitle>{t('hero.subTitle')}</SubTitle>
+            <Description>{t('hero.description')}</Description>
           </TextContent>
           <ButtonGroup>
             <SolidButton
               variant='primary'
               size='large'
-              onClick={() => {
-                window.open('/checkout', '_self');
-              }}
+              onClick={handleGetStarted}
             >
-              Get Started
+              {t('hero.getStarted')}
             </SolidButton>
             <OutlineButton
               variant='secondary'
@@ -47,7 +51,7 @@ export default function HeroSection() {
                 );
               }}
             >
-              Brochure
+              {t('hero.brochure')}
             </OutlineButton>
           </ButtonGroup>
           <ImageArea>

@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import {
   borderColor,
   color,
@@ -11,6 +12,7 @@ import {
 } from '@cubig/design-system';
 
 const AboutSection = () => {
+  const { t } = useTranslation('common');
   const [activeSection, setActiveSection] = useState(0);
   const [activeFeatures, setActiveFeatures] = useState([0, 0, 0]);
 
@@ -48,59 +50,31 @@ const AboutSection = () => {
     });
   };
 
-  const sections = [
-    {
-      id: 0,
-      title: '01. You choose how AI works for you',
-      subtitle: 'Because AI for business should always be safe.',
-      mainTitle: 'Complete protection of sensitive data in AI usage',
-      description:
-        'A four-step framework of detection, protection, utilization, and recovery.',
-      features: [
-        'Complete protection of sensitive data in AI usage',
-        'Customizable data protection',
-        'Flexible de-identification methods',
-      ],
-    },
-    {
-      id: 1,
-      title: '02. AI that works at enterprise scale',
-      subtitle: 'Smarter AI, valuable data — built for enterprise scale.',
-      mainTitle: 'Seamless public LLM integration',
-      description:
-        'ChatGPT, Claude, Gemini — your choice, with efficiency and security.',
-      features: [
-        'Seamless public LLM integration',
-        'Large-scale document processing & ontology management',
-        'RAG & graph RAG support',
-      ],
-    },
-    {
-      id: 2,
-      title: '03. Compliance ready, threat resilient',
-      subtitle:
-        'Enterprise-grade AI security and management for safe, compliant, and reliable operations.',
-      mainTitle: 'Context-Aware AI Detection',
-      description:
-        'Beyond keywords, precision designed for enterprise data protection.',
-      features: [
-        'Context-Aware AI Detection',
-        'Defense Against Prompt Injection & Jailbreak Attacks',
-        'Compliance with Global Security Standards',
-        'Admin-Centric User Management',
-        'On-Premises Deployment Support',
-      ],
-    },
-  ];
+  const sectionsData = t('about.sections', {
+    returnObjects: true,
+  }) as Array<{
+    title: string;
+    subtitle: string;
+    mainTitle: string;
+    description: string;
+    features: string[];
+  }>;
+
+  const sections = sectionsData.map((section, index) => ({
+    id: index,
+    title: `${String(index + 1).padStart(2, '0')}. ${section.title}`,
+    subtitle: section.subtitle,
+    mainTitle: section.mainTitle,
+    description: section.description,
+    features: section.features,
+  }));
 
   return (
     <AboutContainer id='about-section'>
       <AboutWrapper>
         <HeaderSection>
-          <MainTitle>LLM Capsule makes it possible</MainTitle>
-          <SubTitle>
-            The secure LLM gateway built by AI and data infrastructure experts.
-          </SubTitle>
+          <MainTitle>{t('about.mainTitle')}</MainTitle>
+          <SubTitle>{t('about.subTitle')}</SubTitle>
         </HeaderSection>
 
         <ContentSection>
@@ -110,19 +84,19 @@ const AboutSection = () => {
                 $isActive={activeSection === 0}
                 onClick={() => scrollToSection(0)}
               >
-                Data Control
+                {t('about.sidebar.dataControl')}
               </CoreFeatureItem>
               <CoreFeatureItem
                 $isActive={activeSection === 1}
                 onClick={() => scrollToSection(1)}
               >
-                Scalability
+                {t('about.sidebar.scalability')}
               </CoreFeatureItem>
               <CoreFeatureItem
                 $isActive={activeSection === 2}
                 onClick={() => scrollToSection(2)}
               >
-                Security
+                {t('about.sidebar.security')}
               </CoreFeatureItem>
             </CoreFeaturesList>
           </LeftSidebar>

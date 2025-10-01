@@ -2,15 +2,18 @@
 
 import styled from 'styled-components';
 import { typography, textColor, color, radius } from '@cubig/design-system';
+import { useTranslation } from 'react-i18next';
 import ContactFormComponent from '@/components/common/ContactForm';
 
 export default function ContactSection() {
+  const { t } = useTranslation('common');
+
   return (
     <ContactContainer id='contact-section'>
       <ContactOuterWrapper>
         <ContactInnerWrapper>
           <ContactLeft>
-            <ContactTitle>Find the plan that fits your business</ContactTitle>
+            <ContactTitle>{t('contact.title')}</ContactTitle>
 
             <ContactInfo>
               <InfoBlock>
@@ -18,9 +21,7 @@ export default function ContactSection() {
                   <img src={'/icons/company.svg'} alt='company' />
                 </InfoIcon>
                 <InfoContent>
-                  <InfoTitle>
-                    Request tailored guidance for your organization
-                  </InfoTitle>
+                  <InfoTitle>{t('contact.info1')}</InfoTitle>
                 </InfoContent>
               </InfoBlock>
               <InfoBlock>
@@ -28,16 +29,14 @@ export default function ContactSection() {
                   <img src={'/icons/structure.svg'} alt='structure' />
                 </InfoIcon>
                 <InfoContent>
-                  <InfoTitle>
-                    Request detailed product information on LLM Capsule
-                  </InfoTitle>
+                  <InfoTitle>{t('contact.info2')}</InfoTitle>
                 </InfoContent>
               </InfoBlock>
             </ContactInfo>
           </ContactLeft>
 
           <ContactRight>
-            <ContactFormComponent title='도입 문의하기' />
+            <ContactFormComponent title={t('contact.formTitle')} />
           </ContactRight>
         </ContactInnerWrapper>
       </ContactOuterWrapper>

@@ -3,6 +3,65 @@
     "korean": "한국어",
     "english": "English"
   },
+  "hero": {
+    "mainTitle": "Capsule AI for what's next",
+    "subTitle": "안전하고, 원활한\nGenAI와 퍼블릭 LLM 활용",
+    "description": "LLM Capsule은 기업과 AI 플랫폼을 안전하고 원활하게 연결하여, 신뢰할 수 있는 데이터 보호와 규정 준수를 통해 혁신을 지원합니다.",
+    "getStarted": "시작하기",
+    "brochure": "브로슈어"
+  },
+  "about": {
+    "mainTitle": "LLM Capsule이 가능하게 합니다",
+    "subTitle": "AI와 데이터 인프라 전문가가 구축한 안전한 LLM 게이트웨이",
+    "sidebar": {
+      "dataControl": "데이터 제어",
+      "scalability": "확장성",
+      "security": "보안"
+    },
+    "sections": [
+      {
+        "title": "AI가 당신을 위해 어떻게 작동하는지 선택하세요",
+        "subtitle": "비즈니스를 위한 AI는 항상 안전해야 합니다.",
+        "mainTitle": "AI 사용에서 민감 데이터의 완벽한 보호",
+        "description": "탐지, 보호, 활용, 복구의 4단계 프레임워크",
+        "features": [
+          "AI 사용에서 민감 데이터의 완벽한 보호",
+          "맞춤형 데이터 보호",
+          "유연한 비식별화 방법"
+        ]
+      },
+      {
+        "title": "기업 규모에서 작동하는 AI",
+        "subtitle": "더 스마트한 AI, 가치 있는 데이터 — 기업 규모를 위해 구축",
+        "mainTitle": "원활한 퍼블릭 LLM 통합",
+        "description": "ChatGPT, Claude, Gemini — 효율성과 보안을 갖춘 선택",
+        "features": [
+          "원활한 퍼블릭 LLM 통합",
+          "대규모 문서 처리 및 온톨로지 관리",
+          "RAG 및 그래프 RAG 지원"
+        ]
+      },
+      {
+        "title": "규정 준수 준비, 위협 회복력",
+        "subtitle": "안전하고 규정을 준수하며 신뢰할 수 있는 운영을 위한 엔터프라이즈급 AI 보안 및 관리",
+        "mainTitle": "컨텍스트 인식 AI 탐지",
+        "description": "키워드를 넘어, 기업 데이터 보호를 위해 설계된 정밀도",
+        "features": [
+          "컨텍스트 인식 AI 탐지",
+          "프롬프트 인젝션 및 탈옥 공격 방어",
+          "글로벌 보안 표준 준수",
+          "관리자 중심 사용자 관리",
+          "온프레미스 배포 지원"
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "title": "비즈니스에 맞는 플랜을 찾아보세요",
+    "info1": "귀사를 위한 맞춤형 가이드를 요청하세요",
+    "info2": "LLM Capsule의 상세한 제품 정보를 요청하세요",
+    "formTitle": "도입 문의하기"
+  },
   "header": {
     "contact": "문의하기",
     "login": "로그인",
