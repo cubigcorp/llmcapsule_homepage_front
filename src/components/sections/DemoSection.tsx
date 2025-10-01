@@ -258,7 +258,7 @@ export default function DemoSection() {
         scrollToBottom();
         onComplete?.();
       }
-    }, 20);
+    }, 40);
   };
 
   const scrollToBottom = () => {
