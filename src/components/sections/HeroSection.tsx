@@ -111,19 +111,22 @@ const TextContent = styled.div`
   text-align: center;
   align-items: center;
   margin-top: 128px;
-
-  @media (max-width: 768px) {
-    gap: 16px;
-  }
-
-  @media (max-width: 375px) {
-    gap: 12px;
-  }
 `;
 
 const SubTitle = styled.p`
   ${typography(undefined, 'display4', 'medium')}
   color: ${textColor.light['fg-neutral-alternative']};
+  @media (max-width: 1024px) {
+    ${typography(undefined, 'display4', 'medium')}
+  }
+
+  @media (max-width: 768px) {
+    ${typography(undefined, 'display3', 'medium')}
+  }
+
+  @media (max-width: 375px) {
+    ${typography(undefined, 'title2', 'medium')}
+  }
 `;
 
 const MainTitle = styled.h1`

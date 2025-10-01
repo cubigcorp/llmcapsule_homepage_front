@@ -386,6 +386,9 @@ const ContentArea = styled.div`
   display: flex;
   gap: 16px;
   margin-top: 24px;
+  @media (max-width: 1200px) {
+    gap: 12px;
+  }
   @media (max-width: 1024px) {
     flex-direction: column;
   }
@@ -402,6 +405,9 @@ const ImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-width: 1200px) {
+    padding: 48px 48px 64px 48px;
+  }
   @media (max-width: 768px) {
     padding: 32px 24px 40px 24px;
     height: auto;
@@ -439,6 +445,10 @@ const ImageContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-width: 1200px) {
+    width: 100%;
+    height: auto;
+  }
   @media (max-width: 768px) {
     width: 100%;
     height: auto;
@@ -449,11 +459,20 @@ const FeatureImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
+  @media (max-width: 1200px) {
+    height: auto;
+  }
 `;
 
 const RightSidebar = styled.div`
   width: 240px;
   flex-shrink: 0;
+  @media (max-width: 1200px) {
+    width: 200px;
+  }
+  @media (max-width: 1024px) {
+    width: 100%;
+  }
 `;
 
 const FeaturesList = styled.ul`
