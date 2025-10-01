@@ -344,11 +344,13 @@ const ImageHeader = styled.div`
 const ImageTitle = styled.h3`
   ${typography(undefined, 'title1', 'medium')}
   color: ${textColor.dark['fg-neutral-primary']};
+  transition: opacity 0.2s ease-in-out;
 `;
 
 const ImageSubtitle = styled.p`
   ${typography(undefined, 'body3', 'regular')}
   color: ${textColor.dark['fg-neutral-alternative']};
+  transition: opacity 0.2s ease-in-out;
 `;
 
 const ImageContent = styled.div`
@@ -371,6 +373,7 @@ const FeatureImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transition: opacity 0.2s ease-in-out;
   @media (max-width: 1200px) {
     height: auto;
   }
