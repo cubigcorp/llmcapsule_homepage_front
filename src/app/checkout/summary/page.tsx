@@ -330,7 +330,7 @@ function CheckoutSummaryContent() {
                 {t('checkout:summary.discount')}: ({discount.toLocaleString()}%)
               </li>
               <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                {t('checkout:summary.monthly')}: ₩
+                {t('checkout:summary.monthly')}: $
                 {monthlyTotal.toLocaleString()}
               </li>
             </Bullets>
@@ -372,7 +372,7 @@ function CheckoutSummaryContent() {
                   )}
                   {aiAnswerEnabled && <li>{t('checkout:summary.aiAnswer')}</li>}
                   <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                    {t('checkout:summary.oneTime')}: ₩
+                    {t('checkout:summary.oneTime')}: $
                     {oneTimeTotal.toLocaleString()}
                   </li>
                 </Bullets>
@@ -383,18 +383,18 @@ function CheckoutSummaryContent() {
               <TotalsGroup>
                 <TotalsLine>
                   <span>{t('checkout:summary.monthly')}</span>
-                  <span>₩{monthlyTotal.toLocaleString()}</span>
+                  <span>${monthlyTotal.toLocaleString()}</span>
                 </TotalsLine>
                 {hasOneTimeCost && (
                   <TotalsLine>
                     <span>{t('checkout:summary.oneTime')}</span>
-                    <span>₩{oneTimeTotal.toLocaleString()}</span>
+                    <span>${oneTimeTotal.toLocaleString()}</span>
                   </TotalsLine>
                 )}
               </TotalsGroup>
               <TotalsGrandLine>
                 <GrandLabel>{t('checkout:summary.total')}</GrandLabel>
-                <GrandValue>₩{totalAmount.toLocaleString()}</GrandValue>
+                <GrandValue>${totalAmount.toLocaleString()}</GrandValue>
               </TotalsGrandLine>
             </TotalsBox>
 
