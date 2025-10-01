@@ -6,7 +6,7 @@ import ContactFormComponent from '@/components/common/ContactForm';
 
 export default function ContactSection() {
   return (
-    <ContactContainer>
+    <ContactContainer id='contact-section'>
       <ContactOuterWrapper>
         <ContactInnerWrapper>
           <ContactLeft>

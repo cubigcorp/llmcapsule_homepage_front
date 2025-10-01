@@ -13,7 +13,20 @@ export default function CTASection() {
         <CTAContent>
           <CTATitle>{t('cta.title')}</CTATitle>
           <CTASubtitle>{t('cta.subtitle')}</CTASubtitle>
-          <CTAButton>{t('cta.button')}</CTAButton>
+          <CTAButton
+            onClick={() => {
+              const el = document.getElementById('contact-section');
+              if (el) {
+                const headerHeight = 72;
+                const top = el.offsetTop - headerHeight;
+                window.scrollTo({ top, behavior: 'smooth' });
+              } else {
+                window.location.href = '/#contact-section';
+              }
+            }}
+          >
+            {t('cta.button')}
+          </CTAButton>
         </CTAContent>
       </CTAWrapper>
     </CTAContainer>

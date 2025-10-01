@@ -256,7 +256,7 @@ export default AboutSection;
 const AboutContainer = styled.section`
   width: 100%;
   background-color: ${textColor.light['fg-neutral-primary']};
-  display: flex;
+
   justify-content: center;
 `;
 

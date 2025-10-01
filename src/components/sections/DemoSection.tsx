@@ -63,6 +63,7 @@ export default function DemoSection() {
   const [selectedAction, setSelectedAction] = useState(0);
   const [llmAnswerTyping, setLlmAnswerTyping] = useState('');
   const [decryptTyping, setDecryptTyping] = useState('');
+
   const [demoData, setDemoData] = useState({
     original: '',
     capsuledHide: '',
@@ -285,6 +286,8 @@ export default function DemoSection() {
       answerUncapsuled: t('demo.data.Government.answerUncapsuled'),
     });
   }, [t]);
+
+  // reverted: remove dynamic sizing
 
   const handleRestart = () => {
     setSimulationStep(0);
@@ -599,6 +602,10 @@ const DemoWrapper = styled.div`
   @media (max-width: 768px) {
     padding: 40px 24px;
   }
+
+  @media (max-width: 375px) {
+    padding: 32px 16px;
+  }
 `;
 
 const DemoContent = styled.div`
@@ -659,6 +666,16 @@ const DemoImageContainer = styled.div`
   flex-direction: column;
   gap: 24px;
   align-items: center;
+  @media (max-width: 1024px) {
+    padding: 48px 32px 0 32px;
+  }
+  @media (max-width: 768px) {
+    padding: 32px 16px 0 16px;
+  }
+  @media (max-width: 375px) {
+    padding: 24px 12px 0 12px;
+    gap: 16px;
+  }
 `;
 
 const ButtonGroup = styled.div`
@@ -672,6 +689,12 @@ const ButtonGroup = styled.div`
   background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.5) 100%);
 
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
+  flex-wrap: wrap;
+  justify-content: center;
+  @media (max-width: 375px) {
+    gap: 8px;
+    padding: 6px;
+  }
 `;
 
 const DemoButton = styled(SolidButton)`
@@ -681,7 +704,8 @@ const DemoButton = styled(SolidButton)`
 const ChatInterface = styled.div`
   width: 100%;
   max-width: 1032px;
-  height: 650px;
+  height: auto;
+  min-height: 480px;
   background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.5) 100%);
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(6px);
@@ -690,6 +714,12 @@ const ChatInterface = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0;
+  @media (max-width: 768px) {
+    min-height: 360px;
+  }
+  @media (max-width: 375px) {
+    min-height: 300px;
+  }
 `;
 
 const ChatWindowControls = styled.div`
@@ -706,7 +736,8 @@ const ControlButton = styled.div<{ $color: string }>`
 `;
 
 const ChatInnerContainer = styled.div`
-  height: 742px;
+  height: auto;
+  min-height: 400px;
   border-radius: 16px 16px 0 0;
   border-top: 1px solid #e7e7e7;
 
@@ -723,6 +754,12 @@ const ChatInnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 24px;
+  @media (max-width: 768px) {
+    margin: 0 12px;
+  }
+  @media (max-width: 375px) {
+    margin: 0 8px;
+  }
 `;
 
 const ChatHeader = styled.div`
@@ -732,6 +769,9 @@ const ChatHeader = styled.div`
   display: flex;
   align-items: center;
   padding: 8px 24px;
+  @media (max-width: 375px) {
+    padding: 6px 12px;
+  }
 `;
 
 const ChatTitle = styled.h3`
@@ -752,6 +792,9 @@ const ChatArea = styled.div<{ $isSimulating?: boolean }>`
   padding: 20px;
   overflow-y: scroll;
   scrollbar-gutter: stable;
+  @media (max-width: 375px) {
+    padding: 12px;
+  }
 
   &::-webkit-scrollbar {
     width: 2px;
@@ -781,7 +824,8 @@ const OriginalDocument = styled.div`
 
   box-shadow: 0 0 96.88px 0 rgba(255, 89, 158, 0.24);
 
-  width: 800px;
+  width: 100%;
+  max-width: 800px;
 `;
 
 const DocumentHeader = styled.div`
@@ -848,7 +892,8 @@ const DocumentText = styled.div`
 const SimulationStatus = styled.div<{ $isRestart?: boolean }>`
   display: flex;
   justify-content: ${(props) => (props.$isRestart ? 'center' : 'flex-end')};
-  width: 864px;
+  width: 100%;
+  max-width: 864px;
 `;
 
 const StatusMessage = styled.div<{ $isTyping?: boolean }>`
@@ -895,7 +940,8 @@ const StatusMessage = styled.div<{ $isTyping?: boolean }>`
 const StepDocumentWrapper = styled.div`
   display: flex;
   gap: 16px;
-  width: 864px;
+  width: 100%;
+  max-width: 864px;
   border: 1px solid #e9ecef;
   padding: 24px;
   border-radius: 24px;
@@ -906,6 +952,12 @@ const StepDocumentWrapper = styled.div`
   );
   box-shadow: 0 0 40px 0 rgba(89, 89, 255, 0.1);
   max-width: 100%;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+  @media (max-width: 375px) {
+    padding: 16px;
+  }
 `;
 
 const SimulationContainer = styled.div`
@@ -1045,7 +1097,8 @@ const SimulationCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 640px;
+  width: 100%;
+  max-width: 640px;
 `;
 
 const SimulationPrompt = styled.div`
@@ -1057,6 +1110,12 @@ const ActionButtonGroup = styled.div`
   display: flex;
   gap: 12px;
   align-items: center;
+  flex-wrap: wrap;
+  @media (max-width: 550px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
 `;
 
 const ActionItemWrapper = styled.div<{ $isActive: boolean }>`
@@ -1099,6 +1158,12 @@ const RunSimulationButton = styled.button`
   ${typography(undefined, 'body3', 'semibold')}
   margin-left: auto;
   z-index: 1;
+
+  @media (max-width: 550px) {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
 
   &::before {
     content: '';

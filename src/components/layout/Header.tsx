@@ -35,12 +35,15 @@ export default function Header() {
     const element = document.getElementById(sectionId);
     if (element) {
       const headerHeight = 72; // 헤더 높이
-      const elementPosition = element.offsetTop - headerHeight;
+      const rect = element.getBoundingClientRect();
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const targetTop = rect.top + scrollTop - headerHeight;
 
-      window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth',
-      });
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      try {
+        history.replaceState(null, '', `#${sectionId}`);
+      } catch {}
     }
   };
 
@@ -180,11 +183,13 @@ export default function Header() {
             <LanguageSwitcher />
             {isLoggedIn ? (
               <>
-                <Link href='/contact'>
-                  <SolidButton variant='primary' size='medium'>
-                    {t('header.contact')}
-                  </SolidButton>
-                </Link>
+                <SolidButton
+                  variant='primary'
+                  size='medium'
+                  onClick={() => scrollToSection('contact-section')}
+                >
+                  {t('header.contact')}
+                </SolidButton>
                 <Link href='/mypage'>
                   <TextButton
                     variant='primary'
@@ -204,11 +209,13 @@ export default function Header() {
                     {t('header.login')}
                   </OutlineButton>
                 </Link>
-                <Link href='/contact'>
-                  <SolidButton variant='primary' size='medium'>
-                    {t('header.contact')}
-                  </SolidButton>
-                </Link>
+                <SolidButton
+                  variant='primary'
+                  size='medium'
+                  onClick={() => scrollToSection('contact-section')}
+                >
+                  {t('header.contact')}
+                </SolidButton>
               </>
             )}
           </ButtonGroup>
@@ -286,4 +293,7 @@ const Menu = styled.div`
   display: flex;
   align-items: center;
   gap: ${spacing.gap['gap-3']};
+  @media (max-width: 1024px) {
+    display: none;
+  }
 `;

@@ -71,10 +71,15 @@ const FAQContainer = styled.section`
 
 const FAQWrapper = styled.div`
   max-width: 1440px;
-  padding: 80px 40px 160px 40px;
+  width: 100%;
   display: flex;
   justify-content: center;
   margin: 0 auto;
+  padding: 80px 40px 160px 40px;
+
+  @media (max-width: 1440px) {
+    padding: 80px 40px 160px 40px;
+  }
 
   @media (max-width: 1024px) {
     padding: 80px 32px 160px 32px;

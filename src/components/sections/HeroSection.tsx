@@ -125,7 +125,8 @@ const SubTitle = styled.p`
   }
 
   @media (max-width: 375px) {
-    ${typography(undefined, 'title2', 'medium')}
+    font-size: 28px;
+    line-height: 40px;
   }
 `;
 
@@ -141,7 +142,8 @@ const MainTitle = styled.h1`
   }
 
   @media (max-width: 375px) {
-    ${typography(undefined, 'title2', 'medium')}
+    font-size: 28px;
+    line-height: 40px;
   }
 `;
 
