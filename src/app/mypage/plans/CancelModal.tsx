@@ -11,6 +11,7 @@ import {
   textColor,
   typography,
 } from '@cubig/design-system';
+import { useTranslation } from 'react-i18next';
 
 interface CancelModalProps {
   open: boolean;
@@ -31,22 +32,23 @@ export default function CancelModal({
   nextBillingDate,
   bundleId,
 }: CancelModalProps) {
+  const { t } = useTranslation('plans');
   const [loading, setLoading] = useState(false);
 
   const handleCancel = async () => {
     if (!bundleId) {
-      alert('번들 ID가 없습니다.');
+      alert(t('cancelModal.alerts.noBundleId'));
       return;
     }
 
     setLoading(true);
     try {
       await llmService.cancelSubscription(bundleId);
-      alert('구독이 성공적으로 취소되었습니다.');
+      alert(t('cancelModal.alerts.success'));
       onConfirm();
     } catch (error) {
       console.error('구독 취소 실패:', error);
-      alert('구독 취소에 실패했습니다. 다시 시도해주세요.');
+      alert(t('cancelModal.alerts.error'));
     } finally {
       setLoading(false);
     }
@@ -55,7 +57,7 @@ export default function CancelModal({
     <Modal
       open={open}
       onClose={onClose}
-      title='구독취소 안내'
+      title={t('cancelModal.title')}
       actions={
         <Actions>
           <SolidButton
@@ -64,7 +66,7 @@ export default function CancelModal({
             onClick={onClose}
             disabled={loading}
           >
-            닫기
+            {t('cancelModal.close')}
           </SolidButton>
           <SolidButton
             variant='primary'
@@ -72,24 +74,28 @@ export default function CancelModal({
             onClick={handleCancel}
             disabled={loading}
           >
-            {loading ? '취소 중...' : '구독취소'}
+            {loading ? t('cancelModal.confirming') : t('cancelModal.confirm')}
           </SolidButton>
         </Actions>
       }
     >
-      <Label>선택된 플랜</Label>
+      <Label>{t('cancelModal.selectedPlan')}</Label>
       <PlanBox>
         <PlanName>{planName || '-'}</PlanName>
-        <PlanMeta>플랜 : {planNumber || '플랜 번호'}</PlanMeta>
+        <PlanMeta>
+          {t('cancelModal.planLabel')}
+          {planNumber || t('cancelModal.planNumberLabel')}
+        </PlanMeta>
       </PlanBox>
 
       <InfoBox>
         <InfoSvg as={InfoIcon} />
         <InfoText>
-          구독을 취소하실 경우, 청구 기간이 종료되는
-          <br />
-          {nextBillingDate ? formatDate(nextBillingDate) : '다음 결제일'}
-          까지 사용할 수 있습니다.
+          {t('cancelModal.info', {
+            date: nextBillingDate
+              ? formatDate(nextBillingDate)
+              : t('cancelModal.infoNextBilling'),
+          })}
         </InfoText>
       </InfoBox>
     </Modal>

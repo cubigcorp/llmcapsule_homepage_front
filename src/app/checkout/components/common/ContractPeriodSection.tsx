@@ -33,8 +33,7 @@ export default function ContractPeriodSection({
     <ContractPeriodContainer>
       <ContractPeriodLabel>{t('contract.title')}</ContractPeriodLabel>
       <PeriodDescription>
-        {contractPeriod}개월 마다 자동 갱신되며, 기간 할인은 운영 정책에 따라
-        달라질 수 있습니다.
+        {t('contract.description', { months: contractPeriod })}
       </PeriodDescription>
       <PeriodOptions>
         {contractOptions.map((option) => (

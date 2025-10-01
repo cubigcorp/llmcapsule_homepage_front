@@ -49,11 +49,14 @@ export default function MyPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 기본 사용자 정보 조회 (기존 API)
         const userResponse = await authService.getMyInfo();
+
+        if (!userResponse.success) {
+          throw new Error('Failed to get user info');
+        }
+
         setUserInfo(userResponse.data || null);
 
-        // LLM API에서 데이터 조회
         const [myPageResponse, bundlesResponse] = await Promise.all([
           llmService.getMyStatic(),
           llmService.getMyBundles(),
@@ -82,13 +85,9 @@ export default function MyPage() {
         setUserBundles(null);
         setSelectedBundleId('');
 
-        if (error && typeof error === 'object' && 'response' in error) {
-          const axiosError = error as { response?: { status?: number } };
-          if (axiosError.response?.status === 401) {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
-            router.push('/login');
-          }
+        const accessToken = localStorage.getItem('access_token');
+        if (!accessToken) {
+          router.push('/login');
         }
       }
     };
@@ -230,8 +229,8 @@ export default function MyPage() {
                   <img src={PlanTrialImage.src} alt='Trial Plan' />
                 </TrialImageContainer>
                 <TrialContent>
-                  <TrialTitle>7일 동안 무료로 체험해보세요</TrialTitle>
-                  <TrialTokens>50,000/tokens</TrialTokens>
+                  <TrialTitle>{t('trial.title')}</TrialTitle>
+                  <TrialTokens>{t('trial.tokens')}</TrialTokens>
                 </TrialContent>
                 <TrialArrowIcon />
               </TrialCard>

@@ -18,6 +18,10 @@
     "desc": "Choose a plan and get started.",
     "cta": "Find the right plan"
   },
+  "trial": {
+    "title": "Try it free for 7 days",
+    "tokens": "50,000/tokens"
+  },
   "support": {
     "title": "Support",
     "guide": "Product Guide",

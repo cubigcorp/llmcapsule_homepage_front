@@ -24,6 +24,7 @@ export default function Header() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(false);
 
   const scrollToSection = (sectionId: string) => {
     // 홈페이지가 아닌 경우 홈으로 이동 후 스크롤
@@ -76,16 +77,21 @@ export default function Header() {
     const checkLoginStatus = async () => {
       const accessToken = localStorage.getItem('access_token');
       const loggedIn = !!accessToken;
-      setIsLoggedIn(loggedIn);
 
-      // 로그인 상태이면 사용자 정보 조회
       if (loggedIn) {
+        setIsLoadingUserInfo(true);
         try {
           const response = await authService.getMyInfo();
-          setUserInfo(response.data || null);
+
+          if (!response.success || !response.data) {
+            throw new Error('Failed to get user info');
+          }
+
+          setIsLoggedIn(true);
+          setUserInfo(response.data);
         } catch (error) {
           console.error('사용자 정보 조회 실패:', error);
-          // 토큰이 유효하지 않은 경우 로그아웃 처리
+
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
           setIsLoggedIn(false);
@@ -95,20 +101,23 @@ export default function Header() {
             typeof window !== 'undefined' &&
             !window.location.pathname.includes('/login') &&
             !window.location.pathname.includes('/signup') &&
-            !window.location.pathname.includes('/verify')
+            !window.location.pathname.includes('/verify') &&
+            window.location.pathname.includes('/mypage')
           ) {
             window.location.href = '/login';
           }
+        } finally {
+          setIsLoadingUserInfo(false);
         }
       } else {
+        setIsLoggedIn(false);
         setUserInfo(null);
+        setIsLoadingUserInfo(false);
       }
     };
 
-    // 초기 상태 확인
     checkLoginStatus();
 
-    // storage 이벤트 리스너 추가 (다른 탭에서 로그인/로그아웃 시)
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'access_token' || e.key === 'refresh_token') {
         checkLoginStatus();
@@ -117,7 +126,6 @@ export default function Header() {
 
     window.addEventListener('storage', handleStorageChange);
 
-    // 주기적으로 로그인 상태 확인 (30초마다)
     const interval = setInterval(checkLoginStatus, 30000);
 
     return () => {
@@ -191,14 +199,14 @@ export default function Header() {
                   {t('header.contact')}
                 </SolidButton>
                 <Link href='/mypage'>
-                  <TextButton
-                    variant='primary'
-                    size='medium'
-                    trailingIcon={ArrowDownIcon}
-                  >
-                    {userInfo?.last_name && userInfo?.first_name
-                      ? `${userInfo.last_name}${userInfo.first_name}`
-                      : userInfo?.first_name || userInfo?.last_name || '사용자'}
+                  <TextButton variant='primary' size='medium'>
+                    {isLoadingUserInfo
+                      ? '...'
+                      : userInfo?.last_name && userInfo?.first_name
+                        ? `${userInfo.last_name}${userInfo.first_name}`
+                        : userInfo?.first_name ||
+                          userInfo?.last_name ||
+                          '사용자'}
                   </TextButton>
                 </Link>
               </>

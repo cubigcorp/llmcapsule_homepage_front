@@ -32,9 +32,11 @@ import PlanBasicImage from '@/assets/images/plan_basic.png';
 import PlanPlusImage from '@/assets/images/plan_plus.png';
 import PlanProImage from '@/assets/images/plan_pro.png';
 import PlanMaxImage from '@/assets/images/plan_max.png';
+import { useTranslation } from 'react-i18next';
 
 export default function PlansPage() {
   const router = useRouter();
+  const { t } = useTranslation('plans');
 
   const [loading, setLoading] = useState(true);
   const [bundles, setBundles] = useState<UserBundleResponse[] | null>(null);
@@ -53,8 +55,12 @@ export default function PlansPage() {
   const loadPlans = async () => {
     setLoading(true);
     try {
-      // plans/my 사용
       const res = await llmService.getMyPlans();
+
+      if (!res.success) {
+        throw new Error(res.error || 'Failed to load plans');
+      }
+
       const data: UserBundlesResponse | null = res.data || null;
       const list = data?.bundles ?? [];
       setBundles(list);
@@ -62,6 +68,11 @@ export default function PlansPage() {
     } catch (e) {
       console.error('Failed to load my plans', e);
       setBundles(null);
+
+      const accessToken = localStorage.getItem('access_token');
+      if (!accessToken) {
+        router.push('/login');
+      }
     } finally {
       setLoading(false);
     }
@@ -102,33 +113,29 @@ export default function PlansPage() {
   if (loading) {
     return (
       <Container>
-        <PageTitle>플랜 관리</PageTitle>
-        <PageSubtitle>
-          현재 구독 상태와 결제 정보를 관리할 수 있습니다.
-        </PageSubtitle>
+        <PageTitle>{t('pageTitle')}</PageTitle>
+        <PageSubtitle>{t('pageSubtitle')}</PageSubtitle>
       </Container>
     );
   }
 
   return (
     <Container>
-      <PageTitle>플랜 관리</PageTitle>
-      <PageSubtitle>
-        현재 구독 상태와 결제 정보를 관리할 수 있습니다.
-      </PageSubtitle>
+      <PageTitle>{t('pageTitle')}</PageTitle>
+      <PageSubtitle>{t('pageSubtitle')}</PageSubtitle>
 
       <Tabs>
         <TabButton
           $active={activeTab === 'overview'}
           onClick={() => setActiveTab('overview')}
         >
-          개요
+          {t('tabs.overview')}
         </TabButton>
         <TabButton
           $active={activeTab === 'history'}
           onClick={() => setActiveTab('history')}
         >
-          구독 내역
+          {t('tabs.history')}
         </TabButton>
       </Tabs>
 
@@ -136,25 +143,23 @@ export default function PlansPage() {
         <EmptyState>
           <IconButton type='outline' icon={DataIcon} />
           <EmptyTexts>
-            <EmptyTitle>구독 중인 플랜이 없습니다.</EmptyTitle>
-            <EmptyDesc>
-              원하는 플랜을 선택하고 서비스를 시작해 보세요.
-            </EmptyDesc>
+            <EmptyTitle>{t('empty.noPlan.title')}</EmptyTitle>
+            <EmptyDesc>{t('empty.noPlan.description')}</EmptyDesc>
           </EmptyTexts>
           <SolidButton
             variant='primary'
             size='small'
             onClick={() => router.push('/#pricing-section')}
           >
-            나에게 맞는 플랜 찾기
+            {t('empty.noPlan.button')}
           </SolidButton>
         </EmptyState>
       ) : activeTab === 'overview' ? (
         <>
-          <SectionTitle>내 플랜</SectionTitle>
+          <SectionTitle>{t('myPlan.title')}</SectionTitle>
           <SelectorRow>
             <Dropdown
-              label='플랜 번호'
+              label={t('myPlan.planNumberLabel')}
               size='medium'
               value={selectedBundleId}
               onChange={(v) => setSelectedBundleId(v)}
@@ -173,19 +178,19 @@ export default function PlansPage() {
               size='medium'
               onClick={() => setUpgradeOpen(true)}
             >
-              업그레이드
+              {t('myPlan.upgrade')}
             </SolidButton>
             <SolidButton
               variant='secondary'
               size='medium'
               onClick={() => setCancelOpen(true)}
             >
-              구독취소
+              {t('myPlan.cancel')}
             </SolidButton>
           </ActionBar>
 
           <Divider />
-          <SectionSmallTitle>플랜 정보</SectionSmallTitle>
+          <SectionSmallTitle>{t('planInfo.title')}</SectionSmallTitle>
           <PlanSummaryRow>
             <PlanThumb
               src={
@@ -206,12 +211,12 @@ export default function PlansPage() {
                   {(
                     currentBundle?.plan?.monthly_token_limit || 0
                   ).toLocaleString()}{' '}
-                  tokens
+                  {t('planInfo.tokens')}
                 </MetaLeft>
                 <MetaDivider />
                 <MetaRight>
                   {currentBundle?.created_at
-                    ? `${formatDate(currentBundle.created_at)}부터 구독 중`
+                    ? `${formatDate(currentBundle.created_at)} ${t('planInfo.subscribedSince')}`
                     : ''}
                 </MetaRight>
               </PlanMetaRow>
@@ -221,11 +226,11 @@ export default function PlansPage() {
           <Divider style={{ marginBottom: 16 }} />
           <InfoGrid>
             <InfoCell>
-              <InfoLabel>시리얼 수</InfoLabel>
+              <InfoLabel>{t('planInfo.serialCount')}</InfoLabel>
               <InfoValue>{currentBundle?.serials?.length ?? 0}</InfoValue>
             </InfoCell>
             <InfoCell>
-              <InfoLabel>만료일(다음 결제일)</InfoLabel>
+              <InfoLabel>{t('planInfo.expiryDate')}</InfoLabel>
               <InfoValue>
                 {currentBundle?.next_billing_date
                   ? formatDateShort(currentBundle.next_billing_date)
@@ -235,7 +240,7 @@ export default function PlansPage() {
           </InfoGrid>
           <Divider style={{ marginTop: 16, marginBottom: 40 }} />
 
-          <SectionSmallTitle>시리얼 관리</SectionSmallTitle>
+          <SectionSmallTitle>{t('serialManagement.title')}</SectionSmallTitle>
           <SerialToolbar>
             <Selector
               size='small'
@@ -244,9 +249,15 @@ export default function PlansPage() {
                 setSerialFilter(v as 'all' | 'active' | 'inactive')
               }
               options={[
-                { value: 'all', label: '전체' },
-                { value: 'active', label: '활성화' },
-                { value: 'inactive', label: '비활성화' },
+                { value: 'all', label: t('serialManagement.filters.all') },
+                {
+                  value: 'active',
+                  label: t('serialManagement.filters.active'),
+                },
+                {
+                  value: 'inactive',
+                  label: t('serialManagement.filters.inactive'),
+                },
               ]}
               style={{ width: '120px' }}
             />
@@ -254,9 +265,9 @@ export default function PlansPage() {
           <SerialTable>
             <thead>
               <tr>
-                <th>No</th>
-                <th>시리얼 번호</th>
-                <th>활성화</th>
+                <th>{t('serialManagement.table.no')}</th>
+                <th>{t('serialManagement.table.serialNumber')}</th>
+                <th>{t('serialManagement.table.status')}</th>
               </tr>
             </thead>
             <tbody>
@@ -270,7 +281,9 @@ export default function PlansPage() {
                       variant={s.status === 'ACTIVE' ? 'positive' : 'secondary'}
                       size='small'
                     >
-                      {s.status === 'ACTIVE' ? '활성화' : '비활성화'}
+                      {s.status === 'ACTIVE'
+                        ? t('serialManagement.table.statusActive')
+                        : t('serialManagement.table.statusInactive')}
                     </Badge>
                   </td>
                 </tr>
@@ -323,11 +336,11 @@ export default function PlansPage() {
             <SerialTable>
               <thead>
                 <tr>
-                  <th>플랜명</th>
-                  <th>시리얼 수</th>
-                  <th>최초 결제일</th>
-                  <th>만료 예정일</th>
-                  <th>구독 상태</th>
+                  <th>{t('history.table.planName')}</th>
+                  <th>{t('history.table.serialCount')}</th>
+                  <th>{t('history.table.firstPaymentDate')}</th>
+                  <th>{t('history.table.expiryDate')}</th>
+                  <th>{t('history.table.status')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -349,7 +362,9 @@ export default function PlansPage() {
                         }
                         size='small'
                       >
-                        {b.status === 'ACTIVE' ? '이용중' : '만료'}
+                        {b.status === 'ACTIVE'
+                          ? t('history.table.statusActive')
+                          : t('history.table.statusExpired')}
                       </Badge>
                     </td>
                   </tr>
@@ -360,17 +375,15 @@ export default function PlansPage() {
             <EmptyState>
               <IconButton type='outline' icon={HistoryIcon} />
               <EmptyTexts>
-                <EmptyTitle>구독 내역이 없습니다.</EmptyTitle>
-                <EmptyDesc>
-                  원하는 플랜을 선택하고 서비스를 시작해 보세요.
-                </EmptyDesc>
+                <EmptyTitle>{t('empty.noHistory.title')}</EmptyTitle>
+                <EmptyDesc>{t('empty.noHistory.description')}</EmptyDesc>
               </EmptyTexts>
               <SolidButton
                 variant='primary'
                 size='small'
                 onClick={() => router.push('/#pricing-section')}
               >
-                나에게 맞는 플랜 찾기
+                {t('empty.noHistory.button')}
               </SolidButton>
             </EmptyState>
           )}

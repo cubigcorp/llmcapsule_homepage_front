@@ -16,6 +16,8 @@ import PlanPlusImage from '@/assets/images/plan_plus.png';
 import PlanProImage from '@/assets/images/plan_pro.png';
 import PlanMaxImage from '@/assets/images/plan_max.png';
 import CardIcon from '@/assets/icons/icon_card.svg';
+import { useTranslation } from 'react-i18next';
+
 type PlanOption = {
   id: number;
   name: 'BASIC' | 'PLUS' | 'PRO' | 'MAX';
@@ -42,6 +44,7 @@ export default function UpgradeModal({
   onClose,
   onUpgrade,
 }: UpgradeModalProps) {
+  const { t } = useTranslation('plans');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [fetchedOptions, setFetchedOptions] = useState<PlanOption[]>([]);
   const [loading, setLoading] = useState(false);
@@ -117,11 +120,11 @@ export default function UpgradeModal({
       size='medium'
       open={open}
       onClose={onClose}
-      title='플랜 업그레이드 '
+      title={t('upgradeModal.title')}
       actions={
         <FooterActions>
           <SolidButton variant='secondary' onClick={onClose}>
-            취소
+            {t('upgradeModal.cancel')}
           </SolidButton>
           <SolidButton
             leadingIcon={CardIcon}
@@ -129,15 +132,15 @@ export default function UpgradeModal({
             disabled={selectedId == null}
             onClick={handleConfirm}
           >
-            업그레이드
+            {t('upgradeModal.confirm')}
           </SolidButton>
         </FooterActions>
       }
     >
-      <Subtitle>플랜을 업그레이드하여 더 많은 토큰을 사용해보세요</Subtitle>
+      <Subtitle>{t('upgradeModal.subtitle')}</Subtitle>
       {loading ? (
         <LoadingContainer>
-          <LoadingText>플랜 정보를 불러오는 중...</LoadingText>
+          <LoadingText>{t('upgradeModal.loading')}</LoadingText>
         </LoadingContainer>
       ) : (
         <Grid $businessLayout={purchaseType === 'BUSINESS'}>
@@ -150,13 +153,19 @@ export default function UpgradeModal({
               <HeaderRow>
                 <Thumb src={getPlanImage(p.name)} alt={p.name} />
                 <TextCol>
-                  <PlanTitle>{getPlanLabel(p.name)} 플랜</PlanTitle>
-                  <PlanPrice>${p.price.toFixed(2)}/Seat</PlanPrice>
+                  <PlanTitle>
+                    {getPlanLabel(p.name)}
+                    {t('upgradeModal.planSuffix')}
+                  </PlanTitle>
+                  <PlanPrice>
+                    ${p.price.toFixed(2)}
+                    {t('upgradeModal.priceUnit')}
+                  </PlanPrice>
                 </TextCol>
               </HeaderRow>
               <Divider style={{ margin: '12px 0' }} />
               <TokenRow>
-                <TokenLabel>최대 토큰 수</TokenLabel>
+                <TokenLabel>{t('upgradeModal.maxTokens')}</TokenLabel>
                 <TokenValue>{p.monthlyTokenLimit.toLocaleString()}</TokenValue>
               </TokenRow>
             </PlanCard>

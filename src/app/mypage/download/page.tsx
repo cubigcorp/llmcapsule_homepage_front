@@ -14,8 +14,8 @@ import {
 } from '@cubig/design-system';
 import WindowsIcon from '@/assets/icons/icon_window.svg';
 import InfoIcon from '@/assets/icons/icon_info_small.svg';
-import DownloadImage from '@/assets/images/llmcapsule_download_1.png';
-import DownloadImage2 from '@/assets/images/llmcapsule_download_2.png';
+import DownloadImage from '@/assets/images/llmcapsule_download_2.png';
+import DownloadImage2 from '@/assets/images/llmcapsule_download_1.png';
 import DownloadIcon from '@/assets/icons/icon_download.svg';
 import { llmService } from '@/services/llm';
 

@@ -43,6 +43,7 @@
   "contract": {
     "title": "Contract Period",
     "desc": "Period discounts may vary by policy.",
+    "description": "Auto-renews every {{months}} months. Period discounts may vary by policy.",
     "monthsSuffix": "mo",
     "discount": "Discount",
     "prepay": "Prepay",

@@ -497,11 +497,13 @@ class ApiClient {
             return this.axiosInstance(originalRequest);
           } catch (refreshError) {
             this.processQueue(refreshError);
+
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
 
-            // 로그인 페이지로 리다이렉트
             if (typeof window !== 'undefined') {
+              window.dispatchEvent(new Event('storage'));
+
               if (
                 !window.location.pathname.includes('/login') &&
                 !window.location.pathname.includes('/signup') &&
