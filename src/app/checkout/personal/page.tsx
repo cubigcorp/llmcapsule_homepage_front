@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import GlobalHeader from '@/components/layout/Header';
 import { useTranslation } from 'react-i18next';
 import TokenBreakdown from '../components/common/TokenBreakdown';
@@ -35,6 +36,7 @@ const plans = {
 
 export default function CheckoutPage() {
   const { t } = useTranslation('checkout');
+  const isMobile = useMediaQuery('(max-width: 980px)');
   const [userCount, setUserCount] = useState<number>(1);
   const [tokenUsage, setTokenUsage] = useState<number>(300000);
   const [contractPeriod, setContractPeriod] = useState<number>(6);
@@ -90,6 +92,24 @@ export default function CheckoutPage() {
     });
     window.location.href = `/checkout/summary?${params.toString()}`;
   };
+
+  if (isMobile) {
+    return (
+      <>
+        <GlobalHeader />
+        <MobileBlockContainer>
+          <MessageBox>
+            <BlockTitle>데스크탑에서만 이용 가능합니다</BlockTitle>
+            <BlockDescription>
+              견적 계산 및 결제는 데스크탑 환경에서만 이용하실 수 있습니다.
+              <br />
+              PC 또는 노트북에서 다시 접속해 주세요.
+            </BlockDescription>
+          </MessageBox>
+        </MobileBlockContainer>
+      </>
+    );
+  }
 
   return (
     <>
@@ -724,4 +744,31 @@ const B2BInfoContent = styled.div`
 const B2BInfoText = styled.div`
   ${typography('ko', 'body2', 'regular')}
   color: ${textColor.light['fg-neutral-alternative']};
+`;
+
+const MobileBlockContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 72px);
+  padding: 20px;
+  margin-top: 72px;
+`;
+
+const MessageBox = styled.div`
+  text-align: center;
+  max-width: 400px;
+`;
+
+const BlockTitle = styled.h1`
+  ${typography('ko', 'title3', 'semibold')}
+  color: ${textColor.light['fg-neutral-primary']};
+  margin: 0 0 16px 0;
+`;
+
+const BlockDescription = styled.p`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
+  margin: 0;
+  line-height: 1.6;
 `;
