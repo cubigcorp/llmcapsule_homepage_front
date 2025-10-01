@@ -123,7 +123,7 @@ export default function Header() {
 
     window.addEventListener('storage', handleStorageChange);
 
-    const interval = setInterval(checkLoginStatus, 30000);
+    const interval = setInterval(checkLoginStatus, 600000);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
