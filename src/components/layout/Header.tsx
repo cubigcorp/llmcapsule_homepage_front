@@ -24,10 +24,8 @@ export default function Header() {
   const { t } = useTranslation('common');
   const [isAuthPage, setIsAuthPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return !!localStorage.getItem('access_token');
-  });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(false);
   const isMobile = useMediaQuery('(max-width: 575px)');
@@ -109,11 +107,13 @@ export default function Header() {
           }
         } finally {
           setIsLoadingUserInfo(false);
+          setIsCheckingAuth(false);
         }
       } else {
         setIsLoggedIn(false);
         setUserInfo(null);
         setIsLoadingUserInfo(false);
+        setIsCheckingAuth(false);
       }
     };
 
@@ -188,44 +188,48 @@ export default function Header() {
 
           <ButtonGroup>
             <LanguageSwitcher />
-            {isLoggedIn ? (
+            {!isCheckingAuth && (
               <>
-                <SolidButton
-                  variant='primary'
-                  size={isMobile ? 'small' : 'medium'}
-                  onClick={() => scrollToSection('contact-section')}
-                >
-                  {t('header.contact')}
-                </SolidButton>
-                <Link href='/mypage'>
-                  <TextButton
-                    variant='primary'
-                    size={isMobile ? 'small' : 'medium'}
-                  >
-                    {isLoadingUserInfo
-                      ? '...'
-                      : userInfo?.last_name && userInfo?.first_name
-                        ? `${userInfo.last_name}${userInfo.first_name}`
-                        : userInfo?.first_name ||
-                          userInfo?.last_name ||
-                          '사용자'}
-                  </TextButton>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link href='/login'>
-                  <OutlineButton variant='secondary' size='medium'>
-                    {t('header.login')}
-                  </OutlineButton>
-                </Link>
-                <SolidButton
-                  variant='primary'
-                  size='medium'
-                  onClick={() => scrollToSection('contact-section')}
-                >
-                  {t('header.contact')}
-                </SolidButton>
+                {isLoggedIn ? (
+                  <>
+                    <SolidButton
+                      variant='primary'
+                      size={isMobile ? 'small' : 'medium'}
+                      onClick={() => scrollToSection('contact-section')}
+                    >
+                      {t('header.contact')}
+                    </SolidButton>
+                    <Link href='/mypage'>
+                      <TextButton
+                        variant='primary'
+                        size={isMobile ? 'small' : 'medium'}
+                      >
+                        {isLoadingUserInfo
+                          ? '...'
+                          : userInfo?.last_name && userInfo?.first_name
+                            ? `${userInfo.last_name}${userInfo.first_name}`
+                            : userInfo?.first_name ||
+                              userInfo?.last_name ||
+                              '사용자'}
+                      </TextButton>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link href='/login'>
+                      <OutlineButton variant='secondary' size='medium'>
+                        {t('header.login')}
+                      </OutlineButton>
+                    </Link>
+                    <SolidButton
+                      variant='primary'
+                      size='medium'
+                      onClick={() => scrollToSection('contact-section')}
+                    >
+                      {t('header.contact')}
+                    </SolidButton>
+                  </>
+                )}
               </>
             )}
           </ButtonGroup>
