@@ -12,6 +12,7 @@ import {
   brandColor,
 } from '@cubig/design-system';
 import { useTranslation } from 'react-i18next';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 // Import SVG icons as React components
 import GovernmentIcon from '@/assets/icons/Icon_court.svg';
@@ -56,6 +57,7 @@ const DEMO_CATEGORIES = [
 
 export default function DemoSection() {
   const { t } = useTranslation('common');
+  const isMobile = useMediaQuery('(max-width: 575px)');
   const [activeButton, setActiveButton] = useState('Government');
   const [simulationStep, setSimulationStep] = useState(0); // 0: 초기, 1: 캡슐화, 2: LLM 결과
   const [currentStep, setCurrentStep] = useState(0); // 세부 단계 관리
@@ -321,10 +323,10 @@ export default function DemoSection() {
                   <DemoButton
                     key={category.id}
                     variant='secondary'
-                    size='large'
+                    size={isMobile ? 'small' : 'large'}
                     state={activeButton === category.id ? 'focused' : 'default'}
                     onClick={() => handleButtonClick(category.id)}
-                    leadingIcon={category.icon}
+                    leadingIcon={isMobile ? undefined : category.icon}
                   >
                     {t(`demo.categories.${category.id}`)}
                   </DemoButton>

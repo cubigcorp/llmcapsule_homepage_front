@@ -16,7 +16,9 @@ import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 import { authService } from '@/services/auth';
 import type { UserInfo } from '@/utils/api';
 import LogoIcon from '@/assets/icons/Logo.svg';
+import LogoMobileIcon from '@/assets/icons/logo_mobile.svg';
 import ArrowDownIcon from '@/assets/icons/icon_arrow-down.svg';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 export default function Header() {
   const pathname = usePathname();
   const { t } = useTranslation('common');
@@ -25,6 +27,7 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 575px)');
 
   const scrollToSection = (sectionId: string) => {
     // 홈페이지가 아닌 경우 홈으로 이동 후 스크롤
@@ -142,7 +145,7 @@ export default function Header() {
           <Leading>
             <LogoWrapper>
               <Link href='/'>
-                <LogoIcon />
+                {isMobile ? <LogoMobileIcon /> : <LogoIcon />}
               </Link>
             </LogoWrapper>
             <Menu>
@@ -188,16 +191,18 @@ export default function Header() {
             <LanguageSwitcher />
             {isLoggedIn ? (
               <>
-                <ContactButton
-                  as={SolidButton}
+                <SolidButton
                   variant='primary'
-                  size='medium'
+                  size={isMobile ? 'small' : 'medium'}
                   onClick={() => scrollToSection('contact-section')}
                 >
                   {t('header.contact')}
-                </ContactButton>
+                </SolidButton>
                 <Link href='/mypage'>
-                  <UserButton variant='primary' size='medium'>
+                  <TextButton
+                    variant='primary'
+                    size={isMobile ? 'small' : 'medium'}
+                  >
                     {isLoadingUserInfo
                       ? '...'
                       : userInfo?.last_name && userInfo?.first_name
@@ -205,7 +210,7 @@ export default function Header() {
                         : userInfo?.first_name ||
                           userInfo?.last_name ||
                           '사용자'}
-                  </UserButton>
+                  </TextButton>
                 </Link>
               </>
             ) : (
@@ -215,14 +220,13 @@ export default function Header() {
                     {t('header.login')}
                   </OutlineButton>
                 </Link>
-                <ContactButton
-                  as={SolidButton}
+                <SolidButton
                   variant='primary'
                   size='medium'
                   onClick={() => scrollToSection('contact-section')}
                 >
                   {t('header.contact')}
-                </ContactButton>
+                </SolidButton>
               </>
             )}
           </ButtonGroup>
@@ -301,21 +305,5 @@ const Menu = styled.div`
   align-items: center;
   @media (max-width: 1024px) {
     display: none;
-  }
-`;
-
-const ContactButton = styled.button`
-  @media (max-width: 575px) {
-    display: none;
-  }
-`;
-
-const UserButton = styled(TextButton)`
-  @media (max-width: 575px) {
-    height: 32px;
-    padding: 0 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    line-height: 18px;
   }
 `;
