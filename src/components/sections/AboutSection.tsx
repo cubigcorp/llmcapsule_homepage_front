@@ -183,41 +183,59 @@ const AboutWrapper = styled.div`
   }
 
   @media (max-width: 768px) {
-    padding: 80px 32px;
+    padding: 80px 24px;
   }
 
-  @media (max-width: 375px) {
-    padding: 80px 32px;
+  @media (max-width: 575px) {
+    padding: 80px 16px;
   }
 `;
 
 const HeaderSection = styled.div`
   padding-bottom: 40px;
   border-bottom: 1px solid ${borderColor.dark['color-border-primary']};
+
+  @media (max-width: 575px) {
+    padding-bottom: 16px;
+  }
 `;
 
 const MainTitle = styled.h1`
   ${typography(undefined, 'display1', 'medium')}
   color: ${textColor.dark['fg-neutral-strong']};
   margin-bottom: 12px;
+
+  @media (max-width: 575px) {
+    font-size: 24px;
+    line-height: 34px;
+  }
 `;
 
 const SubTitle = styled.p`
   ${typography(undefined, 'heading2', 'regular')}
   color: ${textColor.dark['fg-neutral-primary']};
+
+  @media (max-width: 575px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
 `;
 
 const ContentSection = styled.div`
   display: flex;
-  padding-top: 56px;
+  padding-top: 24px;
   align-items: flex-start;
+
+  @media (max-width: 575px) {
+    padding-top: 16px;
+  }
 `;
 
 const LeftSidebar = styled.div`
   width: 200px;
   flex-shrink: 0;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1440px) {
     display: none;
   }
 `;
@@ -261,6 +279,10 @@ const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 80px;
+
+  @media (max-width: 575px) {
+    gap: 40px;
+  }
 `;
 
 const SectionContent = styled.div``;
@@ -268,6 +290,10 @@ const SectionContent = styled.div``;
 const SectionHeader = styled.div`
   display: flex;
   gap: 4px;
+
+  @media (max-width: 575px) {
+    flex-direction: column;
+  }
 `;
 
 const SectionNumber = styled.div`
@@ -277,6 +303,16 @@ const SectionNumber = styled.div`
   font-family: 'Geist Mono', sans-serif;
   color: ${textColor.dark['fg-neutral-strong']};
   flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  @media (max-width: 575px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
 `;
 
 const SectionTextContent = styled.div`
@@ -287,11 +323,22 @@ const SectionTextContent = styled.div`
 const SectionTitle = styled.h2`
   ${typography(undefined, 'title1', 'medium')}
   color: ${textColor.dark['fg-neutral-primary']};
+
+  @media (max-width: 575px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
 `;
 
 const SectionSubtitle = styled.p`
   ${typography(undefined, 'body3', 'regular')}
+  margin-top: 4px;
   color: ${textColor.dark['fg-neutral-alternative']};
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 `;
 
 const ContentArea = styled.div`
@@ -317,12 +364,13 @@ const ImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
   @media (max-width: 1200px) {
-    padding: 48px 48px 64px 48px;
+    padding: 48px;
+    height: auto;
   }
   @media (max-width: 768px) {
     padding: 32px 24px 40px 24px;
-    height: auto;
   }
 `;
 
@@ -345,12 +393,29 @@ const ImageTitle = styled.h3`
   ${typography(undefined, 'title1', 'medium')}
   color: ${textColor.dark['fg-neutral-primary']};
   transition: opacity 0.2s ease-in-out;
+
+  @media (max-width: 1200px) {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  @media (max-width: 575px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
 `;
 
 const ImageSubtitle = styled.p`
+  margin-top: 8px;
   ${typography(undefined, 'body3', 'regular')}
   color: ${textColor.dark['fg-neutral-alternative']};
   transition: opacity 0.2s ease-in-out;
+
+  @media (max-width: 575px) {
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 20px;
+  }
 `;
 
 const ImageContent = styled.div`
@@ -374,7 +439,9 @@ const FeatureImage = styled.img`
   height: 100%;
   object-fit: contain;
   transition: opacity 0.2s ease-in-out;
+
   @media (max-width: 1200px) {
+    max-width: 480px;
     height: auto;
   }
 `;
@@ -397,11 +464,11 @@ const FeaturesList = styled.ul`
 `;
 
 const FeatureItem = styled.li<{ $isActive: boolean }>`
-  ${typography(undefined, 'heading1', 'medium')}
+  ${typography(undefined, 'body3', 'medium')}
   color: ${(props) =>
     props.$isActive
       ? textColor.dark['fg-neutral-primary']
-      : textColor.dark['fg-neutral-assistive']};
+      : textColor.dark['fg-neutral-disable']};
   background-color: ${(props) =>
     props.$isActive
       ? layerColor.dark['bg-layer-default']
@@ -414,5 +481,15 @@ const FeatureItem = styled.li<{ $isActive: boolean }>`
   &:hover {
     background-color: ${layerColor.dark['bg-layer-default']};
     color: ${textColor.dark['fg-neutral-primary']};
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 20px;
   }
 `;

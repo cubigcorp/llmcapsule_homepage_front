@@ -297,7 +297,6 @@ const Leading = styled.div`
 const Menu = styled.div`
   display: flex;
   align-items: center;
-  gap: ${spacing.gap['gap-3']};
   @media (max-width: 1024px) {
     display: none;
   }

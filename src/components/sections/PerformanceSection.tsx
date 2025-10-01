@@ -71,11 +71,11 @@ const PerformanceWrapper = styled.div`
   margin: 0 auto;
 
   @media (max-width: 768px) {
-    padding: 40px 24px;
+    padding: 80px 24px;
   }
 
-  @media (max-width: 375px) {
-    padding: 32px 16px;
+  @media (max-width: 575px) {
+    padding: 80px 16px;
   }
 `;
 
@@ -117,12 +117,23 @@ const MainTitle = styled.h3`
   ${typography(undefined, 'display1', 'medium')}
   color: ${textColor.light['fg-neutral-strong']};
   margin: 0 0 12px 0;
+
+  @media (max-width: 575px) {
+    font-size: 24px;
+    line-height: 34px;
+  }
 `;
 
 const SubTitle = styled.p`
   ${typography(undefined, 'heading2', 'regular')}
   color: ${textColor.light['fg-neutral-primary']};
   margin: 0 0 40px 0;
+
+  @media (max-width: 575px) {
+    margin-bottom: 16px;
+    font-size: 16px;
+    line-height: 24px;
+  }
 `;
 
 const StatsGrid = styled.div`
@@ -141,18 +152,33 @@ const StatCard = styled.div`
   flex-direction: column;
   border-top: 1px solid ${textColor.light['fg-neutral-primary']};
   padding-bottom: 32px;
+
+  @media (max-width: 575px) {
+    padding-bottom: 4px;
+  }
 `;
 
 const StatValue = styled.div`
   margin-top: 12px;
   ${typography(undefined, 'display3', 'medium')}
   color: ${textColor.light['fg-neutral-strong']};
+
+  @media (max-width: 575px) {
+    font-size: 36px;
+    line-height: 48px;
+  }
 `;
 
 const StatTitle = styled.h4`
   ${typography(undefined, 'heading2', 'semibold')}
   color: ${textColor.light['fg-neutral-primary']};
   margin-top: 16px;
+
+  @media (max-width: 575px) {
+    margin-top: 8px;
+    font-size: 16px;
+    line-height: 24px;
+  }
 `;
 
 const StatDescription = styled.p`
@@ -161,4 +187,9 @@ const StatDescription = styled.p`
   margin-top: 8px;
   max-width: 400px;
   width: 100%;
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 `;

@@ -70,7 +70,7 @@ const CTAContent = styled.div`
   }
 
   @media (max-width: 768px) {
-    padding: 60px 24px 40px 24px;
+    padding: 64px 24px;
   }
 `;
 
@@ -79,6 +79,11 @@ const CTATitle = styled.h2`
   color: ${color.common['100']};
   margin: 0;
   text-align: center;
+
+  @media (max-width: 575px) {
+    font-size: 18px;
+    line-height: 26px;
+  }
 `;
 
 const CTASubtitle = styled.p`
@@ -88,6 +93,11 @@ const CTASubtitle = styled.p`
   text-align: center;
   max-width: 560px;
   white-space: pre-line;
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 `;
 
 const CTAButton = styled.button`
@@ -113,5 +123,12 @@ const CTAButton = styled.button`
 
   &:active {
     transform: translateY(0);
+  }
+
+  @media (max-width: 575px) {
+    margin-top: 24px;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 20px;
   }
 `;

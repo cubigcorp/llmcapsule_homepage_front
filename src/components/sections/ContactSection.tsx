@@ -58,7 +58,7 @@ const ContactOuterWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 160px 240px;
+  padding: 160px 80px;
 
   @media (min-width: 1920px) {
     max-width: 1920px;
@@ -106,6 +106,10 @@ const ContactLeft = styled.div`
     width: 100%;
     gap: 32px;
   }
+
+  @media (max-width: 575px) {
+    gap: 0;
+  }
 `;
 
 const ContactRight = styled.div`
@@ -127,6 +131,12 @@ const ContactTitle = styled.h3`
   color: ${textColor.light['fg-neutral-strong']};
 
   margin: 24px 0 0 24px;
+
+  @media (max-width: 575px) {
+    font-size: 24px;
+    line-height: 34px;
+    text-align: center;
+  }
 `;
 
 const ContactInfo = styled.div`
@@ -143,6 +153,10 @@ const InfoBlock = styled.div`
   gap: 8px;
   padding: 40px;
   background-color: ${color.common['100']};
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const InfoContent = styled.div`
