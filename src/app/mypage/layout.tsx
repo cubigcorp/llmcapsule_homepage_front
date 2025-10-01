@@ -138,6 +138,7 @@ export default function MyPageLayout({
               selected={pathname === '/mypage/plans'}
             />
           </LNBItemGroup>
+          {/**
           <LNBItemGroup title={t('lnb.groups.resources')}>
             <LNBItem
               value={t('lnb.items.download')}
@@ -146,6 +147,7 @@ export default function MyPageLayout({
               selected={pathname === '/mypage/download'}
             />
           </LNBItemGroup>
+          */}
         </LNB>
       </LNBWrapper>
 

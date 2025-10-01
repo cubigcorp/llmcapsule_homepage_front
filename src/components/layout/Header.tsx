@@ -76,9 +76,8 @@ export default function Header() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       const accessToken = localStorage.getItem('access_token');
-      const loggedIn = !!accessToken;
 
-      if (loggedIn) {
+      if (accessToken) {
         setIsLoadingUserInfo(true);
         try {
           const response = await authService.getMyInfo();
@@ -118,15 +117,13 @@ export default function Header() {
 
     checkLoginStatus();
 
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'access_token' || e.key === 'refresh_token') {
-        checkLoginStatus();
-      }
+    const handleStorageChange = () => {
+      checkLoginStatus();
     };
 
     window.addEventListener('storage', handleStorageChange);
 
-    const interval = setInterval(checkLoginStatus, 30000);
+    const interval = setInterval(checkLoginStatus, 600000);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);

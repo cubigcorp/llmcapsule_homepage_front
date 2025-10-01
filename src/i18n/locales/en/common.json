@@ -6,7 +6,7 @@
   "hero": {
     "mainTitle": "Capsule AI for what's next",
     "subTitle": "Secure, seamless\nfor GenAI and public LLMs",
-    "description": "LLM Capsule bridges enterprises and AI platforms securely and seamlessly, \n empowering innovation with trusted data protection and compliance.",
+    "description": "LLM Capsule securely connects enterprises \n and AI, driving innovation with trusted data.",
     "getStarted": "Get Started",
     "brochure": "Brochure"
   },
@@ -27,7 +27,7 @@
         "features": [
           "Complete protection of sensitive data in AI usage",
           "Customizable data protection",
-          "Flexible de-identification methods"
+          "Flexible Filtering Settings"
         ],
         "featureDescriptions": [
           "A four-step framework of detection, protection, utilization, and recovery.",
@@ -55,7 +55,7 @@
         "title": "Compliance ready, threat resilient",
         "subtitle": "Enterprise-grade AI security and management for safe, compliant, and reliable operations.",
         "mainTitle": "Context-Aware AI Detection",
-        "description": "Beyond keywords, precision designed for enterprise data protection.",
+        "description": "Beyond keywords, delivering precision for enterprise data protection.",
         "features": [
           "Context-Aware AI Detection",
           "Defense Against Prompt Injection & Jailbreak Attacks",
@@ -64,7 +64,7 @@
           "On-Premises Deployment Support"
         ],
         "featureDescriptions": [
-          "Beyond keywords, precision designed for enterprise data protection.",
+          "Beyond keywords, delivering precision for enterprise data protection.",
           "Safeguards that ensure stable AI operations.",
           "Trusted AI that meets domestic and international regulations.",
           "Simplified administration for enterprise efficiency.",
@@ -119,7 +119,7 @@
     "plans": {
       "plus": {
         "title": "Plus",
-        "subtitle": "The first step toward protecting personal data",
+        "subtitle": "The first step toward protecting sensitive data",
         "price": "$ 12.99",
         "period": " / Seat per month",
         "button": "Buy now",
@@ -184,7 +184,7 @@
   "performance": {
     "title": "Performance",
     "mainTitle": "Why we're different",
-    "subTitle": "Precise detection and efficient use that keep response quality intact after sensitive data is safeguarded.",
+    "subTitle": "Ensure precise detection and efficient use, keeping response quality intact while protecting sensitive data.",
     "stats": {
       "type1Error": {
         "title": "Type I Error Detection Accuracy",

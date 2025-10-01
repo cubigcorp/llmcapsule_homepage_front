@@ -219,12 +219,49 @@ export default function MyPage() {
                 <IconButton type='outline' icon={DataIcon} />
                 <EmptyStateTitle>{t('empty.title')}</EmptyStateTitle>
                 <EmptyStateDescription>{t('empty.desc')}</EmptyStateDescription>
-                <SolidButton variant='primary' size='small'>
+                <SolidButton
+                  variant='primary'
+                  size='small'
+                  onClick={() => {
+                    const accessToken = localStorage.getItem('access_token');
+                    if (!accessToken) {
+                      router.push('/login');
+                      return;
+                    }
+                    window.location.href = '/#pricing-section';
+                  }}
+                >
                   {t('empty.cta')}
                 </SolidButton>
               </EmptyStateContainer>
 
-              <TrialCard>
+              <TrialCard
+                onClick={async () => {
+                  const accessToken = localStorage.getItem('access_token');
+                  if (!accessToken) {
+                    router.push('/login');
+                    return;
+                  }
+
+                  try {
+                    const response = await llmService.createPurchase({
+                      plan_id: 1,
+                      seat_count: 1,
+                      contract_month: 0,
+                      is_prepayment: false,
+                      add_on: [],
+                      total_price: 0,
+                      purchase_type: 'PERSONAL',
+                    });
+
+                    if (response.success) {
+                      router.push('/mypage/plans');
+                    }
+                  } catch (error) {
+                    console.error('Trial purchase failed:', error);
+                  }
+                }}
+              >
                 <TrialImageContainer>
                   <img src={PlanTrialImage.src} alt='Trial Plan' />
                 </TrialImageContainer>
@@ -237,7 +274,7 @@ export default function MyPage() {
             </>
           )}
 
-          <SupportSection>
+          {/* <SupportSection>
             <SectionTitle>{t('support.title')}</SectionTitle>
             <SupportGrid>
               <SupportCard>
@@ -257,7 +294,7 @@ export default function MyPage() {
                 <SupportArrowIcon />
               </SupportCard>
             </SupportGrid>
-          </SupportSection>
+          </SupportSection> */}
         </LeftColumn>
 
         <RightColumn>
