@@ -61,6 +61,8 @@ export default function SummaryCard({
   const { t } = useTranslation('checkout');
 
   const totalAmount = yearlyTotal + addOnTotal;
+  const formatAmount = (value: number) =>
+    value.toLocaleString(undefined, { maximumFractionDigits: 2 });
 
   const planKey = (currentPlan.name || '').toUpperCase();
   const businessCapMap: Record<string, number> = {
@@ -88,7 +90,7 @@ export default function SummaryCard({
           <SummaryDetails>
             <SummaryDetail>
               {t('summary.selectedPlan')}: {currentPlan.name} ($
-              {currentPlan.price.toLocaleString()}/Seat · Cap{' '}
+              {formatAmount(currentPlan.price)}/Seat · Cap{' '}
               {planCapMax.toLocaleString()})
             </SummaryDetail>
             <SummaryDetail>
@@ -103,8 +105,7 @@ export default function SummaryCard({
               %)
             </SummaryDetail>
             <SummaryDetailPrimary>
-              {t('summary.monthly')}: $
-              {Math.round(yearlyTotal).toLocaleString()}
+              {t('summary.monthly')}: ${formatAmount(yearlyTotal)}
             </SummaryDetailPrimary>
           </SummaryDetails>
         </SummaryItem>
@@ -130,7 +131,7 @@ export default function SummaryCard({
                       : policyGuideCount === 200
                         ? '200-500'
                         : '500+'}
-                    ) / ${addOnPrices.policy.toLocaleString()}
+                    ) / ${formatAmount(addOnPrices.policy)}
                   </SummaryDetail>
                 )}
                 {basicModuleEnabled && (
@@ -146,44 +147,43 @@ export default function SummaryCard({
                         }`
                       : ''}
                     ) / $
-                    {(
+                    {formatAmount(
                       addOnPrices.basicModule + addOnPrices.subOption
-                    ).toLocaleString()}
+                    )}
                   </SummaryDetail>
                 )}
                 {aiAnswerEnabled && (
                   <SummaryDetail>
                     {t('summary.aiAnswer')}: $
-                    {addOnPrices.aiAnswer.toLocaleString()}
+                    {formatAmount(addOnPrices.aiAnswer)}
                   </SummaryDetail>
                 )}
                 {unstructuredModuleEnabled && (
                   <SummaryDetail>
                     {t('summary.unstructured')}: $
-                    {addOnPrices.unstructuredModule.toLocaleString()}
+                    {formatAmount(addOnPrices.unstructuredModule)}
                   </SummaryDetail>
                 )}
                 {ragSystemEnabled && (
                   <SummaryDetail>
-                    {t('summary.rag')}: ${addOnPrices.rag.toLocaleString()}
+                    {t('summary.rag')}: ${formatAmount(addOnPrices.rag)}
                   </SummaryDetail>
                 )}
                 {graphRagEnabled && (
                   <SummaryDetail>
                     {t('summary.graphRag')}: $
-                    {addOnPrices.graphRag.toLocaleString()}
+                    {formatAmount(addOnPrices.graphRag)}
                   </SummaryDetail>
                 )}
                 {documentSecurityEnabled && (
                   <SummaryDetail>
                     {t('summary.docSec')}: $
-                    {addOnPrices.documentSecurity.toLocaleString()}
+                    {formatAmount(addOnPrices.documentSecurity)}
                   </SummaryDetail>
                 )}
               </SummaryDetails>
               <SummaryDetailPrimary>
-                {t('summary.oneTime')}: $
-                {Math.round(addOnTotal).toLocaleString()}
+                {t('summary.oneTime')}: ${formatAmount(addOnTotal)}
               </SummaryDetailPrimary>
             </SummaryItem>
           </>
@@ -195,24 +195,24 @@ export default function SummaryCard({
             <>
               <PriceBreakdownItem>
                 <span>{t('summary.monthly')}</span>
-                <span>${Math.round(yearlyTotal).toLocaleString()}</span>
+                <span>${formatAmount(yearlyTotal)}</span>
               </PriceBreakdownItem>
               <PriceBreakdownItem>
                 <span>{t('summary.oneTime')} </span>
-                <span>${Math.round(addOnTotal).toLocaleString()}</span>
+                <span>${formatAmount(addOnTotal)}</span>
               </PriceBreakdownItem>
             </>
           ) : (
             <PriceBreakdownItem>
               <span>{t('summary.monthly')} </span>
-              <span>${Math.round(yearlyTotal).toLocaleString()}</span>
+              <span>${formatAmount(yearlyTotal)}</span>
             </PriceBreakdownItem>
           )}
         </PriceBreakdownSection>
 
         <TotalSection>
           <TotalLabel>{t('summary.total')}</TotalLabel>
-          <TotalPrice>${Math.round(totalAmount).toLocaleString()}</TotalPrice>
+          <TotalPrice>${formatAmount(totalAmount)}</TotalPrice>
         </TotalSection>
       </TopSection>
 

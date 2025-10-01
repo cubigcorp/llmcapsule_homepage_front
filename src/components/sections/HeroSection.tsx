@@ -10,10 +10,12 @@ import {
   typography,
   textColor,
 } from '@cubig/design-system';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 export default function HeroSection() {
   const router = useRouter();
   const { t } = useTranslation('common');
+  const isMobile = useMediaQuery('(max-width: 575px)');
 
   const handleGetStarted = () => {
     const accessToken = localStorage.getItem('access_token');
@@ -36,14 +38,14 @@ export default function HeroSection() {
           <ButtonGroup>
             <SolidButton
               variant='primary'
-              size='large'
+              size={isMobile ? 'small' : 'large'}
               onClick={handleGetStarted}
             >
               {t('hero.getStarted')}
             </SolidButton>
             <OutlineButton
               variant='secondary'
-              size='large'
+              size={isMobile ? 'small' : 'large'}
               onClick={() => {
                 window.open(
                   'https://cubig.gabia.io/QR_files/Brochure_LLM_K.pdf',
@@ -115,12 +117,21 @@ const TextContent = styled.div`
   text-align: center;
   align-items: center;
   margin-top: 128px;
+
+  @media (max-width: 768px) {
+    margin-top: 64px;
+  }
+
+  @media (max-width: 375px) {
+    margin-top: 40px;
+  }
 `;
 
 const SubTitle = styled.p`
   ${typography(undefined, 'display4', 'medium')}
   color: ${textColor.light['fg-neutral-alternative']};
   white-space: pre-line;
+  word-break: keep-all;
   @media (max-width: 1024px) {
     ${typography(undefined, 'display4', 'medium')}
   }
@@ -129,7 +140,7 @@ const SubTitle = styled.p`
     ${typography(undefined, 'display3', 'medium')}
   }
 
-  @media (max-width: 375px) {
+  @media (max-width: 575px) {
     font-size: 28px;
     line-height: 40px;
   }
@@ -146,7 +157,7 @@ const MainTitle = styled.h1`
     ${typography(undefined, 'display3', 'medium')}
   }
 
-  @media (max-width: 375px) {
+  @media (max-width: 575px) {
     font-size: 28px;
     line-height: 40px;
   }
@@ -167,8 +178,9 @@ const Description = styled.p`
     ${typography(undefined, 'heading3', 'regular')}
   }
 
-  @media (max-width: 375px) {
-    ${typography(undefined, 'body3', 'regular')}
+  @media (max-width: 575px) {
+    font-size: 16px;
+    line-height: 24px;
   }
 `;
 

@@ -143,5 +143,9 @@
   "b2bInfo": {
     "text1": "LLM Capsule B2B product requires deployment, server, and DB setup work, requiring an average of 2-3 months for implementation.",
     "text2": "We will contact you within 3 business days after payment completion, so please confirm your contact email and phone number."
+  },
+  "mobileBlock": {
+    "title": "Desktop Only",
+    "description": "Quote calculation and payment are only available on desktop.\nPlease access from a PC or laptop."
   }
 }

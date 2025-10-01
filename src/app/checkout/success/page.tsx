@@ -40,6 +40,8 @@ function getPlanImageByName(name: string) {
 }
 
 function CheckoutSuccessContent() {
+  const formatAmount = (value: number) =>
+    value.toLocaleString(undefined, { maximumFractionDigits: 2 });
   const { t } = useTranslation();
   const params = useSearchParams();
   const router = useRouter();
@@ -54,18 +56,7 @@ function CheckoutSuccessContent() {
 
   const planImage = getPlanImageByName(plan);
   const normalizedPlan = plan as 'BASIC' | 'PLUS' | 'PRO' | 'MAX';
-  const payment = {} as { payment_id?: number; created_at?: string };
-  const formatKoreanDateTime = (d: Date) =>
-    `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${d
-      .getHours()
-      .toString()
-      .padStart(2, '0')}시 ${d.getMinutes().toString().padStart(2, '0')}분`;
-  const orderNumber = payment?.payment_id
-    ? `OR${String(payment.payment_id).padStart(4, '0')}`
-    : `OR${new Date().getTime().toString().slice(-4)}`;
-  const orderDate = formatKoreanDateTime(
-    payment?.created_at ? new Date(payment.created_at) : new Date()
-  );
+
   const planCapMax = (() => {
     if (purchaseType === 'PERSONAL') {
       switch (normalizedPlan) {
@@ -116,7 +107,7 @@ function CheckoutSuccessContent() {
               <PlanInfo>
                 <PlanName>{plan}</PlanName>
                 <PlanMeta>
-                  <PlanPrice>₩{price.toLocaleString()}/Seat</PlanPrice>
+                  <PlanPrice>${formatAmount(price)}/Seat</PlanPrice>
                   <PlanDivider>·</PlanDivider>
                   <PlanCap>Seat · Cap {planCapMax.toLocaleString()}</PlanCap>
                 </PlanMeta>
@@ -126,9 +117,8 @@ function CheckoutSuccessContent() {
             <SectionTitle>{t('checkout:summary.selectedSpec')}</SectionTitle>
             <Bullets>
               <li>
-                {t('checkout:summary.selectedPlan')}: {plan} (₩
-                {price.toLocaleString()}/Seat · Cap{' '}
-                {planCapMax.toLocaleString()})
+                {t('checkout:summary.selectedPlan')}: {plan} ($
+                {formatAmount(price)}/Seat · Cap {planCapMax.toLocaleString()})
               </li>
               <li>
                 {t('checkout:summary.users')}: {users}
@@ -138,8 +128,7 @@ function CheckoutSuccessContent() {
                 {t('checkout:contract.monthsSuffix')}
               </li>
               <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                {t('checkout:summary.monthly')}: ₩
-                {monthlyTotal.toLocaleString()}
+                {t('checkout:summary.monthly')}: ${formatAmount(monthlyTotal)}
               </li>
             </Bullets>
 
@@ -149,8 +138,8 @@ function CheckoutSuccessContent() {
                 <SectionTitle>{t('checkout:summary.oneTime')}</SectionTitle>
                 <Bullets>
                   <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                    {t('checkout:summary.oneTime')}: ₩
-                    {oneTimeTotal.toLocaleString()}
+                    {t('checkout:summary.oneTime')}: $
+                    {formatAmount(oneTimeTotal)}
                   </li>
                 </Bullets>
               </>
@@ -160,18 +149,18 @@ function CheckoutSuccessContent() {
               <TotalsGroup>
                 <TotalsLine>
                   <span>{t('checkout:summary.monthly')}</span>
-                  <span>₩{monthlyTotal.toLocaleString()}</span>
+                  <span>${formatAmount(monthlyTotal)}</span>
                 </TotalsLine>
                 {oneTimeTotal > 0 && (
                   <TotalsLine>
                     <span>{t('checkout:summary.oneTime')}</span>
-                    <span>₩{oneTimeTotal.toLocaleString()}</span>
+                    <span>${formatAmount(oneTimeTotal)}</span>
                   </TotalsLine>
                 )}
               </TotalsGroup>
               <TotalsGrandLine>
                 <GrandLabel>{t('checkout:summary.total')}</GrandLabel>
-                <GrandValue>₩{totalAmount.toLocaleString()}</GrandValue>
+                <GrandValue>${formatAmount(totalAmount)}</GrandValue>
               </TotalsGrandLine>
             </TotalsBox>
           </SummaryCard>
@@ -241,11 +230,6 @@ const OrderInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-`;
-
-const OrderDate = styled.span`
-  ${typography('ko', 'body3', 'regular')}
-  color: ${textColor.light['fg-neutral-alternative']};
 `;
 
 const PlanRow = styled.div`

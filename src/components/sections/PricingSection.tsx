@@ -309,11 +309,11 @@ const PricingWrapper = styled.div`
   }
 
   @media (max-width: 768px) {
-    padding: 40px 24px;
+    padding: 80px 24px;
   }
 
-  @media (max-width: 375px) {
-    padding: 32px 16px;
+  @media (max-width: 575px) {
+    padding: 80px 16px;
   }
 `;
 
@@ -355,12 +355,23 @@ const MainTitle = styled.h3`
   ${typography(undefined, 'display1', 'medium')}
   color: ${textColor.light['fg-neutral-strong']};
   margin: 0 0 12px 0;
+
+  @media (max-width: 575px) {
+    font-size: 24px;
+    line-height: 34px;
+  }
 `;
 
 const SubTitle = styled.p`
   ${typography(undefined, 'heading2', 'regular')}
   color: ${textColor.light['fg-neutral-primary']};
   margin: 0 0 40px 0;
+
+  @media (max-width: 575px) {
+    margin-bottom: 16px;
+    font-size: 16px;
+    line-height: 24px;
+  }
 `;
 
 const PlanToggle = styled.div`
@@ -418,6 +429,12 @@ const PlanHeader = styled.div<{ $custom?: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media (max-width: 575px) {
+    padding: 24px;
+    height: auto;
+    justify-content: inherit;
+  }
 `;
 
 const PersonalPlanHeader = styled.div`
@@ -432,23 +449,45 @@ const PlanTitle = styled.h4`
   ${typography(undefined, 'title3', 'medium')}
   color: ${color.common['100']};
   margin: 0 0 8px 0;
+
+  @media (max-width: 575px) {
+    margin-bottom: 0;
+    font-size: 20px;
+    line-height: 28px;
+  }
 `;
 
 const PlanSubtitle = styled.p`
   ${typography(undefined, 'body3', 'regular')}
   color: ${color.common['100']};
   margin: 0 0 56px 0;
+
+  @media (max-width: 575px) {
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 20px;
+  }
 `;
 
 const PlanPrice = styled.div`
   ${typography(undefined, 'display1', 'medium')}
   color: ${color.common['100']};
   margin: 0;
+
+  @media (max-width: 575px) {
+    font-size: 28px;
+    line-height: 40px;
+  }
 `;
 
 const PlanPeriod = styled.span`
   ${typography(undefined, 'heading1', 'medium')}
   color: ${textColor.dark['fg-neutral-alternative']};
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 `;
 
 const PersonalPlanTitle = styled.h4`
@@ -506,6 +545,10 @@ const PlanBody = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media (max-width: 575px) {
+    padding: 16px;
+  }
 `;
 
 const PersonalPlanBody = styled.div`

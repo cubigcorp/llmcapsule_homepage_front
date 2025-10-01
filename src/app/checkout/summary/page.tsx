@@ -1,5 +1,5 @@
 'use client';
-
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import React, { useEffect, useRef, useState, Suspense } from 'react';
 import styled from 'styled-components';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -42,11 +42,13 @@ function CheckoutSummaryContent() {
   const { t } = useTranslation('checkout');
   const params = useSearchParams();
   const router = useRouter();
-  const paypalContainerRef = useRef<HTMLDivElement | null>(null);
+  const formatAmount = (value: number) =>
+    value.toLocaleString(undefined, { maximumFractionDigits: 2 });
   const initializedRef = useRef(false);
   const apiCallInProgressRef = useRef(false);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [paymentId, setPaymentId] = useState<number | null>(null);
+  const [paypalPlanId, setPaypalPlanId] = useState<string | null>(null);
 
   const purchaseType = params.get('purchaseType') || 'BUSINESS';
   const plan = params.get('plan') || 'Pro';
@@ -87,24 +89,6 @@ function CheckoutSummaryContent() {
       aiAnswerEnabled);
 
   const handleBack = () => router.back();
-
-  async function loadPayPalSdk(clientId: string) {
-    return new Promise<void>((resolve, reject) => {
-      // 이미 로드된 경우
-      if (
-        document.querySelector('script[src^="https://www.paypal.com/sdk/js"]')
-      ) {
-        resolve();
-        return;
-      }
-      const script = document.createElement('script');
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&vault=true&intent=subscription`;
-      script.async = true;
-      script.onload = () => resolve();
-      script.onerror = () => reject(new Error('Failed to load PayPal SDK'));
-      document.body.appendChild(script);
-    });
-  }
 
   useEffect(() => {
     console.log(
@@ -211,105 +195,7 @@ function CheckoutSummaryContent() {
         }
 
         setPaymentId(returnedPaymentId);
-
-        await loadPayPalSdk(clientIdToUse);
-
-        const winAny = window as unknown as {
-          paypal?: {
-            Buttons: (opts: {
-              style: Record<string, unknown>;
-              createSubscription: (
-                data: unknown,
-                actions: {
-                  subscription: {
-                    create: (arg: { plan_id: string }) => Promise<string>;
-                  };
-                }
-              ) => Promise<string>;
-              onApprove: (data: {
-                orderID?: string;
-                subscriptionID: string;
-                facilitatorAccessToken?: string;
-                paymentSource?: string;
-              }) => Promise<void> | void;
-            }) => { render: (el: HTMLElement) => void };
-          };
-        };
-
-        if (winAny?.paypal && paypalContainerRef.current) {
-          // 컨테이너 초기화
-          paypalContainerRef.current.innerHTML = '';
-          winAny.paypal
-            .Buttons({
-              style: {
-                shape: 'rect',
-                color: 'gold',
-                layout: 'vertical',
-                label: 'subscribe',
-              },
-              createSubscription: function (
-                _data: unknown,
-                actions: {
-                  subscription: {
-                    create: (arg: { plan_id: string }) => Promise<string>;
-                  };
-                }
-              ) {
-                return actions.subscription.create({ plan_id: paypalPlan });
-              },
-              onApprove: async (data: {
-                orderID?: string;
-                subscriptionID: string;
-                facilitatorAccessToken?: string;
-                paymentSource?: string;
-              }) => {
-                try {
-                  if (!returnedPaymentId) {
-                    console.error('returnedPaymentId is null or undefined');
-                    alert('결제 ID가 없습니다. 다시 시도해주세요.');
-                    return;
-                  }
-
-                  console.log(
-                    'Calling completePayment with returnedPaymentId:',
-                    returnedPaymentId
-                  );
-                  const completeRes = await llmService.completePayment(
-                    returnedPaymentId,
-                    {
-                      subscription_id: data.subscriptionID,
-                      plan_id: paypalPlan,
-                    }
-                  );
-
-                  console.log('completePayment response:', completeRes);
-
-                  if (completeRes.success) {
-                    // 성공 시 상세 값 그대로 전달 (URL 파라미터)
-                    const sp = new URLSearchParams({
-                      purchaseType: String(purchaseType),
-                      plan: String(plan),
-                      price: String(price),
-                      users: String(users),
-                      period: String(period),
-                      monthlyTotal: String(monthlyTotal),
-                      oneTimeTotal: String(oneTimeTotal),
-                      totalAmount: String(totalAmount),
-                    });
-                    console.log('Payment completed, redirect with params');
-                    router.push(`/checkout/success?${sp.toString()}`);
-                  } else {
-                    console.error('Payment completion failed:', completeRes);
-                    alert('결제 완료 처리에 실패했습니다.');
-                  }
-                } catch (error) {
-                  console.error('Payment completion error:', error);
-                  alert('결제 완료 처리 중 오류가 발생했습니다.');
-                }
-              },
-            })
-            .render(paypalContainerRef.current);
-        }
+        setPaypalPlanId(paypalPlan);
       } catch {
         alert('결제 준비 중 오류가 발생했습니다.');
       } finally {
@@ -320,6 +206,48 @@ function CheckoutSummaryContent() {
 
     void initPayPal();
   }, []); // 완전히 빈 의존성 배열
+
+  // React PayPal JS Handlers
+  const createSubscription = (
+    _data: unknown,
+    actions: {
+      subscription: { create: (arg: { plan_id: string }) => Promise<string> };
+    }
+  ) => {
+    if (!paypalPlanId) throw new Error('Missing PayPal plan id');
+    return actions.subscription.create({ plan_id: paypalPlanId });
+  };
+
+  const onApprove = async (data: { subscriptionID: string }) => {
+    try {
+      if (!paymentId || !paypalPlanId) {
+        alert('결제 정보가 없습니다. 다시 시도해주세요.');
+        return;
+      }
+      const completeRes = await llmService.completePayment(paymentId, {
+        subscription_id: data.subscriptionID,
+        plan_id: paypalPlanId,
+      });
+      if (completeRes.success) {
+        const sp = new URLSearchParams({
+          purchaseType: String(purchaseType),
+          plan: String(plan),
+          price: String(price),
+          users: String(users),
+          period: String(period),
+          monthlyTotal: String(monthlyTotal),
+          oneTimeTotal: String(oneTimeTotal),
+          totalAmount: String(totalAmount),
+        });
+        router.push(`/checkout/success?${sp.toString()}`);
+      } else {
+        alert('결제 완료 처리에 실패했습니다.');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('결제 완료 처리 중 오류가 발생했습니다.');
+    }
+  };
 
   const planImage = getPlanImageByName(plan);
 
@@ -404,8 +332,7 @@ function CheckoutSummaryContent() {
                 {t('checkout:summary.discount')}: ({discount.toLocaleString()}%)
               </li>
               <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                {t('checkout:summary.monthly')}: ₩
-                {monthlyTotal.toLocaleString()}
+                {t('checkout:summary.monthly')}: ${formatAmount(monthlyTotal)}
               </li>
             </Bullets>
 
@@ -446,8 +373,8 @@ function CheckoutSummaryContent() {
                   )}
                   {aiAnswerEnabled && <li>{t('checkout:summary.aiAnswer')}</li>}
                   <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                    {t('checkout:summary.oneTime')}: ₩
-                    {oneTimeTotal.toLocaleString()}
+                    {t('checkout:summary.oneTime')}: $
+                    {formatAmount(oneTimeTotal)}
                   </li>
                 </Bullets>
               </>
@@ -457,18 +384,18 @@ function CheckoutSummaryContent() {
               <TotalsGroup>
                 <TotalsLine>
                   <span>{t('checkout:summary.monthly')}</span>
-                  <span>₩{monthlyTotal.toLocaleString()}</span>
+                  <span>${formatAmount(monthlyTotal)}</span>
                 </TotalsLine>
                 {hasOneTimeCost && (
                   <TotalsLine>
                     <span>{t('checkout:summary.oneTime')}</span>
-                    <span>₩{oneTimeTotal.toLocaleString()}</span>
+                    <span>${formatAmount(oneTimeTotal)}</span>
                   </TotalsLine>
                 )}
               </TotalsGroup>
               <TotalsGrandLine>
                 <GrandLabel>{t('checkout:summary.total')}</GrandLabel>
-                <GrandValue>₩{totalAmount.toLocaleString()}</GrandValue>
+                <GrandValue>${formatAmount(totalAmount)}</GrandValue>
               </TotalsGrandLine>
             </TotalsBox>
 
@@ -486,7 +413,26 @@ function CheckoutSummaryContent() {
             <BackButton variant='secondary' size='large' onClick={handleBack}>
               취소
             </BackButton>
-            <PayPalSlot ref={paypalContainerRef} />
+            <PayPalSlot>
+              {paypalPlanId ? (
+                <PayPalButtons
+                  style={{
+                    layout: 'horizontal',
+                    shape: 'rect',
+                    color: 'black',
+                    label: 'paypal',
+                    tagline: false,
+                    height: 48,
+                    borderRadius: 8,
+                    disableMaxWidth: true,
+                  }}
+                  createSubscription={createSubscription}
+                  onApprove={(data) =>
+                    onApprove(data as { subscriptionID: string })
+                  }
+                />
+              ) : null}
+            </PayPalSlot>
           </Actions>
         </ContentWrapper>
       </Container>
@@ -495,10 +441,21 @@ function CheckoutSummaryContent() {
 }
 
 export default function CheckoutSummaryPage() {
+  const clientId = env.PAYPAL_CLIENT_ID;
+
   return (
-    <Suspense fallback={null}>
-      <CheckoutSummaryContent />
-    </Suspense>
+    <PayPalScriptProvider
+      options={{
+        clientId,
+        vault: true,
+        intent: 'subscription',
+        components: 'buttons',
+      }}
+    >
+      <Suspense fallback={null}>
+        <CheckoutSummaryContent />
+      </Suspense>
+    </PayPalScriptProvider>
   );
 }
 
@@ -664,6 +621,4 @@ const BackButton = styled(SolidButton)`
 
 const PayPalSlot = styled.div`
   flex: 1;
-  display: flex;
-  justify-content: flex-end;
 `;

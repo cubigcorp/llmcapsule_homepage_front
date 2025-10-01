@@ -12,6 +12,7 @@ import {
   brandColor,
 } from '@cubig/design-system';
 import { useTranslation } from 'react-i18next';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 // Import SVG icons as React components
 import GovernmentIcon from '@/assets/icons/Icon_court.svg';
@@ -56,6 +57,7 @@ const DEMO_CATEGORIES = [
 
 export default function DemoSection() {
   const { t } = useTranslation('common');
+  const isMobile = useMediaQuery('(max-width: 575px)');
   const [activeButton, setActiveButton] = useState('Government');
   const [simulationStep, setSimulationStep] = useState(0); // 0: 초기, 1: 캡슐화, 2: LLM 결과
   const [currentStep, setCurrentStep] = useState(0); // 세부 단계 관리
@@ -321,10 +323,10 @@ export default function DemoSection() {
                   <DemoButton
                     key={category.id}
                     variant='secondary'
-                    size='large'
+                    size={isMobile ? 'small' : 'large'}
                     state={activeButton === category.id ? 'focused' : 'default'}
                     onClick={() => handleButtonClick(category.id)}
-                    leadingIcon={category.icon}
+                    leadingIcon={isMobile ? undefined : category.icon}
                   >
                     {t(`demo.categories.${category.id}`)}
                   </DemoButton>
@@ -619,12 +621,8 @@ const DemoWrapper = styled.div`
     padding: 80px 24px;
   }
 
-  @media (max-width: 768px) {
-    padding: 40px 24px;
-  }
-
-  @media (max-width: 375px) {
-    padding: 32px 16px;
+  @media (max-width: 575px) {
+    padding: 80px 16px;
   }
 `;
 
@@ -667,12 +665,23 @@ const DemoTitle = styled.h3`
   ${typography(undefined, 'display1', 'medium')}
   color: ${textColor.light['fg-neutral-strong']};
   margin: 0 0 12px 0;
+
+  @media (max-width: 575px) {
+    font-size: 24px;
+    line-height: 34px;
+  }
 `;
 
 const DemoSubtitle = styled.p`
   ${typography(undefined, 'heading2', 'regular')}
   color: ${textColor.light['fg-neutral-primary']};
   margin: 0 0 40px 0;
+
+  @media (max-width: 575px) {
+    margin-bottom: 16px;
+    font-size: 16px;
+    line-height: 24px;
+  }
 `;
 
 const DemoImageContainer = styled.div`
@@ -699,9 +708,9 @@ const DemoImageContainer = styled.div`
 `;
 
 const ButtonGroup = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
   padding: 8px;
-
   align-items: flex-start;
   gap: 10px;
   border-radius: 16px;
@@ -711,7 +720,13 @@ const ButtonGroup = styled.div`
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
   flex-wrap: wrap;
   justify-content: center;
-  @media (max-width: 375px) {
+
+  @media (max-width: 1440px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 575px) {
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     padding: 6px;
   }
@@ -783,14 +798,14 @@ const ChatInnerContainer = styled.div`
 `;
 
 const ChatHeader = styled.div`
-  border-radius: 16.414px 16.414px 0 0;
+  border-radius: 16px 16px 0 0;
   border-bottom: 1px solid var(--border-primary, #e6e7e9);
   background: #fff;
   display: flex;
   align-items: center;
   padding: 8px 24px;
-  @media (max-width: 375px) {
-    padding: 6px 12px;
+  @media (max-width: 575px) {
+    padding: 2px 16px;
   }
 `;
 
@@ -799,11 +814,16 @@ const ChatTitle = styled.h3`
   ${typography(undefined, 'heading1', 'bold')}
   color: ${textColor.light['fg-neutral-primary']};
   margin: 0;
+
+  @media (max-width: 575px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
 `;
 
 const ChatArea = styled.div<{ $isSimulating?: boolean }>`
   width: 100%;
-  height: 530px;
+  height: 560px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -813,8 +833,8 @@ const ChatArea = styled.div<{ $isSimulating?: boolean }>`
   overflow-y: scroll;
   scrollbar-gutter: stable;
 
-  @media (max-width: 768px) {
-    height: 350px;
+  @media (max-width: 575px) {
+    gap: ${(props) => (props.$isSimulating ? '16px' : '24px')};
   }
 
   @media (max-width: 375px) {
@@ -867,16 +887,29 @@ const DocumentHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 24px 24px 12px 24px;
+
+  @media (max-width: 575px) {
+    padding: 16px 16px 2px 16px;
+  }
 `;
 
 const DocumentContentWrapper = styled.div`
   padding: 12px 25px;
+
+  @media (max-width: 575px) {
+    padding: 12px 16px;
+  }
 `;
 
 const DocumentTitle = styled.h3`
   ${typography(undefined, 'body3', 'semibold')}
   color: ${textColor.light['fg-neutral-strong']};
   margin: 0;
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 `;
 
 const DocumentContent = styled.div`
@@ -921,6 +954,11 @@ const DocumentScrollContainer = styled.div`
 const DocumentText = styled.div`
   ${typography(undefined, 'body3', 'medium')}
   color: ${textColor.light['fg-neutral-primary']};
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 `;
 
 const SimulationStatus = styled.div<{ $isRestart?: boolean }>`
@@ -1134,6 +1172,10 @@ const SimulationCard = styled.div<{ $animated?: boolean; $delay?: number }>`
   width: 100%;
   max-width: 640px;
 
+  @media (max-width: 575px) {
+    padding: 16px;
+  }
+
   ${({ $animated = false, $delay = 0 }) =>
     $animated &&
     css`
@@ -1146,6 +1188,11 @@ const SimulationCard = styled.div<{ $animated?: boolean; $delay?: number }>`
 const SimulationPrompt = styled.div`
   ${typography(undefined, 'body3', 'medium')}
   color: ${textColor.light['fg-neutral-strong']};
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 `;
 
 const ActionButtonGroup = styled.div`

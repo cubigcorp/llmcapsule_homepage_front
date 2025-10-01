@@ -69,6 +69,7 @@ export default function MyPageLayout({
     } finally {
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
+      window.dispatchEvent(new Event('storage'));
       router.push('/');
     }
   };
@@ -138,6 +139,7 @@ export default function MyPageLayout({
               selected={pathname === '/mypage/plans'}
             />
           </LNBItemGroup>
+          *
           <LNBItemGroup title={t('lnb.groups.resources')}>
             <LNBItem
               value={t('lnb.items.download')}
@@ -165,7 +167,6 @@ const LNBWrapper = styled.div`
   flex-shrink: 0;
   background: white;
   border-right: 1px solid ${borderColor.light['color-border-primary']};
-  height: calc(100vh - 72px);
   position: sticky;
   top: 72px;
 `;

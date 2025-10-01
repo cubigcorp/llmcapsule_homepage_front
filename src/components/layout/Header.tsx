@@ -16,15 +16,19 @@ import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 import { authService } from '@/services/auth';
 import type { UserInfo } from '@/utils/api';
 import LogoIcon from '@/assets/icons/Logo.svg';
+import LogoMobileIcon from '@/assets/icons/logo_mobile.svg';
 import ArrowDownIcon from '@/assets/icons/icon_arrow-down.svg';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 export default function Header() {
   const pathname = usePathname();
   const { t } = useTranslation('common');
   const [isAuthPage, setIsAuthPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 575px)');
 
   const scrollToSection = (sectionId: string) => {
     // 홈페이지가 아닌 경우 홈으로 이동 후 스크롤
@@ -65,10 +69,6 @@ export default function Header() {
         pathname === '/contact/'
     );
 
-    // 로그인 상태 확인
-    const accessToken = localStorage.getItem('access_token');
-    setIsLoggedIn(!!accessToken);
-
     setIsLoaded(true);
   }, [pathname]);
 
@@ -107,11 +107,13 @@ export default function Header() {
           }
         } finally {
           setIsLoadingUserInfo(false);
+          setIsCheckingAuth(false);
         }
       } else {
         setIsLoggedIn(false);
         setUserInfo(null);
         setIsLoadingUserInfo(false);
+        setIsCheckingAuth(false);
       }
     };
 
@@ -142,7 +144,7 @@ export default function Header() {
           <Leading>
             <LogoWrapper>
               <Link href='/'>
-                <LogoIcon />
+                {isMobile ? <LogoMobileIcon /> : <LogoIcon />}
               </Link>
             </LogoWrapper>
             <Menu>
@@ -186,41 +188,48 @@ export default function Header() {
 
           <ButtonGroup>
             <LanguageSwitcher />
-            {isLoggedIn ? (
+            {!isCheckingAuth && (
               <>
-                <SolidButton
-                  variant='primary'
-                  size='medium'
-                  onClick={() => scrollToSection('contact-section')}
-                >
-                  {t('header.contact')}
-                </SolidButton>
-                <Link href='/mypage'>
-                  <TextButton variant='primary' size='medium'>
-                    {isLoadingUserInfo
-                      ? '...'
-                      : userInfo?.last_name && userInfo?.first_name
-                        ? `${userInfo.last_name}${userInfo.first_name}`
-                        : userInfo?.first_name ||
-                          userInfo?.last_name ||
-                          '사용자'}
-                  </TextButton>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link href='/login'>
-                  <OutlineButton variant='secondary' size='medium'>
-                    {t('header.login')}
-                  </OutlineButton>
-                </Link>
-                <SolidButton
-                  variant='primary'
-                  size='medium'
-                  onClick={() => scrollToSection('contact-section')}
-                >
-                  {t('header.contact')}
-                </SolidButton>
+                {isLoggedIn ? (
+                  <>
+                    <SolidButton
+                      variant='primary'
+                      size={isMobile ? 'small' : 'medium'}
+                      onClick={() => scrollToSection('contact-section')}
+                    >
+                      {t('header.contact')}
+                    </SolidButton>
+                    <Link href='/mypage'>
+                      <TextButton
+                        variant='primary'
+                        size={isMobile ? 'small' : 'medium'}
+                      >
+                        {isLoadingUserInfo
+                          ? '...'
+                          : userInfo?.last_name && userInfo?.first_name
+                            ? `${userInfo.last_name}${userInfo.first_name}`
+                            : userInfo?.first_name ||
+                              userInfo?.last_name ||
+                              '사용자'}
+                      </TextButton>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link href='/login'>
+                      <OutlineButton variant='secondary' size='medium'>
+                        {t('header.login')}
+                      </OutlineButton>
+                    </Link>
+                    <SolidButton
+                      variant='primary'
+                      size='medium'
+                      onClick={() => scrollToSection('contact-section')}
+                    >
+                      {t('header.contact')}
+                    </SolidButton>
+                  </>
+                )}
               </>
             )}
           </ButtonGroup>
@@ -297,7 +306,6 @@ const Leading = styled.div`
 const Menu = styled.div`
   display: flex;
   align-items: center;
-  gap: ${spacing.gap['gap-3']};
   @media (max-width: 1024px) {
     display: none;
   }

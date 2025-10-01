@@ -86,11 +86,11 @@ const FAQWrapper = styled.div`
   }
 
   @media (max-width: 768px) {
-    padding: 60px 33px 120px 33px;
+    padding: 80px 24px;
   }
 
-  @media (max-width: 375px) {
-    padding: 40px 16px 80px 16px;
+  @media (max-width: 575px) {
+    padding: 80px 16px;
   }
 `;
 
@@ -107,7 +107,7 @@ const FAQContent = styled.div`
 
 const LeftSection = styled.div`
   flex-shrink: 0;
-  width: 240px;
+  width: 200px;
 
   @media (max-width: 1024px) {
     display: none;
@@ -128,6 +128,12 @@ const FAQMainTitle = styled.h3`
   ${typography(undefined, 'title3', 'semibold')}
   color: ${textColor.light['fg-neutral-strong']};
   margin: 0 0 40px 0;
+
+  @media (max-width: 575px) {
+    margin-bottom: 24px;
+    font-size: 24px;
+    line-height: 34px;
+  }
 `;
 
 const FAQList = styled.div`
@@ -169,6 +175,11 @@ const FAQQuestion = styled.div`
   ${typography(undefined, 'heading2', 'medium')}
   color: ${textColor.light['fg-neutral-strong']};
   cursor: pointer;
+
+  @media (max-width: 575px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
 `;
 
 const FAQIcon = styled.span`
@@ -191,4 +202,9 @@ const FAQAnswer = styled.div`
   color: ${textColor.light['fg-neutral-alternative']};
   line-height: 1.6;
   width: 100%;
+
+  @media (max-width: 575px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 `;
