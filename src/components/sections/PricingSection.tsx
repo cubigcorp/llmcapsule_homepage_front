@@ -19,6 +19,11 @@ export default function PricingSection() {
   );
 
   const handleBuyNow = () => {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      router.push('/login');
+      return;
+    }
     if (selectedPlan === 'business') router.push('/checkout/business');
     else router.push('/checkout/personal');
   };

@@ -18,10 +18,11 @@ export default function CTASection() {
               const el = document.getElementById('contact-section');
               if (el) {
                 const headerHeight = 72;
-                const top = el.offsetTop - headerHeight;
-                window.scrollTo({ top, behavior: 'smooth' });
-              } else {
-                window.location.href = '/#contact-section';
+                const rect = el.getBoundingClientRect();
+                const scrollTop =
+                  window.pageYOffset || document.documentElement.scrollTop;
+                const targetTop = rect.top + scrollTop - headerHeight;
+                window.scrollTo({ top: targetTop, behavior: 'smooth' });
               }
             }}
           >
