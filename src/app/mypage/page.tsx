@@ -236,13 +236,30 @@ export default function MyPage() {
               </EmptyStateContainer>
 
               <TrialCard
-                onClick={() => {
+                onClick={async () => {
                   const accessToken = localStorage.getItem('access_token');
                   if (!accessToken) {
                     router.push('/login');
                     return;
                   }
-                  window.location.href = '/#pricing-section';
+
+                  try {
+                    const response = await llmService.createPurchase({
+                      plan_id: 1,
+                      seat_count: 1,
+                      contract_month: 0,
+                      is_prepayment: false,
+                      add_on: [],
+                      total_price: 0,
+                      purchase_type: 'PERSONAL',
+                    });
+
+                    if (response.success) {
+                      router.push('/mypage/plans');
+                    }
+                  } catch (error) {
+                    console.error('Trial purchase failed:', error);
+                  }
                 }}
               >
                 <TrialImageContainer>

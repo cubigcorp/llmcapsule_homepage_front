@@ -173,6 +173,7 @@ export default function PlansPage() {
           </SelectorRow>
 
           <ActionBar>
+            {/**
             <SolidButton
               variant='primary'
               size='medium'
@@ -180,6 +181,7 @@ export default function PlansPage() {
             >
               {t('myPlan.upgrade')}
             </SolidButton>
+            */}
             <SolidButton
               variant='secondary'
               size='medium'
