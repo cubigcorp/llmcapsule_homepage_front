@@ -187,6 +187,16 @@ const ButtonGroup = styled.div`
   justify-content: center;
 
   margin: 32px 0 48px 0;
+
+  @media (max-width: 575px) {
+    button {
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
 `;
 
 const ImageArea = styled.div`

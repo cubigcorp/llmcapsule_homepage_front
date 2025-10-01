@@ -188,15 +188,16 @@ export default function Header() {
             <LanguageSwitcher />
             {isLoggedIn ? (
               <>
-                <SolidButton
+                <ContactButton
+                  as={SolidButton}
                   variant='primary'
                   size='medium'
                   onClick={() => scrollToSection('contact-section')}
                 >
                   {t('header.contact')}
-                </SolidButton>
+                </ContactButton>
                 <Link href='/mypage'>
-                  <TextButton variant='primary' size='medium'>
+                  <UserButton variant='primary' size='medium'>
                     {isLoadingUserInfo
                       ? '...'
                       : userInfo?.last_name && userInfo?.first_name
@@ -204,7 +205,7 @@ export default function Header() {
                         : userInfo?.first_name ||
                           userInfo?.last_name ||
                           '사용자'}
-                  </TextButton>
+                  </UserButton>
                 </Link>
               </>
             ) : (
@@ -214,13 +215,14 @@ export default function Header() {
                     {t('header.login')}
                   </OutlineButton>
                 </Link>
-                <SolidButton
+                <ContactButton
+                  as={SolidButton}
                   variant='primary'
                   size='medium'
                   onClick={() => scrollToSection('contact-section')}
                 >
                   {t('header.contact')}
-                </SolidButton>
+                </ContactButton>
               </>
             )}
           </ButtonGroup>
@@ -299,5 +301,21 @@ const Menu = styled.div`
   align-items: center;
   @media (max-width: 1024px) {
     display: none;
+  }
+`;
+
+const ContactButton = styled.button`
+  @media (max-width: 575px) {
+    display: none;
+  }
+`;
+
+const UserButton = styled(TextButton)`
+  @media (max-width: 575px) {
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 18px;
   }
 `;
