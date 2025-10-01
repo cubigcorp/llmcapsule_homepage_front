@@ -115,6 +115,14 @@ const TextContent = styled.div`
   text-align: center;
   align-items: center;
   margin-top: 128px;
+
+  @media (max-width: 768px) {
+    margin-top: 64px;
+  }
+
+  @media (max-width: 375px) {
+    margin-top: 40px;
+  }
 `;
 
 const SubTitle = styled.p`
@@ -129,7 +137,7 @@ const SubTitle = styled.p`
     ${typography(undefined, 'display3', 'medium')}
   }
 
-  @media (max-width: 375px) {
+  @media (max-width: 575px) {
     font-size: 28px;
     line-height: 40px;
   }
@@ -146,7 +154,7 @@ const MainTitle = styled.h1`
     ${typography(undefined, 'display3', 'medium')}
   }
 
-  @media (max-width: 375px) {
+  @media (max-width: 575px) {
     font-size: 28px;
     line-height: 40px;
   }
@@ -167,8 +175,9 @@ const Description = styled.p`
     ${typography(undefined, 'heading3', 'regular')}
   }
 
-  @media (max-width: 375px) {
-    ${typography(undefined, 'body3', 'regular')}
+  @media (max-width: 575px) {
+    font-size: 16px;
+    line-height: 24px;
   }
 `;
 

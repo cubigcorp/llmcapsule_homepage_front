@@ -346,6 +346,11 @@ const StatLabel = styled.div`
 const StatValue = styled.div`
   ${typography('ko', 'title1', 'semibold')}
   color: ${textColor.light['fg-neutral-primary']};
+
+  @media (max-width: 575px) {
+    font-size: 36px;
+    line-height: 48px;
+  }
 `;
 
 const MainGrid = styled.div`
