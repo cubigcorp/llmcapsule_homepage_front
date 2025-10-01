@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import { SolidButton } from '@cubig/design-system';
+import { useTranslation } from 'react-i18next';
 import { typography, textColor } from '@cubig/design-system';
 
 interface EmailVerificationSectionProps {
@@ -19,6 +20,7 @@ export default function EmailVerificationSection({
   type = 'signup',
   loading = false,
 }: EmailVerificationSectionProps) {
+  const { t } = useTranslation('auth');
   const ResendIcon = () => (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -36,19 +38,21 @@ export default function EmailVerificationSection({
 
   const getTitle = () => {
     return type === 'password-reset'
-      ? '비밀번호 재설정 이메일을 확인해주세요'
-      : '이메일을 확인해주세요';
+      ? t('verify.password.title')
+      : t('verify.signup.title');
   };
 
   const getDescription = () => {
     if (type === 'password-reset') {
-      return `비밀번호를 재설정하려면 ${email}로 보낸 링크를 클릭해주세요.`;
+      return t('verify.password.desc', { email });
     }
-    return `계정 설정을 완료하려면 ${email}로 보낸 링크를 클릭해주세요.`;
+    return t('verify.signup.desc', { email });
   };
 
   const getButtonText = () => {
-    return type === 'password-reset' ? '재설정 이메일 재발송' : '메일 재발송';
+    return type === 'password-reset'
+      ? t('verify.password.resend')
+      : t('verify.signup.resend');
   };
 
   return (

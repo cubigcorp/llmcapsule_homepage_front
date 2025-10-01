@@ -6,8 +6,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import CarouselSection from '@/components/common/CarouselSection';
 import ContactFormComponent from '@/components/common/ContactForm';
+import { useTranslation } from 'react-i18next';
 
 export default function ContactPage() {
+  const { t } = useTranslation('auth');
   return (
     <ContactContainer>
       <ContactWrapper>
@@ -17,7 +19,7 @@ export default function ContactPage() {
           </Link>
         </LogoWrapper>
         <ContactLeft>
-          <ContactFormComponent title='문의하기' showLogo={false} />
+          <ContactFormComponent title={t('contact.title')} showLogo={false} />
         </ContactLeft>
 
         <ContactRight>

@@ -75,7 +75,31 @@ export default function VerifyClient() {
   // 토큰 검증
   useEffect(() => {
     const validateToken = async () => {
-      if (isGoogleSignup || (!token && email)) {
+      if (isGoogleSignup) {
+        // 구글 회원가입인 경우 토큰으로 이메일 정보 가져오기
+        if (token) {
+          try {
+            const userInfoResponse = await fetch(
+              `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${token}`
+            );
+            const userInfo = await userInfoResponse.json();
+
+            // 폼 데이터에 구글 정보 설정
+            setFormData((prev) => ({
+              ...prev,
+              email: userInfo.email || email,
+              firstName: userInfo.given_name || firstName,
+              lastName: userInfo.family_name || lastName,
+            }));
+          } catch (error) {
+            console.error('Failed to fetch Google user info:', error);
+          }
+        }
+        setIsTokenValidating(false);
+        return;
+      }
+
+      if (!token && email) {
         setIsTokenValidating(false);
         return;
       }

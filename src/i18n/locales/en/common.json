@@ -1,0 +1,339 @@
+{
+  "language": {
+    "korean": "Korean",
+    "english": "English"
+  },
+  "hero": {
+    "mainTitle": "Capsule AI for what's next",
+    "subTitle": "Secure, seamless\nfor GenAI and public LLMs",
+    "description": "LLM Capsule bridges enterprises and AI platforms securely and seamlessly, \n empowering innovation with trusted data protection and compliance.",
+    "getStarted": "Get Started",
+    "brochure": "Brochure"
+  },
+  "about": {
+    "mainTitle": "LLM Capsule makes it possible",
+    "subTitle": "The secure LLM gateway built by AI and data infrastructure experts.",
+    "sidebar": {
+      "dataControl": "Data Control",
+      "scalability": "Scalability",
+      "security": "Security"
+    },
+    "sections": [
+      {
+        "title": "You choose how AI works for you",
+        "subtitle": "Because AI for business should always be safe.",
+        "mainTitle": "Complete protection of sensitive data in AI usage",
+        "description": "A four-step framework of detection, protection, utilization, and recovery.",
+        "features": [
+          "Complete protection of sensitive data in AI usage",
+          "Customizable data protection",
+          "Flexible de-identification methods"
+        ],
+        "featureDescriptions": [
+          "A four-step framework of detection, protection, utilization, and recovery.",
+          "Tailored to corporate policies and environments.",
+          "Optimized protection strategies for every situation."
+        ]
+      },
+      {
+        "title": "AI that works at enterprise scale",
+        "subtitle": "Smarter AI, valuable data — built for enterprise scale.",
+        "mainTitle": "Seamless public LLM integration",
+        "description": "ChatGPT, Claude, Gemini — your choice, with efficiency and security.",
+        "features": [
+          "Seamless public LLM integration",
+          "Large-scale document processing & ontology management",
+          "RAG & graph RAG support"
+        ],
+        "featureDescriptions": [
+          "ChatGPT, Claude, Gemini—your choice, with efficiency and security.",
+          "Turn enterprise data into structured, valuable assets.",
+          "Use real-time data and knowledge graphs for accurate, trusted answers."
+        ]
+      },
+      {
+        "title": "Compliance ready, threat resilient",
+        "subtitle": "Enterprise-grade AI security and management for safe, compliant, and reliable operations.",
+        "mainTitle": "Context-Aware AI Detection",
+        "description": "Beyond keywords, precision designed for enterprise data protection.",
+        "features": [
+          "Context-Aware AI Detection",
+          "Defense Against Prompt Injection & Jailbreak Attacks",
+          "Compliance with Global Security Standards",
+          "Admin-Centric User Management",
+          "On-Premises Deployment Support"
+        ],
+        "featureDescriptions": [
+          "Beyond keywords, precision designed for enterprise data protection.",
+          "Safeguards that ensure stable AI operations.",
+          "Trusted AI that meets domestic and international regulations.",
+          "Simplified administration for enterprise efficiency.",
+          "Secure operation of sensitive data and workloads on dedicated infrastructure."
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Find the plan that fits your business",
+    "info1": "Request tailored guidance for your organization",
+    "info2": "Request detailed product information on LLM Capsule",
+    "formTitle": "Contact Us"
+  },
+  "header": {
+    "contact": "Contact",
+    "login": "Login",
+    "about": "About",
+    "demo": "Live Demo",
+    "performance": "Performance",
+    "pricing": "Pricing",
+    "faq": "FAQ"
+  },
+  "carousel": {
+    "slides": [
+      {
+        "title": "Real-time prompt filtering",
+        "description": "Detects sensitive info such as names, phone numbers, and account numbers in real time and pseudonymizes automatically to prevent leakage. All personal data is safely protected without users even noticing."
+      },
+      {
+        "title": "Sensitive info detection in documents",
+        "description": "Detects sensitive info in uploaded/attached documents in real time and automatically pseudonymizes or masks them. AI securely manages even hidden personal data across massive documents."
+      },
+      {
+        "title": "Context-aware detection",
+        "description": "Understands contextual meaning beyond words to detect intelligently. Protects not only personal data but also company/industry-specific critical information."
+      },
+      {
+        "title": "ON-PREMISE independent operation",
+        "description": "Can be fully installed within the intranet without external clouds for safer use, perfectly complying with enterprise security policies."
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Pricing",
+    "mainTitle": "Plans",
+    "subTitle": "Flexible on-premises pricing tailored to your organization's scale and security requirements.",
+    "toggle": {
+      "business": "Business",
+      "personal": "Personal"
+    },
+    "plans": {
+      "plus": {
+        "title": "Plus",
+        "subtitle": "The first step toward protecting personal data",
+        "price": "$ 12.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "120,000 Token",
+        "costPerToken": "($0.108 per 1,000 Tokens)",
+        "features": {
+          "feature1": "Detect personal data in documents",
+          "feature2": "Protection through encapsulation",
+          "feature3": "Safely use Public LLMs while keeping personal data protected",
+          "feature4": "Basic filtering features",
+          "feature5": "Email support"
+        }
+      },
+      "basic": {
+        "title": "Basic",
+        "subtitle": "Perfect for individuals getting started",
+        "price": "$ 8.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "70,000 Token",
+        "costPerToken": "($0.128 per 1,000 Tokens)"
+      },
+      "pro": {
+        "title": "Pro",
+        "subtitle": "Advanced features for power users",
+        "price": "$ 19.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "280,000 Token",
+        "costPerToken": "($0.072 per 1,000 Tokens)"
+      },
+      "max": {
+        "title": "Max",
+        "subtitle": "Maximum capacity for heavy usage",
+        "price": "$ 39.99",
+        "period": " / Seat per month",
+        "button": "Buy now",
+        "tokens": "600,000 Token",
+        "costPerToken": "($0.067 per 1,000 Tokens)"
+      },
+      "custom": {
+        "title": "Custom",
+        "subtitle": "Tailored solutions for enterprise requirements",
+        "contact": "Contact us",
+        "button": "Buy now",
+        "features": {
+          "feature1": "Includes all Standard plan features",
+          "feature2": "Customizable sensitive data filtering for enterprises",
+          "feature3": "Per-device token usage checking",
+          "feature4": "On-premises deployment available",
+          "feature5": "24/7 technical support",
+          "feature6": "Dedicated Customer Success Manager"
+        }
+      }
+    }
+  },
+  "cta": {
+    "title": "The Essential Security Capsule for AI Services",
+    "subtitle": "The essential security layer for AI services and agents— from government compliance and data protection to trusted, scalable operations that build user confidence.",
+    "button": "Contact Us"
+  },
+  "performance": {
+    "title": "Performance",
+    "mainTitle": "Why we're different",
+    "subTitle": "Precise detection and efficient use that keep response quality intact after sensitive data is safeguarded.",
+    "stats": {
+      "type1Error": {
+        "title": "Type I Error Detection Accuracy",
+        "description": "When data that should be encapsulated is not, we test with 105 sentences containing sensitive information."
+      },
+      "type2Error": {
+        "title": "Type II Error Detection Accuracy",
+        "description": "When non-sensitive data (such as general information) is incorrectly encapsulated, we test with 1,402 non-sensitive sentences."
+      },
+      "structuredData": {
+        "title": "Structured Personal Data Protection",
+        "description": "Ensures 100% structured personal data protection, minimizing risks from misclassification."
+      },
+      "responseSimilarity": {
+        "title": "Response Similarity with Public LLMs",
+        "description": "Encapsulated data—not the original—is sent to the LLM, where responses are compared against public LLM outputs."
+      }
+    }
+  },
+  "validation": {
+    "email": {
+      "required": "Please enter your email.",
+      "invalid": "Please enter a valid email."
+    },
+    "password": {
+      "required": "Please enter your password.",
+      "policy": "8–20 characters including letters, numbers, and symbols.",
+      "mismatch": "Passwords do not match."
+    },
+    "confirmPassword": {
+      "required": "Please enter your password.",
+      "mismatch": "Passwords do not match."
+    },
+    "phone": {
+      "required": "Please enter your phone number.",
+      "invalid": "Please enter a valid phone number."
+    },
+    "company": {
+      "min2": "Please enter at least 2 characters."
+    },
+    "generic": {
+      "min2": "Please enter at least 2 characters."
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "mainTitle": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "What features does LLM Capsule provide?",
+        "answer": "This program enables individuals, businesses, and public institutions to utilize LLM services while securely protecting sensitive information. Before using ChatGPT, it anonymizes or pseudonymizes inputted sensitive data to safeguard personal information and prevent internal corporate leaks, allowing users to access GenAI services. This enables a secure way to enhance user productivity."
+      },
+      {
+        "question": "What types of personal data can LLM Capsule detect?",
+        "answer": "It can automatically detect and pseudonymize 18 types of key sensitive information, including name, age, year, phone number, resident registration number, account number, credit card number, corporate registration number, email address, and amount."
+      },
+      {
+        "question": "Can industry-specific filters be customized and extended?",
+        "answer": "Yes, in addition to the basic 18 types, we can provide further customization based on client requests, including industry-specific specialized datasets, domain-specific code, and sensitive information tailored to specific tasks."
+      },
+      {
+        "question": "Is integration with existing systems(E-Approval System, Work Portal, DB) supported?",
+        "answer": "Yes, it is possible. Implementation is possible via various methods such as API, file upload, and integration using the On-Premise approach."
+      },
+      {
+        "question": "Does LLM Capsule handle large documents and maintain fast processing speed?",
+        "answer": "Even tens of thousands of large-volume documents/notes can be de-identified at high speed, and optimization is possible to suit the system environment."
+      },
+      {
+        "question": "Can it process unstructured text such as free-form notes or call center records?",
+        "answer": "Not only standard forms, but also non-standard documents can be automatically detected and processed."
+      },
+      {
+        "question": "Is it easy for non-experts to use?",
+        "answer": "We provide an intuitive and convenient UI/UX that is easy to use for administrators, practitioners, and IT personnel alike."
+      }
+    ]
+  },
+  "demo": {
+    "title": "Demo",
+    "mainTitle": "Try our web demo",
+    "subtitle": "Experience the full journey — from context detection to LLM utilization to data recovery.",
+    "statusMessages": {
+      "capsuling": "Safely capsuling the original document",
+      "sending": "Send capsuled data and prompts to the LLM."
+    },
+    "categories": {
+      "Government": "Government",
+      "Financial": "Financial",
+      "Healthcare": "Healthcare",
+      "Education": "Education",
+      "Manufacturing": "Manufacturing",
+      "F&B": "F&B"
+    },
+    "data": {
+      "Government": {
+        "original": "Kim Cheol-su, Contact 010-1234-5678, Resident Registration Number 120123-1234567, Email Cheol-su.kim@cubig.ai\nCame this morning to file a civil petition regarding building permits. Did not ask for address or additional information.\nDuring the consultation, the staff member also provided guidance over the phone. When verifying identity,\nthey personally confirmed the last digits of the resident registration number.\nThe inquiry concerned the permit application process and required documents.",
+        "capsuledHide": "[Name A], Contact [Phone Number A], Resident Registration Number [Resident Registration Number A], Email [Email Address A]\nCame this morning to file a civil petition regarding building permits. Did not ask for address or additional information.\nDuring the consultation, the staff member also provided guidance over the phone. When verifying identity,\nthey personally confirmed the last digits of the resident registration number.\nThe inquiry concerned the permit application process and required documents.",
+        "capsuledChange": "Hong Gil-dong, Contact: 010-8765-4321, Resident Registration Number: 132546-1136890, Email: gildong@llmcapsule.ai\nCame this morning to file a civil petition regarding building permits. Did not ask for address or additional information.\nDuring the consultation, the staff member also provided guidance over the phone. When verifying identity,\nthey personally confirmed the last digits of the resident registration number.\nThe inquiry concerned the permit application process and required documents.",
+        "question": "Please convert the personal information in this document (name, resident registration number, contact information, etc.) into a summary form for civil petition submission.",
+        "answerHide": "Yes, I will convert the personal information in the document into a petition submission form.\nPetitioner's Name: [Name A]\nResident Registration Number: [Resident Registration Number A]\nContact: [Phone Number A]\nEmail: [Email Address A]\nSummary of Request: Request to file a petition regarding building permits",
+        "answerChange": "Yes, I will convert the personal information in the document into a petition submission form.\nPetitioner's Name: Hong Gil-dong\nResident Registration Number: 132546-1136890\nContact: 010-8765-4321\nEmail: gildong@llmcapsule.ai\nSummary of Request: Request to file a petition regarding building permits",
+        "answerUncapsuled": "Yes, I will convert the personal information in the document into a petition submission form.\nPetitioner's Name: Kim Cheol-su\nResident Registration Number: 120123-1234567\nContact: 010-1234-5678\nEmail: Cheol-su.kim@cubig.ai\nSummary of Request: Request to file a petition regarding building permits"
+      },
+      "Financial": {
+        "original": "Ms. Lee Young-hee, Mobile Number (010-5678-2345), Card Number: 1234-5678-9012-3456, Resident Registration Number: 881201-1234567,\nLoan Application Amount: 20 million won, Loan Product Name: Credit Loan, Review Result: Approved, Additional Details: Recent 3-month credit card usage history and income documentation submitted.",
+        "capsuledHide": "[Name B] Customer, Mobile Phone Number ([Phone Number B]), Card Number: [Credit Card Number B], Resident Registration Number: [Resident Registration Number B],\nLoan Application Amount: [Amount B], Loan Product Name: Credit Loan, Review Result: Approved, Additional Details: Recent 3-month credit card usage history and income documentation submitted.",
+        "capsuledChange": "Customer Hong Gil-soon, Mobile Number: (010-0102-0304), Card Number: 9876-5432-1234-5678, Resident Registration Number: 920111-3123456,\nLoan Application Amount: 31.23 million won, Loan Product Name: Credit Loan, Review Result: Approved, Additional Details: Recent 3-month credit card usage history and income documentation submitted.",
+        "question": "Please compile only the key points regarding loan approval for the report.",
+        "answerHide": "Applicant: [Name B]\nContact: [Phone Number B]\nCard Number: [Credit Card Number B]\nResident Registration Number: [Resident Registration Number B]\nLoan Product Name: Credit Loan\nLoan Application Amount: [Amount B]\nReview Result: Approved\nAdditional Details: Submission of recent 3-month credit card usage history and income documentation completed",
+        "answerChange": "Applicant: Hong Gil-soon\nContact: 010-0102-0304\nCard Number: 9876-5432-1234-5678\nResident Registration Number: 920111-3123456\nLoan Product Name: Credit Loan\nLoan Amount Requested: 31.23 million won\nReview Result: Approved\nAdditional Details: Submission of recent 3-month credit card usage history and income documentation completed",
+        "answerUncapsuled": "Applicant: Lee Younghee\nContact: 010-5678-2345\nCard Number: 1234-5678-9012-3456\nResident Registration Number: 881201-1234567\nLoan Product Name: Credit Loan\nLoan Amount Requested: 20 million won\nReview Result: Approved\nAdditional Details: Submission of recent 3-month credit card usage history and income documentation completed"
+      },
+      "Education": {
+        "original": "Today, counseling session conducted with Kim Jisu (010-7654-3210, Resident Registration Number 060312-2345678, jisu.kim@school.ac.kr), a student in Class 2, Grade 3.\nLeft a note stating frequent absences recently necessitate contacting the parents. During the consultation, her resident registration number and contact information were reconfirmed for personal verification.\nHer address was not recorded separately. She expressed an interest in pursuing medicine, and requested counseling regarding recent fluctuations in her grades.",
+        "capsuledHide": "Today, counseling session conducted with student [Name D] ([Phone Number D], Resident Registration Number [Resident Registration Number D], [Email D]) from Class 2, Grade 3.\nLeft a note stating frequent absences recently necessitate contacting the parents. During the consultation, her resident registration number and contact information were reconfirmed for personal verification.\nHer address was not recorded separately. She expressed an interest in pursuing medicine, and requested counseling regarding recent fluctuations in her grades.",
+        "capsuledChange": "Today, counseling session conducted with student Lee Young-hee (010-4321-4321, Resident Registration Number 980822-4123578, sulee@encrypto.ai) from Class 2, Grade 3.\nLeft a note stating frequent absences recently necessitate contacting the parents. During the consultation, her resident registration number and contact information were reconfirmed for personal verification.\nHer address was not recorded separately. She expressed an interest in pursuing medicine, and requested counseling regarding recent fluctuations in her grades.",
+        "question": "Please briefly summarize the key requests from the consultation records.",
+        "answerHide": "Student Name: [Name D]\nGrade Level: 3rd Grade, Class 2\nPrimary Request: Need to contact parents, Consultation regarding recent grade fluctuations",
+        "answerChange": "Student Name: Lee Younghee\nGrade Level: 3rd Grade, Class 2\nPrimary Requests: Need to contact parents, Consultation regarding recent grade fluctuations",
+        "answerUncapsuled": "Student Name: Kim Jisu\nGrade Level: 3rd Grade, Class 2\nPrimary Requests: Need to contact parents, Consultation regarding recent grade fluctuations"
+      },
+      "Manufacturing": {
+        "original": "Report Number: MF-2025-09-21\nAuthor: Kim Jeong-su (Production Team Engineer), Contact: 010-2345-6789\nEquipment Serial Number: SN-ACM-12938475\nPart Supplier: ABC Precision (Business Registration Number: 123-45-67890)\nNumber of Defective Units: 350\nDefect Type: Bearing Wear\nAction Taken: Emergency maintenance completed on equipment line; all defective units retrieved and scheduled for reprocessing\nRemarks: Worker Hong Gil-dong (Employee ID 20230215) is responsible for this line",
+        "capsuledHide": "Report Number: [Report Number A]\nAuthor: [Name A] (Production Team Engineer), Contact: [Phone Number A]\nEquipment Serial Number: [Equipment Number A]\nPart Supplier: [Supplier Name A] (Business Registration Number: [Registration Number A])\nNumber of Defective Units: 350\nDefect Type: Bearing Wear\nAction Taken: Emergency maintenance completed on equipment line; all defective units retrieved and scheduled for reprocessing\nNote: Worker [Name B] (Employee ID [ID A]) is responsible for this line",
+        "capsuledChange": "Report Number: MF-2025-10-23\nAuthor: Youngmin Park (Production Team Engineer), Contact: 010-9876-5432\nEquipment Serial Number: SN-ZXC-45678901\nParts Supplier: K-Tech Manufacturing (Business Registration Number: 987-65-43210)\nNumber of Defective Units: 350\nDefect Type: Bearing Wear\nAction Taken: Emergency maintenance completed on equipment line; all defective units retrieved and scheduled for reprocessing\nNote: Worker Choi Min-ho (Employee ID 20240112) is responsible for this line",
+        "question": "Please summarize this defect report into a concise summary for reporting purposes.",
+        "answerHide": "Defective quantity: 350 units\nDefect type: Bearing wear\nAction taken: Emergency maintenance completed on production line; defective items retrieved and scheduled for reprocessing\nResponsible department: Production Team\nRelated personnel/vendor: [Name A], [Vendor Name A]",
+        "answerChange": "Defective quantity: 350 units\nDefect type: Bearing wear\nAction taken: Emergency maintenance completed on production line; defective items retrieved and scheduled for reprocessing\nResponsible department: Production Team\nRelated personnel/vendor: Park Youngmin, K-Tech Manufacturing",
+        "answerUncapsuled": "Defective quantity: 350 units\nDefect type: Bearing wear\nAction taken: Emergency maintenance completed on production line; defective items retrieved and scheduled for reprocessing\nResponsible department: Production Team\nRelated personnel/vendor: Kim Jeong-su, ABC Precision"
+      },
+      "Healthcare": {
+        "original": "August 20, 2025, Morning Mr. Park Min-soo (born March 15, 1985, 010-0123-4567) visited.\nComplained of severe headache and dizziness. Address is Sangdo-dong, but specific address unknown. He stated symptoms began this morning.\nIn the examination room, Dr. Lee Ji-eun from Neurosurgery recommended a CT scan, which was performed immediately. Results showed a concussion.\nAdmission was decided. Medication (pain reliever + vasodilator) prescribed for 3 days. Discussed with guardian.\nInstructed to contact us if further consultation is needed. Did not ask for the last digits of his resident registration number directly.",
+        "capsuledHide": "[Date D] Morning [Name C] (born [Date C], [Phone Number C]) visited.\nComplained of severe headache and dizziness. Address is Sangdo-dong, but specific address unknown. He stated symptoms began this morning.\nIn the examination room, Dr. [Name D] from neurosurgery recommended a CT scan, which was performed immediately. Results showed a concussion.\nAdmission was decided. Medication (pain reliever + vasodilator) prescribed for 3 days. Discussed with guardian.\nInstructed to contact us if further consultation is needed. Did not ask for the last digits of his resident registration number directly.",
+        "capsuledChange": "January 1, 2024, morning: Kim Gil-dong (born July 12, 1988, 010-1198-7654) visited.\nComplained of severe headache and dizziness. Address is Sangdo-dong, but specific address unknown. He stated symptoms began this morning.\nIn the examination room, Dr. Park Min-soo from neurosurgery recommended a CT scan, which was performed immediately. Results showed a concussion.\nAdmission was decided. Medication (pain reliever + vasodilator) prescribed for 3 days. Discussed with guardian.\nInstructed to contact us if further consultation is needed. Did not ask for the last digits of his resident registration number directly.",
+        "question": "Please summarize only the recent medical history and diagnosis for patient Park Min-soo who visited today.",
+        "answerHide": "Patient Name: [Name C]\nContact: [Phone Number C]\nDate of Birth: [Date of Birth C]\nDate of Visit: [Date of Visit D]\nDiagnosis: Concussion\nDepartment: Neurosurgery\nPrimary Symptoms: Headache, Dizziness\nTreatment Details: Presentation, diagnosed with concussion after CT scan. Admitted and prescribed 3 days of medication.",
+        "answerChange": "Patient Name: Kim Gil-dong\nContact: 010-1198-7654\nDate of Birth: July 12, 1988\nDate of Visit: January 1, 2024\nDiagnosis: Concussion\nDepartment: Neurosurgery\nPrimary Symptoms: Headache, Dizziness\nTreatment Details: Presentation, diagnosed with concussion after CT scan. Admitted and prescribed 3 days of medication.",
+        "answerUncapsuled": "Patient Name: Park Min-su\nContact: 010-0123-4567\nDate of Birth: March 15, 1985\nDate of Visit: August 20, 2025\nDiagnosis: Concussion\nDepartment: Neurosurgery\nPrimary Symptoms: Headache, Dizziness\nTreatment Details: Presentation, diagnosed with concussion after CT scan. Admitted and prescribed 3 days of medication."
+      },
+      "F&B": {
+        "original": "Recipe Code: REC-2025-09-12\nAuthor: Researcher Kim Eun-ji (Contact: 010-3333-4444)\nPartner Company: SweetFarm Co. (Business Registration Number: 321-45-98765)\nProduct Name: Low-Sugar Blueberry Yogurt Smoothie\nIngredients:\n- Blueberry Puree 150g (SweetFarm Co.)\n- Low-fat Yogurt 200ml\n- Oligosaccharide 20g\n- Ice 50g\nPreparation Method: Place all ingredients in a blender and blend for 2 minutes.\nNote: Researcher Park Jihoon (Contact: 010-5555-6666) assisted with preparation.",
+        "capsuledHide": "Recipe Code: [RecipeID A]\nAuthor: [Name A] Researcher (Contact: [Phone Number A])\nPartner Company: [Company Name A] (Business Registration Number: [Business Registration Number A])\nProduct Name: Low-Sugar [Ingredient A] Yogurt Smoothie\nIngredients:\n- [Ingredient A] [Quantity A] ([Company Name A])\n- [Ingredient B] [Quantity B]\n- [Ingredient C] [Quantity C]\n- [Ingredient D] [Quantity D]\nPreparation Method: Place all ingredients in a blender and blend for 2 minutes.\nRemarks: Researcher [Name B] (Contact: [Phone Number B]) assisted with preparation.",
+        "capsuledChange": "Recipe Code: REC-2024-08-21\nAuthor: Researcher Lee Seo-hyun (Contact: 010-7777-8888)\nPartner Company: Fresh Ltd. (Business Registration Number: 654-32-19876)\nProduct Name: Low-Sugar Banana Yogurt Smoothie\nIngredients:\n- Strawberry Puree 200g (Fresh Ltd.)\n- Milk 200ml\n- Egg 15g\n- Water 60g\nPreparation Method: Place all ingredients in a blender and blend for 2 minutes.\nNote: Researcher Choi Min-ah (Contact: 010-9999-1111) assisted with preparation.",
+        "question": "Please summarize the key points of this recipe for the marketing report.",
+        "answerHide": "Product Name: Low-Sugar [Ingredient A] Yogurt Smoothie\nIngredients: [Ingredient A], [Ingredient B], [Ingredient C], [Ingredient D]\nPreparation Method: Blend all ingredients in a blender for 2 minutes.\nPartner Company/Researcher Information: [Company Name A], [Name A], [Name B]",
+        "answerChange": "Product Name: Low-Sugar Banana Yogurt Smoothie\nIngredients: Strawberry puree, milk, eggs, water\nPreparation Method: Blend all ingredients in a blender for 2 minutes\nPartner Company/Researcher Information: Fresh Ltd., Lee Seo-hyun, Choi Min-ah",
+        "answerUncapsuled": "Product Name: Low-Sugar Blueberry Yogurt Smoothie\nIngredients: Blueberry puree, low-fat yogurt, oligosaccharides, ice\nPreparation Method: Blend all ingredients in a blender for 2 minutes\nPartner Company/Researcher Information: SweetFarm Co., Kim Eun-ji, Park Ji-hoon"
+      }
+    }
+  }
+}

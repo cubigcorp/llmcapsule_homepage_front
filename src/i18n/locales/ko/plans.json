@@ -1,0 +1,85 @@
+{
+  "pageTitle": "플랜 관리",
+  "pageSubtitle": "현재 구독 상태와 결제 정보를 관리할 수 있습니다.",
+  "tabs": {
+    "overview": "개요",
+    "history": "구독 내역"
+  },
+  "empty": {
+    "noPlan": {
+      "title": "구독 중인 플랜이 없습니다.",
+      "description": "원하는 플랜을 선택하고 서비스를 시작해 보세요.",
+      "button": "나에게 맞는 플랜 찾기"
+    },
+    "noHistory": {
+      "title": "구독 내역이 없습니다.",
+      "description": "원하는 플랜을 선택하고 서비스를 시작해 보세요.",
+      "button": "나에게 맞는 플랜 찾기"
+    }
+  },
+  "myPlan": {
+    "title": "내 플랜",
+    "planNumberLabel": "플랜 번호",
+    "upgrade": "업그레이드",
+    "cancel": "구독취소"
+  },
+  "planInfo": {
+    "title": "플랜 정보",
+    "tokens": "tokens",
+    "subscribedSince": "부터 구독 중",
+    "serialCount": "시리얼 수",
+    "expiryDate": "만료일(다음 결제일)"
+  },
+  "serialManagement": {
+    "title": "시리얼 관리",
+    "filters": {
+      "all": "전체",
+      "active": "활성화",
+      "inactive": "비활성화"
+    },
+    "table": {
+      "no": "No",
+      "serialNumber": "시리얼 번호",
+      "status": "활성화",
+      "statusActive": "활성화",
+      "statusInactive": "비활성화"
+    }
+  },
+  "history": {
+    "table": {
+      "planName": "플랜명",
+      "serialCount": "시리얼 수",
+      "firstPaymentDate": "최초 결제일",
+      "expiryDate": "만료 예정일",
+      "status": "구독 상태",
+      "statusActive": "이용중",
+      "statusExpired": "만료"
+    }
+  },
+  "upgradeModal": {
+    "title": "플랜 업그레이드 ",
+    "subtitle": "플랜을 업그레이드하여 더 많은 토큰을 사용해보세요",
+    "loading": "플랜 정보를 불러오는 중...",
+    "planSuffix": " 플랜",
+    "priceUnit": "/Seat",
+    "maxTokens": "최대 토큰 수",
+    "cancel": "취소",
+    "confirm": "업그레이드"
+  },
+  "cancelModal": {
+    "title": "구독취소 안내",
+    "selectedPlan": "선택된 플랜",
+    "planLabel": "플랜 : ",
+    "planNumberLabel": "플랜 번호",
+    "info": "구독을 취소하실 경우, 청구 기간이 종료되는\n{{date}}까지 사용할 수 있습니다.",
+    "infoNextBilling": "다음 결제일",
+    "close": "닫기",
+    "confirm": "구독취소",
+    "confirming": "취소 중...",
+    "alerts": {
+      "noBundleId": "번들 ID가 없습니다.",
+      "success": "구독이 성공적으로 취소되었습니다.",
+      "error": "구독 취소에 실패했습니다. 다시 시도해주세요."
+    }
+  }
+}

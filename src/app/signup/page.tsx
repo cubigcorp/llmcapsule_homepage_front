@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'next/navigation';
 
 // Google Identity Services 타입 정의
@@ -31,6 +32,7 @@ import { typography, textColor, borderColor } from '@cubig/design-system';
 import CarouselSection from '@/components/common/CarouselSection';
 import SignupLoading from '@/components/common/SignupLoading';
 import EmailVerificationSection from '@/components/common/EmailVerificationSection';
+import EmailConflictModal from '@/components/common/EmailConflictModal';
 import GoogleIcon from '@/assets/icons/Google.svg';
 import {
   validateEmail,
@@ -41,6 +43,7 @@ import { authService } from '@/services/auth';
 
 function SignupPageContent() {
   const searchParams = useSearchParams();
+  const { t } = useTranslation('auth');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -57,6 +60,9 @@ function SignupPageContent() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [isEmailConflictModalOpen, setIsEmailConflictModalOpen] =
+    useState(false);
+  const [conflictEmail, setConflictEmail] = useState('');
   const [isEmailVerification, setIsEmailVerification] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
@@ -106,6 +112,18 @@ function SignupPageContent() {
     setConfirmPasswordError(result.message);
   };
 
+  const handleEmailConflictModalClose = () => {
+    setIsEmailConflictModalOpen(false);
+    setConflictEmail('');
+  };
+
+  const handleEmailConflictModalConfirm = () => {
+    setIsEmailConflictModalOpen(false);
+    setConflictEmail('');
+    // 로그인 페이지로 이동
+    window.location.href = '/login';
+  };
+
   const handleGoogleSignup = async () => {
     try {
       // Google Identity Services 초기화
@@ -123,20 +141,37 @@ function SignupPageContent() {
                 );
                 const userInfo = await userInfoResponse.json();
 
+                // 이메일 중복 확인
+                try {
+                  const checkEmailResponse = await authService.checkEmail(
+                    userInfo.email
+                  );
+
+                  if (checkEmailResponse.success && checkEmailResponse.data) {
+                    const { is_available } = checkEmailResponse.data;
+
+                    if (!is_available) {
+                      // 이미 가입된 계정인 경우 모달 표시
+                      setConflictEmail(userInfo.email);
+                      setIsEmailConflictModalOpen(true);
+                      return;
+                    }
+                  }
+                } catch (error) {
+                  console.log(
+                    'Check email API failed, proceeding with Google signup:',
+                    error
+                  );
+                  // API 호출 실패 시에도 계속 진행
+                }
+
                 // 구글 이메일 인증 API 호출
                 const verifyResponse = await authService.verifyEmailGoogle({
                   access_token: response.access_token,
                 });
 
                 if (verifyResponse.success) {
-                  const params = new URLSearchParams({
-                    google: 'true',
-                    email: userInfo.email,
-                    firstName: userInfo.given_name,
-                    lastName: userInfo.family_name,
-                    sub: userInfo.id,
-                  });
-                  window.location.href = `/signup/verify?${params.toString()}`;
+                  window.location.href = `/signup/verify?token=${response.access_token}&google=true`;
                 } else {
                   alert('구글 이메일 인증에 실패했습니다.');
                 }
@@ -170,7 +205,7 @@ function SignupPageContent() {
     try {
       const emailCheckResponse = await authService.checkEmail(formData.email);
       if (emailCheckResponse.data && !emailCheckResponse.data.is_available) {
-        setEmailError('이미 사용 중인 이메일 주소입니다.');
+        setEmailError(t('signup.emailVerify.emailInUse'));
         return;
       }
     } catch (error) {
@@ -206,6 +241,7 @@ function SignupPageContent() {
         email: formData.email,
         password: formData.password,
         redirect_url: `${window.location.origin}/signup/verify`,
+        service_name: 'llm_capsule',
       });
 
       if (response.success) {
@@ -213,18 +249,18 @@ function SignupPageContent() {
         setIsEmailVerification(true);
       } else {
         // 실패 시 에러 메시지 표시
-        alert('이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.');
+        alert(t('signup.emailVerify.requestFail'));
       }
     } catch (error: unknown) {
       if (error && typeof error === 'object' && 'response' in error) {
         const axiosError = error as { response: { status: number } };
         if (axiosError.response?.status === 409) {
-          setEmailError('이미 사용 중인 이메일 주소입니다.');
+          setEmailError(t('signup.emailVerify.emailInUse'));
         } else {
-          alert('이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.');
+          alert(t('signup.emailVerify.requestFail'));
         }
       } else {
-        alert('이메일 인증 요청에 실패했습니다. 다시 시도해 주세요.');
+        alert(t('signup.emailVerify.requestFail'));
       }
     }
   };
@@ -242,22 +278,21 @@ function SignupPageContent() {
         email: formData.email,
         password: formData.password,
         redirect_url: `${window.location.origin}/signup/verify`,
+        service_name: 'llm_capsule',
       });
 
       console.log('API 응답:', response);
 
       if (response.success) {
         console.log('Toast 성공 메시지 표시');
-        toast.success(
-          '인증 메일을 재발송하였습니다.\n메일함을 확인해주시기 바랍니다.'
-        );
+        toast.success(t('signup.emailVerify.resendSuccess'));
       } else {
         console.log('Toast 실패 메시지 표시');
-        toast.error('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+        toast.error(t('signup.emailVerify.resendFail'));
       }
     } catch (error) {
       console.log('API 에러:', error);
-      toast.error('이메일 재발송에 실패했습니다. 다시 시도해 주세요.');
+      toast.error(t('signup.emailVerify.resendFail'));
     } finally {
       setIsResending(false);
     }
@@ -275,17 +310,17 @@ function SignupPageContent() {
           <SignupForm $isEmailVerification={isEmailVerification}>
             {!isEmailVerification ? (
               <>
-                <SignupTitle>회원가입</SignupTitle>
+                <SignupTitle>{t('signup.title')}</SignupTitle>
 
                 <FormField>
                   <TextField
-                    label='이메일'
+                    label={t('signup.email')}
                     labelType='required'
                     size='large'
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     onBlur={handleEmailBlur}
-                    placeholder='user@example.com'
+                    placeholder={t('signup.placeholder.email')}
                     description={emailError}
                     status={emailError ? 'negative' : 'default'}
                   />
@@ -293,7 +328,7 @@ function SignupPageContent() {
 
                 <FormField>
                   <TextField
-                    label='비밀번호'
+                    label={t('signup.password')}
                     labelType='required'
                     size='large'
                     type='password'
@@ -302,7 +337,7 @@ function SignupPageContent() {
                       handleInputChange('password', e.target.value)
                     }
                     onBlur={handlePasswordBlur}
-                    placeholder='비밀번호를 입력해주세요.'
+                    placeholder={t('signup.placeholder.password')}
                     description={passwordError}
                     status={passwordError ? 'negative' : 'default'}
                   />
@@ -310,7 +345,7 @@ function SignupPageContent() {
 
                 <FormField>
                   <TextField
-                    label='비밀번호 확인'
+                    label={t('signup.confirmPassword')}
                     labelType='required'
                     size='large'
                     type='password'
@@ -319,7 +354,7 @@ function SignupPageContent() {
                       handleInputChange('confirmPassword', e.target.value)
                     }
                     onBlur={handleConfirmPasswordBlur}
-                    placeholder='비밀번호를 다시 입력해주세요.'
+                    placeholder={t('signup.placeholder.confirm')}
                     description={confirmPasswordError}
                     status={confirmPasswordError ? 'negative' : 'default'}
                   />
@@ -334,7 +369,7 @@ function SignupPageContent() {
                     !formData.confirmPassword.trim()
                   }
                 >
-                  계속하기
+                  {t('signup.button.continue')}
                 </SignupButton>
 
                 <Divider>
@@ -347,7 +382,7 @@ function SignupPageContent() {
                   leadingIcon={GoogleIcon}
                   onClick={handleGoogleSignup}
                 >
-                  구글 계정으로 계속하기
+                  {t('signup.button.google')}
                 </StyledGoogleButton>
               </>
             ) : (
@@ -366,6 +401,13 @@ function SignupPageContent() {
           <CarouselSection />
         </SignupRight>
       </SignupWrapper>
+
+      {/* 이메일 중복 확인 모달 */}
+      <EmailConflictModal
+        isOpen={isEmailConflictModalOpen}
+        onClose={handleEmailConflictModalClose}
+        onConfirm={handleEmailConflictModalConfirm}
+      />
     </SignupContainer>
   );
 }

@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { authService } from '@/services/auth';
 import {
   LNB,
@@ -12,32 +14,51 @@ import {
   borderColor,
   textColor,
 } from '@cubig/design-system';
-import {
-  PersonIcon,
-  AccountIcon,
-  MoneyIcon,
-  DownloadIcon,
-  HeadphoneIcon,
-  LogoutIcon,
-} from '@/components/icons';
 
+import AccountIcon from '@/assets/icons/icon_account.svg';
+import DownloadIcon from '@/assets/icons/icon_download.svg';
+import HeadphoneIcon from '@/assets/icons/icon_headphone.svg';
+import LogoutIcon from '@/assets/icons/icon_logout.svg';
+import HomeIcon from '@/assets/icons/icon_home.svg';
+import WalletIcon from '@/assets/icons/icon_wallet.svg';
 export default function MyPageLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const { t } = useTranslation('mypage');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
+    const checkAuth = async () => {
+      const accessToken = localStorage.getItem('access_token');
 
-    if (!accessToken) {
-      router.push('/login');
-      return;
-    }
+      if (!accessToken) {
+        router.push('/login');
+        return;
+      }
 
-    setIsAuthenticated(true);
+      // 토큰이 있으면 유효성 검증
+      try {
+        await authService.getMyInfo();
+        setIsAuthenticated(true);
+      } catch (error: unknown) {
+        console.error('토큰 검증 실패:', error);
+        // 401 오류인 경우 로그아웃 처리
+        if (error && typeof error === 'object' && 'response' in error) {
+          const axiosError = error as { response?: { status?: number } };
+          if (axiosError.response?.status === 401) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            router.push('/login');
+          }
+        }
+      }
+    };
+
+    checkAuth();
   }, [router]);
 
   const handleLogout = async () => {
@@ -56,20 +77,16 @@ export default function MyPageLayout({
     router.push('/contact');
   };
 
-  const handleMyInfoClick = () => {
+  const handleHomeClick = () => {
     router.push('/mypage');
   };
 
+  const handleMyInfoClick = () => {
+    router.push('/mypage/profile');
+  };
+
   const handlePlanManagementClick = () => {
-    console.log('플랜 관리 클릭');
-  };
-
-  const handlePricingCalculatorClick = () => {
-    router.push('/mypage/checkout');
-  };
-
-  const handleAppDownloadClick = () => {
-    console.log('앱 다운로드 클릭');
+    router.push('/mypage/plans');
   };
 
   if (!isAuthenticated) {
@@ -80,18 +97,18 @@ export default function MyPageLayout({
     <Container>
       <LNBWrapper>
         <LNB
-          title='설정'
+          title={t('lnb.title')}
           bottom={
             <>
               <LNBItem
-                value='문의하기'
+                value={t('lnb.bottom.contact')}
                 onClick={handleContactClick}
                 leadingIcon={HeadphoneIcon}
                 style={{ color: textColor.light['fg-neutral-alternative'] }}
               />
               <Divider />
               <LNBItem
-                value='로그아웃'
+                value={t('lnb.bottom.logout')}
                 onClick={handleLogout}
                 leadingIcon={LogoutIcon}
                 style={{ color: textColor.light['fg-neutral-alternative'] }}
@@ -99,32 +116,34 @@ export default function MyPageLayout({
             </>
           }
         >
-          <LNBItemGroup title='계정'>
+          <LNBItem
+            value={t('lnb.items.home')}
+            onClick={handleHomeClick}
+            leadingIcon={HomeIcon}
+            selected={pathname === '/mypage'}
+          />
+          <LNBItemGroup title={t('lnb.groups.account')}>
             <LNBItem
-              value='내 정보'
+              value={t('lnb.items.profile')}
               onClick={handleMyInfoClick}
-              leadingIcon={PersonIcon}
-            />
-          </LNBItemGroup>
-
-          <LNBItemGroup title='결제'>
-            <LNBItem
-              value='플랜 관리'
-              onClick={handlePlanManagementClick}
               leadingIcon={AccountIcon}
-            />
-            <LNBItem
-              value='요금 계산기'
-              onClick={handlePricingCalculatorClick}
-              leadingIcon={MoneyIcon}
+              selected={pathname === '/mypage/profile'}
             />
           </LNBItemGroup>
-
-          <LNBItemGroup title='리소스'>
+          <LNBItemGroup title={t('lnb.groups.payment')}>
             <LNBItem
-              value='앱 다운로드'
-              onClick={handleAppDownloadClick}
+              value={t('lnb.items.checkout')}
+              onClick={handlePlanManagementClick}
+              leadingIcon={WalletIcon}
+              selected={pathname === '/mypage/plans'}
+            />
+          </LNBItemGroup>
+          <LNBItemGroup title={t('lnb.groups.resources')}>
+            <LNBItem
+              value={t('lnb.items.download')}
+              onClick={() => router.push('/mypage/download')}
               leadingIcon={DownloadIcon}
+              selected={pathname === '/mypage/download'}
             />
           </LNBItemGroup>
         </LNB>
@@ -138,7 +157,7 @@ export default function MyPageLayout({
 const Container = styled.div`
   min-height: 100vh;
   display: flex;
-  padding-top: 80px;
+  padding-top: 72px;
 `;
 
 const LNBWrapper = styled.div`
@@ -146,12 +165,12 @@ const LNBWrapper = styled.div`
   flex-shrink: 0;
   background: white;
   border-right: 1px solid ${borderColor.light['color-border-primary']};
-  height: calc(100vh - 80px);
+  height: calc(100vh - 72px);
   position: sticky;
-  top: 80px;
+  top: 72px;
 `;
 
 const ContentArea = styled.div`
   flex: 1;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 72px);
 `;

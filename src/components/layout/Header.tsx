@@ -1,19 +1,52 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
-import { spacing, TextButton, SolidButton } from '@cubig/design-system';
+import {
+  spacing,
+  TextButton,
+  SolidButton,
+  OutlineButton,
+  borderColor,
+} from '@cubig/design-system';
+import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 import { authService } from '@/services/auth';
-import { isDevStage } from '@/utils/env';
-
+import type { UserInfo } from '@/utils/api';
+import LogoIcon from '@/assets/icons/Logo.svg';
+import ArrowDownIcon from '@/assets/icons/icon_arrow-down.svg';
 export default function Header() {
   const pathname = usePathname();
+  const { t } = useTranslation('common');
   const [isAuthPage, setIsAuthPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(false);
+
+  const scrollToSection = (sectionId: string) => {
+    // 홈페이지가 아닌 경우 홈으로 이동 후 스크롤
+    if (pathname !== '/') {
+      window.location.href = `/#${sectionId}`;
+      return;
+    }
+
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerHeight = 72; // 헤더 높이
+      const rect = element.getBoundingClientRect();
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const targetTop = rect.top + scrollTop - headerHeight;
+
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      try {
+        history.replaceState(null, '', `#${sectionId}`);
+      } catch {}
+    }
+  };
 
   useEffect(() => {
     setIsAuthPage(
@@ -41,25 +74,56 @@ export default function Header() {
 
   // 로그인 상태 변화 감지를 위한 추가 useEffect
   useEffect(() => {
-    const checkLoginStatus = () => {
+    const checkLoginStatus = async () => {
       const accessToken = localStorage.getItem('access_token');
-      setIsLoggedIn(!!accessToken);
+
+      if (accessToken) {
+        setIsLoadingUserInfo(true);
+        try {
+          const response = await authService.getMyInfo();
+
+          if (!response.success || !response.data) {
+            throw new Error('Failed to get user info');
+          }
+
+          setIsLoggedIn(true);
+          setUserInfo(response.data);
+        } catch (error) {
+          console.error('사용자 정보 조회 실패:', error);
+
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+          setIsLoggedIn(false);
+          setUserInfo(null);
+
+          if (
+            typeof window !== 'undefined' &&
+            !window.location.pathname.includes('/login') &&
+            !window.location.pathname.includes('/signup') &&
+            !window.location.pathname.includes('/verify') &&
+            window.location.pathname.includes('/mypage')
+          ) {
+            window.location.href = '/login';
+          }
+        } finally {
+          setIsLoadingUserInfo(false);
+        }
+      } else {
+        setIsLoggedIn(false);
+        setUserInfo(null);
+        setIsLoadingUserInfo(false);
+      }
     };
 
-    // 초기 상태 확인
     checkLoginStatus();
 
-    // storage 이벤트 리스너 추가 (다른 탭에서 로그인/로그아웃 시)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'access_token' || e.key === 'refresh_token') {
-        checkLoginStatus();
-      }
+    const handleStorageChange = () => {
+      checkLoginStatus();
     };
 
     window.addEventListener('storage', handleStorageChange);
 
-    // 주기적으로 로그인 상태 확인 (5초마다)
-    const interval = setInterval(checkLoginStatus, 5000);
+    const interval = setInterval(checkLoginStatus, 600000);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
@@ -78,60 +142,85 @@ export default function Header() {
           <Leading>
             <LogoWrapper>
               <Link href='/'>
-                <Image
-                  src={'/icons/Logo.svg'}
-                  alt='Logo'
-                  width={32}
-                  height={32}
-                />
+                <LogoIcon />
               </Link>
             </LogoWrapper>
-            {/* <Menu>
-              <TextButton variant='primary' size='medium'>
-                제품소개
+            <Menu>
+              <TextButton
+                variant='secondary'
+                size='medium'
+                onClick={() => scrollToSection('about-section')}
+              >
+                {t('header.about')}
               </TextButton>
-              <TextButton variant='primary' size='medium'>
-                구매
+              <TextButton
+                variant='secondary'
+                size='medium'
+                onClick={() => scrollToSection('demo-section')}
+              >
+                {t('header.demo')}
               </TextButton>
-              <TextButton variant='primary' size='medium'>
-                회사소개
+              <TextButton
+                variant='secondary'
+                size='medium'
+                onClick={() => scrollToSection('performance-section')}
+              >
+                {t('header.performance')}
               </TextButton>
-            </Menu> */}
+              <TextButton
+                variant='secondary'
+                size='medium'
+                onClick={() => scrollToSection('pricing-section')}
+              >
+                {t('header.pricing')}
+              </TextButton>
+              <TextButton
+                variant='secondary'
+                size='medium'
+                onClick={() => scrollToSection('faq-section')}
+              >
+                {t('header.faq')}
+              </TextButton>
+            </Menu>
           </Leading>
 
           <ButtonGroup>
+            <LanguageSwitcher />
             {isLoggedIn ? (
               <>
-                <Link href='/contact'>
-                  <SolidButton variant='primary' size='medium'>
-                    문의하기
-                  </SolidButton>
-                </Link>
+                <SolidButton
+                  variant='primary'
+                  size='medium'
+                  onClick={() => scrollToSection('contact-section')}
+                >
+                  {t('header.contact')}
+                </SolidButton>
                 <Link href='/mypage'>
-                  <Avatar>
-                    <Image
-                      src='/icons/Avatar.svg'
-                      alt='Avatar'
-                      width={32}
-                      height={32}
-                    />
-                  </Avatar>
+                  <TextButton variant='primary' size='medium'>
+                    {isLoadingUserInfo
+                      ? '...'
+                      : userInfo?.last_name && userInfo?.first_name
+                        ? `${userInfo.last_name}${userInfo.first_name}`
+                        : userInfo?.first_name ||
+                          userInfo?.last_name ||
+                          '사용자'}
+                  </TextButton>
                 </Link>
               </>
             ) : (
               <>
-                {isDevStage && (
-                  <Link href='/login'>
-                    <TextButton variant='primary' size='medium'>
-                      로그인
-                    </TextButton>
-                  </Link>
-                )}
-                <Link href='/contact'>
-                  <SolidButton variant='primary' size='medium'>
-                    문의하기
-                  </SolidButton>
+                <Link href='/login'>
+                  <OutlineButton variant='secondary' size='medium'>
+                    {t('header.login')}
+                  </OutlineButton>
                 </Link>
+                <SolidButton
+                  variant='primary'
+                  size='medium'
+                  onClick={() => scrollToSection('contact-section')}
+                >
+                  {t('header.contact')}
+                </SolidButton>
               </>
             )}
           </ButtonGroup>
@@ -148,15 +237,15 @@ const HeaderContainer = styled.header`
   right: 0;
   z-index: 50;
   background: white;
-  height: 80px;
+  height: 72px;
   display: flex;
   justify-content: center;
+  border-bottom: 1px solid ${borderColor.light['color-border-primary']};
 `;
 
 const HeaderWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
-  padding: 0 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -169,7 +258,7 @@ const HeaderWrapper = styled.div`
   }
 
   @media (max-width: 1440px) {
-    padding: 0 24px;
+    padding: ${spacing.gap['gap-4']};
   }
 
   @media (max-width: 768px) {
@@ -183,7 +272,6 @@ const HeaderWrapper = styled.div`
 
 const GNB = styled.div`
   display: flex;
-  padding: ${spacing.gap['gap-1']} ${spacing.gap['gap-1']};
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
@@ -203,14 +291,14 @@ const ButtonGroup = styled.div`
 const Leading = styled.div`
   display: flex;
   align-items: center;
-  gap: 64px;
+  gap: ${spacing.gap['gap-6']};
 `;
 
-const Avatar = styled.div`
-  cursor: pointer;
-
-  svg,
-  img {
-    display: block;
+const Menu = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${spacing.gap['gap-3']};
+  @media (max-width: 1024px) {
+    display: none;
   }
 `;

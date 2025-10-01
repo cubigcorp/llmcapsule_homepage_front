@@ -1,0 +1,85 @@
+{
+  "pageTitle": "Plan Management",
+  "pageSubtitle": "Manage your current subscription status and payment information.",
+  "tabs": {
+    "overview": "Overview",
+    "history": "Subscription History"
+  },
+  "empty": {
+    "noPlan": {
+      "title": "No active subscription.",
+      "description": "Select your desired plan and start using our service.",
+      "button": "Find the right plan"
+    },
+    "noHistory": {
+      "title": "No subscription history.",
+      "description": "Select your desired plan and start using our service.",
+      "button": "Find the right plan"
+    }
+  },
+  "myPlan": {
+    "title": "My Plan",
+    "planNumberLabel": "Plan Number",
+    "upgrade": "Upgrade",
+    "cancel": "Cancel Subscription"
+  },
+  "planInfo": {
+    "title": "Plan Information",
+    "tokens": "tokens",
+    "subscribedSince": "Subscribed since",
+    "serialCount": "Serial Count",
+    "expiryDate": "Expiry Date (Next Billing)"
+  },
+  "serialManagement": {
+    "title": "Serial Management",
+    "filters": {
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "table": {
+      "no": "No",
+      "serialNumber": "Serial Number",
+      "status": "Status",
+      "statusActive": "Active",
+      "statusInactive": "Inactive"
+    }
+  },
+  "history": {
+    "table": {
+      "planName": "Plan Name",
+      "serialCount": "Serial Count",
+      "firstPaymentDate": "First Payment",
+      "expiryDate": "Expiry Date",
+      "status": "Status",
+      "statusActive": "Active",
+      "statusExpired": "Expired"
+    }
+  },
+  "upgradeModal": {
+    "title": "Upgrade Plan",
+    "subtitle": "Upgrade your plan to use more tokens",
+    "loading": "Loading plan information...",
+    "planSuffix": " Plan",
+    "priceUnit": "/Seat",
+    "maxTokens": "Max Tokens",
+    "cancel": "Cancel",
+    "confirm": "Upgrade"
+  },
+  "cancelModal": {
+    "title": "Cancel Subscription",
+    "selectedPlan": "Selected Plan",
+    "planLabel": "Plan: ",
+    "planNumberLabel": "Plan Number",
+    "info": "If you cancel your subscription, you can continue using the service until\n{{date}}.",
+    "infoNextBilling": "next billing date",
+    "close": "Close",
+    "confirm": "Cancel Subscription",
+    "confirming": "Canceling...",
+    "alerts": {
+      "noBundleId": "Bundle ID is missing.",
+      "success": "Subscription has been successfully canceled.",
+      "error": "Failed to cancel subscription. Please try again."
+    }
+  }
+}

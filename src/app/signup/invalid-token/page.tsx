@@ -36,6 +36,7 @@ function InvalidTokenContent() {
         email: email,
         password: '',
         redirect_url: `${window.location.origin}/signup/verify`,
+        service_name: '',
       });
 
       if (response.success) {

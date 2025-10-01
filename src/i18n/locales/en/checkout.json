@@ -1,0 +1,147 @@
+{
+  "title": "Estimator",
+  "subtitle": "Easily calculate and compare plans for your business.",
+  "planSelect": "Select Plan",
+  "tokenBased": "Token based",
+  "planGuide": "Use the slider to set monthly estimated token usage.",
+  "selectedPlan": "Selected Plan",
+  "planNameSuffix": " Plan",
+  "tokenUsage": "Token Usage",
+  "tokenUnit": "tokens",
+  "breakdown": {
+    "title": "Token Breakdown",
+    "ratio": "Input/Output 6:4",
+    "total": "Total",
+    "input": "Input",
+    "output": "Output",
+    "tokenLabel": "Token"
+  },
+  "convert": {
+    "title": "Character/Page Conversion",
+    "assumption": "Assumption",
+    "ko": "Korean",
+    "en": "English",
+    "charUnit": "chars",
+    "pageUnit": "pages",
+    "estimate": "Estimated",
+    "note": "Assumption: KO 1 token≈1.6 chars, EN 1 token≈4.5 chars, A4 1 page≈2,200 chars (KO) / 3,600 chars (EN)",
+    "pageConversion": "Page Conversion",
+    "characterConversion": "Character Conversion",
+    "a4Label": "A4",
+    "krLabel": "Kr",
+    "enLabel": "En"
+  },
+  "assumptions": {
+    "pageConversion": "Assumption: 1 A4 page ≈ 2,200 chars (Korean) / 3,800 chars (English)",
+    "characterConversion": "Assumption: Korean 1 token ≈ 1.6 chars, English 1 token ≈ 4.5 chars"
+  },
+  "users": {
+    "title": "Users",
+    "label": "Number of users",
+    "step": "+50"
+  },
+  "contract": {
+    "title": "Contract Period",
+    "desc": "Period discounts may vary by policy.",
+    "description": "Auto-renews every {{months}} months. Period discounts may vary by policy.",
+    "monthsSuffix": "mo",
+    "discount": "Discount",
+    "prepay": "Prepay",
+    "lumpSum": "Lump sum",
+    "pct": "0.2%",
+    "prepayDesc": "Period discounts may vary by policy."
+  },
+  "addon": {
+    "title": "Add-on (one-time)",
+    "desc": "No period/prepayment discounts apply.",
+    "security": "Structured Sensitive Information Condition Module",
+    "none": "None",
+    "count5": "1-time apply 5 items",
+    "count8": "1-time apply 8 items",
+    "count12": "1-time apply 12 items",
+    "admin": "Central Admin Console Admin Setup",
+    "adminNote": "Recommended price based on seat count: $21,050",
+    "range100_200": "100 - 200",
+    "range200_500": "200 - 500",
+    "range500p": "500+",
+    "module": "Add Sensitive Keywords",
+    "basic": "Basic module",
+    "noneShort": "None",
+    "filter5": "5 keywords",
+    "filter8": "8 keywords",
+    "filter12": "12 keywords",
+    "others": "Other modules",
+    "rag": "RAG System",
+    "graphRag": "Graph RAG (latest)",
+    "docSec": "Document security access control",
+    "aiAnswer": "Context-based AI answer",
+    "unstructured": "Unstructured sensitive info module"
+  },
+  "repeat": {
+    "title": "Recurring Cost (Add-on)",
+    "desc": "Extra token pack",
+    "unit": "per 100k tokens / month"
+  },
+  "tokenInfo": {
+    "title": "Token/Model Cost Notice",
+    "b1": "• Seat(Base): Includes plan token Cap. No extra charge within Cap.",
+    "b2": "• Over-Cap policy: Block or purchase more.",
+    "b3": "• Seat(Base): Includes plan token Cap. No extra charge within Cap."
+  },
+  "summary": {
+    "title": "Summary",
+    "selectedSpec": "Selected options total",
+    "selectedPlan": "Selected Plan",
+    "users": "Users",
+    "contract": "Contract",
+    "discount": "Discount",
+    "prepay": "Prepay",
+    "yesWith": "Yes (extra 0.2%)",
+    "no": "No",
+    "security": "Structured Sensitive Information Condition Module",
+    "admin": "Central Admin Console Admin Setup",
+    "module": "Add Sensitive Keywords",
+    "others": "Others",
+    "none": "None",
+    "extraTokens": "Extra token pack",
+    "vatOn": "VAT included",
+    "monthly": "Monthly recurring cost",
+    "oneTime": "One-time build cost",
+    "firstBill": "First bill estimate (monthly)",
+    "total": "Total contract amount",
+    "prepayApply": "Prepay applied (extra 0.2%)",
+    "vatIncl": "VAT included"
+  },
+  "buttons": {
+    "buy": "Purchase",
+    "contact": "Contact Us",
+    "pdf": "Download PDF"
+  },
+  "vat": {
+    "toggle": "Include VAT",
+    "rate": "VAT 10%"
+  },
+  "success": {
+    "title": "Payment completed successfully.",
+    "orderNumber": "Order Number",
+    "plan": "Plan:",
+    "quantity": "Quantity:",
+    "period": "Period:",
+    "prepay": "Prepay:",
+    "extraTokens": "Extra Token Pack:",
+    "vatIncluded": "VAT Included:",
+    "monthlyFee": "Monthly recurring cost",
+    "oneTimeFee": "One-time build cost",
+    "firstBill": "First bill estimate (monthly)",
+    "total": "Total",
+    "prepayApply": "Prepay applied (extra 2%)",
+    "vatFinal": "VAT included",
+    "notice": "LLM Capsule B2B product requires deployment, server, and DB setup work, requiring an average of 2-3 months for implementation.\nWe will contact you within 3 business days after payment completion, so please confirm your contact email and phone number.",
+    "downloadPdf": "Download PDF",
+    "managePlan": "Manage Plan"
+  },
+  "b2bInfo": {
+    "text1": "LLM Capsule B2B product requires deployment, server, and DB setup work, requiring an average of 2-3 months for implementation.",
+    "text2": "We will contact you within 3 business days after payment completion, so please confirm your contact email and phone number."
+  }
+}

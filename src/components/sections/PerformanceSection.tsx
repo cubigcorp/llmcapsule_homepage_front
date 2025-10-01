@@ -1,103 +1,58 @@
 'use client';
 
 import styled from 'styled-components';
-import {
-  typography,
-  textColor,
-  radius,
-  borderColor,
-} from '@cubig/design-system';
+import { typography, textColor } from '@cubig/design-system';
+import { useTranslation } from 'react-i18next';
 
 export default function PerformanceSection() {
+  const { t } = useTranslation('common');
+
   return (
-    <PerformanceContainer>
+    <PerformanceContainer id='performance-section'>
       <PerformanceWrapper>
-        <SectionTitle>Performance & Certification</SectionTitle>
-        <CardsContainer>
-          <PerformanceCard>
-            <CardTitle>1종 오류 정확도</CardTitle>
-            <CardValue>98.10%</CardValue>
-            <CardDescription>
-              정상 데이터를 불필요하게 차단하지 않아 효율적인
-              <br /> 데이터 활용이 가능합니다.
-            </CardDescription>
-          </PerformanceCard>
-          <PerformanceCard>
-            <CardTitle>2종 오류 정확도</CardTitle>
-            <CardValue>99.14%</CardValue>
-            <CardDescription>
-              민감정보를 놓치지 않고 탐지·차단하여
-              <br /> 기업 데이터 유출 위험을 최소화합니다.
-            </CardDescription>
-          </PerformanceCard>
-          <PerformanceCard>
-            <CardTitle>정형화된 개인정보 보호</CardTitle>
-            <CardValue>100%</CardValue>
-            <CardDescription>
-              정형 데이터에서 개인정보 노출 가능성을 <br />
-              완벽히 차단합니다.
-            </CardDescription>
-          </PerformanceCard>
-          <PerformanceCard>
-            <CardTitle>Public LLM 유사도</CardTitle>
-            <CardValue>98%</CardValue>
-            <CardDescription>
-              민감정보 보호 후에도 답변의 의미와 문맥이
-              <br /> 거의 유지됩니다.
-            </CardDescription>
-          </PerformanceCard>
-          <PerformanceCard>
-            <CardTitle>Privacy-Utility</CardTitle>
-            <CardValue>Trade-off 개선</CardValue>
-            <CardDescription>
-              고도화된 변환 기술로 보안과 데이터 활용성의
-              <br /> 최적 균형을 실현합니다.
-            </CardDescription>
-          </PerformanceCard>
-          <PerformanceCard>
-            <CardTitle>벤처나라 등록 제품</CardTitle>
-            <CardValue>
-              <LogoImage
-                src={'/icons/public-procurement-service.svg'}
-                alt='조달청'
-                style={{ width: '135px', height: '52px' }}
-              />
-            </CardValue>
-            <CardDescription>
-              조달청 공식 등록으로 공공기관 도입 신뢰성을
-              <br />
-              확보했습니다.
-            </CardDescription>
-          </PerformanceCard>
-          <PerformanceCard>
-            <CardTitle>개인정보 비식별 가이드라인 준수</CardTitle>
-            <CardValue>
-              <LogoImage
-                src={'/icons/ministry-interior-safety.svg'}
-                alt='행정안전부'
-                style={{ width: '183px', height: '52px' }}
-              />
-            </CardValue>
-            <CardDescription>
-              공식 가이드라인을 준수하여 데이터 안정성과
-              <br /> 법적 신뢰성을 실현합니다.
-            </CardDescription>
-          </PerformanceCard>
-          <PerformanceCard>
-            <CardTitle>24년도 정보보호제품 혁신 대상</CardTitle>
-            <CardValue>
-              <LogoImage
-                src={'/icons/ministry-science-ict.svg'}
-                alt='과학기술정보통신부'
-                style={{ width: '268px', height: '52px' }}
-              />
-            </CardValue>
-            <CardDescription>
-              국가로부터 혁신성과 기술력을 공식 인정받은
-              <br /> 제품입니다.
-            </CardDescription>
-          </PerformanceCard>
-        </CardsContainer>
+        <PerformanceContent>
+          <LeftSection>
+            <SectionTitle>{t('performance.title')}</SectionTitle>
+          </LeftSection>
+          <RightSection>
+            <MainTitle>{t('performance.mainTitle')}</MainTitle>
+            <SubTitle>{t('performance.subTitle')}</SubTitle>
+            <StatsGrid>
+              <StatCard>
+                <StatValue>98.1%</StatValue>
+                <StatTitle>{t('performance.stats.type1Error.title')}</StatTitle>
+                <StatDescription>
+                  {t('performance.stats.type1Error.description')}
+                </StatDescription>
+              </StatCard>
+              <StatCard>
+                <StatValue>99.14%</StatValue>
+                <StatTitle>{t('performance.stats.type2Error.title')}</StatTitle>
+                <StatDescription>
+                  {t('performance.stats.type2Error.description')}
+                </StatDescription>
+              </StatCard>
+              <StatCard>
+                <StatValue>100%</StatValue>
+                <StatTitle>
+                  {t('performance.stats.structuredData.title')}
+                </StatTitle>
+                <StatDescription>
+                  {t('performance.stats.structuredData.description')}
+                </StatDescription>
+              </StatCard>
+              <StatCard>
+                <StatValue>98%</StatValue>
+                <StatTitle>
+                  {t('performance.stats.responseSimilarity.title')}
+                </StatTitle>
+                <StatDescription>
+                  {t('performance.stats.responseSimilarity.description')}
+                </StatDescription>
+              </StatCard>
+            </StatsGrid>
+          </RightSection>
+        </PerformanceContent>
       </PerformanceWrapper>
     </PerformanceContainer>
   );
@@ -106,119 +61,104 @@ export default function PerformanceSection() {
 const PerformanceContainer = styled.section`
   width: 100%;
   display: flex;
+  justify-content: center;
 `;
 
 const PerformanceWrapper = styled.div`
   width: 100%;
   max-width: 1440px;
-  padding: 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+  padding: 80px 40px;
   margin: 0 auto;
 
-  @media (min-width: 1920px) {
-    max-width: 1920px;
-    padding: 120px;
-  }
-
-  @media (max-width: 1440px) {
-    padding: 60px 24px;
-  }
-
   @media (max-width: 768px) {
-    padding: 40px 16px;
-    gap: 24px;
+    padding: 40px 24px;
   }
 
   @media (max-width: 375px) {
-    padding: 32px 12px;
-    gap: 20px;
+    padding: 32px 16px;
   }
+`;
+
+const PerformanceContent = styled.div`
+  display: flex;
+
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 40px;
+  }
+`;
+
+const LeftSection = styled.div`
+  flex: 0 0 auto;
+  min-width: 200px;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    min-width: auto;
+  }
+`;
+
+const RightSection = styled.div`
+  flex: 1;
 `;
 
 const SectionTitle = styled.h2`
-  width: fit-content;
-  ${typography('ko', 'body3', 'medium')}
+  ${typography(undefined, 'body3', 'semibold')}
   color: ${textColor.light['fg-neutral-strong']};
-  border: 1px solid ${textColor.light['fg-neutral-primary']};
-  padding: 2px 8px;
-  border-radius: ${radius['rounded-1.5']};
+  margin-top: 16px;
 `;
 
-const CardsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 80px 10px;
+const MainTitle = styled.h3`
+  ${typography(undefined, 'display1', 'medium')}
+  color: ${textColor.light['fg-neutral-strong']};
+  margin: 0 0 12px 0;
+`;
 
-  @media (max-width: 1200px) {
-    gap: 60px 20px;
-  }
+const SubTitle = styled.p`
+  ${typography(undefined, 'heading2', 'regular')}
+  color: ${textColor.light['fg-neutral-primary']};
+  margin: 0 0 40px 0;
+`;
+
+const StatsGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
 
   @media (max-width: 768px) {
-    gap: 40px 0;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 `;
 
-const PerformanceCard = styled.div`
+const StatCard = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  flex-basis: calc(25% - 8px);
-  flex-grow: 1;
-
-  @media (max-width: 1200px) {
-    flex-basis: calc(50% - 10px);
-  }
-
-  @media (max-width: 768px) {
-    flex-basis: 100%;
-  }
+  border-top: 1px solid ${textColor.light['fg-neutral-primary']};
+  padding-bottom: 32px;
 `;
 
-const CardTitle = styled.h3`
-  ${typography('ko', 'body3', 'medium')}
-  color: ${textColor.light['fg-neutral-primary']};
-  margin-bottom: 12px;
-`;
-
-const CardValue = styled.div`
-  ${typography('ko', 'display1', 'medium')}
+const StatValue = styled.div`
+  margin-top: 12px;
+  ${typography(undefined, 'display3', 'medium')}
   color: ${textColor.light['fg-neutral-strong']};
-  margin-bottom: 64px;
-
-  @media (max-width: 1200px) {
-    margin-bottom: 52px;
-  }
-
-  @media (max-width: 768px) {
-    margin-bottom: 40px;
-  }
-
-  @media (max-width: 375px) {
-    margin-bottom: 32px;
-  }
 `;
 
-const CardDescription = styled.p`
-  ${typography('ko', 'body2', 'regular')}
+const StatTitle = styled.h4`
+  ${typography(undefined, 'heading2', 'semibold')}
+  color: ${textColor.light['fg-neutral-primary']};
+  margin-top: 16px;
+`;
+
+const StatDescription = styled.p`
+  ${typography(undefined, 'body3', 'medium')}
   color: ${textColor.light['fg-neutral-alternative']};
-  position: relative;
-  padding-bottom: 20px;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: ${borderColor.light['color-border-primary']};
-  }
-`;
-
-const LogoImage = styled.img`
-  width: 135px;
-  height: 52px;
-  aspect-ratio: 135/52;
+  margin-top: 8px;
+  max-width: 400px;
+  width: 100%;
 `;

@@ -1,3 +1,5 @@
+import i18n from '@/i18n/client';
+
 export interface ValidationResult {
   isValid: boolean;
   message: string;
@@ -11,7 +13,7 @@ export const validateEmail = (
   if (isTouched && !email) {
     return {
       isValid: false,
-      message: '이메일을 입력해 주세요.',
+      message: i18n.t('common:validation.email.required'),
     };
   }
 
@@ -20,7 +22,7 @@ export const validateEmail = (
     if (!emailRegex.test(email)) {
       return {
         isValid: false,
-        message: '유효한 이메일을 입력해 주세요.',
+        message: i18n.t('common:validation.email.invalid'),
       };
     }
   }
@@ -39,7 +41,7 @@ export const validatePassword = (
   if (isTouched && !password) {
     return {
       isValid: false,
-      message: '비밀번호를 입력해 주세요.',
+      message: i18n.t('common:validation.password.required'),
     };
   }
 
@@ -49,7 +51,7 @@ export const validatePassword = (
     if (!passwordRegex.test(password)) {
       return {
         isValid: false,
-        message: '8~20자, 영문/숫자/특수문자를 포함해야 합니다.',
+        message: i18n.t('common:validation.password.policy'),
       };
     }
   }
@@ -69,14 +71,14 @@ export const validateConfirmPassword = (
   if (isTouched && !confirmPassword) {
     return {
       isValid: false,
-      message: '비밀번호를 입력해 주세요.',
+      message: i18n.t('common:validation.confirmPassword.required'),
     };
   }
 
   if (confirmPassword && confirmPassword !== password) {
     return {
       isValid: false,
-      message: '비밀번호가 일치하지 않습니다.',
+      message: i18n.t('common:validation.confirmPassword.mismatch'),
     };
   }
 
@@ -94,14 +96,14 @@ export const validateContactNumber = (
   if (isTouched && !contactNumber) {
     return {
       isValid: false,
-      message: '휴대폰 번호를 입력해 주세요.',
+      message: i18n.t('common:validation.phone.required'),
     };
   }
 
   if (contactNumber && contactNumber.length < 7) {
     return {
       isValid: false,
-      message: '올바른 휴대폰 번호를 입력해 주세요.',
+      message: i18n.t('common:validation.phone.invalid'),
     };
   }
 
@@ -116,7 +118,7 @@ export const validateCompany = (company: string): ValidationResult => {
   if (company && company.trim().length < 2) {
     return {
       isValid: false,
-      message: '2자 이상 입력해 주세요.',
+      message: i18n.t('common:validation.company.min2'),
     };
   }
 

@@ -5,8 +5,10 @@
 export const env = {
   NODE_ENV: process.env.NODE_ENV,
   API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || '',
+  LLM_API_BASE_URL: process.env.NEXT_PUBLIC_LLM_API_BASE_URL || '',
   OTP_API_KEY: process.env.NEXT_PUBLIC_OTP_API_KEY || '',
   GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
+  PAYPAL_CLIENT_ID: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
 } as const;
 
 export const stage = (

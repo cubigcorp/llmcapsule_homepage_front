@@ -1,0 +1,127 @@
+{
+  "title": "마이페이지",
+  "subtitle": "계정 정보, 구독 현황 등 내 정보를 편리하게 확인하세요.",
+  "stats": {
+    "usingPlan": "이용 중인 플랜",
+    "activeSerial": "활성화 된 시리얼",
+    "nextPayment": "다음 결제일"
+  },
+  "plan": {
+    "title": "이용 중인 플랜",
+    "number": "플랜 번호",
+    "manage": "플랜관리",
+    "receipt": "영수증 보기",
+    "nextPayment": "다음 결제일"
+  },
+  "empty": {
+    "title": "구독 중인 플랜이 없습니다.",
+    "desc": "원하는 플랜을 선택하고 서비스를 시작해 보세요.",
+    "cta": "나에게 맞는 플랜 찾기"
+  },
+  "trial": {
+    "title": "7일 동안 무료로 체험해보세요",
+    "tokens": "50,000/tokens"
+  },
+  "support": {
+    "title": "지원",
+    "guide": "제품 가이드",
+    "guideDesc": "LLM Capsule 사용 방법을 제품 가이드와 함께 알아보세요",
+    "contact": "문의하기",
+    "contactDesc": "궁금한 점이나 도움이 필요할 때 언제든 문의하세요."
+  },
+  "account": {
+    "edit": "회원정보 수정",
+    "contact": "연락처",
+    "org": "회사/소속기관명",
+    "user": "사용자"
+  },
+  "lnb": {
+    "title": "마이페이지",
+    "bottom": {
+      "contact": "문의하기",
+      "logout": "로그아웃"
+    },
+    "groups": {
+      "account": "계정",
+      "payment": "결제",
+      "resources": "리소스"
+    },
+    "items": {
+      "home": "홈",
+      "profile": "회원정보 수정",
+      "checkout": "플랜 관리",
+      "download": "앱 다운로드"
+    }
+  },
+  "profile": {
+    "title": "회원정보 수정",
+    "subtitle": "연락처, 기본 설정 등 내 계정 정보를 관리할 수 있습니다.",
+    "sectionUser": "회원 정보",
+    "fields": {
+      "name": "이름",
+      "phone": "연락처",
+      "org": "회사/소속기관명",
+      "lastName": "성",
+      "firstName": "이름",
+      "lastNamePlaceholder": "성을 입력하세요",
+      "firstNamePlaceholder": "이름을 입력하세요"
+    },
+    "edit": "수정",
+    "changeName": "이름 변경",
+    "cancel": "취소",
+    "save": "저장",
+    "sectionAccount": "계정 관리",
+    "changePassword": "비밀번호 변경",
+    "changePasswordDesc": "현재 비밀번호를 새 비밀번호로 업데이트할 수 있습니다.",
+    "changeContact": "연락처 변경",
+    "changeContactDesc": "새로운 연락처로 변경할 수 있습니다.",
+    "country": "국가",
+    "contactNumber": "연락처",
+    "verificationCode": "인증번호 입력",
+    "requestVerification": "인증요청",
+    "verify": "확인",
+    "change": "변경",
+    "resendCode": "인증번호 재발송",
+    "timeRemaining": "남음",
+    "verificationError": "인증번호가 일치하지 않습니다.",
+    "changeCompany": "회사/소속기관명 변경",
+    "companyName": "회사/소속기관명",
+    "companyPlaceholder": "회사명을 입력해 주세요.",
+    "deleteAccount": "회원 탈퇴",
+    "deleteAccountDesc": "LLM Capsule 계정을 영구적으로 삭제합니다.",
+    "deleteAccountBtn": "회원 탈퇴",
+    "currentPassword": "현재 비밀번호",
+    "currentPasswordPlaceholder": "현재 비밀번호를 입력해주세요.",
+    "newPassword": "새 비밀번호",
+    "newPasswordPlaceholder": "8~20자, 영문+숫자+특수문자",
+    "confirmPassword": "새 비밀번호 확인",
+    "confirmPasswordPlaceholder": "비밀번호 재확인",
+    "deleteAccountTitle": "회원탈퇴 안내",
+    "deleteAccountWarning": "회원탈퇴 시 계정과 함께 모든 데이터가 삭제되며, 복구할 수 없습니다.",
+    "deleteAccountAgreement": "위 안내사항을 모두 확인했으며, 이에 동의합니다.",
+    "loading": "로딩 중..."
+  },
+  "download": {
+    "title": "앱 다운로드",
+    "subtitle": "안전하게, 생산성을 향상시키는 LLM Capsule을 이용해 보세요.",
+    "windows": "Windows",
+    "exe": "exe",
+    "notice": "Windows 10 이상부터 이용 가능합니다.",
+    "download": "다운로드",
+    "howTo": "사용방법",
+    "step1": {
+      "title": "사용할 시리얼 키를 준비해주세요",
+      "desc": "시리얼 키 입력 후 프로그램을 설치할 수 있습니다. 등록이 완료되면, 1개의 디바이스에서만 사용할 수 있습니다."
+    },
+    "dropdown": {
+      "label": "시리얼",
+      "placeholder": "시리얼을 선택하세요"
+    },
+    "copySerial": "시리얼 키 복사",
+    "step2": {
+      "title": "프로그램 실행 후 시리얼을 입력해주세요",
+      "desc": "설치 프로그램 실행 후, 준비한 시리얼 키를 입력하면 설치가 진행됩니다."
+    },
+    "serialImageAlt": "시리얼 입력 UI"
+  }
+}
