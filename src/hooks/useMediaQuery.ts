@@ -4,6 +4,9 @@ export function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
 
   useEffect(() => {
+    // SSR 환경 체크
+    if (typeof window === 'undefined') return;
+
     const media = window.matchMedia(query);
     if (media.matches !== matches) {
       setMatches(media.matches);

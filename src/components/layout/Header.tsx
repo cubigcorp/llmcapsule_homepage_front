@@ -68,10 +68,6 @@ export default function Header() {
         pathname === '/contact/'
     );
 
-    // 로그인 상태 확인
-    const accessToken = localStorage.getItem('access_token');
-    setIsLoggedIn(!!accessToken);
-
     setIsLoaded(true);
   }, [pathname]);
 
