@@ -274,7 +274,7 @@ export default function MyPage() {
             </>
           )}
 
-          <SupportSection>
+          {/* <SupportSection>
             <SectionTitle>{t('support.title')}</SectionTitle>
             <SupportGrid>
               <SupportCard>
@@ -294,7 +294,7 @@ export default function MyPage() {
                 <SupportArrowIcon />
               </SupportCard>
             </SupportGrid>
-          </SupportSection>
+          </SupportSection> */}
         </LeftColumn>
 
         <RightColumn>
