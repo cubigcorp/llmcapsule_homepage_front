@@ -42,6 +42,8 @@ function CheckoutSummaryContent() {
   const { t } = useTranslation('checkout');
   const params = useSearchParams();
   const router = useRouter();
+  const formatAmount = (value: number) =>
+    value.toLocaleString(undefined, { maximumFractionDigits: 2 });
   const initializedRef = useRef(false);
   const apiCallInProgressRef = useRef(false);
   const [isPurchasing, setIsPurchasing] = useState(false);
@@ -330,8 +332,7 @@ function CheckoutSummaryContent() {
                 {t('checkout:summary.discount')}: ({discount.toLocaleString()}%)
               </li>
               <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                {t('checkout:summary.monthly')}: $
-                {monthlyTotal.toLocaleString()}
+                {t('checkout:summary.monthly')}: ${formatAmount(monthlyTotal)}
               </li>
             </Bullets>
 
@@ -373,7 +374,7 @@ function CheckoutSummaryContent() {
                   {aiAnswerEnabled && <li>{t('checkout:summary.aiAnswer')}</li>}
                   <li style={{ color: textColor.light['fg-neutral-primary'] }}>
                     {t('checkout:summary.oneTime')}: $
-                    {oneTimeTotal.toLocaleString()}
+                    {formatAmount(oneTimeTotal)}
                   </li>
                 </Bullets>
               </>
@@ -383,18 +384,18 @@ function CheckoutSummaryContent() {
               <TotalsGroup>
                 <TotalsLine>
                   <span>{t('checkout:summary.monthly')}</span>
-                  <span>${monthlyTotal.toLocaleString()}</span>
+                  <span>${formatAmount(monthlyTotal)}</span>
                 </TotalsLine>
                 {hasOneTimeCost && (
                   <TotalsLine>
                     <span>{t('checkout:summary.oneTime')}</span>
-                    <span>${oneTimeTotal.toLocaleString()}</span>
+                    <span>${formatAmount(oneTimeTotal)}</span>
                   </TotalsLine>
                 )}
               </TotalsGroup>
               <TotalsGrandLine>
                 <GrandLabel>{t('checkout:summary.total')}</GrandLabel>
-                <GrandValue>${totalAmount.toLocaleString()}</GrandValue>
+                <GrandValue>${formatAmount(totalAmount)}</GrandValue>
               </TotalsGrandLine>
             </TotalsBox>
 

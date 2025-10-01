@@ -40,6 +40,8 @@ function getPlanImageByName(name: string) {
 }
 
 function CheckoutSuccessContent() {
+  const formatAmount = (value: number) =>
+    value.toLocaleString(undefined, { maximumFractionDigits: 2 });
   const { t } = useTranslation();
   const params = useSearchParams();
   const router = useRouter();
@@ -105,7 +107,7 @@ function CheckoutSuccessContent() {
               <PlanInfo>
                 <PlanName>{plan}</PlanName>
                 <PlanMeta>
-                  <PlanPrice>${price.toLocaleString()}/Seat</PlanPrice>
+                  <PlanPrice>${formatAmount(price)}/Seat</PlanPrice>
                   <PlanDivider>·</PlanDivider>
                   <PlanCap>Seat · Cap {planCapMax.toLocaleString()}</PlanCap>
                 </PlanMeta>
@@ -116,8 +118,7 @@ function CheckoutSuccessContent() {
             <Bullets>
               <li>
                 {t('checkout:summary.selectedPlan')}: {plan} ($
-                {price.toLocaleString()}/Seat · Cap{' '}
-                {planCapMax.toLocaleString()})
+                {formatAmount(price)}/Seat · Cap {planCapMax.toLocaleString()})
               </li>
               <li>
                 {t('checkout:summary.users')}: {users}
@@ -127,8 +128,7 @@ function CheckoutSuccessContent() {
                 {t('checkout:contract.monthsSuffix')}
               </li>
               <li style={{ color: textColor.light['fg-neutral-primary'] }}>
-                {t('checkout:summary.monthly')}: $
-                {monthlyTotal.toLocaleString()}
+                {t('checkout:summary.monthly')}: ${formatAmount(monthlyTotal)}
               </li>
             </Bullets>
 
@@ -139,7 +139,7 @@ function CheckoutSuccessContent() {
                 <Bullets>
                   <li style={{ color: textColor.light['fg-neutral-primary'] }}>
                     {t('checkout:summary.oneTime')}: $
-                    {oneTimeTotal.toLocaleString()}
+                    {formatAmount(oneTimeTotal)}
                   </li>
                 </Bullets>
               </>
@@ -149,18 +149,18 @@ function CheckoutSuccessContent() {
               <TotalsGroup>
                 <TotalsLine>
                   <span>{t('checkout:summary.monthly')}</span>
-                  <span>${monthlyTotal.toLocaleString()}</span>
+                  <span>${formatAmount(monthlyTotal)}</span>
                 </TotalsLine>
                 {oneTimeTotal > 0 && (
                   <TotalsLine>
                     <span>{t('checkout:summary.oneTime')}</span>
-                    <span>${oneTimeTotal.toLocaleString()}</span>
+                    <span>${formatAmount(oneTimeTotal)}</span>
                   </TotalsLine>
                 )}
               </TotalsGroup>
               <TotalsGrandLine>
                 <GrandLabel>{t('checkout:summary.total')}</GrandLabel>
-                <GrandValue>${totalAmount.toLocaleString()}</GrandValue>
+                <GrandValue>${formatAmount(totalAmount)}</GrandValue>
               </TotalsGrandLine>
             </TotalsBox>
           </SummaryCard>
