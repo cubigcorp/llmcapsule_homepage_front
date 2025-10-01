@@ -24,7 +24,10 @@ export default function Header() {
   const { t } = useTranslation('common');
   const [isAuthPage, setIsAuthPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return !!localStorage.getItem('access_token');
+  });
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(false);
   const isMobile = useMediaQuery('(max-width: 575px)');
