@@ -167,7 +167,6 @@ const LNBWrapper = styled.div`
   flex-shrink: 0;
   background: white;
   border-right: 1px solid ${borderColor.light['color-border-primary']};
-  height: calc(100vh - 72px);
   position: sticky;
   top: 72px;
 `;
