@@ -131,6 +131,7 @@ const SubTitle = styled.p`
   ${typography(undefined, 'display4', 'medium')}
   color: ${textColor.light['fg-neutral-alternative']};
   white-space: pre-line;
+  word-break: keep-all;
   @media (max-width: 1024px) {
     ${typography(undefined, 'display4', 'medium')}
   }

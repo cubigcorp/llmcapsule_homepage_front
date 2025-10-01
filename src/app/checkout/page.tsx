@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import styled from 'styled-components';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { typography, textColor } from '@cubig/design-system';
+import { useTranslation } from 'react-i18next';
 
 export default function CheckoutRedirect() {
   const router = useRouter();
+  const { t } = useTranslation('checkout');
   const isMobile = useMediaQuery('(max-width: 980px)');
   const [isChecking, setIsChecking] = useState(true);
 
@@ -33,11 +35,9 @@ export default function CheckoutRedirect() {
     return (
       <Container>
         <MessageBox>
-          <Title>데스크탑에서만 이용 가능합니다</Title>
-          <Description>
-            견적 계산 및 결제는 데스크탑 환경에서만 이용하실 수 있습니다.
-            <br />
-            PC 또는 노트북에서 다시 접속해 주세요.
+          <Title>{t('mobileBlock.title')}</Title>
+          <Description style={{ whiteSpace: 'pre-line' }}>
+            {t('mobileBlock.description')}
           </Description>
         </MessageBox>
       </Container>

@@ -172,11 +172,9 @@ export default function CheckoutPage() {
         <GlobalHeader />
         <MobileBlockContainer>
           <MessageBox>
-            <BlockTitle>데스크탑에서만 이용 가능합니다</BlockTitle>
-            <BlockDescription>
-              견적 계산 및 결제는 데스크탑 환경에서만 이용하실 수 있습니다.
-              <br />
-              PC 또는 노트북에서 다시 접속해 주세요.
+            <BlockTitle>{t('mobileBlock.title')}</BlockTitle>
+            <BlockDescription style={{ whiteSpace: 'pre-line' }}>
+              {t('mobileBlock.description')}
             </BlockDescription>
           </MessageBox>
         </MobileBlockContainer>
