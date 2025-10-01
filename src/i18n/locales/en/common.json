@@ -6,7 +6,7 @@
   "hero": {
     "mainTitle": "Capsule AI for what's next",
     "subTitle": "Secure, seamless\nfor GenAI and public LLMs",
-    "description": "LLM Capsule bridges enterprises and AI platforms securely and seamlessly, empowering innovation with trusted data protection and compliance.",
+    "description": "LLM Capsule bridges enterprises and AI platforms securely and seamlessly, \n empowering innovation with trusted data protection and compliance.",
     "getStarted": "Get Started",
     "brochure": "Brochure"
   },
@@ -121,7 +121,7 @@
         "title": "Plus",
         "subtitle": "The first step toward protecting personal data",
         "price": "$ 12.99",
-        "period": " / Month",
+        "period": " / Seat per month",
         "button": "Buy now",
         "tokens": "120,000 Token",
         "costPerToken": "($0.108 per 1,000 Tokens)",

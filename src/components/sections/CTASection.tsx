@@ -87,6 +87,7 @@ const CTASubtitle = styled.p`
   margin-top: 8px;
   text-align: center;
   max-width: 560px;
+  white-space: pre-line;
 `;
 
 const CTAButton = styled.button`

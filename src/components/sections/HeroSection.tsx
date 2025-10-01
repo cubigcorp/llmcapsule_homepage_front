@@ -120,6 +120,7 @@ const TextContent = styled.div`
 const SubTitle = styled.p`
   ${typography(undefined, 'display4', 'medium')}
   color: ${textColor.light['fg-neutral-alternative']};
+  white-space: pre-line;
   @media (max-width: 1024px) {
     ${typography(undefined, 'display4', 'medium')}
   }
@@ -157,6 +158,7 @@ const Description = styled.p`
   max-width: 960px;
   width: 100%;
   margin-top: 16px;
+  white-space: pre-line;
   @media (max-width: 1024px) {
     ${typography(undefined, 'title1', 'regular')}
   }
