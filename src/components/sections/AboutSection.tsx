@@ -58,6 +58,7 @@ const AboutSection = () => {
     mainTitle: string;
     description: string;
     features: string[];
+    featureDescriptions: string[];
   }>;
 
   const sections = sectionsData.map((section, index) => ({
@@ -67,6 +68,7 @@ const AboutSection = () => {
     mainTitle: section.mainTitle,
     description: section.description,
     features: section.features,
+    featureDescriptions: section.featureDescriptions,
   }));
 
   return (
@@ -120,74 +122,10 @@ const AboutSection = () => {
                       <ImageContentWrapper>
                         <ImageHeader>
                           <ImageTitle>
-                            {index === 0 &&
-                              activeFeatures[index] === 0 &&
-                              'Complete protection of sensitive data in AI usage'}
-                            {index === 0 &&
-                              activeFeatures[index] === 1 &&
-                              'Customizable Data Protection'}
-                            {index === 0 &&
-                              activeFeatures[index] === 2 &&
-                              'Flexible De-identification Methods'}
-                            {index === 1 &&
-                              activeFeatures[index] === 0 &&
-                              'Seamless public LLM integration'}
-                            {index === 1 &&
-                              activeFeatures[index] === 1 &&
-                              'Large-Scale Document Processing & Ontology Management'}
-                            {index === 1 &&
-                              activeFeatures[index] === 2 &&
-                              'RAG & Graph RAG Support'}
-                            {index === 2 &&
-                              activeFeatures[index] === 0 &&
-                              'Context-Aware AI Detection'}
-                            {index === 2 &&
-                              activeFeatures[index] === 1 &&
-                              'Defense Against Prompt Injection & Jailbreak Attacks'}
-                            {index === 2 &&
-                              activeFeatures[index] === 2 &&
-                              'Compliance with Global Security Standards'}
-                            {index === 2 &&
-                              activeFeatures[index] === 3 &&
-                              'Admin-Centric User Management'}
-                            {index === 2 &&
-                              activeFeatures[index] === 4 &&
-                              'On-Premises Deployment Support'}
+                            {section.features[activeFeatures[index]]}
                           </ImageTitle>
                           <ImageSubtitle>
-                            {index === 0 &&
-                              activeFeatures[index] === 0 &&
-                              'A four-step framework of detection, protection, utilization, and recovery.'}
-                            {index === 0 &&
-                              activeFeatures[index] === 1 &&
-                              'Tailored to corporate policies and environments.'}
-                            {index === 0 &&
-                              activeFeatures[index] === 2 &&
-                              'Optimized protection strategies for every situation.'}
-                            {index === 1 &&
-                              activeFeatures[index] === 0 &&
-                              'ChatGPT, Claude, Gemini—your choice, with efficiency and security.'}
-                            {index === 1 &&
-                              activeFeatures[index] === 1 &&
-                              'Turn enterprise data into structured, valuable assets.'}
-                            {index === 1 &&
-                              activeFeatures[index] === 2 &&
-                              'Use real-time data and knowledge graphs for accurate, trusted answers.'}
-                            {index === 2 &&
-                              activeFeatures[index] === 0 &&
-                              'Beyond keywords, precision designed for enterprise data protection.'}
-                            {index === 2 &&
-                              activeFeatures[index] === 1 &&
-                              'Safeguards that ensure stable AI operations.'}
-                            {index === 2 &&
-                              activeFeatures[index] === 2 &&
-                              'Trusted AI that meets domestic and international regulations.'}
-                            {index === 2 &&
-                              activeFeatures[index] === 3 &&
-                              'Simplified administration for enterprise efficiency.'}
-                            {index === 2 &&
-                              activeFeatures[index] === 4 &&
-                              'Secure operation of sensitive data and workloads on dedicated infrastructure.'}
+                            {section.featureDescriptions[activeFeatures[index]]}
                           </ImageSubtitle>
                         </ImageHeader>
                         <ImageContent>

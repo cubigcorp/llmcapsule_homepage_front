@@ -28,6 +28,11 @@
           "Complete protection of sensitive data in AI usage",
           "Customizable data protection",
           "Flexible de-identification methods"
+        ],
+        "featureDescriptions": [
+          "A four-step framework of detection, protection, utilization, and recovery.",
+          "Tailored to corporate policies and environments.",
+          "Optimized protection strategies for every situation."
         ]
       },
       {
@@ -39,6 +44,11 @@
           "Seamless public LLM integration",
           "Large-scale document processing & ontology management",
           "RAG & graph RAG support"
+        ],
+        "featureDescriptions": [
+          "ChatGPT, Claude, Gemini—your choice, with efficiency and security.",
+          "Turn enterprise data into structured, valuable assets.",
+          "Use real-time data and knowledge graphs for accurate, trusted answers."
         ]
       },
       {
@@ -52,6 +62,13 @@
           "Compliance with Global Security Standards",
           "Admin-Centric User Management",
           "On-Premises Deployment Support"
+        ],
+        "featureDescriptions": [
+          "Beyond keywords, precision designed for enterprise data protection.",
+          "Safeguards that ensure stable AI operations.",
+          "Trusted AI that meets domestic and international regulations.",
+          "Simplified administration for enterprise efficiency.",
+          "Secure operation of sensitive data and workloads on dedicated infrastructure."
         ]
       }
     ]
