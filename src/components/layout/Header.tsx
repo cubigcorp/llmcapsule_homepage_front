@@ -23,9 +23,21 @@ import { useUserStore } from '@/store/userStore';
 export default function Header() {
   const pathname = usePathname();
   const { t } = useTranslation('common');
-  const [isAuthPage, setIsAuthPage] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const isAuthPage =
+    pathname === '/login' ||
+    pathname === '/login/' ||
+    pathname === '/signup' ||
+    pathname === '/signup/' ||
+    pathname.startsWith('/signup/verify') ||
+    pathname.startsWith('/signup/invalid-token') ||
+    pathname.startsWith('/signup/success') ||
+    pathname.startsWith('/signup/fail') ||
+    pathname === '/reset-password' ||
+    pathname === '/reset-password/' ||
+    pathname.startsWith('/reset-password/verify') ||
+    pathname === '/contact' ||
+    pathname === '/contact/';
+  const [isCheckingAuth, setIsCheckingAuth] = useState(false);
   const isMobile = useMediaQuery('(max-width: 575px)');
 
   const {
@@ -60,25 +72,7 @@ export default function Header() {
     }
   };
 
-  useEffect(() => {
-    setIsAuthPage(
-      pathname === '/login' ||
-        pathname === '/login/' ||
-        pathname === '/signup' ||
-        pathname === '/signup/' ||
-        pathname.startsWith('/signup/verify') ||
-        pathname.startsWith('/signup/invalid-token') ||
-        pathname.startsWith('/signup/success') ||
-        pathname.startsWith('/signup/fail') ||
-        pathname === '/reset-password' ||
-        pathname === '/reset-password/' ||
-        pathname.startsWith('/reset-password/verify') ||
-        pathname === '/contact' ||
-        pathname === '/contact/'
-    );
-
-    setIsLoaded(true);
-  }, [pathname]);
+  // removed isLoaded gating; compute isAuthPage synchronously
 
   // 로그인 상태 변화 감지를 위한 추가 useEffect
   useEffect(() => {
@@ -86,6 +80,7 @@ export default function Header() {
       const accessToken = localStorage.getItem('access_token');
 
       if (accessToken) {
+        setIsCheckingAuth(false);
         setIsLoadingUserInfo(true);
         try {
           const response = await authService.getMyInfo();
@@ -114,7 +109,6 @@ export default function Header() {
           }
         } finally {
           setIsLoadingUserInfo(false);
-          setIsCheckingAuth(false);
         }
       } else {
         logout();
@@ -123,13 +117,7 @@ export default function Header() {
       }
     };
 
-    const timeout = setTimeout(() => {
-      setIsCheckingAuth(false);
-    }, 3000);
-
-    checkLoginStatus().then(() => {
-      clearTimeout(timeout);
-    });
+    checkLoginStatus();
 
     const handleStorageChange = () => {
       checkLoginStatus();
@@ -140,14 +128,13 @@ export default function Header() {
     const interval = setInterval(checkLoginStatus, 600000);
 
     return () => {
-      clearTimeout(timeout);
       window.removeEventListener('storage', handleStorageChange);
       clearInterval(interval);
     };
   }, [logout, setIsLoadingUserInfo, setIsLoggedIn, setUserInfo]);
 
-  // 초기 로딩 중이거나 인증 페이지인 경우 헤더를 숨김
-  if (!isLoaded || isAuthPage) {
+  // 인증 페이지인 경우 헤더를 숨김
+  if (isAuthPage) {
     return null;
   }
   return (
