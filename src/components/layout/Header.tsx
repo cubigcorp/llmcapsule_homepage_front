@@ -117,7 +117,13 @@ export default function Header() {
       }
     };
 
-    checkLoginStatus();
+    const timeout = setTimeout(() => {
+      setIsCheckingAuth(false);
+    }, 3000);
+
+    checkLoginStatus().then(() => {
+      clearTimeout(timeout);
+    });
 
     const handleStorageChange = () => {
       checkLoginStatus();
@@ -128,6 +134,7 @@ export default function Header() {
     const interval = setInterval(checkLoginStatus, 600000);
 
     return () => {
+      clearTimeout(timeout);
       window.removeEventListener('storage', handleStorageChange);
       clearInterval(interval);
     };

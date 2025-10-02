@@ -69,6 +69,7 @@ export default function LoginPage() {
         // 로그인 성공 시 토큰 저장
         localStorage.setItem('access_token', response.data!.access_token);
         localStorage.setItem('refresh_token', response.data!.refresh_token);
+        window.dispatchEvent(new Event('storage'));
 
         // 마이페이지로 이동
         router.push('/mypage');
@@ -104,6 +105,8 @@ export default function LoginPage() {
             'refresh_token',
             loginResponse.data!.refresh_token
           );
+          // 헤더 등 전역 로그인 상태 즉시 반영
+          window.dispatchEvent(new Event('storage'));
 
           // 마이페이지로 이동
           router.push('/mypage');
