@@ -682,7 +682,7 @@ export default function ProfilePage() {
                   <InfoValue>
                     {userInfo?.last_name && userInfo?.first_name
                       ? `${userInfo.last_name}${userInfo.first_name}`
-                      : userInfo?.last_name || userInfo?.first_name || '김규빅'}
+                      : userInfo?.last_name || userInfo?.first_name || '-'}
                   </InfoValue>
                 </InfoContent>
               </InfoField>
@@ -697,7 +697,7 @@ export default function ProfilePage() {
                       {t('profile.edit')}
                     </EditButton>
                   </InfoLabelRow>
-                  <InfoValue>{userInfo?.phone || '01012345678'}</InfoValue>
+                  <InfoValue>{userInfo?.phone || '-'}</InfoValue>
                 </InfoContent>
               </InfoField>
 
@@ -711,7 +711,7 @@ export default function ProfilePage() {
                       {t('profile.edit')}
                     </EditButton>
                   </InfoLabelRow>
-                  <InfoValue>{userInfo?.organization_name || '큐빅'}</InfoValue>
+                  <InfoValue>{userInfo?.organization_name || '-'}</InfoValue>
                 </InfoContent>
               </InfoField>
             </UserInfoContainer>
