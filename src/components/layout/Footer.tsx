@@ -36,6 +36,54 @@ export default function Footer() {
         {/* Bottom Section */}
         <FooterBottomSection>
           <FooterLeft>
+            <SocialIcons>
+              <SocialIcon>
+                <a
+                  href='https://blog.naver.com/cubig_'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <SocialIconImage src={'/icons/logo_blog.svg'} alt='Blog' />
+                </a>
+              </SocialIcon>
+              <SocialIcon>
+                <a
+                  href='https://www.instagram.com/cubig.ai_official/'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <SocialIconImage
+                    src='/icons/logo_insta.svg'
+                    alt='Instagram'
+                  />
+                </a>
+              </SocialIcon>
+              <SocialIcon>
+                <a
+                  href='https://www.youtube.com/@cubig_corp'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <SocialIconImage
+                    src='/icons/logo_youtube.svg'
+                    alt='YouTube'
+                  />
+                </a>
+              </SocialIcon>
+              <SocialIcon>
+                <a
+                  href='https://www.linkedin.com/company/cubig-corp/posts/?feedView=all'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <SocialIconImage
+                    src='/icons/logo_linken.svg'
+                    alt='LinkedIn'
+                  />
+                </a>
+              </SocialIcon>
+            </SocialIcons>
+
             <ContactInfo>
               <ContactItem>Email : contact@cubig.ai</ContactItem>
               <ContactItem>
@@ -57,44 +105,25 @@ export default function Footer() {
         <FooterDivider />
         <CopyrightSection>
           <Copyright>© 2025 CUBIG Corp All rights Reserved.</Copyright>
-          <SocialIcons>
-            <SocialIcon>
-              <a
-                href='https://blog.naver.com/cubig_'
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                <SocialIconImage src={'/icons/logo_blog.svg'} alt='Blog' />
-              </a>
-            </SocialIcon>
-            <SocialIcon>
-              <a
-                href='https://www.instagram.com/cubig.ai_official/'
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                <SocialIconImage src='/icons/logo_insta.svg' alt='Instagram' />
-              </a>
-            </SocialIcon>
-            <SocialIcon>
-              <a
-                href='https://www.youtube.com/@cubig_corp'
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                <SocialIconImage src='/icons/logo_youtube.svg' alt='YouTube' />
-              </a>
-            </SocialIcon>
-            <SocialIcon>
-              <a
-                href='https://www.linkedin.com/company/cubig-corp/posts/?feedView=all'
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                <SocialIconImage src='/icons/logo_linken.svg' alt='LinkedIn' />
-              </a>
-            </SocialIcon>
-          </SocialIcons>
+          <FooterLinks>
+            <FooterLink
+              href='/privacy'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              Privacy Policy
+            </FooterLink>
+            <FooterLink href='/terms' target='_blank' rel='noopener noreferrer'>
+              Terms of Service
+            </FooterLink>
+            <FooterLink
+              href='/cookies'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              Cookie Policy
+            </FooterLink>
+          </FooterLinks>
         </CopyrightSection>
       </FooterWrapper>
     </FooterContainer>
@@ -210,6 +239,7 @@ const BrandSubtitle = styled.span`
 const SocialIcons = styled.div`
   display: flex;
   gap: 12px;
+  margin-bottom: 24px;
 `;
 
 const SocialIcon = styled.div`
@@ -264,9 +294,31 @@ const CopyrightSection = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 `;
 
 const Copyright = styled.span`
   ${typography('ko', 'body2', 'regular')}
   color: ${textColor.dark['fg-neutral-primary']};
+  @media (max-width: 768px) {
+    order: 2;
+  }
+`;
+
+const FooterLinks = styled.div`
+  display: flex;
+  gap: 12px;
+  @media (max-width: 768px) {
+    order: 1;
+  }
+`;
+
+const FooterLink = styled.a`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.dark['fg-neutral-primary']};
+  text-decoration: none;
+  &:hover {
+    color: ${textColor.dark['fg-neutral-strong']};
+  }
 `;
