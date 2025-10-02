@@ -78,7 +78,7 @@ export default function Footer() {
             </SocialIcon>
             <SocialIcon>
               <a
-                href='https://www.youtube.com/@cubig_corps'
+                href='https://www.youtube.com/@cubig_corp'
                 target='_blank'
                 rel='noopener noreferrer'
               >
