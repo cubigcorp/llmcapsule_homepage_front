@@ -14,21 +14,29 @@ import {
 } from '@cubig/design-system';
 import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 import { authService } from '@/services/auth';
-import type { UserInfo } from '@/utils/api';
 import LogoIcon from '@/assets/icons/Logo.svg';
 import LogoMobileIcon from '@/assets/icons/logo_mobile.svg';
 import ArrowDownIcon from '@/assets/icons/icon_arrow-down.svg';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { useUserStore } from '@/store/userStore';
+
 export default function Header() {
   const pathname = usePathname();
   const { t } = useTranslation('common');
   const [isAuthPage, setIsAuthPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [isLoadingUserInfo, setIsLoadingUserInfo] = useState(false);
   const isMobile = useMediaQuery('(max-width: 575px)');
+
+  const {
+    userInfo,
+    isLoggedIn,
+    isLoadingUserInfo,
+    setUserInfo,
+    setIsLoggedIn,
+    setIsLoadingUserInfo,
+    logout,
+  } = useUserStore();
 
   const scrollToSection = (sectionId: string) => {
     // 홈페이지가 아닌 경우 홈으로 이동 후 스크롤
@@ -93,8 +101,7 @@ export default function Header() {
 
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
-          setIsLoggedIn(false);
-          setUserInfo(null);
+          logout();
 
           if (
             typeof window !== 'undefined' &&
@@ -110,14 +117,19 @@ export default function Header() {
           setIsCheckingAuth(false);
         }
       } else {
-        setIsLoggedIn(false);
-        setUserInfo(null);
+        logout();
         setIsLoadingUserInfo(false);
         setIsCheckingAuth(false);
       }
     };
 
-    checkLoginStatus();
+    const timeout = setTimeout(() => {
+      setIsCheckingAuth(false);
+    }, 3000);
+
+    checkLoginStatus().then(() => {
+      clearTimeout(timeout);
+    });
 
     const handleStorageChange = () => {
       checkLoginStatus();
@@ -128,10 +140,11 @@ export default function Header() {
     const interval = setInterval(checkLoginStatus, 600000);
 
     return () => {
+      clearTimeout(timeout);
       window.removeEventListener('storage', handleStorageChange);
       clearInterval(interval);
     };
-  }, []);
+  }, [logout, setIsLoadingUserInfo, setIsLoggedIn, setUserInfo]);
 
   // 초기 로딩 중이거나 인증 페이지인 경우 헤더를 숨김
   if (!isLoaded || isAuthPage) {

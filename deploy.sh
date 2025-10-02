@@ -19,7 +19,7 @@ if [[ "$ENVIRONMENT" == "development" ]]; then
   echo "🚀 개발(dev) 배포 시작..."
   ENV_SYNC_CMD='if [ -f .env.development ]; then echo "🔄 Using .env.development for build"; cp .env.development .env.production; fi'
 else
-  HOST="ubuntu@ec2-3-39-187-55.ap-northeast-2.compute.amazonaws.com"
+  HOST="ubuntu@ec2-3-35-175-216.ap-northeast-2.compute.amazonaws.com"
   BRANCH="main"
   echo "🚀 프로덕션(prod) 배포 시작..."
   ENV_SYNC_CMD='echo "🔒 Using .env.production for build"'
@@ -47,6 +47,8 @@ echo "📦 현재: \$(git rev-parse --abbrev-ref HEAD) @ \$(git rev-parse --shor
 git fetch --all --prune
 git switch "$BRANCH"
 git pull
+
+npm install
 
 docker compose up -d --build
 

@@ -14,7 +14,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 export default function HeroSection() {
   const router = useRouter();
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const isMobile = useMediaQuery('(max-width: 575px)');
 
   const handleGetStarted = () => {
@@ -24,6 +24,14 @@ export default function HeroSection() {
       return;
     }
     router.push('/checkout');
+  };
+
+  const handleBrochureClick = () => {
+    const brochureUrl =
+      i18n.language === 'ko'
+        ? 'https://cubig.gabia.io/QR_files/Brochure_LLM_K.pdf'
+        : 'https://cubig.gabia.io/QR_files/Brochure_LLM_E.pdf';
+    window.open(brochureUrl, '_blank');
   };
 
   return (
@@ -46,12 +54,7 @@ export default function HeroSection() {
             <OutlineButton
               variant='secondary'
               size={isMobile ? 'small' : 'large'}
-              onClick={() => {
-                window.open(
-                  'https://cubig.gabia.io/QR_files/Brochure_LLM_K.pdf',
-                  '_blank'
-                );
-              }}
+              onClick={handleBrochureClick}
             >
               {t('hero.brochure')}
             </OutlineButton>

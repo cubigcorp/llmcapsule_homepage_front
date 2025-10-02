@@ -13,7 +13,9 @@ import {
   Divider,
   borderColor,
   textColor,
+  typography,
 } from '@cubig/design-system';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 import AccountIcon from '@/assets/icons/icon_account.svg';
 import DownloadIcon from '@/assets/icons/icon_download.svg';
@@ -30,6 +32,7 @@ export default function MyPageLayout({
   const pathname = usePathname();
   const { t } = useTranslation('mypage');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 980px)');
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -92,6 +95,19 @@ export default function MyPageLayout({
 
   if (!isAuthenticated) {
     return null;
+  }
+
+  if (isMobile) {
+    return (
+      <MobileBlockContainer>
+        <MobileBlockContent>
+          <MobileBlockTitle>{t('mobileBlock.title')}</MobileBlockTitle>
+          <MobileBlockDescription style={{ whiteSpace: 'pre-line' }}>
+            {t('mobileBlock.description')}
+          </MobileBlockDescription>
+        </MobileBlockContent>
+      </MobileBlockContainer>
+    );
   }
 
   return (
@@ -173,4 +189,33 @@ const LNBWrapper = styled.div`
 const ContentArea = styled.div`
   flex: 1;
   min-height: calc(100vh - 72px);
+`;
+
+const MobileBlockContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: white;
+`;
+
+const MobileBlockContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 400px;
+  text-align: center;
+`;
+
+const MobileBlockTitle = styled.h1`
+  ${typography(undefined, 'title2', 'medium')}
+  color: ${textColor.light['fg-neutral-primary']};
+`;
+
+const MobileBlockDescription = styled.p`
+  ${typography(undefined, 'body2', 'regular')}
+  color: ${textColor.light['fg-neutral-alternative']};
 `;

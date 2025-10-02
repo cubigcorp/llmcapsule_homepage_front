@@ -105,6 +105,7 @@ const LeftSection = styled.div`
 
 const RightSection = styled.div`
   flex: 1;
+  width: 100%;
 `;
 
 const SectionTitle = styled.h2`

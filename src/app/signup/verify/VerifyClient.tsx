@@ -15,7 +15,7 @@ import {
 } from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
 import CarouselSection from '@/components/common/CarouselSection';
-import { countries } from '@/utils/countries';
+import { getCountries } from '@/utils/countries';
 import {
   validateEmail,
   validateContactNumber,
@@ -26,10 +26,12 @@ import { otpService } from '@/services/otp';
 import { env } from '@/utils/env';
 import PrivacyConsentModal from '@/components/modals/PrivacyConsentModal';
 import MarketingConsentModal from '@/components/modals/MarketingConsentModal';
+import { useTranslation } from 'react-i18next';
 
 export default function VerifyClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t, i18n } = useTranslation('auth');
 
   const token = searchParams.get('token') || '';
   const email = searchParams.get('email') || '';
@@ -39,6 +41,7 @@ export default function VerifyClient() {
   const sub = searchParams.get('sub') || '';
 
   const isGoogleSignup = google === 'true';
+  const countries = getCountries(i18n.language);
 
   const [formData, setFormData] = useState({
     email: email ?? '',
@@ -450,15 +453,15 @@ export default function VerifyClient() {
       <SignupWrapper>
         <SignupLeft>
           <SignupForm>
-            <SignupTitle>회원가입</SignupTitle>
+            <SignupTitle>{t('signup.title')}</SignupTitle>
 
             <FormField>
               <TextField
-                label='이메일'
+                label={t('signup.email')}
                 labelType='required'
                 size='large'
                 value={formData.email}
-                placeholder='user@example.com'
+                placeholder={t('signup.placeholder.email')}
                 status='positive'
                 disabled
               />
@@ -468,7 +471,7 @@ export default function VerifyClient() {
               <div style={{ display: 'flex', gap: '12px' }}>
                 <div style={{ flex: 1 }}>
                   <TextField
-                    label='성'
+                    label={t('signupVerify.lastName')}
                     labelType='required'
                     size='large'
                     value={formData.lastName}
@@ -476,7 +479,7 @@ export default function VerifyClient() {
                       handleInputChange('lastName', e.target.value)
                     }
                     onBlur={handleLastNameBlur}
-                    placeholder='예) 홍'
+                    placeholder={t('signupVerify.placeholder.lastName')}
                     description={lastNameError}
                     status={lastNameError ? 'negative' : 'default'}
                     maxLength={50}
@@ -484,7 +487,7 @@ export default function VerifyClient() {
                 </div>
                 <div style={{ flex: 1 }}>
                   <TextField
-                    label='이름'
+                    label={t('signupVerify.firstName')}
                     labelType='required'
                     size='large'
                     value={formData.firstName}
@@ -492,7 +495,7 @@ export default function VerifyClient() {
                       handleInputChange('firstName', e.target.value)
                     }
                     onBlur={handleFirstNameBlur}
-                    placeholder='예) 길동'
+                    placeholder={t('signupVerify.placeholder.firstName')}
                     description={firstNameError}
                     status={firstNameError ? 'negative' : 'default'}
                     maxLength={50}
@@ -505,11 +508,16 @@ export default function VerifyClient() {
               <Dropdown
                 type='combobox'
                 labelType='required'
-                label='국가'
+                label={t('signupVerify.country')}
                 size='large'
+                placeholder={t('signupVerify.placeholder.country')}
                 value={formData.country}
                 onChange={handleCountryChange}
-                options={countries}
+                options={getCountries(
+                  (typeof window !== 'undefined' &&
+                    window.localStorage.getItem('i18nextLng')) ||
+                    'ko'
+                )}
                 description={countryError}
                 status={countryError ? 'negative' : 'default'}
               />
@@ -525,7 +533,7 @@ export default function VerifyClient() {
               >
                 <div style={{ flex: 1 }}>
                   <TextField
-                    label='연락처'
+                    label={t('signupVerify.phone')}
                     labelType='required'
                     size='large'
                     value={formData.contactNumber}
@@ -539,7 +547,7 @@ export default function VerifyClient() {
                       );
                       setContactError(result.message);
                     }}
-                    placeholder='휴대폰 번호를 입력해 주세요.'
+                    placeholder={t('signupVerify.placeholder.phone')}
                     description={isVerificationCompleted ? '' : contactError}
                     status={
                       isVerificationCompleted
@@ -560,7 +568,7 @@ export default function VerifyClient() {
                     onClick={handleRequestVerification}
                     disabled={!isVerificationButtonEnabled()}
                   >
-                    인증요청
+                    {t('signupVerify.requestCode')}
                   </StyledVerificationButton>
                 </div>
               </div>
@@ -585,7 +593,7 @@ export default function VerifyClient() {
                           setVerificationError('');
                         }
                       }}
-                      placeholder='인증번호 입력'
+                      placeholder={t('signupVerify.codePlaceholder')}
                       description={verificationError}
                       status={verificationError ? 'negative' : 'default'}
                     />
@@ -598,7 +606,7 @@ export default function VerifyClient() {
                       }}
                     >
                       <ResendButton onClick={handleResendCode}>
-                        인증번호 재발송
+                        {t('signupVerify.resend')}
                       </ResendButton>
                       {isTimerRunning && (
                         <TimerContainer>
@@ -610,7 +618,10 @@ export default function VerifyClient() {
                               height={16}
                             />
                             <TimeText>{formatTime(timeLeft)}</TimeText>
-                            <RemainingText> 남음</RemainingText>
+                            <RemainingText>
+                              {' '}
+                              {t('signupVerify.remaining')}
+                            </RemainingText>
                           </TimerText>
                         </TimerContainer>
                       )}
@@ -623,7 +634,7 @@ export default function VerifyClient() {
                       onClick={handleVerifyCode}
                       disabled={isVerificationCompleted}
                     >
-                      확인
+                      {t('signupVerify.verify')}
                     </StyledVerificationButton>
                   </div>
                 </div>
@@ -632,11 +643,11 @@ export default function VerifyClient() {
 
             <FormField>
               <TextField
-                label='회사/소속기관명'
+                label={t('signupVerify.company')}
                 size='large'
                 value={formData.company}
                 onChange={(e) => handleInputChange('company', e.target.value)}
-                placeholder='회사명을 입력해 주세요. (선택사항)'
+                placeholder={t('signupVerify.placeholder.company')}
                 maxLength={50}
               />
             </FormField>
@@ -651,9 +662,9 @@ export default function VerifyClient() {
                   }
                 />
                 <AgreementText>
-                  (필수){' '}
+                  {t('contact.consent.requiredPrefix')}{' '}
                   <AgreementLink onClick={handlePrivacyLinkClick}>
-                    개인정보 수집·이용 및 이용 약관에 동의합니다.
+                    {t('contact.consent.privacy')}
                   </AgreementLink>
                 </AgreementText>
               </AgreementItem>
@@ -666,9 +677,9 @@ export default function VerifyClient() {
                   }
                 />
                 <AgreementTextOptional>
-                  (선택){' '}
+                  {t('contact.consent.optionalPrefix')}{' '}
                   <AgreementLink onClick={handleMarketingLinkClick}>
-                    마케팅 정보 수신 동의
+                    {t('contact.consent.marketing')}
                   </AgreementLink>
                 </AgreementTextOptional>
               </AgreementItem>
@@ -680,7 +691,7 @@ export default function VerifyClient() {
               onClick={handleSignup}
               disabled={!isSignupButtonEnabled()}
             >
-              회원가입
+              {t('signupVerify.submit')}
             </SignupButton>
           </SignupForm>
         </SignupLeft>

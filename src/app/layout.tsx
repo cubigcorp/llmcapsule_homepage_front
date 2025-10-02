@@ -8,8 +8,22 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import ToastProvider from '@/components/providers/ToastProvider';
 
 export const metadata: Metadata = {
-  title: 'LLM Capsule - AI 기반 솔루션',
-  description: 'AI 기반 솔루션으로 더 나은 미래를 만들어갑니다.',
+  title: 'LLM Capsule - AI-Powered Solution',
+  description: 'Building a better future with AI-powered solutions.',
+  openGraph: {
+    title: 'LLM Capsule - AI-Powered Solution',
+    description: 'Building a better future with AI-powered solutions.',
+    images: [
+      {
+        url: '/llm_capsule-og_image.png',
+        width: 1200,
+        height: 630,
+        alt: 'LLM Capsule',
+      },
+    ],
+    type: 'website',
+    locale: 'en_US',
+  },
 };
 
 export default function RootLayout({

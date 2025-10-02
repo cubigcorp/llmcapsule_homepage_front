@@ -254,5 +254,9 @@
       "desc": "After running the installer, enter the prepared serial key to proceed with installation."
     },
     "serialImageAlt": "Serial input UI"
+  },
+  "mobileBlock": {
+    "title": "Please use on desktop",
+    "description": "My Page is only available\non desktop."
   }
 }

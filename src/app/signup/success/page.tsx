@@ -7,8 +7,10 @@ import Image from 'next/image';
 import { SolidButton } from '@cubig/design-system';
 import { typography, textColor } from '@cubig/design-system';
 import CarouselSection from '@/components/common/CarouselSection';
+import { useTranslation } from 'react-i18next';
 
 export default function SignupSuccessPage() {
+  const { t } = useTranslation('auth');
   const handleGoToHome = () => {
     window.location.href = '/';
   };
@@ -31,13 +33,10 @@ export default function SignupSuccessPage() {
                 height={48}
               />
             </SuccessIcon>
-            <Title>
-              LLM Capsule <br />
-              회원가입을 환영합니다!{' '}
-            </Title>
+            <Title>{t('signupSuccess.title')}</Title>
             <ButtonContainer>
               <StartButton size='large' onClick={handleGoToHome}>
-                시작하기
+                {t('signupSuccess.start')}
               </StartButton>
             </ButtonContainer>
           </SignupForm>
