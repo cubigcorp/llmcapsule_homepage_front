@@ -318,8 +318,7 @@ function CheckoutSummaryContent() {
             <Bullets>
               <li>
                 {t('checkout:summary.selectedPlan')}: {plan} ($
-                {price.toLocaleString()}/Seat · Cap{' '}
-                {planCapMax.toLocaleString()})
+                {formatAmount(price)}/Seat · Cap {planCapMax.toLocaleString()})
               </li>
               <li>
                 {t('checkout:summary.users')}: {users}
@@ -329,7 +328,7 @@ function CheckoutSummaryContent() {
                 {t('checkout:contract.monthsSuffix')}
               </li>
               <li>
-                {t('checkout:summary.discount')}: ({discount.toLocaleString()}%)
+                {t('checkout:summary.discount')}: ({formatAmount(discount)}%)
               </li>
               <li style={{ color: textColor.light['fg-neutral-primary'] }}>
                 {t('checkout:summary.monthly')}: ${formatAmount(monthlyTotal)}
