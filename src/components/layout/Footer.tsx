@@ -7,15 +7,9 @@ import {
   textColor,
   color,
   borderColor,
-  Modal,
-  SolidButton,
 } from '@cubig/design-system';
 
 export default function Footer() {
-  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
-  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
-  const [isCookieModalOpen, setIsCookieModalOpen] = useState(false);
-
   return (
     <FooterContainer>
       <FooterWrapper>
@@ -113,81 +107,13 @@ export default function Footer() {
         <CopyrightSection>
           <Copyright>© 2025 CUBIG Corp All rights Reserved.</Copyright>
           <FooterLinks>
-            <FooterLink onClick={() => setIsPrivacyModalOpen(true)}>
-              Privacy Policy
-            </FooterLink>
-            <FooterLink onClick={() => setIsTermsModalOpen(true)}>
-              Terms of Service
-            </FooterLink>
-            <FooterLink onClick={() => setIsCookieModalOpen(true)}>
-              Cookie Policy
-            </FooterLink>
+            <FooterAnchor href='/privacy'>Privacy Policy</FooterAnchor>
+            <FooterAnchor href='/terms'>Terms of Service</FooterAnchor>
           </FooterLinks>
         </CopyrightSection>
       </FooterWrapper>
 
-      <Modal
-        open={isPrivacyModalOpen}
-        onClose={() => setIsPrivacyModalOpen(false)}
-        title='Privacy Policy'
-        actions={
-          <Actions>
-            <SolidButton
-              variant='primary'
-              size='medium'
-              onClick={() => setIsPrivacyModalOpen(false)}
-            >
-              Close
-            </SolidButton>
-          </Actions>
-        }
-      >
-        <ModalContent>
-          <p>개인정보처리방침 내용이 여기에 표시됩니다.</p>
-        </ModalContent>
-      </Modal>
-
-      <Modal
-        open={isTermsModalOpen}
-        onClose={() => setIsTermsModalOpen(false)}
-        title='Terms of Service'
-        actions={
-          <Actions>
-            <SolidButton
-              variant='primary'
-              size='medium'
-              onClick={() => setIsTermsModalOpen(false)}
-            >
-              Close
-            </SolidButton>
-          </Actions>
-        }
-      >
-        <ModalContent>
-          <p>서비스 이용약관 내용이 여기에 표시됩니다.</p>
-        </ModalContent>
-      </Modal>
-
-      <Modal
-        open={isCookieModalOpen}
-        onClose={() => setIsCookieModalOpen(false)}
-        title='Cookie Policy'
-        actions={
-          <Actions>
-            <SolidButton
-              variant='primary'
-              size='medium'
-              onClick={() => setIsCookieModalOpen(false)}
-            >
-              Close
-            </SolidButton>
-          </Actions>
-        }
-      >
-        <ModalContent>
-          <p>쿠키 정책 내용이 여기에 표시됩니다.</p>
-        </ModalContent>
-      </Modal>
+      {/* Policy modals removed: use /privacy and /terms pages */}
     </FooterContainer>
   );
 }
@@ -389,14 +315,14 @@ const FooterLink = styled.button`
   }
 `;
 
-const Actions = styled.div`
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
+const FooterAnchor = styled.a`
+  ${typography('ko', 'body2', 'regular')}
+  color: ${textColor.dark['fg-neutral-primary']};
+  text-decoration: none;
+  cursor: pointer;
+  &:hover {
+    color: ${textColor.dark['fg-neutral-strong']};
+  }
 `;
 
-const ModalContent = styled.div`
-  padding: 20px;
-  ${typography('ko', 'body2', 'regular')}
-  color: ${textColor.light['fg-neutral-primary']};
-`;
+// modal-related styles removed
