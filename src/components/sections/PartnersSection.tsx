@@ -8,7 +8,6 @@ const partnerLogos = [
   { src: '/icons/army.png', alt: 'Army' },
   { src: '/icons/ewha.png', alt: 'Ewha' },
   { src: '/icons/gangnamgu.png', alt: 'Gangnam' },
-  { src: '/icons/hanabank.png', alt: 'Hana Bank' },
   { src: '/icons/ibk.png', alt: 'IBK 기업은행' },
   { src: '/icons/kyobo.png', alt: 'KYOBO' },
   { src: '/icons/naver_cloud.png', alt: 'Naver Cloud' },

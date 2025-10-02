@@ -56,7 +56,7 @@ export default function Footer() {
 
         <FooterDivider />
         <CopyrightSection>
-          <Copyright>© 2025 CUBIG Co.Ltd All rights Reserved.</Copyright>
+          <Copyright>© 2025 CUBIG Corp All rights Reserved.</Copyright>
           <SocialIcons>
             <SocialIcon>
               <a
