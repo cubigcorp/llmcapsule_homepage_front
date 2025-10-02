@@ -323,6 +323,8 @@ export default function CheckoutPage() {
 
 const Container = styled.div`
   padding: 72px 0 94px 0;
+  max-width: 1440px;
+  margin: 0 auto;
 `;
 
 const Header = styled.div`
@@ -344,6 +346,8 @@ const Subtitle = styled.p`
 const MainContent = styled.div`
   display: grid;
   grid-template-columns: 1fr 400px;
+  align-items: flex-start;
+  gap: 16px;
 `;
 
 const LeftSection = styled.div`
@@ -708,9 +712,10 @@ const TokenInfoItem = styled.div`
 
 const RightSection = styled.div`
   position: sticky;
-  top: 72px;
+  top: 96px;
   padding: 0 32px 0 16px;
   height: fit-content;
+  align-self: flex-start;
 `;
 
 const B2BInfoCard = styled.div`
