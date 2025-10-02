@@ -557,10 +557,10 @@ export default function ProfilePage() {
 
       await authService.updateUserInfo(updateData);
 
-      setUserInfo((prev) =>
-        prev
+      setUserInfo(
+        userInfo
           ? {
-              ...prev,
+              ...userInfo,
               phone: contactForm.contactNumber,
             }
           : null
@@ -604,10 +604,10 @@ export default function ProfilePage() {
 
       await authService.updateUserInfo(updateData);
 
-      setUserInfo((prev) =>
-        prev
+      setUserInfo(
+        userInfo
           ? {
-              ...prev,
+              ...userInfo,
               organization_name: companyForm.company,
             }
           : null
