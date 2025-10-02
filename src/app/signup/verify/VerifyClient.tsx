@@ -31,7 +31,7 @@ import { useTranslation } from 'react-i18next';
 export default function VerifyClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { t } = useTranslation('auth');
+  const { t, i18n } = useTranslation('auth');
 
   const token = searchParams.get('token') || '';
   const email = searchParams.get('email') || '';
@@ -41,6 +41,7 @@ export default function VerifyClient() {
   const sub = searchParams.get('sub') || '';
 
   const isGoogleSignup = google === 'true';
+  const countries = getCountries(i18n.language);
 
   const [formData, setFormData] = useState({
     email: email ?? '',
