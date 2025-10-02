@@ -25,11 +25,12 @@ import { apiClient, API_ENDPOINTS } from '@/utils/api';
 import { countries } from '@/utils/countries';
 import { otpService } from '@/services/otp';
 import { env } from '@/utils/env';
+import { useUserStore } from '@/store/userStore';
 
 export default function ProfilePage() {
   const router = useRouter();
   const { t } = useTranslation('mypage');
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const { userInfo, setUserInfo } = useUserStore();
   const [loading, setLoading] = useState(true);
   const [isNameModalOpen, setIsNameModalOpen] = useState(false);
   const [nameForm, setNameForm] = useState({
@@ -128,10 +129,10 @@ export default function ProfilePage() {
 
       await authService.updateUserInfo(updateData);
 
-      setUserInfo((prev) =>
-        prev
+      setUserInfo(
+        userInfo
           ? {
-              ...prev,
+              ...userInfo,
               last_name: nameForm.lastName,
               first_name: nameForm.firstName,
             }
