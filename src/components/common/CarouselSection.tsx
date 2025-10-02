@@ -51,12 +51,19 @@ const defaultSlidesKo: SlideData[] = [
 
 export default function CarouselSection({ slides }: CarouselSectionProps) {
   const { t, i18n } = useTranslation('common');
-  // 언어별 기본 슬라이드 준비 (간단히 common에 키 추가하기보다 현재 텍스트 사용)
-  const defaultSlides = defaultSlidesKo.map((s, idx) => ({
-    ...s,
-    title: t(`carousel.slides.${idx}.title`),
-    description: t(`carousel.slides.${idx}.description`),
-  }));
+  // 언어별 기본 슬라이드 준비 (이미지도 언어별로 분기)
+  const defaultSlides = defaultSlidesKo
+    .map((s) => ({
+      ...s,
+      content: i18n.language?.startsWith('en')
+        ? s.content.replace('.svg', '_en.svg')
+        : s.content,
+    }))
+    .map((s, idx) => ({
+      ...s,
+      title: t(`carousel.slides.${idx}.title`),
+      description: t(`carousel.slides.${idx}.description`),
+    }));
   const finalSlides = (slides ?? defaultSlides) as SlideData[];
   const [currentSlide, setCurrentSlide] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);

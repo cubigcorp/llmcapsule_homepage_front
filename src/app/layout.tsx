@@ -15,7 +15,9 @@ export const metadata: Metadata = {
     description: 'Building a better future with AI-powered solutions.',
     images: [
       {
-        url: 'llm_capsule-og_image.png',
+        url: '/llm_capsule-og_image.png',
+        width: 1200,
+        height: 630,
         alt: 'LLM Capsule',
       },
     ],
