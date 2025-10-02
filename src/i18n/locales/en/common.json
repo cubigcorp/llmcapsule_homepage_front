@@ -271,6 +271,10 @@
       "capsuling": "Safely capsuling the original document",
       "sending": "Send capsuled data and prompts to the LLM."
     },
+    "actions": {
+      "hide": "Hide",
+      "change": "Change"
+    },
     "categories": {
       "Government": "Government",
       "Financial": "Financial",

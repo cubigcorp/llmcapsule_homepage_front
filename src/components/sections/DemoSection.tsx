@@ -533,7 +533,7 @@ export default function DemoSection() {
                                       />
                                     </svg>
                                   </ActionIcon>
-                                  Hide
+                                  {t('demo.actions.hide')}
                                 </ActionItemWrapper>
                               </SegmentItem>
                               <SegmentItem>
@@ -554,7 +554,7 @@ export default function DemoSection() {
                                       />
                                     </svg>
                                   </ActionIcon>
-                                  Change
+                                  {t('demo.actions.change')}
                                 </ActionItemWrapper>
                               </SegmentItem>
                             </SegmentedControl>

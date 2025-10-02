@@ -271,6 +271,10 @@
       "capsuling": "안전하게 원본 문서를 캡슐화 처리중...",
       "sending": "LLM으로 캡슐화된 데이터와 프롬프트를 전송합니다."
     },
+    "actions": {
+      "hide": "정보 가리기",
+      "change": "바꾸기"
+    },
     "categories": {
       "Government": "공공기관",
       "Financial": "금융",

@@ -317,12 +317,12 @@ export default function MyPage() {
             <AccountInfo>
               <InfoItem>
                 <InfoLabel>{t('account.contact')}</InfoLabel>
-                <InfoValue>{userInfo?.phone || '01012345678'}</InfoValue>
+                <InfoValue>{userInfo?.phone || '-'}</InfoValue>
               </InfoItem>
               <Divider />
               <InfoItem>
                 <InfoLabel>{t('account.org')}</InfoLabel>
-                <InfoValue>{userInfo?.organization_name || '큐빅'}</InfoValue>
+                <InfoValue>{userInfo?.organization_name || '-'}</InfoValue>
               </InfoItem>
             </AccountInfo>
           </AccountSection>
