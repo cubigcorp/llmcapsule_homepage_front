@@ -104,7 +104,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <ToastProvider>
               <I18nProvider>
                 <Header />
-                <CookieConsent />
+                {/* <CookieConsent /> */}
                 {children}
               </I18nProvider>
             </ToastProvider>
