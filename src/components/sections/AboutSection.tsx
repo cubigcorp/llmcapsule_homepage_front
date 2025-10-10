@@ -12,7 +12,7 @@ import {
 } from '@cubig/design-system';
 
 const AboutSection = () => {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const [activeSection, setActiveSection] = useState(0);
   const [activeFeatures, setActiveFeatures] = useState([0, 0, 0]);
 
@@ -130,7 +130,7 @@ const AboutSection = () => {
                         </ImageHeader>
                         <ImageContent>
                           <FeatureImage
-                            src={`/images/area_${index + 1}_feature_${activeFeatures[index] + 1}.png`}
+                            src={`/images/area_${index + 1}_feature_${activeFeatures[index] + 1}${i18n.language?.toLowerCase().startsWith('en') ? '' : '_ko'}.png`}
                             alt={`Area ${index + 1} Feature ${activeFeatures[index] + 1}`}
                           />
                         </ImageContent>
