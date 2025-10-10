@@ -29,8 +29,8 @@ export default function HeroSection() {
   const handleBrochureClick = () => {
     const brochureUrl =
       i18n.language === 'ko'
-        ? 'https://cubig.gabia.io/QR_files/Brochure_LLM_K.pdf'
-        : 'https://cubig.gabia.io/QR_files/Brochure_LLM_E.pdf';
+        ? 'https://docsend.com/view/s/7ciy3q8vq3yrvfk3 '
+        : 'https://docsend.com/view/s/zqkdbk5w5vbq4pnh ';
     window.open(brochureUrl, '_blank');
   };
 
