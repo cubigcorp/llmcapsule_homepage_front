@@ -16,7 +16,7 @@
     "deploy": "npm run build"
   },
   "dependencies": {
-    "@cubig/design-system": "^0.19.1",
+    "@cubig/design-system": "^0.19.2",
     "@paypal/react-paypal-js": "^8.9.1",
     "@react-oauth/google": "^0.12.2",
     "@svgr/webpack": "^8.1.0",

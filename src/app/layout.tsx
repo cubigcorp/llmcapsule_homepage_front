@@ -6,6 +6,7 @@ import I18nProvider from '@/components/providers/I18nProvider';
 import StyledComponentsRegistry from '@/lib/registry';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import ToastProvider from '@/components/providers/ToastProvider';
+import CookieConsent from '@/components/common/CookieConsent';
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -103,6 +104,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <ToastProvider>
               <I18nProvider>
                 <Header />
+                <CookieConsent />
                 {children}
               </I18nProvider>
             </ToastProvider>
