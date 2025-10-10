@@ -9,7 +9,7 @@ import ToastProvider from '@/components/providers/ToastProvider';
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_LLM_API_BASE_URL || 'https://llmcapsule.ai'
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://llmcapsule.ai'
   ),
   title: 'LLM Capsule - AI-Powered Solution',
   description: 'Building a better future with AI-powered solutions.',
