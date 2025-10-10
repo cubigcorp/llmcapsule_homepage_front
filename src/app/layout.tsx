@@ -8,9 +8,13 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import ToastProvider from '@/components/providers/ToastProvider';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_LLM_API_BASE_URL || 'https://llmcapsule.ai'
+  ),
   title: 'LLM Capsule - AI-Powered Solution',
   description: 'Building a better future with AI-powered solutions.',
   openGraph: {
+    url: '/',
     title: 'LLM Capsule - AI-Powered Solution',
     description: 'Building a better future with AI-powered solutions.',
     images: [
@@ -23,6 +27,12 @@ export const metadata: Metadata = {
     ],
     type: 'website',
     locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'LLM Capsule - AI-Powered Solution',
+    description: 'Building a better future with AI-powered solutions.',
+    images: ['/llm_capsule-og_image.png'],
   },
 };
 
